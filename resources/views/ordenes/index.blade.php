@@ -178,7 +178,43 @@
   </div>
 </div>
 
-@endsection
+<!-- MODAL CANCELAR ORDEN -->
+<div class="modal fade" id="cancelRevisionModal" tabindex="-1" aria-labelledby="cancelRevisionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelRevisionModalLabel">Datos de la Cancelación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="estatus_id">Usuario Cancela</label>
+            <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">
+            <input type="hidden" id="hdIdOrdenCancela" name="hdIdOrdenCancela" class="form-control">
+            <input type="hidden" id="hdIdEstatusCancela" name="hdIdEstatusCancela" class="form-control">
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="selMotivoCancela">Motivo de cancelación</label>
+            <select class="form-select" aria-label="Default select example" id="selMotivoCancela" name="selMotivoCancela">
+              <option value="0" selected>Seleccionar</option>
+              <option value="1" selected>Duplicidad</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn colorBtnPrincipal" onclick="fnGuardarCancelacion()" id="btnGuardarCancelacion">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL CANCELAR-->
+
+@endsection 
 
 @section('page-scripts')
 <script src="{{ asset('js/scripts/modal/components-modal.js') }}"></script>
@@ -287,7 +323,7 @@
                         '<a onclick="fnMostrarInfo('+data.id_orden+',1)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-edit"></i> Editar Orden de Servicio</a>'+
                         '</li>'+
                         '<li>'+
-                        '<a onclick="updEstatusOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
+                        '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
                         '</li>'+
                         '<li>'+
                         '<a onclick="updEstatusOrden('+data.id_orden+',3)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-play"></i> Iniciar Orden</a>'+
@@ -494,6 +530,42 @@
       })
   }
 
+  function cancelarOrden(idOrden,idEstatusOrden){
+    $("#hdIdOrdenCancela").val("");
+    $("#hdIdEstatusCancela").val("");
+
+    $("#cancelRevisionModal").modal("show");
+
+    $("#hdIdOrdenCancela").val(idOrden);
+    $("#hdIdEstatusCancela").val(idEstatusOrden);
+  }
+
+  function fnGuardarCancelacion(){
+    var hdIdOrdenCancela = $("#hdIdOrdenCancela").val();
+
+    if( $("#selMotivoCancela").val() == 0 ){
+      msjeAlertaSecundario('Debe seleccionar motivo cancelación', '', 'error');
+    }
+
+    $.ajax({
+        url: "{{ route('updEstatusO') }}",
+        data:{idOrden : hdIdOrdenCancela, idEstatusOrden : 5},
+        type: 'POST',
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        dataType: 'json', 
+        success: function(data) {
+          if(data[0]['updestatusorden']==false){
+            msjeAlertaPrincipal('Cancelada correctamente','','success')
+            load(); 
+          }else{
+            msjeAlertaPrincipal('No se cancelo','','error')
+          }
+          $("#cancelRevisionModal").modal("hide");
+          
+        }
+    });
+  }
+
   $(document).ready(function () {
     load()
 
@@ -597,46 +669,7 @@
         load();
       }
     });
-/*
-    $("#btnRevisar").click(function(){
-      if($("#estatus_selec_id").val()=="2"){
-        if($("#observaciones").val()!=""){
-          $("#AceptaRevisionModal").modal("show");
-        }else{
-          // $("#alertaModal2").show();
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
 
-              Toast.fire({
-                icon: 'error',
-                title: 'Favor de ingresar Observaciones'
-              })
-        }
-      }else if($("#estatus_selec_id").val()=="1"){
-        $("#AceptaRevisionModal").modal("show");
-      }
-    });
-
-    $("#btnCancelarRev").click(function(){
-      $("#cancelRevisionModal").modal("show");
-    });
-
-    $("#btnSalirRev").click(function(){
-      $('#estatus_selec_id option[value="0"]').attr("selected", true);
-      $('#observaciones').val('');
-      $("#cancelRevisionModal").modal("hide");
-      $("#exampleModal").modal("hide");
-    });
-*/
     $("#btnFiltros").click(function(){
       // $("#pnFiltros").toggle("slow");
       $('#estatus_selec_id option[value="0"]').attr("selected", true);
@@ -658,15 +691,7 @@
       // $("#cancelRevisionModal").modal("hide");
       // $("#exampleModal").modal("hide");
     });
-/*
-    $("#alertaCerrar").click(function(){
-      $("#alertaModal").hide();
-    });
 
-    $("#alertaCerrar2").click(function(){
-      $("#alertaModal2").hide();
-    });
-*/
     $("#btnFiltrar").click(function(){
       //  let urlEditar = '{{ route("filtrar", ":id") }}';
       //  urlEditar = urlEditar.replace(':id', id_registro_concurso);
@@ -864,38 +889,7 @@
     });
 
   });
-/*
-  function exportTableToExcel( filename = ''){
-    var downloadLink;
-    var dataType = 'application/vnd.ms-excel; charset=UTF-8';
-    // var dataType = 'application/vnd.ms-excel';
-    var tableSelect = document.getElementById('tbGenerarExcel');
-    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-    
-    // Specify file name
-    filename = filename?filename+'.xls':'excel_data.xls';
-    
-    // Create download link element
-    downloadLink = document.createElement("a");
-    
-    document.body.appendChild(downloadLink);
-    
-    if(navigator.msSaveOrOpenBlob){
-        var blob = new Blob(['ufeff', tableHTML], {
-            type: dataType
-        });
-        navigator.msSaveOrOpenBlob( blob, filename);
-    }else{
-        // Create a link to the file
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-    
-        // Setting the file name
-        downloadLink.download = filename;
-        
-        //triggering the function
-        downloadLink.click();
-    }
-}*/
+
  </script>
 
 @if(session('statusRev')==='OK1' )<!-- cuando revisa normalmente -->

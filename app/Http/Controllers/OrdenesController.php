@@ -96,9 +96,11 @@ class OrdenesController extends Controller
     }
 
     public function updEstatusOrden(Request $request){
+        // dd($request->All());
         $exito = DB::select("select * from cascete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
-        
-        return response()->json([$exito]);
+        // dd($exito);
+        // return response()->json([$exito]); 
+        return response()->json($exito);
     }
 
     public function downloadPdf($id)

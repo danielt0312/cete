@@ -183,8 +183,8 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <label for="txtTelefonoSolicitante">TELÉFONO DEL SOLICITANTE</label>
-                                                <input type="text" id="txtTelefonoSolicitante" name="txtTelefonoSolicitante" class="form-control" value="" >
+                                                <label for="txtTelefonoSolicitante">TELÉFONO DEL SOLICITANTE</label> 
+                                                <input type="text" id="txtTelefonoSolicitante" name="txtTelefonoSolicitante" class="form-control" value="" maxlength="10">
                                             </div>
                                         </div>
 
@@ -463,13 +463,11 @@
                 msjeAlerta('', 'Debe ingresar la descripción del reporte', 'error');
             }
 
-            if(vId_TipoOrden!=0 && vId_DepAtiende!=0 && vNombreSolicitante!='' && vTelefonoSolicitante!=''&& vCorreoSolicitante!=''&& vDescripcionReporte!='' ){
+            if(vId_TipoOrden!=0 && vId_DepAtiende!=0 && vNombreSolicitante!='' && vTelefonoSolicitante!=''&& vCorreoSolicitante!='' 
+            && vDescripcionReporte!='' ){
                 $("#tab3").attr('class', 'nav-link');
                 $("#tab3").tab('show');
             }
-            // else{
-            //     msjeAlerta('', 'Debe llenar todos los campos', 'error');
-            // }
             
         });
 
