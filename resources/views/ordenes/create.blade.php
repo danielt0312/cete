@@ -4,18 +4,12 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 <style>
-    /* .tabb {
-        color: white;
-        background: #ab0033;
-    }  
-
-     .tab-content {
-        display: none;
-    }*/
-
-    .show {
-        display: block;
-    } 
+    #tabs a.active{
+        background: #ab0033; 
+        color: #FFFFFF !important;
+        /* border-bottom: 1px solid #FFFFFF; */
+        border-radius: 0.75em;
+    }
 </style>
 
 @section('content')
@@ -33,7 +27,7 @@
                         <!-- <p class="mb-0">Datos generales</p> -->
                         <!-- <p><h6 class="modal-title">Datos generales</h6></p> -->
                         <div class="col-12">
-                            <ul class="nav nav-pills nav-justified">
+                            <ul class="nav nav-pills nav-justified" id="tabs">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="tab1" aria-current="page" data-bs-toggle="tab" href="#tabCCT">DATOS DEL CENTRO DE TRABAJO</a>
                                 </li>
@@ -325,12 +319,19 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-3 justify-content-md-start">
+                                        <div class="col-6 justify-content-md-start">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Replicar datos en el siguiente equipo
                                                 </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6" id="divCantidad">
+                                            <div class="form-group">
+                                                <label for="txtCantidadEquipos">Cantidad de Equipos</label>
+                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                             </div>
                                         </div>
 
@@ -365,6 +366,33 @@
     </div>
 </div>
 
+<!-- MODAL ELEGIR CENTRO TRABAJO -->
+<div class="modal fade" id="centroTrabajoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="centroTrabajoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="centroTrabajoModalLabel">Escuela cuenta con más de un Turno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="selTurno">Seleccionar Turno</label>
+                <select class="form-select" aria-label="Default select example" id="selTurno" name="selTurno">
+                    <option value="0" selected>Seleccionar</option>
+                </select>
+            </div>
+            </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL ELEGIR CENTRO TRABAJO-->
+
 <!-- MODAL VER DETALLES EQUIPO -->
 <div class="modal fade" id="detallesEquipoModal" tabindex="-1" aria-labelledby="detallesEquipoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -387,11 +415,12 @@
 @endsection
 
 @section('page-scripts')
-<script src="{{ asset('js/scripts/modal/components-modal.js') }}"></script>
+<!-- <script src="{{ asset('js/scripts/components-modal.js') }}"></script> --> 
 <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-<script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+<!-- <script src="{{ asset('js/sweetalert2@11.js') }}"></script> -->
 
-<script src="//code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="//code.jquery.com/jquery-3.5.1.js"></script> -->
+<script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
 <!-- <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
@@ -408,6 +437,7 @@
     let arrTareas = [];
     let arrServicios = [];
     var arrEquipos = [];
+    let arrEscuelaTurno = [];
     // var equipo_servicio = {
     //             nom_equipo: '',
     //             num_inventario: '',
@@ -419,7 +449,7 @@
 
         // $("#btnSiguiente").hide()
         // $("#btnSiguiente").prop('disabled', true);
-        
+        $("#divCantidad").hide()
 
         $("#btnSiguiente").click(function(){
             $("#tab2").attr('class', 'nav-link');
@@ -482,13 +512,21 @@
             $("#tab2").tab('show');
         });
 
+        $("#checkReplicar").change(function() {  
+            if($("#checkReplicar").is(':checked')) {  
+                $("#divCantidad").show();
+            } else {  
+                $("#divCantidad").hide();
+            }  
+        });  
+    
         var tablaEquipo='';
         var i=0;
         // var arrEquipos = [];
         $("#btnAgregarEquipo").click(function(){
-            // var bandCheck=0;
+             var bandCheck='';
             $("#checkReplicar").click(function() {  
-                if($("#checkbox").is(':checked')) {  
+                if($("#checkReplicar").is(':checked')) {  
                     bandCheck=1;
                 } else {  
                     bandCheck=0;
@@ -505,6 +543,7 @@
             // $("#divTablaEquipos").show();
             var vId_TipoEquipo= $("#selTipoEquipo").val();
             var vTipoEquipo= $('select[id="selTipoEquipo"] option:selected').text();
+            var vCantidad=$("#txtCantidadEquipos").val(); 
 
             // tablaEquipo+='<tr id="tr_'+i+'"><td>'+vTipoEquipo+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+i+')">Ver</button></td><td>En Proceso</td>';
             // // tablaEquipo+='<tr id="tr_'+i+'"><td>PC</td><td>Mantemiento</td><td>Limpieza</td><td>En Proceso</td>';
@@ -523,6 +562,7 @@
                 numeroSerie : numeroSerie,
                 descripcionSoporte : descripcionSoporte,
                 ubicacionEquipo : ubicacionEquipo,
+                cantidad : vCantidad,
                 estatus_equipo : 1, 
                 nuevo : 1, 
                 aTarea : arrTareas, ///arreglo tareas
@@ -535,7 +575,7 @@
                 arrTareas=[];
                 $("#tbTarea").remove();
                 $("#selTipoEquipo").val("0").attr("selected",true);
-                $("#selServicio").val("0").attr("selected",true);
+                $("#selTipoServicio").val("0").attr("selected",true);
                 $("#selTarea").val("0").attr("selected",true);
                 $("#txtEtiquetaServicio").val("");
                 $("#txtMarca").val("");
@@ -629,6 +669,15 @@
                 }
             });
             
+        });
+
+        $("#txtEtiquetaServicio").keyup(function(){
+            var vEtiqueta = $("#txtEtiquetaServicio").val();
+            if(vEtiqueta!=''){
+                $("#txtMarca").val("DELL");
+                $("#txtModelo").val("12345");
+                $("#txtSerie").val("02325652");
+            }
         });
 
     });
@@ -833,7 +882,7 @@
         var claveCCT= $("#txtCentroTrabajo").val();
         let urlEditar = '{{ route("consCCT", ":claveCCT") }}';
         urlEditar = urlEditar.replace(':claveCCT', claveCCT);
-        
+        arrEscuelaTurno=[];
         // $("#selTarea").val("0").attr("selected",true);
         // let element = document.getElementById("selTarea");
         // element.value = '0';
@@ -846,19 +895,35 @@
                 type: 'GET',
                 dataType: 'json', 
                 success: function(data) {
-                    //   console.log(data[0][0]);   //data[0][i].id_tarea
+                    // console.log(data);   //data[0][i].id_tarea
+                    // console.log(data[0].length);
                     if(data !=''){
-                        $("#txtNombreCCT").val(data[0][0].nombre);
-                        $("#txtClaveCCT").val(data[0][0].clave);
-                        $("#txtMunicipioCCT").val(data[0][0].municipio)
-                        $("#txtDirectorCCT").val(data[0][0].director);
-                        $("#txtDireccionCCT").val(data[0][0].direccion);
-                        $("#txtCoordinacion").val(data[0][0].coordinacion);
-                        $("#txtTelefono").val(data[0][0].telefono);
-                        $("#txtTurno").val(data[0][0].turno);
-                        $("#txtNivelEducativo").val(data[0][0].nivel_educativo);
+                        if(data[0].length>1){
+                            var html='';
+                            var i=0;
+                            data[0].forEach(element => {
+                                i=i+1;
+                                arrEscuelaTurno.push(element);
+                                html+='<option value="'+i+'" selected>'+element['turno']+'</option>';
+                                //  console.log(element['turno']);
+                                 
+                            });
+                            // console.log(arrEscuelaTurno);
+                            $("#selTurno").html(html);
+                            $("#centroTrabajoModal").modal("show");
+                        }else{
+                            $("#txtNombreCCT").val(data[0][0].nombre);
+                            $("#txtClaveCCT").val(data[0][0].clave);
+                            $("#txtMunicipioCCT").val(data[0][0].municipio)
+                            $("#txtDirectorCCT").val(data[0][0].director);
+                            $("#txtDireccionCCT").val(data[0][0].direccion);
+                            $("#txtCoordinacion").val(data[0][0].coordinacion);
+                            $("#txtTelefono").val(data[0][0].telefono);
+                            $("#txtTurno").val(data[0][0].turno);
+                            $("#txtNivelEducativo").val(data[0][0].nivel_educativo);
 
-                        $("#btnSiguiente").prop('disabled', false);
+                            $("#btnSiguiente").prop('disabled', false);
+                        }
                     }else{
                         msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
                         $("#btnSiguiente").prop('disabled', true);
@@ -867,6 +932,38 @@
                 }
             });
         }
+    }
+
+    function fnElegirTurno(){
+        var vTurno = $("#selTurno").val();
+        console.log(vTurno);
+        if(vTurno==1){
+            var textTurno='Vespertino';
+        }else{
+            var textTurno='Matutino';
+        }
+
+        
+        arrEscuelaTurno.forEach(element => {
+            if(element['turno']==textTurno){
+                console.log(element['turno'] +'--'+textTurno);
+                console.log('entro'+'--'+element['turno']);
+                $("#txtNombreCCT").val(element['nombre']);
+                $("#txtClaveCCT").val(element['clave']);
+                $("#txtMunicipioCCT").val(element['municipio'])
+                $("#txtDirectorCCT").val(element['director']);
+                $("#txtDireccionCCT").val(element['direccion']);
+                $("#txtCoordinacion").val(element['coordinacion']);
+                $("#txtTelefono").val(element['telefono']);
+                $("#txtTurno").val(element['turno']);
+                $("#txtNivelEducativo").val(element['nivel_educativo']);
+
+                $("#btnSiguiente").prop('disabled', false);
+
+                $("#centroTrabajoModal").modal("hide");
+                
+            }
+        });
     }
 
     function fnGuardar(){
@@ -901,6 +998,12 @@
 
     function fnLimpiar(){
         $("#formOrden")[0].reset();
+    }
+
+    function fnNumero(){
+        var tecla = event.key;
+        if (['.','e'].includes(tecla))
+        event.preventDefault()
     }
 
     function verServicioEquipo(i){

@@ -216,11 +216,11 @@
 
 @endsection 
 
-@section('page-scripts')
-<script src="{{ asset('js/scripts/modal/components-modal.js') }}"></script>
-<script src="{{ asset('js/sweetalert2@11.js') }}"></script>
+@section('page-scripts') 
+<!-- <script src="{{ asset('js/scripts/modal/components-modal.js') }}"></script> -->
+<!-- <script src="{{ asset('js/sweetalert2@11.js') }}"></script> -->
 
-<script src="//code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="//code.jquery.com/jquery-3.5.1.js"></script> -->
 <script src="//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
@@ -400,68 +400,6 @@
 
   function updEstatusOrden(idOrden,idEstatusOrden){
 
-    if(idEstatusOrden==5){
-      Swal.fire({
-        title: 'Datos de Cancelación',
-        html:
-          '<input id="swal-Usuario" class="form-control">' +
-          '<select class="form-control selectpicker show-tick" id="lista" data-style="btn-warning" data-live-search="true" ><option value="0">Seleccione una opción</option><option value="1">Duplicidad</option></select> ',
-        showCancelButton: true,
-        confirmButtonText: 'Look up',
-        showLoaderOnConfirm: true,
-        preConfirm: (login) => {
-          console.log($("#swal-Usuario").val());
-          console.log($("#lista").val());
-          $.ajax({
-              url: "{{ route('updEstatusO') }}",
-              data:{idOrden : idOrden, idEstatusOrden : idEstatusOrden},
-              type: 'POST',
-              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              dataType: 'json', 
-              success: function(data) {
-                var obj = jQuery.parseJSON(data);
-                console.log(obj.exito+'--1');
-                console.log(data[0]+'--2');
-                console.log(data[0][0]+'--3');
-                console.log(data[0][0]['exito']+'--4'); 
-                // if(data[0][0]['exito']==false){
-                //   msjeAlertaPrincipal('Cancelada correctamente','','success')
-                //   load();
-                // }else{
-                //   msjeAlertaPrincipal('No se cancelo','','error')
-                // }
-                // console.log(data[0][0]);   //data[0][i].id_tarea
-                // if(data[0][0]['exito']==false){
-                //   msjeAlertaPrincipal('Estatus actualizado correctamente','','success')
-                //   load();
-                // }else{
-                //   msjeAlertaPrincipal('Estatus No se actualizó','','error')
-                // }
-              }
-          });
-          // return fetch("{{ route('updEstatusO') }}")
-          //   .then(response => {
-          //     if (!response.ok) {
-          //       throw new Error(response.statusText)
-          //     }
-          //     return response.json()
-          //   })
-          //   .catch(error => {
-          //     Swal.showValidationMessage(
-          //       `Request failed: ${error}`
-          //     )
-          //   })
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-      }).then((result) => {
-        // if (result.isConfirmed) {
-        //   Swal.fire({
-        //     title: 'Cancelada correctamente'
-        //   })
-        // }
-      });//fin sweetAlert
-    }else{
-
       $.ajax({
           url: "{{ route('updEstatusO') }}",
           data:{idOrden : idOrden, idEstatusOrden : idEstatusOrden},
@@ -469,8 +407,7 @@
           headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
           dataType: 'json', 
           success: function(data) {
-            console.log(data[0][0]);   //data[0][i].id_tarea
-            if(data[0][0]['exito']==false){
+            if(data[0]['updestatusorden']==false){
               msjeAlertaPrincipal('Estatus actualizado correctamente','','success')
               load();
             }else{
@@ -478,7 +415,7 @@
             }
           }
       });
-    }
+
   }
 
   function imprimirPDFOrden(idOrden){

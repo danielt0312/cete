@@ -31,4 +31,5 @@
   <script src="{{ asset('js/jsLogin/FormValidation.min.js') }}"></script>
   <script src="{{ asset('js/jsLogin/Bootstrap5.min.js') }}"></script>
 
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+  <script src="{{ asset('js/sweetalert2@11.js') }}"></script>

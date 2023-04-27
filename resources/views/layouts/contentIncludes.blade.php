@@ -190,7 +190,9 @@
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.4') }}"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="{{ asset('js/scripts/components-modal.js') }}"></script> 
+  <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+  <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
   
    @yield('page-scripts')
   

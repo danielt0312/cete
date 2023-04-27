@@ -14,7 +14,7 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-uppercase font-weight-bold">Dibujos</p>
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">En espera</p>
                 <h3 class="font-weight-bolder">
                   {{-- $total_registrados --}}
                 </h3>
@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-uppercase font-weight-bold">Seleccionados</p>
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">Asignadas</p>
                 <h3 class="font-weight-bolder">
                 {{-- $total_seleccionados --}}
                 </h3>
@@ -58,7 +58,7 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-uppercase font-weight-bold">No Seleccionados</p>
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">Trabajando</p>
                 <h3 class="font-weight-bolder">
                 {{-- $total_Noseleccionados --}}
                 </h3>
@@ -80,7 +80,7 @@
           <div class="row">
             <div class="col-8">
               <div class="numbers">
-                <p class="text-sm mb-0 text-uppercase font-weight-bold">Evaluados</p>
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">Atendidas</p>
                 <h3 class="font-weight-bolder">  <!-- tenia h5 -->
                 {{-- $total_evaluados --}}
                 </h3>

@@ -91,7 +91,7 @@ class OrdenesController extends Controller
     public function getCCT($claveCCT){
 
         $catCentroTrabajo =  DB::select("select * from cascete.getCatCentroTrabajo('".$claveCCT."')");
-
+        // dd($catCentroTrabajo);
         return response()->json([$catCentroTrabajo]);
     }
 
