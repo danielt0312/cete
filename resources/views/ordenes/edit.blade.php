@@ -16,7 +16,7 @@
 <div class="container-fluid py-4 mt-3">
     <div class="row mt-4">
         <div class="d-flex justify-content-between ">
-            <h1 class="mb-2 colorTitle">Nueva Orden de Servicio </h1>
+            <h1 class="mb-2 colorTitle">Editar Orden de Servicio </h1>
         </div>
     </div>
     <div class="row mt-4">
@@ -60,7 +60,7 @@
                                         </div> -->
                                         <label for="txtCentroTrabajo">CENTRO DE TRABAJO </label>
                                         <div class="col-6">
-                                            <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{-- $id --}}" aria-describedby="btnBuscar" >       
+                                            <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{ $ordenServiciosDetalle->nombrecct}}" aria-describedby="btnBuscar" >       
                                         </div>
 
                                         <div class="col-6">

@@ -2,12 +2,7 @@
 <link rel="icon" type="image/x-icon" href="https://pixinvent.com/demo/frest-clean-bootstrap-admin-dashboard-template/assets/img/favicon/favicon.ico">
 
 <!-- Core CSS -->
-
-
 <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
-
-
-
 
 <!-- <link rel="stylesheet" type="text/css" href="./login_nuevo_files/vendors/css/vendors.min.css"> -->
 <link rel="stylesheet" type="text/css" href="{{asset('vendors/css/vendors.min.css')}}">
@@ -33,7 +28,7 @@
 <!-- <link rel="stylesheet" href="./login_nuevo_files/perfect-scrollbar.css">
 <link rel="stylesheet" href="./login_nuevo_files/typeahead.css"> -->
 <link rel="stylesheet" href="{{ asset('css/cssLogin/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/cssLogin/typeahead.css') }}">
+<link rel="stylesheet" href="{{ asset('css/cssLogin/typeahead.css') }}">
 
 <style>
     @font-face {
@@ -100,21 +95,18 @@
     }
 </style>
 
-    <!-- Page CSS -->
-    <!-- Page -->
-    <!-- <link rel="stylesheet" href="./login_nuevo_files/page-auth.css"> -->
-    <link rel="stylesheet" href="{{ asset('css/cssLogin/page-auth.css') }}">
-  
-    
-    <!-- <link rel="stylesheet" type="text/css" href="./login_nuevo_files/core.css"
-    class="template-customizer-core-css"> -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/cssLogin/core.css') }}"
-    class="template-customizer-core-css">
-    
-    <!-- <link rel="stylesheet" type="text/css" href="./login_nuevo_files/theme-semi-dark.css"
-    class="template-customizer-theme-css"> -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/cssLogin/theme-semi-dark.css') }}"
-    class="template-customizer-theme-css">
-  
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> -->
-    <link rel="stylesheet" href="{{ asset('css/cssLogin/font-awesome.css') }}"
+<!-- Page CSS -->
+<!-- Page -->
+<!-- <link rel="stylesheet" href="./login_nuevo_files/page-auth.css"> -->
+<link rel="stylesheet" href="{{ asset('css/cssLogin/page-auth.css') }}">
+
+<!-- <link rel="stylesheet" type="text/css" href="./login_nuevo_files/core.css"
+class="template-customizer-core-css"> -->
+<link rel="stylesheet" type="text/css" href="{{ asset('css/cssLogin/core.css') }}" class="template-customizer-core-css">
+
+<!-- <link rel="stylesheet" type="text/css" href="./login_nuevo_files/theme-semi-dark.css"
+class="template-customizer-theme-css"> -->
+<link rel="stylesheet" type="text/css" href="{{ asset('css/cssLogin/theme-semi-dark.css') }}" class="template-customizer-theme-css">
+
+<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"> -->
+<link rel="stylesheet" href="{{ asset('css/cssLogin/font-awesome.css') }}"

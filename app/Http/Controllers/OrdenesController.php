@@ -54,18 +54,48 @@ class OrdenesController extends Controller
         // }
 
         foreach ($arr as $e) {
-            echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
-            $arrTarea=$e->aTarea;
-            foreach ($arrTarea as $p) {
-                // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
-                echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+
+            if($e->cantidad > 1){
+                echo $e->cantidad.'<br>';
+                for ($i=0; $i < $e->cantidad; $i++) { 
+                    echo $e->desc_tipo_equipo .'---'.$i.'<br>';
+
+                    // echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+                    $arrTarea=$e->aTarea;
+                    foreach ($arrTarea as $p) {
+                        // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+                        echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+                    }
+                }
+            }else{
+                echo '<br>';
+                echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+                $arrTarea=$e->aTarea;
+                foreach ($arrTarea as $p) {
+                    // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+                    echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+                }
             }
+            
         }
         
     }
 
-    public function edit(){
+    public function edit($idOrden){
         
+        $ordenServicios = DB::select("select * from cascete.getTOrdenDetalle(".$idOrden.")");
+
+        // dd($ordenServicios[0]);
+        $ordenServiciosDetalle=$ordenServicios[0];
+
+        $catTipoOrden =  DB::select("select * from cascete.getCatTipoOrden()");
+        $catTipoServicio =  DB::select("select * from cascete.getCatTipoServicio()");
+
+        return view('ordenes.edit', compact(
+            'ordenServiciosDetalle',
+            'catTipoOrden',
+            'catTipoServicio'
+        ) );
     }
 
     public function update(){
@@ -201,5 +231,25 @@ class OrdenesController extends Controller
 
       return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
       // return $pdf->stream();
+    }
+
+    public function detalleOrden($idOrden){
+        
+        $ordenServicios = DB::select("select * from cascete.getTOrdenDetalle(".$idOrden.")");
+
+        // dd($ordenServicios[0]);
+        $ordenServiciosDetalle=$ordenServicios[0];
+
+        return response()->json([$ordenServiciosDetalle]);
+        
+    }
+
+    public function updCerrar(){
+        dd($request->idOrden,'----',$request->idEstatusOrden);
+        $exito = DB::select("select * from cascete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
+        // dd($exito);
+        // return response()->json([$exito]); 
+        return response()->json($exito);
+        
     }
 }

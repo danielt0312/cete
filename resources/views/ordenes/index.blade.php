@@ -3,7 +3,12 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @section('content')
+<style>
+  .table-responsive
+  {-sm|-md|-lg|-xl|-xxl
+  }
 
+</style>
 <div class="container-fluid py-4 mt-3">
 <!-- <input type="hidden" id="hiddenIdUser" name="hiddenIdUser" class="form-control"  value="{{auth()->id()}}" > -->
 
@@ -30,58 +35,58 @@
               <div class="form-group align-middle">
                 <!-- <button type="button" class="btn colorBtnPrincipal" id="btnFiltros">Filtrar</button> -->
                 <div class="dropdown btn-group dropend" >
-                    <button class="btn colorBtnPrincipal  mb-0 "
-                        data-bs-toggle="dropdown" id="btnFiltros"
-                          aria-haspopup="true" aria-expanded="false" >
-                        <i class="fa fa-filter"></i> Filtrar
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="btnFiltros1">
-                        <li style="margin:auto;">
-                          <div class="form-group"> 
-                            <label for="selCoordinacion">Coordinación</label>
-                            <select class="form-select" aria-label="Default select example" id="selCoordinacion" name="selCoordinacion">
-                              <option value="0" selected>Seleccionar</option>
-                              
-                            </select>
-                          </div>
-                        </li>
-                        
-                        <li>
-                          <div class="form-group">
-                            <label for="estatus_eval_id">Estatus</label>
-                            <select class="form-select" aria-label="Default select example" id="selEstatusOrden" name="selEstatusOrden" onchange="load()">
-                              <option value="0" selected>Seleccionar</option>
-                                @foreach($catEstatusOrden as $estatusOrden)
-                                  <option value="{{ $estatusOrden->id_estatus_orden }}">{{ $estatusOrden->desc_estatus_orden }}</option>
-                                @endforeach
-                            </select>
-                          </div>  
-                        </li>
-                      
-                        <li>
-                          <div class="form-group">
-                            <label for="txtFechaInicio">Fecha Inicio</label>
-                            <input type="date" id="txtFechaInicio" name="txtFechaInicio" class="form-control">
-                          </div>
-                        </li>
-                        <li>
-                          <div class="form-group">
-                            <label for="txtFechaFin">Fecha Fin </label>
-                            <input type="date" id="txtFechaFin" name="txtFechaFin" class="form-control">
-                          </div>
-                        </li>
-                        <li>
-                          <div class="form-group">
-                            <label for="txtCCT">CCT</label>
-                            <input type="text" id="txtCCT" name="txtCCT" class="form-control">
-                          </div>
-                        </li>
-                        <li>
-                          <div class="form-group">
-                          <button type="button" class="btn btn-secondary" id="btnLimpiarFiltro">Limpiar Filtro</button>
-                          </div>
-                        </li>
-                    </ul>
+                  <button class="btn colorBtnPrincipal btnFiltros"
+                      data-bs-toggle="dropdown" id="btnFiltros"
+                        aria-haspopup="true" aria-expanded="false" >
+                      <i class="fa fa-filter"></i> Filtrar
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="btnFiltros1" style="padding:0.75em;">
+                    <li style="margin:auto;">
+                      <div class="form-group"> 
+                        <label for="selCoordinacion">Coordinación</label>
+                        <select class="form-select" aria-label="Default select example" id="selCoordinacion" name="selCoordinacion">
+                          <option value="0" selected>Seleccionar</option>
+                          
+                        </select>
+                      </div>
+                    </li>
+                    
+                    <li>
+                      <div class="form-group">
+                        <label for="estatus_eval_id">Estatus</label>
+                        <select class="form-select" aria-label="Default select example" id="selEstatusOrden" name="selEstatusOrden" onchange="load()">
+                          <option value="0" selected>Seleccionar</option>
+                            @foreach($catEstatusOrden as $estatusOrden)
+                              <option value="{{ $estatusOrden->id_estatus_orden }}">{{ $estatusOrden->desc_estatus_orden }}</option>
+                            @endforeach
+                        </select>
+                      </div>  
+                    </li>
+                  
+                    <li>
+                      <div class="form-group">
+                        <label for="txtFechaInicio">Fecha Inicio</label>
+                        <input type="date" id="txtFechaInicio" name="txtFechaInicio" class="form-control">
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-group">
+                        <label for="txtFechaFin">Fecha Fin </label>
+                        <input type="date" id="txtFechaFin" name="txtFechaFin" class="form-control">
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-group">
+                        <label for="txtCCT">CCT</label>
+                        <input type="text" id="txtCCT" name="txtCCT" class="form-control">
+                      </div>
+                    </li>
+                    <li>
+                      <div class="form-group">
+                        <button type="button" class="btn btn-secondary" id="btnLimpiarFiltro">Limpiar Filtro</button>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -156,11 +161,11 @@
         </div>
         
         <div class="table-responsive">
-            <table id="tablaPrueba2" class="table table-respnsive">
+            <table id="tablaPrueba2" class="table align-middle">
               <thead>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FOLIO</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">COORDINACIÓN A LA QUE PERTENECE</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">COORDINACIÓN A LA<br> QUE PERTENECE</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA ORDEN</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TIEMPO DE APERTURA</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ESTATUS</th>
@@ -178,12 +183,66 @@
   </div>
 </div>
 
-<!-- MODAL CANCELAR ORDEN -->
-<div class="modal fade" id="cancelRevisionModal" tabindex="-1" aria-labelledby="cancelRevisionModalLabel" aria-hidden="true">
+<!-- MODAL ASIGNAR TECNICOS -->
+<div class="modal fade" id="asignarTecnicosModal" tabindex="-1" aria-labelledby="asignarTecnicosModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="cancelRevisionModalLabel">Datos de la Cancelación</h5>
+        <h5 class="modal-title" id="asignarTecnicosModalLabel">Escuela cuenta con más de un Turno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="selTecnicoEncargado">TÉCNICO ENCARGADO</label>
+                <!-- <select class="select2 form-control" multiple="multiple" data-mdb-filter="true" data-max-options="1" id="selTecnicoEncargado" name="selTecnicoEncargado" data-placeholder="Selecciona uno o varios técnicos"> -->
+                <select class="form-select" id="selTecnicoEncargado" name="selTecnicoEncargado" >
+                  <option value="0">Seleccionar</option>
+                  <option value="1">Emanuel</option>
+                  <option value="2">Julian</option>
+                </select>
+            </div>
+            <!-- </div> -->
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="selTecnicosAuxiliares">TÉCNICOS AUXILIARES</label>
+                <select disabled class="select2 form-control" multiple="multiple" data-mdb-filter="true" id="selTecnicosAuxiliares" name="selTecnicosAuxiliares" data-placeholder="Selecciona uno o varios técnicos">
+                  <option value="0">Seleccionar</option>
+                  <option value="1">Emanuel</option>
+                  <option value="2">Julian</option>
+                </select>
+            </div>
+            <!-- </div> -->
+        </div>
+        <div class="col-12">
+            <div class="" id="divTecnicos">
+                <table id="tablaTecnicos" clas="table">
+                    <thead>
+                        <th>#</th><th>TÉCNICO</th><th>TIPO DE TÉCNICO</th><th></th>
+                    </thead>
+                    <tbody id="tbTecnicos">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTecnico" onclick="fnAsignarTecnicos()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL ASIGNAR TECNICOS-->
+
+<!-- MODAL CANCELAR ORDEN -->
+<div class="modal fade" id="cancelOrdenModal" tabindex="-1" aria-labelledby="cancelOrdenModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cancelOrdenModalLabel">Datos de la Cancelación</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -232,6 +291,9 @@
 <script src="//cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script> -->
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="{{asset('vendors/css/forms/select/select2.min.css')}}">
+<script src="{{asset('vendors/js/forms/select/select2.full.min.js')}}"></script>
+<script src="{{asset('js/scripts/forms/select/form-select2.js')}}"></script>
 
 <script>
   var tabla;
@@ -320,19 +382,23 @@
                         '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                         '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
                         '<li>'+
-                        '<a onclick="fnMostrarInfo('+data.id_orden+',1)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-edit"></i> Editar Orden de Servicio</a>'+
+                        '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden de Servicio</a>'+
                         '</li>'+
                         '<li>'+
-                        '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
+                        '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelRevisionModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
                         '</li>'+
                         '<li>'+
-                        '<a onclick="updEstatusOrden('+data.id_orden+',3)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-play"></i> Iniciar Orden</a>'+
+                        '<a onclick="updEstatusOrden('+data.id_orden+',3)" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
                         '</li>'+
                         '<li>'+
-                        '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
+                        '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                         '</li>'+
                         '<li>'+
-                        '<a onclick="updEstatusOrden('+data.id_orden+',4)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-check"></i> Cerrar Orden</a>'+
+                        '<a onclick="fnCerrarOrden('+data.id_orden+',4)" class="dropdown-item" > <i class="fas fa-check"></i> Cerrar Orden</a>'+
+                        // '<a onclick="updEstatusOrden('+data.id_orden+',4)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-check"></i> Cerrar Orden</a>'+
+                        '</li>'+
+                        '<li>'+
+                        '<a onclick="verTecnicos('+data.id_orden+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos</a>'+
                         '</li>';
                       //       if(vRol=='A'){
                       //         if( !(data.estatus_id==2 || data.estatus_id==3)){
@@ -471,7 +537,7 @@
     $("#hdIdOrdenCancela").val("");
     $("#hdIdEstatusCancela").val("");
 
-    $("#cancelRevisionModal").modal("show");
+    $("#cancelOrdenModal").modal("show");
 
     $("#hdIdOrdenCancela").val(idOrden);
     $("#hdIdEstatusCancela").val(idEstatusOrden);
@@ -482,29 +548,67 @@
 
     if( $("#selMotivoCancela").val() == 0 ){
       msjeAlertaSecundario('Debe seleccionar motivo cancelación', '', 'error');
-    }
-
-    $.ajax({
-        url: "{{ route('updEstatusO') }}",
-        data:{idOrden : hdIdOrdenCancela, idEstatusOrden : 5},
-        type: 'POST',
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        dataType: 'json', 
-        success: function(data) {
-          if(data[0]['updestatusorden']==false){
-            msjeAlertaPrincipal('Cancelada correctamente','','success')
-            load(); 
-          }else{
-            msjeAlertaPrincipal('No se cancelo','','error')
+    }else{
+      $.ajax({
+          url: "{{ route('updEstatusO') }}",
+          data:{idOrden : hdIdOrdenCancela, idEstatusOrden : 5},
+          type: 'POST',
+          headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+          dataType: 'json', 
+          success: function(data) {
+            if(data[0]['updestatusorden']==false){
+              msjeAlertaPrincipal('Cancelada correctamente','','success')
+              load(); 
+            }else{
+              msjeAlertaPrincipal('No se cancelo','','error')
+            }
+            $("#cancelOrdenModal").modal("hide");
+            
           }
-          $("#cancelRevisionModal").modal("hide");
-          
-        }
+      });
+    }
+  }
+
+  function verTecnicos(idOrden){
+    $("#asignarTecnicosModal").modal("show");
+  }
+  
+  function fnAsignarTecnicos(){
+    console.log('asignar tecnico');
+  }
+
+  function fnEditar(idOrden){
+
+    let urlEditar = '{{ route("editarOrden", ":id") }}';
+    urlEditar = urlEditar.replace(':id', idOrden);
+    // console.log(urlEditar);
+    window.location = urlEditar;
+  }
+
+  function fnCerrarOrden(idOrden,idEstatusOrden){
+
+    let urlEditar = '{{ route("verDetalleOrden", ":id") }}';
+    urlEditar = urlEditar.replace(':id', idOrden);
+    
+    $.ajax({
+      url: urlEditar,
+      // data:{'estatus_id' : estatus_id,
+      //   'estatus_eval_id' : estatus_eval_id,
+      //   'municipio_select' : municipio_select,
+      //   'grado_select' : grado_select,
+      //   'region_select' : region_select,
+      //   'nivel_select' : nivel_select},
+      type: 'GET',
+      dataType: 'json', // added data type
+      success: function(data) {
+           console.log(data);
+      }
     });
   }
 
   $(document).ready(function () {
-    load()
+    load();
+
 
     $("#btnFiltrar").show();
     $("#pnFiltros").hide();
@@ -517,8 +621,6 @@
     $("#mostrarDibujo").hide();
     $("#revisarDibujo").hide();
     $("#visualizarNoSeleccionado").hide();
-    // $("#estatus_eval_id").prop('disabled', true); //lo comente 1 abr 2023 porque me desactivaba en el del juez el 
-    ////
 
     $('#tablaListado').DataTable({
       "language": {
@@ -570,41 +672,6 @@
           "visible": false,
           // "searchable": false
       }] 
-    } );
-
-    $('#estatus_selec_id').on('change', function() {
-      if(this.value==1){
-        $("#btnRevisar").prop('disabled', false);
-        $("#msjObli").hide();
-      }else if(this.value==2){
-        $("#btnRevisar").prop('disabled', true);
-        $("#msjObli").show();
-      }else{
-        $("#btnRevisar").prop('disabled', true);
-        $("#msjObli").hide();
-      }
-    });
-
-
-      
-    $( "#estatus_id").change(function () {
-      $("#estatus_eval_id").val('0')
-
-      if(this.value==1){
-        $("#estatus_eval_id").prop('disabled', true);
-        $("#estatus_eval_id").val('0')
-        
-        load();
-      }else if(this.value==2){
-        $("#estatus_eval_id option[value=0]").attr("selected",true);
-        //  $('#estatus_eval_id option[value="3"]').prop('disabled', true);
-        $("#estatus_eval_id").prop('disabled', false);
-        load();
-      }else{
-        $("#estatus_eval_id").prop('disabled', true);
-        $("#estatus_eval_id").val('0')
-        load();
-      }
     });
 
     $("#btnFiltros").click(function(){
@@ -617,16 +684,12 @@
 
     $("#btnLimpiarFiltro").click(function(){
       // $("#pnFiltros").toggle("slow");
-      // $('#selCoordinacion option[value="0"]').attr("selected", true);
-      // $('#selEstatusOrden option[value="0"]').attr("selected", true);
       $("#selCoordinacion").val("0").attr("selected",true);
       $("#selEstatusOrden").val("0").attr("selected",true);
       $("#selCoordinacion").val('0')
       $('#txtFechaInicio').val('');
       $('#txtFechaFin').val('');
       $('#txtCCT').val('');
-      // $("#cancelRevisionModal").modal("hide");
-      // $("#exampleModal").modal("hide");
     });
 
     $("#btnFiltrar").click(function(){
@@ -824,100 +887,69 @@
       });
 
     });
+    
+    vEncargado=0;
+    $("#selTecnicoEncargado").change(function() {  
+      // $("#selTecnicosAuxiliares").prop('disabled', false);
+      if($("#selTecnicoEncargado").val()!=0){
+        
+        $("#selTecnicosAuxiliares").prop('disabled', false);
+        vEncargado=$("#selTecnicoEncargado").val();
+        $("#selTecnicosAuxiliares option").prop('disabled', false);
+        $("#selTecnicosAuxiliares option[value="+vEncargado+"]").prop('disabled', true);
+        
+        console.log(vEncargado);
+      }else{
+        vEncargado=0;
+        $("#selTecnicosAuxiliares").val("0");
+        // $("#selTecnicosAuxiliares option[value="+vEncargado+"]").prop('disabled', false);
+        $("#selTecnicosAuxiliares option[value=0]").attr("selected",true);
+        $("#selTecnicosAuxiliares").prop('disabled', true);
+      }
+      
+      // if(vEncargado==''){
+      //   var tecnicoEncargado = []; 
+      //   var tecnicosEnc = document.getElementById("selTecnicoEncargado");
+      //   outer: for (var i = 0; i < tecnicosEnc.options.length; i++) {
+      //       if(tecnicosEnc.options[i].selected == true){
+      //         vEncargado=tecnicosEnc.options[i].value;
+      //         $("#selTecnicosAuxiliares").prop('disabled', false);
+      //         break outer;
+      //       }
+      //   }
+      //   console.log(vEncargado);
+      // }else{
+      //   msjeAlertaSecundario('','No puede seleccionar mas de un Técnico Encargado','error');
+      // }
+
+    });
+
+
+    $("#selTecnicosAuxiliares").change(function() {  
+        var vTecnicoEnc=$("#selTecnicoEncargado").val();
+        console.log($("#selTecnicoEncargado").val());
+        if(vTecnicoEnc==0 || vTecnicoEnc=='' || vTecnicoEnc==null){
+          msjeAlertaSecundario('','Favor de seleccionar el Técnico Encargado','error');
+          // $("#selTecnicosAuxiliares").val();
+          //  $("#selTecnicosAuxiliares option[value='']").attr("selected",true);
+          // document.getElementById("selTecnicosAuxiliares").value = null;
+        }else{
+            var vTecnicoAux=$("#selTecnicosAuxiliares").val();
+            var tecnicosAuxiliaresArray = []; 
+
+            var tecnicosAux = document.getElementById("selTecnicosAuxiliares");
+            for (var i = 0; i < tecnicosAux.options.length; i++) {
+                if(tecnicosAux.options[i].selected == true){
+                tecnicosAuxiliaresArray.push(tecnicosAux.options[i].value);
+                }
+            }
+
+            console.log(tecnicosAuxiliaresArray);
+        }
+    });  
 
   });
 
  </script>
-
-@if(session('statusRev')==='OK1' )<!-- cuando revisa normalmente -->
-  <script>
-    Swal.fire(
-      '¡Revisado correctamente!',//
-      // 'El dibujo ha sido revisado correctamente',
-      // 'success'
-    )
-  </script>
-@endif
-
-@if(session('statusRevErr')==='NOK1' ) 
-  <script>
-    Swal.fire(
-      '¡Alerta!',
-      'El dibujo ya ha sido revisado',
-      'error'
-    )
-  </script>
-@endif
-
-@if(session('statusRevErr')==='NOK2' ) 
-  <script>
-    Swal.fire(
-      '¡Alerta!',
-      'El dibujo no se ha revisado',
-      'error'
-    )
-  </script>
-@endif
-
-@if(session('statusRevErr')==='NOK3' ) 
-  <script>
-    Swal.fire(
-      'Error!',
-      'Ha habido un error y no se ha podido revisar el dibujo',
-      'error'
-    )
-  </script>
-@endif
-
-@if(session('statusEval')==='OK1' )<!-- cuando evalua normalmente -->
-  <script>
-    Swal.fire(
-      '¡Evaluado correctamente!'//,
-      // 'El dibujo ha sido evaluado correctamente',
-      // 'success'
-    )
-  </script>
-@endif
-
-<!-- ///cuando entra en la excepcion al picarle mas de una ves al boton y unique constraint no permite registrar mas de uno -->
-@if(session('statusEvalErr')==='OK2' ) 
-  <script>
-    Swal.fire(
-      '¡Evaluado correctamente!'//,
-      // 'El dibujo ha sido evaluado correctamente',
-      // 'success'
-    )
-  </script>
-@endif
-
-@if(session('statusErrEval')==='NOK1' ) 
-<script>
-    Swal.fire(
-      '¡No se ha podido revisar!',
-      'El dibujo no ha sido registrado',
-      'error'
-    )
-  </script>
-@endif
-
-@if(session('statusErrEst')==='NOK2' ) 
-<script>
-    Swal.fire(
-      '¡No se ha podido revisar!',
-      'El dibujo no ha sido registrado',
-      'error'
-    )
-  </script>
-@endif
-
-@if(session('statusExisEval')==='NOK3' ) 
-<script>
-    Swal.fire(
-      '¡Alerta!',
-      'El dibujo ya ha sido Evaluado por este Juez',
-      'error'
-    )
-  </script>
-@endif
 
 @endsection

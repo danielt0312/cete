@@ -44,9 +44,8 @@ Route::get('/', function() {
         Route::get('/crearOrden', 'App\Http\Controllers\OrdenesController@create')->name('crearOrden');
         Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store')->name('guardarOrden');
 
-        // Route::get('/editarOrden', 'App\Http\Controllers\OrdenesController@edit');
-        Route::get('/crearOrden', 'App\Http\Controllers\OrdenesController@create')->name('crearOrden');
-        Route::post('/actualizarOrden', 'App\Http\Controllers\OrdenesController@update');
+        Route::get('/editarOrden/{id}', 'App\Http\Controllers\OrdenesController@edit')->name('editarOrden');
+        Route::post('/actualizarOrden', 'App\Http\Controllers\OrdenesController@update')->name('actualizarOrden');
 
         //catalogos
         Route::get('/consTarea/{idserv}','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
@@ -58,6 +57,10 @@ Route::get('/', function() {
         Route::post('/updEstatusO','App\Http\Controllers\OrdenesController@updEstatusOrden')->name('updEstatusO');
 
         Route::get('download-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadPDF')->name('download-pdf');
+
+        //Cerrar Orden
+        Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
+        Route::post('/cerrarOrden', 'App\Http\Controllers\OrdenesController@updCerrar')->name('cerrarOrden');
 
     }); 
     

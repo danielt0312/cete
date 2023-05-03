@@ -18,6 +18,7 @@
 <!-- CSS Files -->
 <!-- <link id="pagestyle" href="./assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" /> -->
 <link id="pagestyle" href="{{ asset('css/cssTemplate/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
+
 <style>
   .marginraigt{
     margin-right: 1em;
@@ -65,6 +66,11 @@
     text-align: center;
     vertical-align: middle;
     text-decoration: none !important;
+  }
+
+  .btnFiltros{
+    border-top-right-radius:0.55em !important;
+    border-bottom-right-radius:0.55em !important;
   }
 
 </style>
