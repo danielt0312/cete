@@ -14,9 +14,11 @@ class OrdenesController extends Controller
 {
 
     public function index(){
-        $catEstatusOrden =  DB::select("select * from cascete.getCatEstatusOrden()");
+        $catCoordinaciones =  DB::select("select * from cas_cete.getCatCoordinaciones()");
+        $catEstatusOrden =  DB::select("select * from cas_cete.getCatEstatusOrden()");
         // dd ($catEstatusOrden);
         return view('ordenes.index', compact(
+            'catCoordinaciones',
             'catEstatusOrden'
         ) );
         // return view('ordenes.index');
@@ -26,19 +28,22 @@ class OrdenesController extends Controller
     public function create(){
         // return view('ordenes.create');
 
-        // $data =  DB::select("select * from cascete.getCatTipoOrden()");
+        // $data =  DB::select("select * from cas_cete.getCatTipoOrden()");
         // return view('ordenes.create')->with("catTipoOrden", $data);
 
-        $catTipoOrden =  DB::select("select * from cascete.getCatTipoOrden()");
-        $catTipoServicio =  DB::select("select * from cascete.getCatTipoServicio()");
+        $catTipoOrden =  DB::select("select * from cas_cete.getCatTipoOrden()");
+        // $catTipoServicio =  DB::select("select * from cas_cete.getCatTipoServicio()");]
+        $catTipoEquipo =  DB::select("select * from cas_cete.getCatTiposEquipo()");
 
         return view('ordenes.create', compact(
             'catTipoOrden',
-            'catTipoServicio'
+            // 'catTipoServicio',
+            'catTipoEquipo'
         ) );
     }
 
     public function store(Request $request){
+        dd($request);
         // dd($request->arrEquipos);  //"[object Object]"
         $equipos=$request->arrEquipos;
         // var_dump($equipos);
@@ -52,6 +57,52 @@ class OrdenesController extends Controller
         // foreach ($arrTarea as $p) {
         //     echo $p->idTarea;
         // }
+        $insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkSolicitante."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
+
+    //     $insSolicServicio =  DB::select("select * from cas_cete.spinsertsolicservicio(3556, 
+	// 28DPR1508X, 
+	// GUADALUPE ESPINOZA ROSALES, 
+	// 8341314060, 
+	// aida.rangel@set.edu.mx, 
+	// true, 
+	// Mantenimiento, 
+	// 2, 
+	// 1, 
+	// 13, 
+	// -99.14566093, 
+	// 23.74190803");
+
+    // $insSolicServicio=DB::select("CALL cas_cete.spinsertsolicservicio(3556,'28DPR1508X','GUADALUPE ESPINOZA ROSALES','8341314060','aida.rangel@set.edu.mx',true,'Mantenimiento',2,1,13,-99.14566093,23.74190803)");
+ 
+        // dd($insSolicServicio);
+// txtCentroTrabajo: 28DPR1508X
+// txtNombreCCT: CLUB DE LEONES
+// txtClaveCCT: 28DPR1508X
+// txtLatitud: 23.74190803
+// txtLongitud: -99.14566093
+// txtMunicipioCCT: Victoria                                          
+// txtDirectorCCT: GUADALUPE ESPINOSA ROSALES
+// txtDireccionCCT: PEDRO MARIA ANAYA Num. SN
+// txtCoordinacion: VICTORIA
+// txtTelefono: 3163707
+// txtTurno: Vespertino
+// txtNivelEducativo: Primaria
+// selTipoOrden: 1
+// selDepAtiende: 1
+// txtNombreSolicitante: GUADALUPE ESPINOSA ROSALES
+// txtTelefonoSolicitante: 8341314060
+// txtCorreoSolicitante: aida.rangel@set.edu.mx
+// txtDescripcionReporte: Mantenimiento
+// txtCantidadEquipos: 1
+// selTipoEquipo: 0
+// selTipoServicio: 0
+// selTarea: 0
+// txtEtiquetaServicio: 
+// txtMarca: 
+// txtModelo: 
+// txtNumeroSerie: 
+// txtDescripcionSoporte: 
+// txtUbicacionEquipo: 
 
         foreach ($arr as $e) {
 
@@ -83,51 +134,123 @@ class OrdenesController extends Controller
 
     public function edit($idOrden){
         
-        $ordenServicios = DB::select("select * from cascete.getTOrdenDetalle(".$idOrden.")");
+        $ordenServicios = DB::select("select * from cas_cete.getTOrdenDetalle(".$idOrden.")");
 
         // dd($ordenServicios[0]);
         $ordenServiciosDetalle=$ordenServicios[0];
 
-        $catTipoOrden =  DB::select("select * from cascete.getCatTipoOrden()");
-        $catTipoServicio =  DB::select("select * from cascete.getCatTipoServicio()");
+        $catTipoOrden =  DB::select("select * from cas_cete.getCatTipoOrden()");
+        $catTipoEquipo =  DB::select("select * from cas_cete.getCatTiposEquipo()");
 
         return view('ordenes.edit', compact(
             'ordenServiciosDetalle',
             'catTipoOrden',
-            'catTipoServicio'
+            'catTipoEquipo'
         ) );
     }
 
-    public function update(){
-        
+    public function update(Request $request){
+        // dd($request->arrEquipos);  //"[object Object]"
+        dd($request->txtIdSolic);
+        $equipos=$request->arrEquipos;
+        // var_dump($equipos);
+
+        $arr = json_decode($equipos);
+        // var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
+
+        $arrTarea=$arr[0]->aTarea;
+        // var_dump($arrTarea);
+
+        // foreach ($arrTarea as $p) {
+        //     echo $p->idTarea;
+        // }
+        $insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."',true,'".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
+
+        foreach ($arr as $e) {
+
+            if($e->cantidad > 1){
+                echo $e->cantidad.'<br>';
+                for ($i=0; $i < $e->cantidad; $i++) { 
+                    echo $e->desc_tipo_equipo .'---'.$i.'<br>';
+
+                    // echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+                    $arrTarea=$e->aTarea;
+                    foreach ($arrTarea as $p) {
+                        // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+                        echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+                    }
+                }
+            }else{
+                echo '<br>';
+                echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+                $arrTarea=$e->aTarea;
+                foreach ($arrTarea as $p) {
+                    // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+                    echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+                }
+            }
+            
+        }
     }
 
-    public function show(){
-        
-        $ordenes = DB::select("select * from cascete.getTOrdenes()");
-        // return response()->json([$registros, $evaluacion, 'vRol'=>$vRol]);
-
+    public function show(Request $request){
+        // $ordenes = DB::select("select * from cas_cete.getTOrdenes()");
+        $ordenes = DB::select("select * from cas_cete.getTOrdenes2(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."')");
         // dd($ordenes);
-        return response()->json([$ordenes]);
+        // $tenicosAuxD = DB::select("select * from cas_cete.getCatTecnicosAuxiliares(0,1)");
+        // $tenicosAux=$tenicosAuxD[0];
+        // dd($ordenServicios[0]);
+        // return response()->json([$registros, $evaluacion, 'vRol'=>$vRol]);
+        $tenicosAuxD='';
+        // dd($ordenes);
+        return response()->json([$ordenes,$tenicosAuxD]);
     }
     
-    public function getTareas($idserv){
+    // public function getTareas($idequi = 0, $idserv = 0){   //$idequi,$idserv
+    // public function getTareas($idserv){   //$idequi,$idserv
+    public function getTareas(Request $request){   //$idequi,$idserv
+        // dd($request);
+        // $idequi = 1;
+        // $separar=explode($idserv,',');
+        // $idE=$separar[0];
+        // $idS=$separar[1];
 
-        $catTarea =  DB::select("select * from cascete.getCatTarea('".$idserv."')");
+        $catTarea =  DB::select("select * from cas_cete.getCatTarea('".$request->idequi."','".$request->idserv."')");
+        // $catTarea =  DB::select("select * from cas_cete.getCatTarea('".$idserv."')");
 
         return response()->json([$catTarea]);
     }
 
+    public function getServicios($idEquipo){
+
+        $catServicio =  DB::select("select * from cas_cete.getCatServicio('".$idEquipo."')");
+
+        return response()->json([$catServicio]);
+    }
+
     public function getCCT($claveCCT){
 
-        $catCentroTrabajo =  DB::select("select * from cascete.getCatCentroTrabajo('".$claveCCT."')");
-        // dd($catCentroTrabajo);
-        return response()->json([$catCentroTrabajo]);
+        $catCentroTrabajo =  DB::select("select * from cas_cete.getCatCentroTrabajo('".$claveCCT."')");
+
+        $ordenesCentroTrabajo =  DB::select("select * from cas_cete.getOrdenesCentro('".$claveCCT."')");
+        // $ordenesCentroTrabajo=null;
+         //dd($catCentroTrabajo);
+        return response()->json([$catCentroTrabajo,$ordenesCentroTrabajo]);
     }
+
+    // public function getordenesCCT($claveCCT){
+
+    //     $catCentroTrabajo =  DB::select("select * from cas_cete.getOrdenesCentro('".$claveCCT."')");
+
+    //     // $ordenesCentroTrabajo =  DB::select("select * from cas_cete.getOrdenesCentroTrabajo('".$claveCCT."')");
+    //     $ordenesCentroTrabajo=null;
+    //      //dd($catCentroTrabajo);
+    //     return response()->json([$catCentroTrabajo,$ordenesCentroTrabajo]);
+    // }
 
     public function updEstatusOrden(Request $request){
         // dd($request->All());
-        $exito = DB::select("select * from cascete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
+        $exito = DB::select("select * from cas_cete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
         // dd($exito);
         // return response()->json([$exito]); 
         return response()->json($exito);
@@ -135,7 +258,7 @@ class OrdenesController extends Controller
 
     public function downloadPdf($id)
     {
-        $ordenServicios = DB::select("select * from cascete.getTOrdenDetalle(".$id.")");
+        $ordenServicios = DB::select("select * from cas_cete.getTOrdenDetalle(".$id.")");
 
         // dd($ordenServicios[0]);
         $ordenServiciosObject=$ordenServicios[0];
@@ -227,7 +350,7 @@ class OrdenesController extends Controller
     //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
     
       view()->share('ordenes/downloadOrden',$ordenServiciosObject);
-      $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject]);
+      $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
 
       return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
       // return $pdf->stream();
@@ -235,13 +358,21 @@ class OrdenesController extends Controller
 
     public function detalleOrden($idOrden){
         
-        $ordenServicios = DB::select("select * from cascete.getTOrdenDetalle(".$idOrden.")");
+        $ordenServicios = DB::select("select * from cas_cete.getTOrdenDetalle(".$idOrden.")");
 
         // dd($ordenServicios[0]);
         $ordenServiciosDetalle=$ordenServicios[0];
 
         return response()->json([$ordenServiciosDetalle]);
         
+    }
+
+    public function cargarTecnicosAux($idTenicoEncargado){
+        
+        $tenicosAuxD = DB::select("select * from cas_cete.getCatTecnicosAuxiliares(".$idTenicoEncargado.",2)");
+        // $tenicosAux=$tenicosAuxD[0];
+
+        return response()->json([$tenicosAuxD]);
     }
 
     public function updCerrar(){
@@ -251,5 +382,12 @@ class OrdenesController extends Controller
         // return response()->json([$exito]); 
         return response()->json($exito);
         
+    }
+
+    public function getEquiposSol($idSolic){
+
+        $equiposSol =  DB::select("select * from cas_cete.getEquiposSolic('".$idSolic."')");
+
+        return response()->json([$equiposSol]);
     }
 }

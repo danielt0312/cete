@@ -63,7 +63,7 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
+        /*'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -74,6 +74,25 @@ return [
             'database' => 'cete',
             'username' => 'postgres',
             'password' => '123456',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'cascete',
+            'sslmode' => 'prefer',
+        ],*/
+
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            // 'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', '192.168.161.48'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            // 'database' => 'cete',
+            // 'username' => 'postgres',
+            // 'password' => '123456',
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

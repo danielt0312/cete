@@ -10,6 +10,12 @@
         /* border-bottom: 1px solid #FFFFFF; */
         border-radius: 0.75em;
     }
+
+    #map {
+        width: 100%;
+        height: 400px;
+        background-color: grey;
+    }
 </style>
 
 @section('content')
@@ -63,14 +69,23 @@
                                             <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{-- $id --}}" aria-describedby="btnBuscar" >       
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-2"> <!--col-6-->
                                             <button class="btn btn-secondary" type="button" id="btnBuscar"  onclick="fnBuscarCCT()">Buscar</button>
+                                        </div>
+
+                                        <div class="col-2" id="divHistorial">
+                                            <!-- <button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="">Ver Historial</button> -->
+                                        </div>
+
+                                        <div class="col-2" id="divUbicacion">
+                                            <!-- <button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button> -->
                                         </div>
                                        
                                         <div class="col-4">
                                             <div class="form-group">
                                             <label for="txtNombreCCT">NOMBRE</label>
                                             <input type="text" id="txtNombreCCT" name="txtNombreCCT" class="form-control" value="" readonly >
+                                            <input type="hidden" id="txtIdCCT" name="txtIdCCT" class="form-control" value="" readonly >
                                             <!-- <label id="nombre_alumno" class="SinNegrita">{{-- $registro->nombre_alumno --}}</label> -->
                                             </div>
                                         </div>
@@ -78,6 +93,8 @@
                                             <div class="form-group">
                                             <label for="txtClaveCCT">CLAVE</label>
                                             <input type="text" id="txtClaveCCT" name="txtClaveCCT" class="form-control" value="" readonly >
+                                            <input type="hidden" id="txtLatitud" name="txtLatitud" class="form-control" value="" readonly >
+                                            <input type="hidden" id="txtLongitud" name="txtLongitud" class="form-control" value="" readonly >
                                             <!-- <label id="ap_paterno" class="SinNegrita">{{-- $registro->ap_paterno --}}</label> -->
                                             </div>
                                         </div>
@@ -164,7 +181,7 @@
                                                 <label for="selDepAtiende">DEPENDENCIA QUE ATIENDE EL SERVICIO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                     <option value="0" selected>Seleccionar</option>
-                                                    <option value="1" selected>Area 1</option>
+                                                    <option value="1" >Area 1</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -188,6 +205,16 @@
                                                 <input type="email" id="txtCorreoSolicitante" name="txtCorreoSolicitante" class="form-control" value="" >
                                             </div>
                                         </div>
+
+                                        <div class="col-12 justify-content-md-start">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="checkSolicitante">
+                                                <label class="form-check-label" for="checkSolicitante">
+                                                Active la casilla en caso que el solicitante corresponda al Director del C.T
+                                                </label>
+                                            </div>
+                                        </div>
+
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="txtDescripcionReporte">DESCRIPCIÓN DEL REPORTE</label>
@@ -204,20 +231,21 @@
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
-                                        <div class="col-12" id="divCantidad">
+                                        <!-- <div class="col-12" id="divCantidad">
                                             <div class="form-group">
                                                 <label for="txtCantidadEquipos">Cantidad de Equipos</label>
                                                 <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="selTipoEquipo">TIPO DE EQUIPO A REVISAR</label>
                                                 <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
                                                     <option value="0" selected>Seleccionar</option>
-                                                    <option value="1" >PC</option>
-                                                    <option value="2" >PC</option>
+                                                    @foreach($catTipoEquipo as $tipoEquipo)
+                                                        <option value="{{ $tipoEquipo->id }}">{{ $tipoEquipo->tipo_equipo }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -231,9 +259,7 @@
                                                 <div class="input-group">
                                                     <select class="form-select" id="selTipoServicio" name="selTipoServicio" aria-label="Example select with button addon">
                                                         <option value="0" selected>Seleccionar</option>
-                                                        @foreach($catTipoServicio as $tipoServicio)
-                                                            <option value="{{ $tipoServicio->id_tipo_servicio }}">{{ $tipoServicio->desc_tipo_servicio }}</option>
-                                                        @endforeach
+                                                        
                                                     </select>
                                                     <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
                                                     <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
@@ -326,9 +352,16 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 justify-content-md-start">
+                                        <div class="col-3" id="divCantidad">
+                                            <div class="form-group">
+                                                <label for="txtCantidadEquipos">Cantidad de Equipos</label>
+                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
+                                            </div>
+                                        </div>
+
+                                        <div class="col-9 justify-content-md-start">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="checkReplicar">
+                                                <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Replicar datos en el siguiente equipo
                                                 </label>
@@ -413,6 +446,54 @@
 </div>
 <!-- FIN MODAL VER DETALLES EQUIPO-->
 
+<!-- MODAL HISTORIAL -->
+<div class="modal fade" id="historialCCTModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="historialCCTModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="historialCCTModalLabel">Histórico de Órdenes por CCT</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-12">
+                <div class="form-group" id="hist">
+                    
+                </div>
+            </div>
+        </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
+        </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL HISTORIAL-->
+
+<!-- MODAL MAPA -->
+<div class="modal fade" id="ubicacionCCTModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="ubicacionCCTModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="ubicacionCCTModalLabel">Ubicación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="col-12">
+                <div class="form-group" id="map">
+                    
+                </div>
+            </div>
+        </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
+        </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL MAPA-->
+
 @endsection
 
 @section('page-scripts')
@@ -433,6 +514,9 @@
 <script src="//cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"> -->
+<!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer> </script> 
 
 <script>
     let arrTareas = [];
@@ -446,6 +530,7 @@
     //         };
 
     $(document).ready(function () {
+        //load();
         // $("#divTablaEquipos").hide()
 
         // $("#btnSiguiente").hide()
@@ -530,6 +615,15 @@
             } else {  
                 // $("#divCantidad").hide();
                 // $("#divCantidad").val("1");
+            }  
+        });  
+
+        $("#checkSolicitante").change(function() {  
+            if($("#checkSolicitante").is(':checked')) {  
+                var vDirector = $("#txtDirectorCCT").val();
+                 $("#txtNombreSolicitante").val(vDirector);
+            } else {  
+                 $("#txtNombreSolicitante").val('');
             }  
         });  
 
@@ -668,9 +762,37 @@
             // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
+        $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
+            let urlEditar = '{{ route("consServicio", ":idEquipo") }}';
+            urlEditar = urlEditar.replace(':idEquipo', this.value); 
+            
+            $("#selTipoServicio").val("0").attr("selected",true);
+            let element = document.getElementById("selTipoServicio");
+            element.value = '0';
+
+            $.ajax({
+                url: urlEditar,
+                type: 'GET',
+                dataType: 'json', 
+                success: function(data) {
+                    //  console.log(data[0][0]);
+                    var htmlSel='<option value="0" selected>Seleccionar</option>';
+                    for (var i = 0; i < data[0].length; i++) {
+                        htmlSel+='<option value="'+data[0][i].id+'">'+data[0][i].servicio+'</option>'; 
+                    }
+
+                    $("#selTipoServicio").html(htmlSel);
+                }
+            });
+            
+        });
+
         $('#selTipoServicio').on('change', function() { /// Cargar select Tarea en base a Servicio
-            let urlEditar = '{{ route("consTarea", ":idserv") }}';
-            urlEditar = urlEditar.replace(':idserv', this.value);
+            var vtipEquipo=  $('#selTipoEquipo').val();
+            var serv= this.value;
+
+            let urlEditar = '{{ route("consTarea") }}';
+            // urlEditar = urlEditar.replace(':idserv', this.value);
             
             $("#selTarea").val("0").attr("selected",true);
             let element = document.getElementById("selTarea");
@@ -678,8 +800,10 @@
 
             $.ajax({
                 url: urlEditar,
-                type: 'GET',
+                type: 'POST',
+                data:{idequi:vtipEquipo , idserv:serv},
                 dataType: 'json', 
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     //  console.log(data[0][0]);
                     var htmlSel='<option value="0" selected>Seleccionar</option>';
@@ -727,48 +851,43 @@
     }
 
     function drawRowEquipo(){
-      var tablaEquipo2 = '';
-
-    //   tablaEquipo2+='<tr id="tr_'+i+'"><td>'+vTipoEquipo+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+i+')">Ver</button></td><td>En Proceso</td>';
-    //     tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
-    //     tablaEquipo2+='</tr>';
-    //     $("#tbEquipos").html(tablaEquipo2);
+        var tablaEquipo2 = '';
         
-    $.each(arrEquipos, function(j, val){
-        if (!jQuery.isEmptyObject(arrEquipos[j])) { 
+        $.each(arrEquipos, function(j, val){
+            if (!jQuery.isEmptyObject(arrEquipos[j])) { 
         
-            tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
-            
-            tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td><td><div class="dropdown btn-group dropstart">';
-            tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
-            tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
-            tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
-            tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
-            tablaEquipo2+='                  </button>';
-            tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
-            tablaEquipo2+='                      <li>';
-            tablaEquipo2+='                          <a  ';
-            tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
-            tablaEquipo2+='                              <i class="fas fa-eye"></i> Eliminar';
-            tablaEquipo2+='                          </a>';
-            tablaEquipo2+='                      </li>';
-            tablaEquipo2+='                          <li>';
-            tablaEquipo2+='                              <a onclick="verServicioEquipo('+j+')"  class="dropdown-item"';
-            tablaEquipo2+='                              data-bs-toggle="modal" data-bs-target="#exampleModal">';
-            tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
-            tablaEquipo2+='                              </a>';
-            tablaEquipo2+='                          </li>';
-            tablaEquipo2+='                  </ul>';
-            tablaEquipo2+='              </div></td>';
-            // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
-            tablaEquipo2+='</tr>';
-        }
-    });
+            // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
+                tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td>En Proceso</td>';
+                
+                tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td><td><div class="dropdown btn-group dropstart">';
+                tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
+                tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
+                tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
+                tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
+                tablaEquipo2+='                  </button>';
+                tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
+                tablaEquipo2+='                      <li>';
+                tablaEquipo2+='                          <a  ';
+                // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
+                tablaEquipo2+='                          onclick="removeEquipo('+j+');" >';
+                tablaEquipo2+='                              <i class="fas fa-eye"></i> Eliminar';
+                tablaEquipo2+='                          </a>';
+                tablaEquipo2+='                      </li>';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verServicioEquipo('+j+')"> ';
+                // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
+                tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                  </ul>';
+                tablaEquipo2+='              </div></td>';
+                // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+                tablaEquipo2+='</tr>';
+            }
+        });
 
-
-    $("#tbEquipos").empty();
-    $("#tbEquipos").html(tablaEquipo2);
-    //   $("#selTarea").val("0").attr("selected",true);
+        $("#tbEquipos").empty();
+        $("#tbEquipos").html(tablaEquipo2);
     }
 
 
@@ -776,6 +895,7 @@
         if(arrTareas.includes(item) ==false){ 
             if ( item !== -1 ) {
                 arrTareas.splice( item, 1 );
+                console.log(arrTareas);
                 $("#liT_"+item).remove();
                 drawRowTarea();
             }   else{
@@ -795,53 +915,42 @@
     }
 
     function drawRowTarea(){
-      var listaTarea2 = '';
+        var listaTarea2 = '';
 
-    //   $.each(arrTareas, function(i, val){
-    //     if (!jQuery.isEmptyObject(arrTareas[i])) {
-    //         console.log(arrTareas[i]);
-    //         listaTarea2+='<li id="liT_'+i+'">'+arrTareas[i]['desc_Tarea']; 
-    //         listaTarea2+='&nbsp;<button type="button" onclick="removeTarea('+i+');" class="btn colorBtnPrincipal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button>';
-    //     }
-    //   });
+        listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
+        listaTarea2+='<thead>';
+        listaTarea2+='<th>Servicio</th>';
+        listaTarea2+='<th>Tarea</th>';
+        listaTarea2+='<th></th>';
+        listaTarea2+='</thead>';
+        listaTarea2+='<tbody>';
 
-    var listaTarea2='';
+        // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
+        var aux='';
+        $.each(arrTareas, function(j, val){
+            if (!jQuery.isEmptyObject(arrTareas[j])) {
+            
+                listaTarea2+='<tr>';
+                if(aux==arrTareas[j]['desc_Servicio']){ 
+                    listaTarea2+='<td>&nbsp;</td>';
+                    aux='';
+                }else{
+                    aux=arrTareas[j]['desc_Servicio'];
+                    listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
+                }
+                
+                listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
+                listaTarea2+='<td><button type="button" onclick="removeTarea('+j+');" class="btn colorBtnPrincipal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+                listaTarea2+='<tr>';
+            }
+        });
 
-    listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
-    listaTarea2+='<thead>';
-    listaTarea2+='<th>Servicio</th>';
-    listaTarea2+='<th>Tarea</th>';
-    listaTarea2+='<th></th>';
-    listaTarea2+='</thead>';
-    listaTarea2+='<tbody>';
+        listaTarea2+='</tbody>';
+        listaTarea2+='</table>';
 
-    // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
-    var aux='';
-    $.each(arrTareas, function(j, val){
-    if (!jQuery.isEmptyObject(arrTareas[j])) {
-       
-        listaTarea2+='<tr>';
-        if(aux==arrTareas[j]['desc_Servicio']){ 
-            listaTarea2+='<td>&nbsp;</td>';
-            aux='';
-        }else{
-            aux=arrTareas[j]['desc_Servicio'];
-            listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
-        }
-        
-        listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
-        listaTarea2+='<td><button type="button" onclick="removeTarea('+j+');" class="btn colorBtnPrincipal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
-        listaTarea2+='<tr>';
-    }
-    });
-
-    listaTarea2+='</tbody>';
-    listaTarea2+='</table>';
-
-
-      $("#ulTarea").empty();
-      $("#ulTarea").html(listaTarea2);
-      $("#selTarea").val("0").attr("selected",true);
+        $("#ulTarea").empty();
+        $("#ulTarea").html(listaTarea2);
+        $("#selTarea").val("0").attr("selected",true);
     }
 
     function removeServicio( item ) {
@@ -940,8 +1049,8 @@
                 dataType: 'json', 
                 success: function(data) {
                     // console.log(data);   //data[0][i].id_tarea
-                    // console.log(data[0].length);
-                    if(data !=''){
+                     console.log(data[0].length);
+                    if(data[0] !='' || data[0] !=null || data[0].length!=0){
                         if(data[0].length>1){
                             var html='';
                             var i=0;
@@ -955,27 +1064,110 @@
                             // console.log(arrEscuelaTurno);
                             $("#selTurno").html(html);
                             $("#centroTrabajoModal").modal("show");
-                        }else{
-                            $("#txtNombreCCT").val(data[0][0].nombre);
-                            $("#txtClaveCCT").val(data[0][0].clave);
+                        }else if(data[0].length==1){
+                            $("#txtIdCCT").val(data[0][0].id);
+                            $("#txtNombreCCT").val(data[0][0].nombrect);
+                            $("#txtClaveCCT").val(data[0][0].clavecct);
                             $("#txtMunicipioCCT").val(data[0][0].municipio)
                             $("#txtDirectorCCT").val(data[0][0].director);
-                            $("#txtDireccionCCT").val(data[0][0].direccion);
+                            $("#txtDireccionCCT").val(data[0][0].domicilio);
                             $("#txtCoordinacion").val(data[0][0].coordinacion);
                             $("#txtTelefono").val(data[0][0].telefono);
                             $("#txtTurno").val(data[0][0].turno);
-                            $("#txtNivelEducativo").val(data[0][0].nivel_educativo);
+                            $("#txtNivelEducativo").val(data[0][0].nivel);
+                            $("#txtLatitud").val(data[0][0].latitud);
+                            $("#txtLongitud").val(data[0][0].longitud);
 
                             $("#btnSiguiente").prop('disabled', false);
-                        }
+                            // $("#btnHistorialCCT").show();
+                            // $("#btnUbicacionCCT").show();
+                            
+                            var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Ver Historial</button>';
+                            var divU='<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>';
+                            $("#divHistorial").html(divH);
+                            $("#divUbicacion").html(divU);
+
+                            if(data[1] !='' || data[1] !=null ){
+                                // $("#divHistorial").html(divH);
+                                var htmlHist='<table class="table"><thead><th>FOLIO</th><th>Fecha</th><th>Detalles</th></thead><tbody>';
+                                var j=0;
+                                $.each(data[1], function(j, val){
+                                    if (!jQuery.isEmptyObject(data[1])) {
+                                        htmlHist+='<tr><td>'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td>';
+                                        htmlHist+='<td><div class="dropdown btn-group dropstart">';
+                                        htmlHist+='<button class="btn btn-link text-secondary mb-0 "';
+                                        htmlHist+='data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >';
+                                        htmlHist+='<i class="fa fa-ellipsis-v text-xs"></i></button>';
+                                        htmlHist+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
+                                        htmlHist+='<li>';
+                                        htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')"> ';
+                                        htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
+                                        htmlHist+='</a>';
+                                        htmlHist+='</li>';
+                                        htmlHist+='</ul>';
+                                        htmlHist+='</div></td></tr>';
+                                        //  console.log(element['turno']);
+                                        j=j+1;
+                                    }
+                                });
+
+
+                                htmlHist+='</tbody></table>';
+                                // console.log(arrEscuelaTurno);
+                                
+                                $("#hist").html(htmlHist);
+                            }else{
+                                $("#hist").html('<span>No hay historial de este centro de trabajo</span>');
+                            }
+                        }else{
+                            msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
+                            $("#btnSiguiente").prop('disabled', true);
+
+                            $("#divHistorial").html('');
+                            $("#divUbicacion").html('');
+                            $("#hist").html('');
+
+                            fnLimpiar();
+                            }
                     }else{
                         msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
                         $("#btnSiguiente").prop('disabled', true);
+
+                        $("#divHistorial").html('');
+                        $("#divUbicacion").html('');
+                        $("#hist").html('');
+
                         fnLimpiar();
+                        
                     }
                 }
             });
         }
+    }
+
+    function fnMapa(){
+        $("#ubicacionCCTModal").modal("show");
+        // initMap(42.1382114, -71.5212585);
+        // initMap();
+        var latitud=$("#txtLatitud").val();
+        var longitud=$("#txtLongitud").val();
+
+        latitud=parseFloat(latitud);
+        longitud=parseFloat(longitud);
+
+        var macc = {lat: latitud, lng: longitud};
+        // var macc = {lat: latitud, lng: longitud};
+
+        var map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 15, center: macc});
+
+        var marker = new google.maps.Marker({position: macc, map: map});
+
+    }
+
+    function fnHistorial(){
+        var clave = $("#txtClaveCCT").val()
+        $("#historialCCTModal").modal("show");
     }
 
     function fnElegirTurno(){
@@ -1050,6 +1242,10 @@
         event.preventDefault()
     }
 
+    function fnVerOrdenCentro(idOrden){
+        console.log(idOrden);
+    }
+
     // function fnValidarCorreo(){
     //     var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
 
@@ -1064,43 +1260,20 @@
     // }
 
     function verServicioEquipo(i){
-        // var aServicio=arrEquipos[i]['aServicio'];
-        // console.log('-----servicio arr-----');
-        //  console.log(arrEquipos[i]['aTarea']);
-        //  console.log('-----fin servicio arr-----');
-        //  var long=0;
-        //  long=aServicio.length;
-         var html='';
-        // html+='<ul>';
-        html+='<table>';
-            html+='<thead>';
-            html+='<th>Servicio</th>';
-            html+='<th>Tarea</th>';
-            html+='</thead>';
-            html+='<tbody>';
-        //     console.log(aServicio[i]);
-        // $.each(aServicio, function(i, val){
-        // if (!jQuery.isEmptyObject(aServicio[i])) {
-           
-            // console.log(aServicio[i]);
-            // html+='<li id="liT_'+i+'">'+aTarea[i]['desc_Servicio']+': '+aTarea[i]['desc_Tarea']; 
-            // html+='</li>';
+        var html='';
 
-            // html+='<tr>';
-            // html+='<td>'+aTarea[i]['desc_Servicio']+'</td><td>'+aTarea[i]['desc_Tarea']+'</td>';
-            // html+='</tr>';
-            // console.log(i);
-            //  console.log(aServicio[i]['desc_Servicio'])
+        html+='<table>';
+        html+='<thead>';
+        html+='<th>Servicio</th>';
+        html+='<th>Tarea</th>';
+        html+='</thead>';
+        html+='<tbody>';
             
-            
-            
-            // var aTarea=aServicio[i]['aTarea'];
-            var aTarea=arrEquipos[i]['aTarea'];
-            var aux='';
-            $.each(aTarea, function(j, val){
+        var aTarea=arrEquipos[i]['aTarea'];
+        var aux='';
+        $.each(aTarea, function(j, val){
             if (!jQuery.isEmptyObject(aTarea[j])) {
-                // aux=aTarea[j]['desc_Servicio'];
-                // console.log(aTarea[j]);
+
                 html+='<tr>';
                 if(aux==aTarea[j]['desc_Servicio']){ 
                     html+='<td >&nbsp;</td>';
@@ -1113,19 +1286,14 @@
                     
                 }
                 
-                // html+='<li id="liT_'+i+'">'+aTarea[i]['desc_Servicio']+': '+aTarea[i]['desc_Tarea']; 
-                // html+='</li>';
                 html+='<td> - '+aTarea[j]['desc_Tarea']+'</td>';
                 html+='<tr>';
                 
             }
-            });
-            
-    //     }
-    //   });
-      html+='</tbody>';
+        });
+        
+        html+='</tbody>';
         html+='</table>';
-    //   html+='</ul>';
 
         Swal.fire({
             title: 'Tareas',
@@ -1140,7 +1308,18 @@
         });
     }
     
+    function initMap() {
+        // function initMap(latitud,longitud) {
 
+        var macc = {lat: 42.1382114, lng: -71.5212585};
+        // var macc = {lat: latitud, lng: longitud};
+
+        var map = new google.maps.Map(
+        document.getElementById('map'), {zoom: 15, center: macc});
+
+        var marker = new google.maps.Marker({position: macc, map: map});
+
+    }
 
 
 </script>

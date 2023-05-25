@@ -39,6 +39,7 @@ Route::get('/', function() {
     Route::group(['prefix' => 'ordenes'], function(){
         Route::get('/listadoOrdenes', 'App\Http\Controllers\OrdenesController@index')->name('listadoOrdenes');
         Route::get('/mostrarOrdenes', 'App\Http\Controllers\OrdenesController@show')->name('showOrdenes');
+        // Route::post('/mostrarOrdenes', 'App\Http\Controllers\OrdenesController@show')->name('showOrdenes');
         Route::get('/filtrarOrdenes', 'App\Http\Controllers\OrdenesController@filtrar')->name('filtrarOrdenes');
 
         Route::get('/crearOrden', 'App\Http\Controllers\OrdenesController@create')->name('crearOrden');
@@ -47,11 +48,15 @@ Route::get('/', function() {
         Route::get('/editarOrden/{id}', 'App\Http\Controllers\OrdenesController@edit')->name('editarOrden');
         Route::post('/actualizarOrden', 'App\Http\Controllers\OrdenesController@update')->name('actualizarOrden');
 
-        //catalogos
-        Route::get('/consTarea/{idserv}','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
+        //catalogos 
+        // Route::get('/consTarea/{idserv}','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
+        // Route::get('/consTarea/{idequi}/{idserv}','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
+        Route::post('/consTarea','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
+        Route::get('/consServicio/{idEquipo}','App\Http\Controllers\OrdenesController@getServicios')->name('consServicio'); 
 
         //info Centro Trabajo
         Route::get('/consCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getCCT')->name('consCCT');
+        // Route::get('/consOrdenesCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getOrdenesCCT')->name('consOrdenesCCT');
 
         //Actualizar Estatus Orden
         Route::post('/updEstatusO','App\Http\Controllers\OrdenesController@updEstatusOrden')->name('updEstatusO');
@@ -61,6 +66,11 @@ Route::get('/', function() {
         //Cerrar Orden
         Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
         Route::post('/cerrarOrden', 'App\Http\Controllers\OrdenesController@updCerrar')->name('cerrarOrden');
+
+        Route::get('/cargarTecAux/{id}', 'App\Http\Controllers\OrdenesController@cargarTecnicosAux')->name('cargarTecAux');
+
+        //Equipos
+        Route::get('/consEquipos/{idSolic}','App\Http\Controllers\OrdenesController@getEquiposSol')->name('consEquipos');
 
     }); 
     
