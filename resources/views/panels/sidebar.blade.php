@@ -30,26 +30,20 @@
             <span class="nav-link-text ms-1 text-white">Nueva Orden</span>
           </a>
         </li>
-        <!-- Juan Carlos para que vea Ventanilla -->
+
+
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Ventanilla</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">solicitudes</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link " href="{{ route ('indexVentanilla') }}"> 
+          <a class="nav-link " href="{{ route ('solicitudes_registros') }}"> 
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
               <i class="ni ni-single-02 text-white text-sm opacity-10"></i>
             </div>
-            <span class="nav-link-text ms-1 text-white">Ventanilla</span>
+            <span class="nav-link-text ms-1 text-white">Registros</span>
           </a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link " href="{{ route ('crearOrdenVentanilla') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="fas fa-file-invoice text-white text-sm opacity-10" aria-hidden="true"></i>
-            </div>
-            <span class="nav-link-text ms-1 text-white">Nueva Solicitud</span>
-          </a>
-        </li> -->
+        
         
       </ul>
     </div>

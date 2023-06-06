@@ -80,7 +80,32 @@ Route::get('/', function() {
     
     Route::group(['prefix' => 'ventanilla'], function(){
         Route::get('/indexVentanilla', 'App\Http\Controllers\VentanillaController@index')->name('indexVentanilla');
-        Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
+        Route::get('/indexMail', 'App\Http\Controllers\VentanillaController@index_mail')->name('indexMail');
+        Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');
+        Route::get('/consulta_folio', 'App\Http\Controllers\VentanillaController@consulta_folio')->name('consulta_folio');
+        Route::get('/consulta_folio_correo', 'App\Http\Controllers\VentanillaController@consulta_folio_correo')->name('consulta_folio_correo');
+        Route::get('/sendEmail', 'App\Http\Controllers\VentanillaController@sendEmail')->name('sendEmail');
+        
+        // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
+        Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
+        Route::get('/formulario_consulta', 'App\Http\Controllers\VentanillaController@formulario_consulta')->name('formulario_consulta');
+        Route::get('/formulario_registro', 'App\Http\Controllers\VentanillaController@formulario_registro')->name('formulario_registro');
+        // Route::get('/formulario_index')->name('formulario_index');
+        // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
+        // Route::get('/sendEmail','App\Http\Controllers\MailController@sendEmail')->name('sendEmail');
+    }); 
+
+    Route::group(['prefix' => 'solicitudes'], function(){
+        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros');
+        Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
+        Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
+        Route::get('/selects_equipo_servicio', 'App\Http\Controllers\SolicitudesController@selects_equipo_servicio')->name('selects_equipo_servicio');
+        
+        // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
+        // Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
+        // Route::get('/formulario_consulta', 'App\Http\Controllers\VentanillaController@formulario_consulta')->name('formulario_consulta');
+        // Route::get('/formulario_registro', 'App\Http\Controllers\VentanillaController@formulario_registro')->name('formulario_registro');
+        // Route::get('/formulario_index')->name('formulario_index');
         // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
     }); 
 
