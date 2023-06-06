@@ -60,6 +60,7 @@ Route::get('/', function() {
 
         //Actualizar Estatus Orden
         Route::post('/updEstatusO','App\Http\Controllers\OrdenesController@updEstatusOrden')->name('updEstatusO');
+        Route::post('/updEstatusI','App\Http\Controllers\OrdenesController@updIniciar')->name('updEstatusI'); 
 
         Route::get('download-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadPDF')->name('download-pdf');
 
@@ -71,6 +72,9 @@ Route::get('/', function() {
 
         //Equipos
         Route::get('/consEquipos/{idSolic}','App\Http\Controllers\OrdenesController@getEquiposSol')->name('consEquipos');
+
+        //Tecnicos
+        Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');
 
     }); 
     

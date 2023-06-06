@@ -16,10 +16,12 @@ class OrdenesController extends Controller
     public function index(){
         $catCoordinaciones =  DB::select("select * from cas_cete.getCatCoordinaciones()");
         $catEstatusOrden =  DB::select("select * from cas_cete.getCatEstatusOrden()");
+        $catMotivoCancela=  DB::select("select * from cas_cete.getCatMotivoCancela()");
         // dd ($catEstatusOrden);
         return view('ordenes.index', compact(
             'catCoordinaciones',
-            'catEstatusOrden'
+            'catEstatusOrden',
+            'catMotivoCancela'
         ) );
         // return view('ordenes.index');
         
@@ -34,20 +36,22 @@ class OrdenesController extends Controller
         $catTipoOrden =  DB::select("select * from cas_cete.getCatTipoOrden()");
         // $catTipoServicio =  DB::select("select * from cas_cete.getCatTipoServicio()");]
         $catTipoEquipo =  DB::select("select * from cas_cete.getCatTiposEquipo()");
+        $catAreasAtiendeOrden =  DB::select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
 
         return view('ordenes.create', compact(
             'catTipoOrden',
             // 'catTipoServicio',
-            'catTipoEquipo'
+            'catTipoEquipo',
+            'catAreasAtiendeOrden'
         ) );
     }
 
     public function store(Request $request){
-        dd($request);
+        //dd($request);
         // dd($request->arrEquipos);  //"[object Object]"
         $equipos=$request->arrEquipos;
         // var_dump($equipos);
-
+        //dd($request->checkDirector);
         $arr = json_decode($equipos);
         // var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
 
@@ -57,7 +61,8 @@ class OrdenesController extends Controller
         // foreach ($arrTarea as $p) {
         //     echo $p->idTarea;
         // }
-        $insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkSolicitante."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
+
+        $insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
 
     //     $insSolicServicio =  DB::select("select * from cas_cete.spinsertsolicservicio(3556, 
 	// 28DPR1508X, 
@@ -70,7 +75,7 @@ class OrdenesController extends Controller
 	// 1, 
 	// 13, 
 	// -99.14566093, 
-	// 23.74190803");
+	// 23.74190803"); 
 
     // $insSolicServicio=DB::select("CALL cas_cete.spinsertsolicservicio(3556,'28DPR1508X','GUADALUPE ESPINOZA ROSALES','8341314060','aida.rangel@set.edu.mx',true,'Mantenimiento',2,1,13,-99.14566093,23.74190803)");
  
@@ -249,12 +254,20 @@ class OrdenesController extends Controller
     // }
 
     public function updEstatusOrden(Request $request){
-        // dd($request->All());
-        $exito = DB::select("select * from cas_cete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
+         dd($request->All());
+        $exito = DB::select("select * from cas_cete.insCancelaSolicitud(".$request->idSolicServ.",".$request->id_motivo_canc.",'".$request->comentarios."',".$request->id_usuario.",'".$request->desc_rol_usr."')");
         // dd($exito);
         // return response()->json([$exito]); 
         return response()->json($exito);
     }
+
+    public function updIniciar(Request $request){
+        //dd($request->All());
+       $exito = DB::select("select * from cas_cete.insIniciaSolicitud(".$request->idSolicServ.")");
+       // dd($exito);
+       // return response()->json([$exito]); 
+       return response()->json($exito);
+   }
 
     public function downloadPdf($id)
     {
@@ -389,5 +402,26 @@ class OrdenesController extends Controller
         $equiposSol =  DB::select("select * from cas_cete.getEquiposSolic('".$idSolic."')");
 
         return response()->json([$equiposSol]);
+    }
+
+    public function insTecnico(Request $request){
+        //  dd($request->All());
+
+        // dd($request->fecha_inicio_prog);
+
+        //$varddd=explode("T",$request->fecha_inicio_prog);
+        //dd($varddd[0], " - ", $varddd[1]);
+        // $exito = DB::select("CALL cas_cete.spInsertTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",true)");
+        $exito = DB::select("select * from cas_cete.fnInsTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",'".$request->tecnicosAuxiliaresArray."')");
+        //dd($exito);
+        // psolicserv integer,
+        // pid_usuario_asigna integer,
+        // pfecha_inicio_programada character varying,
+        // pfecha_fin_programada character varying,
+        // pid_usuario integer,
+        // pes_responsable boolean)
+        // dd($exito);
+        // return response()->json([$exito]); 
+        return response()->json($exito);
     }
 }

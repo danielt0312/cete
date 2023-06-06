@@ -16,7 +16,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">En espera</p>
                 <h3 class="font-weight-bolder">
-                  {{-- $total_registrados --}}
+                  {{ $total_enespera->getcountordenes }}
                 </h3>
               </div>
             </div>
@@ -38,7 +38,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Asignadas</p>
                 <h3 class="font-weight-bolder">
-                {{-- $total_seleccionados --}}
+                {{ $total_asignadas->getcountordenes }}
                 </h3>
               </div>
             </div>
@@ -60,7 +60,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Trabajando</p>
                 <h3 class="font-weight-bolder">
-                {{-- $total_Noseleccionados --}}
+                {{ $total_trabajando->getcountordenes }}
                 </h3>
               </div>
             </div>
@@ -82,7 +82,7 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Atendidas</p>
                 <h3 class="font-weight-bolder">  <!-- tenia h5 -->
-                {{-- $total_evaluados --}}
+                {{ $total_atendidas->getcountordenes }}
                 </h3>
               </div>
             </div>

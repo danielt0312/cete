@@ -181,7 +181,9 @@
                                                 <label for="selDepAtiende">DEPENDENCIA QUE ATIENDE EL SERVICIO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                     <option value="0" selected>Seleccionar</option>
-                                                    <option value="1" >Area 1</option>
+                                                    @foreach($catAreasAtiendeOrden as $areasAtiendeOrden)
+                                                        <option value="{{ $areasAtiendeOrden->id }}">{{ $areasAtiendeOrden->area_atiende }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -208,7 +210,7 @@
 
                                         <div class="col-12 justify-content-md-start">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="checkSolicitante">
+                                                <input class="form-check-input" type="checkbox" value="" id="checkSolicitante" name="checkSolicitante">
                                                 <label class="form-check-label" for="checkSolicitante">
                                                 Active la casilla en caso que el solicitante corresponda al Director del C.T
                                                 </label>
@@ -231,12 +233,12 @@
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
-                                        <!-- <div class="col-12" id="divCantidad">
+                                        <div class="col-12" id="divCantidad">
                                             <div class="form-group">
                                                 <label for="txtCantidadEquipos">Cantidad de Equipos</label>
                                                 <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                             </div>
-                                        </div> -->
+                                        </div>
 
                                         <div class="col-4">
                                             <div class="form-group">
@@ -333,9 +335,10 @@
                                                 <input type="text" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
                                             </div>
                                         </div>
-
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end divEtiqueta">
+                                        <div class="divEtiqueta">
+                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnVerDetalles" data-bs-toggle="modal" data-bs-target="#detallesEquipoModal">VER DETALLES</button>
+                                        </div>
                                         </div>
 
                                         <div class="col-9">
@@ -352,15 +355,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-3" id="divCantidad">
+                                        <!-- <div class="col-3" id="divCantidad">
                                             <div class="form-group">
                                                 <label for="txtCantidadEquipos">Cantidad de Equipos</label>
                                                 <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                             </div>
-                                        </div>
-
-                                        <div class="col-9 justify-content-md-start">
-                                            <div class="form-check">
+                                        </div> -->
+                                        <br>
+                                        <div class="col-9 d-md-flex justify-content-md-end">
+                                            <div class="form-check" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Replicar datos en el siguiente equipo
@@ -368,7 +371,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >AÑADIR EQUIPO</button>
                                         </div>
                                         <br>
@@ -630,9 +633,11 @@
         $("#txtCantidadEquipos").change(function() {  
             cant=$("#txtCantidadEquipos").val();
             if(cant > 1) {  
-                 $(".divEtiqueta").show();
-            } else {  
                  $(".divEtiqueta").hide();
+                 $("#checkVer").hide();
+            } else {  
+                 $(".divEtiqueta").show();
+                 $("#checkVer").show();
             }  
         });  
     
@@ -647,7 +652,7 @@
                 } else {  
                     bandCheck=0;
                 }  
-            });  
+            }); 
 
             var etiquetaServicio = $("#txtEtiquetaServicio").val();
             var marca = $("#txtMarca").val();
@@ -668,40 +673,70 @@
             // $("#tbEquipos").html(tablaEquipo);
             // i=i+1;
             // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
-            arrEquipos.push({
-                con : i,
-                id_tipo_equipo : vId_TipoEquipo, 
-                desc_tipo_equipo : vTipoEquipo, 
-                etiquetaServicio : etiquetaServicio,
-                marca : marca,
-                modelo : modelo, 
-                numeroSerie : numeroSerie,
-                descripcionSoporte : descripcionSoporte,
-                ubicacionEquipo : ubicacionEquipo,
-                cantidad : vCantidad,
-                estatus_equipo : 1, 
-                nuevo : 1, 
-                aTarea : arrTareas, ///arreglo tareas
-                // aServicio : arrServicios /// arreglo servicios
-            })
-            //  arrTareas=[];
-            drawRowEquipo();
-            i=i+1;
-            if(bandCheck==0){
-                arrTareas=[];
-                $("#tbTarea").remove();
-                $("#selTipoEquipo").val("0").attr("selected",true);
-                $("#selTipoServicio").val("0").attr("selected",true);
-                $("#selTarea").val("0").attr("selected",true);
-                $("#txtEtiquetaServicio").val("");
-                $("#txtMarca").val("");
-                $("#txtModelo").val(""); 
-                $("#txtNumeroSerie").val(""); 
-                $("#txtDescripcionSoporte").val(""); 
-                $("#txtUbicacionEquipo").val(""); 
+            console.log(arrTareas);
+
+            if(vId_TipoEquipo==0){
+                msjeAlerta('', 'Favor de seleccionar Tipo de Equipo', 'error')
+            }else if(arrTareas==null || arrTareas==[]){
+                msjeAlerta('', 'Favor de seleccionar Servicios y Tares', 'error')
+            }else if(descripcionSoporte==null || descripcionSoporte=='' ){
+                msjeAlerta('', 'Favor de ingresar Descripción de Soporte o Problema', 'error')
+            }else{
+
+        // if(vId_TipoEquipo!=0 && descripcionSoporte!='' && (arrTareas!=null || arrTareas!=[])){
+                arrEquipos.push({
+                    con : i,
+                    id_tipo_equipo : vId_TipoEquipo, 
+                    desc_tipo_equipo : vTipoEquipo, 
+                    etiquetaServicio : etiquetaServicio,
+                    marca : marca,
+                    modelo : modelo, 
+                    numeroSerie : numeroSerie,
+                    descripcionSoporte : descripcionSoporte,
+                    ubicacionEquipo : ubicacionEquipo,
+                    cantidad : vCantidad,
+                    estatus_equipo : 1, 
+                    nuevo : 1, 
+                    aTarea : arrTareas, ///arreglo tareas
+                    // aServicio : arrServicios /// arreglo servicios
+                });
+            
+                //  arrTareas=[];
+                drawRowEquipo();
+                i=i+1;
+
+                if(bandCheck==0){
+                    arrTareas=[];
+                    $("#tbTarea").remove();
+                    $("#selTipoEquipo").val("0").attr("selected",true);
+                    $("#selTipoServicio").val("0").attr("selected",true);
+                    $("#selTarea").val("0").attr("selected",true);
+                    $("#txtEtiquetaServicio").val("");
+                    $("#txtMarca").val("");
+                    $("#txtModelo").val(""); 
+                    $("#txtNumeroSerie").val(""); 
+                    $("#txtDescripcionSoporte").val(""); 
+                    $("#txtUbicacionEquipo").val(""); 
+                 }
             }
+
+            // if(bandCheck==0){
+            //     arrTareas=[];
+            //     $("#tbTarea").remove();
+            //     $("#selTipoEquipo").val("0").attr("selected",true);
+            //     $("#selTipoServicio").val("0").attr("selected",true);
+            //     $("#selTarea").val("0").attr("selected",true);
+            //     $("#txtEtiquetaServicio").val("");
+            //     $("#txtMarca").val("");
+            //     $("#txtModelo").val(""); 
+            //     $("#txtNumeroSerie").val(""); 
+            //     $("#txtDescripcionSoporte").val(""); 
+            //     $("#txtUbicacionEquipo").val(""); 
+            // }
             
-            
+            // $("#txtCantidadEquipos").val(1);
+            // $(".divEtiqueta").show();
+            // $("#checkVer").hide();
 
             console.log(arrEquipos);
         });
@@ -1207,11 +1242,18 @@
         let urlEditar = '{{ route("guardarOrden") }}';
         // urlEditar = urlEditar.replace(':claveCCT', claveCCT);
         var form = $('#formOrden')[0];
+        var checkDirector='';
+        if($("#checkSolicitante").is(':checked')) {  
+            checkDirector= true;
+        } else {  
+            checkDirector= false;
+        }  
          
          // FormData object 
          var data2 = new FormData(form);
         //  data2.append('arrEquipos',arrEquipos);
-        data2.append('arrEquipos', JSON.stringify(arrEquipos))
+        data2.append('arrEquipos', JSON.stringify(arrEquipos));
+        data2.append('checkDirector', JSON.stringify(checkDirector));
         // data2.append('equipo_servicio',equipo_servicio);
 
         console.log(data2);
