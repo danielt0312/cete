@@ -236,7 +236,7 @@
 
                                         <div class="col-4">
                                             <div class="form-group">
-                                                <label for="selTipoEquipo">TIPO DE EQUIPO A REVISAR</label>
+                                                <label for="selTipoEquipo">TIPO DE EQUIPO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
                                                     <option value="0" selected>Seleccionar</option>
                                                     @foreach($catTipoEquipo as $tipoEquipo)
@@ -247,7 +247,7 @@
                                         </div>
                                         <div class="col-4">
                                             <div class="form-group">
-                                                 <label for="selTipoServicio">TIPO DE SERVICIO</label>
+                                                 <label for="selTipoServicio">SERVICIO</label>
                                                 <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                     <option value="0" selected>Seleccionar</option>
                                                 </select> -->
@@ -482,6 +482,126 @@
   </div>
 </div>
 <!-- FIN MODAL MAPA-->
+
+<!-- MODAL EDITAR EQUIPO -->
+<div class="modal fade" id="detalleEquipoModal" tabindex="-1" aria-labelledby="detalleEquipoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="detalleEquipoModalLabel">No. de Equipo:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formDetalleEquipo" name="formDetalleEquipo" enctype="multipart/form-data">
+          <div class="col-12">
+            <div class="form-group">
+              <!--<label for="estatus_id">Usuario Cancela</label>
+              <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
+                <input type="hidden" id="hdIdEquipoM" name="hdIdEquipoM" class="form-control">
+                <input type="hidden" id="hdIdSolServM" name="hdIdSolServM" class="form-control">
+                <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                        <label for="selTipoServicioM">SERVICIO</label>
+                    <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
+                        <option value="0" selected>Seleccionar</option>
+                    </select> -->
+
+                    <div class="input-group">
+                        <select class="form-select" id="selTipoServicioM" name="selTipoServicioM" aria-label="Example select with button addon">
+                            <option value="0" selected>Seleccionar</option>
+                            
+                        </select>
+                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
+                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                    </div>
+                </div>
+                <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicioM">
+                    <!-- <span>LISTADO DE SERVICIOS</span> -->
+                    <ul id="ulServicioM">
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="selTareaM">TAREA</label>
+                    <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
+                        <option value="0" selected>Seleccionar</option>
+                    </select> -->
+                    <div class="input-group">
+                        <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
+                            <option value="0" selected>Seleccionar</option>
+                        </select>
+                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
+                        <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                    </div>
+                </div>
+                <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
+                    <span>LISTADO DE TAREAS</span>
+                    <ul id="ulTarea">
+                        
+                    </ul>
+                </div> -->
+            </div>
+            </div>
+
+          <div class="row">
+            <div class="col-12 scrollVertical" id="divEquiposReal">
+              <!-- <table style="border:1px solid; width:100%;">
+                <tr style="border:1px solid; background-color:#8392ab;">
+                  <td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo"></label></td>
+                  <td><label>Marca:</label><label class="SinNegrita" id="lblMarca"></label></td>
+                  <td><label>Modelo:</label><label class="SinNegrita" id="lblModelo"></label></td>
+                  <td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie"></label></td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo"></label><br>
+                    <label>Servicio(s):</label><label class="SinNegrita" id="lblServicios"></label><br>
+                    <label>Tarea(s):</label><label class="SinNegrita" id="lblTareas"></label><br>
+                    <label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema"></label><br>
+                    <label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic"></label><br>
+                    <label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag"></label><br>
+                  </td>
+                </tr>
+              </table>
+              <br> -->
+            </div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>SUBIR ARCHIVO DE CIERRE DE ORDEN</span></div>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="archivoEvidencia">Agregar evidencia:</label>
+                <input class="form-control" type="file" id="archivoEvidencia" name="archivoEvidencia">
+              </div>
+            </div>
+          </div>
+
+          
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn colorBtnPrincipal" onclick="" id="btnCerrar">Actualizar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL EDITAR EQUIPO-->
 
 @endsection
 
@@ -869,6 +989,12 @@
                 tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
                 tablaEquipo2+='                              </a>';
                 tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')"> ';
+                // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
+                tablaEquipo2+='                                  <i class="fas fa-download"></i> Editar Equipo';
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
                 tablaEquipo2+='                  </ul>';
                 tablaEquipo2+='              </div></td>';
                 // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -1029,13 +1155,18 @@
             type: 'GET',
             dataType: 'json', 
             success: function(data) {
-                // console.log(data);   //data[0][i].id_tarea
-                    console.log(data[0].length); 
+
+                //  console.log(data[0][0].arrequipos);   //data[0][i].id_tarea
+                //  var coche = JSON.parse(data[0][0].arrequipos);
+
+                // console.log(coche);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+                 
+                    // console.log(data[0].length); 
                 if(data[0] !='' || data[0] !=null || data[0].length!=0){
 
                     $.each(data[0], function(i, val){
                         if (!jQuery.isEmptyObject(data[0][i])) {
-                            console.log(data[0][i]);
+                            // console.log(data[0][i]);
                             arrEquipos.push({
                             con : i,
                                 id_tipo_equipo : data[0][i].id_tipo_equipo, 
@@ -1054,7 +1185,7 @@
                             })
                         }
                     });
-                    console.log(arrEquipos);
+                    // console.log(arrEquipos);
                     // arrEquipos.push({
                     //     con : i,
                     //     id_tipo_equipo : vId_TipoEquipo, 
@@ -1383,19 +1514,6 @@
         console.log(idOrden);
     }
 
-    // function fnValidarCorreo(){
-    //     var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
-
-    //     if (! regex.test($('#email').val().trim())) {
-    //         // alert('Correo validado');
-    //         msjeAlerta('', 'El correo no es valido', 'error')
-
-    //     } 
-    //     // else {
-    //     //     msjeAlerta('', 'El correo no es valido', 'error')
-    //     // }
-    // }
-
     function verServicioEquipo(i){
         var html='';
 
@@ -1456,6 +1574,11 @@
 
         var marker = new google.maps.Marker({position: macc, map: map});
 
+    }
+
+    function verDetalleEquipo(j){
+        console.log(j);
+        $("#detalleEquipoModal").modal("show");
     }
 
 

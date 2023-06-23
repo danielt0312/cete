@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@php setPermissionsTeamId(3); @endphp
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,13 +8,13 @@
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
+  
   <!-- <div class="min-height-300 bg-gris position-absolute w-100"></div> -->
     @include('panels.navbar')
   <!-- <div style="background-color: #4a4c51 !important;"  class="min-height-300 bg-primary position-absolute w-100"></div> -->
   @include('panels.sidebar')
 
   <main class="main-content position-relative border-radius-lg ">
-    
         @yield('content')
        
   </main>

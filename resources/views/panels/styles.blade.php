@@ -34,13 +34,20 @@
 
   .colorBtnPrincipal{ /*Estilo boton guindo*/
     background-color: #ab0033 !important;
-    color:#FFFFFF;
+    color:#FFFFFF !important;
   }
 
   .colorBtnPrincipal:hover{ 
     background-color: #ab0033 !important;
-    color:#FFFFFF;
+    color:#FFFFFF !important;
   }
+
+  .colorBtnPrincipal:active {
+    background-color: #ab0033 !important;
+    color:#FFFFFF !important;
+  }
+
+  .colorBtnPrincipal:focus { outline: none; } 
 
   .dt-button { /*Estilo boton excel de datatable*/ 
     padding: 0;
@@ -71,6 +78,39 @@
   .btnFiltros{
     border-top-right-radius:0.55em !important;
     border-bottom-right-radius:0.55em !important;
+  }
+
+  .scrollVertical {
+    height: 20em;
+    line-height: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    /* border: 1px solid; */
+  }
+
+  .scrollVerticalTareas {
+    height: 15em;
+    line-height: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    /* border: 1px solid; */
+  }
+
+  .lineaHr{ 
+    border-top: 1px solid #8392ab !important; 
+    opacity: 0.7 !important;
+    height: 2px ;
+    padding: 0;
+    margin: 20px auto 0 auto;
+  }
+
+  .btnEliminar{
+    background-color: transparent !important;
+    order: none !important;
+    color: #ab0033 !important;
+    border:none;
   }
 
 </style>

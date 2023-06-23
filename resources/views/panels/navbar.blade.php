@@ -27,7 +27,7 @@
             <li class="ml-3 nav-item d-flex align-items-center mr-5 pr-5 marginraigt">
             <a href="javascript:;" class="ml-3 nav-link text-white font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1 ml-3"></i>
-                <span class="d-sm-inline d-none">{{-- Auth()->user()->name --}} </span>
+                <span class="d-sm-inline d-none">{{ Auth()->user()->name }} </span>
                 
             </a>
             </li>
@@ -38,7 +38,7 @@
                 <span class="d-sm-inline d-none  ml-3 pl-3">Salir </span>
             </a>
             @auth()
-        <form id="logout-form" action="{{-- route('logout') --}}" method="POST" style="display: none;">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
 

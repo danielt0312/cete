@@ -67,15 +67,26 @@
         table th {
             border: 1px solid #000;
             text-align: center;
-            color: #000;
+            color: #FFFFFF;
             padding: 0;
-            background-color: rgb(203,211,219);
+            /* background-color: rgb(203,211,219); */
+            background-color: #ab0033;
             font-size: 14px;
         }
 
         table td {
             border: 1px solid #000;
-            text-align: center !important;
+            text-align: left !important;
+            padding: 0;
+            /* Alto de las celdas */
+            height: 16px !important;
+            font-size: 12px;
+            text-transform: capitalize;
+        }
+
+        .sinbordetable{
+            border: 0px solid #000;
+            text-align: left !important;
             padding: 0;
             /* Alto de las celdas */
             height: 16px !important;
@@ -102,11 +113,91 @@
         </p>
       </div>
     
-    <hr style="height:1 px; border-width:0; color:rgb(0, 0, 0); background-color:rgb(0, 0, 0)">
+    <!-- <hr style="height:1 px; border-width:0; color:rgb(0, 0, 0); background-color:rgb(0, 0, 0)"> -->
 </header>
 <body>
     <div>
         <table>
+          <tr>
+            <th>DATOS DEL CT</th>
+            <th>DATOS DEL REPORTE</th>
+          </tr>
+          <tr>
+            <td>
+              <table class="sinbordetable">
+                <tr class="sinbordetable">
+                  <td class="sinbordetable"><span>Nombre del CT:</span> <span>ddddddddd</span></td>
+                  <td class="sinbordetable"> CCT: ddddddddd</td>
+                </tr>
+                <tr class="sinbordetable">
+                  <td class="sinbordetable">Nombre del Director: ddddddddd</td>
+                  <td class="sinbordetable">Municipio: ddddddddd</td>
+                </tr>
+                <tr class="sinbordetable">
+                  <td class="sinbordetable">Dirección: ddddddddd</td>
+                  <td class="sinbordetable">Teléfono: ddddddddd</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <table  class="sinbordetable">
+                <tr class="sinbordetable">
+                  <td class="sinbordetable">Tipo de Orden: ddddddddd</td>
+                  <td class="sinbordetable">Fecha de Orden: ddddddddd</td>
+                  <td class="sinbordetable">Número de Orden: ddddddddd</td> 
+                </tr>
+                <tr class="sinbordetable">
+                  <td colspan="3" class="sinbordetable">Dependencia que atiende el servicio: ddddddddd</td>
+                </tr>
+                <tr class="sinbordetable">
+                  <td colspan="2" class="sinbordetable">Nombre del Solicitante: ddddddddd</td>
+                  <td class="sinbordetable">Teléfono: ddddddddd</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>  
+        <table> <!--//////////////////////////////////////////////////////////////////////-->
+          <tr>
+            <th>TÉCNICOS DE SOPORTE ASIGNADOS</th>
+          </tr>
+          <tr>
+            <td>
+              <table class="sinbordetable">
+                <tr class="sinbordetable">
+                  <td class="sinbordetable"><span>Técnico Encargado:</span> <span>ddddddddd</span></td>
+                  <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
+                </tr>
+                <tr class="sinbordetable">
+                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
+                  <td class="sinbordetable">Fecha - hora término: ddddddddd</td>
+                </tr>
+                
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table> <!--//////////////////////////////////////////////////////////////////////-->
+          <tr>
+            <th>EQUIPOS ATENDIDOS</th>
+          </tr>
+          <tr>
+            <td>
+              <table class="sinbordetable">
+                <tr class="sinbordetable">
+                  <td class="sinbordetable"><span>Técnico Encargado:</span> <span>ddddddddd</span></td>
+                  <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
+                </tr>
+                <tr class="sinbordetable">
+                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
+                  <td class="sinbordetable">Fecha - hora término: ddddddddd</td>
+                </tr>
+                
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!-- <table>
           <tr>
             <th>Folio</th>
             <th style="width: 25%">Centro de trabajo</th>
@@ -154,7 +245,7 @@
             
             </td>
           </tr>
-        </table> 
+        </table>  -->
     </div>
     <br>
         {{-- <h4 style="text-align: center; background-color: rgb(175, 175, 175); border: 1px solid;">Equipos</h4>   --}}

@@ -216,7 +216,7 @@
         </div>
         <div class="col-12">
           <div class="form-group">
-              <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTecnico" onclick="fnAgregarTecnicos()">Agregar</button>
+              <button type="button" class="btn colorBtnPrincipal" disabled id="btnAsignarTecnico" onclick="fnAgregarTecnicos()">Agregar</button>
               <br>
           </div>
         </div>
@@ -358,27 +358,41 @@
             <div class="col-4">
               <div class="form-group">
                 <label for="nombrect">Nombre del C.T. :</label>
-                <label for="nombrect">Nombre del C.T. </label>
+                <label class="SinNegrita" id="lblNombreCTT"></label>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="clavect">Clave del C.T. :</label>
-                <label for="clavect">Clave del C.T. </label>
+                <label class="SinNegrita" id="lblClaveCTT"></label>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="muni">Municipio:</label>
-                <label for="muni">Municipio</label>
+                <label class="SinNegrita" id="lblMunicipio"></label>
               </div>
             </div>
           </div>
           <div class="row">
+            <div class="col-4">
+              <div class="form-group">
+                <label for="muni">Nombre del Director:</label>
+                <label class="SinNegrita" id="lblDirector"></label>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="form-group">
+                <label for="muni">Dirección:</label>
+                <label class="SinNegrita" id="lblDireccion"></label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Nombre del Director:</label>
-                <label for="muni">Director</label>
+                <label class="SinNegrita" id="lblDirector"></label>
               </div>
             </div>
           </div>
@@ -386,27 +400,27 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Dirección:</label>
-                <label for="muni">Dirección</label>
+                <label class="SinNegrita" id="lblDireccion"></label>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-4">
               <div class="form-group">
                 <label for="muni">Coordinación a la que pertenece:</label>
-                <label for="muni">Municipio:</label>
+                <label class="SinNegrita" id="lblCoordinacion"></label>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="muni">Teléfono:</label>
-                <label for="muni">Teléfono</label>
+                <label class="SinNegrita" id="lblTelefono"></label>
               </div>
             </div>
             <div class="col-4">
               <div class="form-group">
                 <label for="muni">Turno:</label>
-                <label for="muni">Turno</label>
+                <label class="SinNegrita" id="lblTurno"></label>
               </div>
             </div>
           </div>
@@ -414,7 +428,7 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Nivel Educativo:</label>
-                <label for="muni">Turno</label>
+                <label class="SinNegrita" id="lblNivel"></label>
               </div>
             </div>
           </div>
@@ -427,11 +441,11 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Tipo de Orden:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblTipoOrden"></label>
               </div>
             </div>
           </div>
@@ -440,7 +454,22 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Dependencia que atiende el servicio:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblAreaAtiende"></label>
+              </div>
+            </div>
+          </div> -->
+
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="muni">Tipo de Orden:</label>
+                <label class="SinNegrita" id="lblTipoOrden"></label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="muni">Dependencia que atiende el servicio:</label>
+                <label class="SinNegrita" id="lblAreaAtiende"></label>
               </div>
             </div>
           </div>
@@ -449,14 +478,14 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="muni">Nombre del Solicitante:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblSolicitante"></label>
               </div>
             </div>
 
             <div class="col-6">
               <div class="form-group">
                 <label for="muni">Teléfono del Solicitante:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblSolicitanteTel"></label>
               </div>
             </div>
           </div>
@@ -465,7 +494,7 @@
             <div class="col-12">
               <div class="form-group">
                 <label for="muni">Correo electrónico del Solicitante:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblSolicitanteCorr"></label>
               </div>
             </div>
           </div>
@@ -473,8 +502,8 @@
           <div class="row">
             <div class="col-12">
               <div class="form-group">
-                <label for="muni">Descripcion del Reporte:</label>
-                <label for="muni"></label>
+                <label for="muni">Descripción del Reporte:</label>
+                <label class="SinNegrita" id="lblDescReporte"></label>
               </div>
             </div>
           </div>
@@ -491,14 +520,14 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="muni">Técnico Encargado:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblTecEnc"></label>
               </div>
             </div>
 
             <div class="col-6">
               <div class="form-group">
                 <label for="muni">Técnico(s) Auxiliares:</label>
-                <label for="muni"></label>
+                <label class="SinNegrita" id="lblTecAux"></label>
               </div>
             </div>
           </div>
@@ -507,6 +536,38 @@
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>EQUIPOS ATENDIDOS</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 scrollVertical" id="divEquiposRealizados">
+              <!-- <table style="border:1px solid; width:100%;">
+                <tr style="border:1px solid; background-color:#8392ab;">
+                  <td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo"></label></td>
+                  <td><label>Marca:</label><label class="SinNegrita" id="lblMarca"></label></td>
+                  <td><label>Modelo:</label><label class="SinNegrita" id="lblModelo"></label></td>
+                  <td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie"></label></td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo"></label><br>
+                    <label>Servicio(s):</label><label class="SinNegrita" id="lblServicios"></label><br>
+                    <label>Tarea(s):</label><label class="SinNegrita" id="lblTareas"></label><br>
+                    <label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema"></label><br>
+                    <label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic"></label><br>
+                    <label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag"></label><br>
+                  </td>
+                </tr>
+              </table>
+              <br> -->
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>SUBIR ARCHIVO DE CIERRE DE ORDEN</span></div>
               </div>
             </div>
           </div>
@@ -793,12 +854,11 @@
 
   function cancelarOrden(idSolicServ,idEstatusOrden){
     $("#hdIdSolicServ").val("");
-    // $("#hdIdEstatusCancela").val("");
+    $("#selMotivoCancela").val('');
+    $("#txtComentarios").val('');
 
     $("#cancelOrdenModal").modal("show");
-
     $("#hdIdSolicServ").val(idSolicServ);
-    // $("#hdIdEstatusCancela").val(idEstatusOrden);
   }
 
   function fnGuardarCancelacion(){
@@ -841,24 +901,12 @@
     // console.log('asignar tecnico');
     vEncargado=parseInt($("#selTecnicoEncargado").val());
     vEncargadoNombre=$("#selTecnicoEncargado option:selected").text(); 
+    
     // console.log(vEncargadoNombre);
     tecnicosAuxiliaresArray.unshift({id_tecnico:vEncargado, nombre_tecnico:vEncargadoNombre, es_responsable:1});
-
     // console.log(tecnicosAuxiliaresArray);
     drawRowTecnico();
-    /*var htmlSel='';
-    for (var i = 0; i < tecnicosAuxiliaresArray.length; i++) {
-        htmlSel+='<tr><td>'+i+'</td><td>'+tecnicosAuxiliaresArray[i].nombre_tecnico+'</td><td>'; 
-        // htmlSel+='<tr><td>'+i+'</td><td>'+tecnicosAuxiliaresArray[i]+'</td><td>';
-        if(i==0){
-          htmlSel+='<span>Técnico Encargado</span></td>'; 
-        }else{
-          htmlSel+='<span>Técnico Auxiliar</span></td>'; 
-        }
-        htmlSel+='</tr>';
-    }
-
-    $("#tbTecnicos").html(htmlSel);*/
+   
   }
 
   function fnAsignarTecnicos(){
@@ -961,7 +1009,87 @@
       type: 'GET',
       dataType: 'json', // added data type
       success: function(data) {
-           console.log(data);
+        console.log(data);
+        //Datos Centro de Trabajo-------------------------------------------------------------------------
+        $("#lblNombreCTT").text(data[0].nombrect);
+        $("#lblClaveCTT").text(data[0].clave_ct);
+        $("#lblMunicipio").text(data[0].municipio);
+        $("#lblDirector").text(data[0].director);
+        $("#lblDireccion").text(data[0].domicilio);
+        $("#lblCoordinacion").text(data[0].coordinacion);
+        $("#lblTelefono").text(data[0].telefono);
+        $("#lblTurno").text(data[0].turno);
+        $("#lblNivel").text(data[0].nivel);
+        //Datos Reporte-------------------------------------------------------------------------
+        $("#lblTipoOrden").text(data[0].desc_tipo_orden);
+        $("#lblAreaAtiende").text(data[0].domicilio);
+        $("#lblSolicitante").text(data[0].solicitante);
+        $("#lblSolicitanteTel").text(data[0].telef_solicitante);
+        $("#lblSolicitanteCorr").text(data[0].correo_solic);
+        $("#lblDescReporte").text(data[0].descrip_reporte);
+
+        //Datos Tecnicos-------------------------------------------------------------------------
+        // console.log(data[0].jtecnicos);   //data[0][i].id_tarea
+        if(data[0].jtecnicos != null){
+          var coche = JSON.parse(data[0].jtecnicos);
+          // console.log(coche);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+          var vtecniA='';
+          var vtecniE='';
+          for (var i = 0; i < coche.length; i++) {
+            if(coche[i].es_responsable==0){
+              if(vtecniA==''){
+                vtecniA=coche[i].nombre; 
+              }else{
+                vtecniA=vtecniA+', '+coche[i].nombre; 
+              }
+            }else{
+              vtecniE=coche[i].nombre; 
+            }
+          }
+          
+          $("#lblTecAux").html(vtecniA);
+          $("#lblTecEnc").html(vtecniE);
+        }else{
+          $("#lblTecAux").html('');
+          $("#lblTecEnc").html('');
+        }
+
+        //Datos Equipos-------------------------------------------------------------------------
+        if(data[0].jequipos != null){
+          var vequip = JSON.parse(data[0].jequipos);
+          console.log(vequip);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+          var htmlSel='';
+          // var vtecniA='';
+          // var vtecniE='';
+          for (var i = 0; i < vequip.length; i++) {
+
+            console.log(vequip[i].id_equipo_tarea);
+            htmlSel+='<table style="border:1px solid; width:100%;">';
+            htmlSel+='<tr style="border:1px solid; background-color:#8392ab;">';
+            htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+vequip[i].tipo_equipo+'</label></td>';
+            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+vequip[i].id_equipo_tarea+'</label></td>';
+            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+vequip[i].id_equipo_tarea+'</label></td>';
+            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+vequip[i].id_equipo_tarea+'</label></td>';
+            htmlSel+='</tr>';
+            htmlSel+='<tr>';
+            htmlSel+='<td colspan="4">';
+            htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+vequip[i].tipo_equipo+'</label><br>';
+            htmlSel+='<label>Servicio(s):</label><label class="SinNegrita" id="lblServicios">'+vequip[i].servicio+'</label><br>';
+            htmlSel+='<label>Tarea(s):</label><label class="SinNegrita" id="lblTareas">'+vequip[i].tarea+'</label><br>';
+            htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+vequip[i].desc_problema+'</label><br>';
+            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+vequip[i].ubicacion+'</label><br>';
+            htmlSel+='<label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag">'+vequip[i].solucion+'</label><br>';
+            htmlSel+='</td>';
+            htmlSel+='</tr>';
+            htmlSel+='</table>';
+            htmlSel+='<br>';
+            
+          }
+          
+          $("#divEquiposRealizados").html(htmlSel);
+        }else{
+          $("#divEquiposRealizados").html('');
+        }
       }
     });
   }
@@ -1315,7 +1443,9 @@
           }
         });*/
         $("#selTecnicosAuxiliares").prop('disabled', false);
+        // $("#btnAsignarTecnico").prop('disabled', false);
       }else{
+        // $("#btnAsignarTecnico").prop('disabled', true);
         $("#selTecnicosAuxiliares").prop('disabled', true);
         msjeAlertaSecundario('','Favor de seleccionar el Técnico Encargado','error');
       }
@@ -1331,6 +1461,7 @@
           // $("#selTecnicosAuxiliares").val();
           //  $("#selTecnicosAuxiliares option[value='']").attr("selected",true);
           // document.getElementById("selTecnicosAuxiliares").value = null;
+          $("#btnAsignarTecnico").prop('disabled', true);
         }else{
             var vTecnicoAux=$("#selTecnicosAuxiliares").val();
             // var tecnicosAuxiliaresArray = []; 
@@ -1342,6 +1473,7 @@
                   tecnicosAuxiliaresArray.push({id_tecnico:parseInt(tecnicosAux.options[i].value), nombre_tecnico:tecnicosAux.options[i].text, es_responsable:0});
                 }
             }
+            $("#btnAsignarTecnico").prop('disabled', false);
 
             // console.log(tecnicosAuxiliaresArray);
         }
