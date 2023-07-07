@@ -19,6 +19,28 @@
           margin-bottom: 4cm;
           /* border: #000 solid 1px; */
           /* min-height: calc(100vh - 100px - 100px); */
+          /* background-image: url("{{ asset('images/logo/logoTam2022.png') }}");
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-color: transparent;
+          opacity: 0.6; */
+        }
+
+        .waterMark{
+          background-image: url("{{ asset('images/logo/logoTam2022.png') }}");
+          opacity: 0.2;
+        }
+
+        .showcase {
+          /* width: 70%;
+          height: 50%; */
+          background-image: url("{{ asset('images/logo/logoTam2022.png') }}");
+          /* height: 400px;
+          width: 500px; */
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          opacity: 0.2;
         }
         
         header {
@@ -109,12 +131,13 @@
       <div style="margin-left: 10%; height: 50px; text-align: right; font-size: 12px;"> 
         <p><b>CENTRO ESTATAL DE TECNOLOGÍA EDUCATIVA</b><br>
             SUBDIRECCIÓN DE OPERACIÓN DE PROYECTOS <br>
-            REPORTE DE SERVICIOS
+            ORDEN DE SOLICITUD DE SERVICIOS
         </p>
       </div>
     
     <!-- <hr style="height:1 px; border-width:0; color:rgb(0, 0, 0); background-color:rgb(0, 0, 0)"> -->
 </header>
+<div class="showcase">
 <body>
     <div>
         <table>
@@ -166,10 +189,10 @@
               <table class="sinbordetable">
                 <tr class="sinbordetable">
                   <td class="sinbordetable"><span>Técnico Encargado:</span> <span>ddddddddd</span></td>
-                  <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
+                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
                 </tr>
                 <tr class="sinbordetable">
-                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
+                <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
                   <td class="sinbordetable">Fecha - hora término: ddddddddd</td>
                 </tr>
                 
@@ -183,16 +206,194 @@
           </tr>
           <tr>
             <td>
-              <table class="sinbordetable">
-                <tr class="sinbordetable">
-                  <td class="sinbordetable"><span>Técnico Encargado:</span> <span>ddddddddd</span></td>
-                  <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
+              <table>
+                <tr>
+                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <table style="width:100%;">
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <span>Servicios:</span><span>dddddd</span> <br>
+                    <span>Tareas:</span><span>dddddd</span>
+                  </td>
+                  <td class="sinbordetable" style="width:33%;">
+                    <span>Descripción del Problema:</span> 
+                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
+                    <br>
+                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
+                  </td>
                 </tr>
-                <tr class="sinbordetable">
-                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
-                  <td class="sinbordetable">Fecha - hora término: ddddddddd</td>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <table style="width:100%;">
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <span>Servicios:</span><span>dddddd</span> <br>
+                    <span>Tareas:</span><span>dddddd</span>
+                  </td>
+                  <td class="sinbordetable" style="width:33%;">
+                    <span>Descripción del Problema:</span> 
+                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
+                    <br>
+                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
+                  </td>
                 </tr>
-                
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <table style="width:100%;">
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <span>Servicios:</span><span>dddddd</span> <br>
+                    <span>Tareas:</span><span>dddddd</span>
+                  </td>
+                  <td class="sinbordetable" style="width:33%;">
+                    <span>Descripción del Problema:</span> 
+                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
+                    <br>
+                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <table style="width:100%;">
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <span>Servicios:</span><span>dddddd</span> <br>
+                    <span>Tareas:</span><span>dddddd</span>
+                  </td>
+                  <td class="sinbordetable" style="width:33%;">
+                    <span>Descripción del Problema:</span> 
+                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
+                    <br>
+                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <table style="width:100%;">
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
+                      </tr>
+                      <tr class="sinbordetable">
+                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
+                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td class="sinbordetable" style="width:32%;">
+                    <span>Servicios:</span><span>dddddd</span> <br>
+                    <span>Tareas:</span><span>dddddd</span>
+                  </td>
+                  <td class="sinbordetable" style="width:33%;">
+                    <span>Descripción del Problema:</span> 
+                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
+                    <br>
+                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <table>
+                <tr>
+                  <th>SOLICITANTE:</th>
+                  <th>TÉCNICO(s) AUXLILIARES</th>
+                  <th>TÉCNICO ENCARGADO</th>
+                </tr>
+  
+                <tr>
+                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>ATENCIÓN A USUARIOS</span><br><span>FIRMA</span></td>
+                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{-- $ordenServiciosObject->tecnico_encargado --}}</span><br><span>FIRMA</span></td>
+                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{-- $ordenServiciosObject->solicitante --}}</span><br><span>FIRMA</span></td>
+                </tr>
               </table>
             </td>
           </tr>
@@ -249,7 +450,7 @@
     </div>
     <br>
         {{-- <h4 style="text-align: center; background-color: rgb(175, 175, 175); border: 1px solid;">Equipos</h4>   --}}
-        <div>
+        <!-- <div>
           <table>
               <tr >
                 <th colspan="5">Equipos</th>
@@ -266,15 +467,15 @@
             
           </table>
         </div>
-        <br>
+        <br> -->
         <div>
           <div>
             <table>
                 
               <tr>
-                <th>ADMINISTRADOR</th>
-                <th>TÉCNICO</th>
-                <th>SOLICITANTE</th>
+                <th>SOLICITANTE:</th>
+                <th>TÉCNICO(s) AUXLILIARES</th>
+                <th>TÉCNICO ENCARGADO</th>
               </tr>
 
               <tr>
@@ -332,6 +533,7 @@
             </div> --}}
         </div>
 </body>
+</div>
 <footer>
     {{-- <hr> --}}
     {{-- class="h-80 w-100 rounded-left"  border: #000 solid 1px; --}}

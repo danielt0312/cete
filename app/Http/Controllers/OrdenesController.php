@@ -50,10 +50,13 @@ class OrdenesController extends Controller
         //dd($request);
         // dd($request->arrEquipos);  //"[object Object]"
         $equipos=$request->arrEquipos;
-        // var_dump($equipos);
+        //  var_dump($equipos);
+        //  dd('murio');
         //dd($request->checkDirector);
         $arr = json_decode($equipos);
-        // var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
+        //  var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
+        //   var_dump($arr);
+        //   dd('murio');
 
         $arrTarea=$arr[0]->aTarea;
         // var_dump($arrTarea);
@@ -65,7 +68,7 @@ class OrdenesController extends Controller
         //SI FUNCIONAA  SP
         //$insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
         $vidModoCaptacion=2;
-        $vid_usuario=1;
+        $vid_usuario=Auth()->user()->id;
         //FUNCION
         $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
     
@@ -112,11 +115,13 @@ class OrdenesController extends Controller
 
         $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
+        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
 
         return view('ordenes.edit', compact(
             'ordenServiciosDetalle',
             'catTipoOrden',
-            'catTipoEquipo'
+            'catTipoEquipo',
+            'catAreasAtiendeOrden'
         ) );
     }
 
@@ -165,16 +170,18 @@ class OrdenesController extends Controller
     }
 
     public function show(Request $request){
+        // dd($request->fecha_inicio,$request->fecha_fin);
         // $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes()");
         $vModoCaptacion=2;
+        //  getTOrdenes2 
         $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes2(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."',".$vModoCaptacion.")");
         // dd($ordenes);
-        // $tenicosAuxD = DB::select("select * from cas_cete.getCatTecnicosAuxiliares(0,1)");
-        // $tenicosAux=$tenicosAuxD[0];
+        $tenicosAuxD = DB::select("select * from cas_cete.getCatTecnicosAuxiliares(0,1)");
+        $tenicosAux=$tenicosAuxD[0];
         // dd($ordenServicios[0]);
         // return response()->json([$registros, $evaluacion, 'vRol'=>$vRol]);
-        $tenicosAuxD='';
-        // dd($ordenes);
+        // $tenicosAuxD='';
+        //  dd($ordenes);
         return response()->json([$ordenes,$tenicosAuxD]);
     }
     
@@ -221,7 +228,7 @@ class OrdenesController extends Controller
     // }
 
     public function updEstatusOrden(Request $request){
-         dd($request->All());
+        //  dd($request->All());
         $exito = DB::connection('pgsql')->select("select * from cas_cete.insCancelaSolicitud(".$request->idSolicServ.",".$request->id_motivo_canc.",'".$request->comentarios."',".$request->id_usuario.",'".$request->desc_rol_usr."')");
         // dd($exito);
         // return response()->json([$exito]); 
@@ -242,7 +249,6 @@ class OrdenesController extends Controller
 
         // dd($ordenServicios[0]);
         $ordenServiciosObject=$ordenServicios[0];
-        
         // return response()->json([$ordenes]);
     //   $ordenServicios = DB::connection('pgsql')->table('cas_orden_servicio as orden')
     //   ->join('users as user', 'user.id', '=', 'orden.usuario_atiende_id_fk')
@@ -328,10 +334,10 @@ class OrdenesController extends Controller
 
     //   view()->share('servicios::ordenes_servicio/downloadOrden',$ordenServiciosObject, $equipos, $tecnicos_aux);
     //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
-    
+
       view()->share('ordenes/downloadOrden',$ordenServiciosObject);
       $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
-
+        // dd('hola');
       return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
       // return $pdf->stream();
     }
@@ -352,8 +358,8 @@ class OrdenesController extends Controller
         
         $tenicosAuxD = DB::connection('pgsql')->select("select * from cas_cete.getCatTecnicosAuxiliares(".$idTenicoEncargado.",2)");
         // $tenicosAux=$tenicosAuxD[0];
-
-        return response()->json([$tenicosAuxD]);
+        // dd($tenicosAuxD);
+        return response()->json($tenicosAuxD);
     }
 
     public function updCerrar(){
@@ -378,18 +384,12 @@ class OrdenesController extends Controller
         //  dd($request->All());
 
         // dd($request->fecha_inicio_prog);
-
+        $vusuario=Auth()->user()->id;
         //$varddd=explode("T",$request->fecha_inicio_prog);
         //dd($varddd[0], " - ", $varddd[1]); 
         // $exito = DB::select("CALL cas_cete.spInsertTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",true)");
-        $exito = DB::connection('pgsql')->select("select * from cas_cete.fnInsTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",'".$request->tecnicosAuxiliaresArray."')");
-        //dd($exito);
-        // psolicserv integer,
-        // pid_usuario_asigna integer,
-        // pfecha_inicio_programada character varying,
-        // pfecha_fin_programada character varying,
-        // pid_usuario integer,
-        // pes_responsable boolean)
+        $exito = DB::connection('pgsql')->select("select * from cas_cete.fnInsTecnicos(".$request->idSolModTec.",".$vusuario.",'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",'".$request->tecnicosAuxiliaresArray."')");
+
         // dd($exito);
         // return response()->json([$exito]); 
         return response()->json($exito);
@@ -399,5 +399,10 @@ class OrdenesController extends Controller
         $equipoHistorial =  DB::connection('pgsql')->select("select * from cas_cete.getHistoricoEquipo('".$etiqueta."')");
 
         return response()->json($equipoHistorial);
+    }
+
+    public function getMostDetalleEquipo($idEquipo){
+        $equipo =  DB::connection('pgsql')->select("select * from cas_cete.getMostDetalleEquipo('".$idEquipo."')");
+        return response()->json($equipo);
     }
 }

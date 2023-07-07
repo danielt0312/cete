@@ -107,20 +107,19 @@
   <div class="row mt-4">
     <div class="col-lg-12 mb-lg-0 mb-4">
       <div class="card ">
-        @can('guardar-evaluar')
+        
         <div class="card-header pb- p-3">
           <div class="d-flex justify-content-between">
             <h6 class="mb-2">Dibujos a Evaluar</h6>
           </div>
         </div>
-        @endcan
-        @can('ver-administrar')
+      
         <div class="card-header pb- p-3">
           <div class="d-flex justify-content-between">
             <h6 class="mb-2">Alumnos registrados</h6>
           </div>
         </div> 
-        @endcan
+        
 
         <div class="mb-2 p-3">
         
@@ -131,28 +130,26 @@
           <button type="button" class="btn colorBtnPrincipal" id="btnFiltros">Filtros</button>
               </div>
           </div>
-          @can('ver-administrar')
+          
             <div class="col-6 text-end">
             <div class="form-group align-middle">
                 <button type="button" class="btn btn-secondary" id="btnFiltrar">Excel</button>
               </div>
             </div>
-          @endcan
+          
           </div>
           <div class="row" id="pnFiltros">
-            @can('ver-administrar')
+            
             <div class="col-2">
               <div class="form-group">
                 <label for="estatus_id">Estatus Dibujo</label>
                 <select class="form-select" aria-label="Default select example" id="estatus_id" name="estatus_id">
                   <option value="0" selected>Seleccionar</option>
-                  @foreach($cat_estatus as $estatus_s)
-                    <option value="{{ $estatus_s->id_estatus }}">{{ $estatus_s->desc_estatus }}</option>
-                  @endforeach
+                  
                 </select>
               </div>
             </div>
-            @endcan
+            
             <div class="col-2">
               <div class="form-group">
                 <label for="estatus_eval_id">Estatus Evaluación</label>

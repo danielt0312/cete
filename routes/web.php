@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
         //Equipos
         Route::get('/consEquipos/{idSolic}','App\Http\Controllers\OrdenesController@getEquiposSol')->name('consEquipos');
         Route::get('/historialEquipo/{etiqueta}','App\Http\Controllers\OrdenesController@getHistorialEquipo')->name('historialEquipo');
+        Route::get('/mostDetalleEquipo/{id}','App\Http\Controllers\OrdenesController@getMostDetalleEquipo')->name('mostDetalleEquipo');
 
         //Tecnicos
         Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');

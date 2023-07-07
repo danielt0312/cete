@@ -1,5 +1,6 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
+<!-- @php setPermissionsTeamId(3); @endphp -->
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -55,26 +56,24 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tabCCT">
                                     <div class="row">
+
                                         <!-- <label for="txtCentroTrabajo">CENTRO DE TRABAJO </label>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{-- $id --}}" aria-describedby="btnBuscar" >       
                                         </div>
-
-                                        <div class="col-2">
+                                        
+                                        <div class="col-8"> 
                                             <button class="btn btn-secondary" type="button" id="btnBuscar"  onclick="fnBuscarCCT()">Buscar</button>
-                                        </div>
-
-                                        <div class="col-2" id="divHistorial">
-                                            
-                                        </div>
-
-                                        <div class="col-2" id="divUbicacion">
-                                           
+                                            &nbsp;&nbsp;&nbsp;<span  id="divHistorial"> 
+                                            </span>
+                                            &nbsp;&nbsp;
+                                            <span  id="divUbicacion">
+                                            </span> 
                                         </div> -->
-                                       
+
                                         <div class="col-4">
                                             <div class="form-group">
-                                            <label for="txtNombreCCT">NOMBRE CENTRO DE TRABAJO</label>
+                                            <label for="txtNombreCCT">NOMBRE</label>
                                             <input type="text" id="txtNombreCCT" name="txtNombreCCT" class="form-control" value="{{ $ordenServiciosDetalle->nombrect }}" readonly >
                                             <input type="hidden" id="txtIdCCT" name="txtIdCCT" class="form-control" value="{{ $ordenServiciosDetalle->id_centro }}" readonly >
                                             <input type="hidden" id="txtIdSolic" name="txtIdSolic" class="form-control" value="{{ $ordenServiciosDetalle->id_solic }}" readonly >
@@ -163,7 +162,11 @@
                                                 <select class="form-select" aria-label="Default select example" id="selTipoOrden" name="selTipoOrden" >
                                                     <option value="0" selected>Seleccionar</option>
                                                     @foreach($catTipoOrden as $tipoOrden)
-                                                        <option value="{{ $tipoOrden->id_tipo_orden }}">{{ $tipoOrden->desc_tipo_orden }}</option>
+                                                        @if( $ordenServiciosDetalle->id_tipo_orden == $tipoOrden->id_tipo_orden)
+                                                            <option value="{{ $tipoOrden->id_tipo_orden }}" selected>{{ $tipoOrden->desc_tipo_orden }}</option>
+                                                        @else
+                                                            <option value="{{ $tipoOrden->id_tipo_orden }}">{{ $tipoOrden->desc_tipo_orden }}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -173,7 +176,13 @@
                                                 <label for="selDepAtiende">DEPENDENCIA QUE ATIENDE EL SERVICIO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                     <option value="0" selected>Seleccionar</option>
-                                                    <option value="1" >Area 1</option>
+                                                    @foreach($catAreasAtiendeOrden as $areasAtiendeOrden)
+                                                        @if( $ordenServiciosDetalle->id_coord_atiende == $areasAtiendeOrden->id)
+                                                            <option value="{{ $areasAtiendeOrden->id }}" selected>{{ $areasAtiendeOrden->area_atiende }}</option>
+                                                        @else
+                                                            <option value="{{ $areasAtiendeOrden->id }}">{{ $areasAtiendeOrden->area_atiende }}</option>
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -187,14 +196,14 @@
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="txtTelefonoSolicitante">TELÉFONO DEL SOLICITANTE</label> 
-                                                <input type="tel" id="txtTelefonoSolicitante" name="txtTelefonoSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->telef_solicitante }}" maxlength="10" onkeypress="return event.charCode>=48 && event.charCode<=57" >
+                                                <input type="tel" id="txtTelefonoSolicitante" name="txtTelefonoSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->telef_solicitante }}" minlength="10" maxlength="10" onkeypress="return event.charCode>=48 && event.charCode<=57" >
                                             </div>
                                         </div>
 
                                         <div class="col-4">
                                             <div class="form-group">
                                                 <label for="txtCorreoSolicitante">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
-                                                <input type="email" id="txtCorreoSolicitante" name="txtCorreoSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->correo_solic }}" >
+                                                <input type="email" id="txtCorreoSolicitante" name="txtCorreoSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->correo_solic  }}" >
                                             </div>
                                         </div>
 
@@ -227,14 +236,8 @@
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
-                                        <div class="col-12" id="divCantidad">
-                                            <div class="form-group">
-                                                <label for="txtCantidadEquipos">Cantidad de Equipos</label>
-                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
-                                            </div>
-                                        </div>
 
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="selTipoEquipo">TIPO DE EQUIPO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
@@ -245,6 +248,14 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="col-1" id="divCantidad">
+                                            <div class="form-group">
+                                                <label for="txtCantidadEquipos">CANTIDAD</label>
+                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" readonly >
+                                            </div>
+                                        </div>
+
                                         <div class="col-4">
                                             <div class="form-group">
                                                  <label for="selTipoServicio">SERVICIO</label>
@@ -261,27 +272,28 @@
                                                     <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
                                                 </div>
                                             </div>
-                                            <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicio">
-                                                <!-- <span>LISTADO DE SERVICIOS</span> -->
+                                            <!-- <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicio">
+                                                
                                                 <ul id="ulServicio">
                                                     
                                                 </ul>
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <label for="selTarea">TAREA</label>
                                                 <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
                                                     <option value="0" selected>Seleccionar</option>
                                                 </select> -->
-                                                <div class="input-group">
+                                                <!-- <div class="input-group"> -->
                                                     <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
                                                         <option value="0" selected>Seleccionar</option>
                                                     </select>
                                                     <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
-                                                    <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
-                                                </div>
+                                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                                <!-- </div> -->
                                             </div>
+                                            
                                             <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
                                                 <span>LISTADO DE TAREAS</span>
                                                 <ul id="ulTarea">
@@ -290,17 +302,20 @@
                                             </div> -->
                                         </div>
 
-                                        <div class="col-4">
-                                            
-                                        </div>
+                                        <div class="col-1" style="padding-bottom:5px;"> 
+                                        <div class="form-group">
+                                            <br>
+                                        <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                                         </div>
+                                         </div>
 
-                                        
-                                        <div class="col-8">
-                                            <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                                <span>LISTADO DE TAREAS</span>
-                                                <ul id="ulTarea" style="font-size:0.75rem;">
-                                                    
-                                                </ul>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
+                                                <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
                                             </div>
                                         </div>
 
@@ -310,14 +325,17 @@
                                                 <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
                                             </div>
                                         </div>
-                                        <div class="col-3 divEtiqueta">
+                                        <div class="col-6 divEtiqueta">
                                             <div class="form-group">
-                                                <label for="txtMarca">MARCA</label>
-                                                <input type="text" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
+                                                <label for="txtMarca">DETALLE EQUIPO</label>
+                                                <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
+                                                <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
+                                                <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
+                                                <input type="hidden" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
                                             </div>
                                         </div>
 
-                                        <div class="col-3 divEtiqueta">
+                                        <!-- <div class="col-3 divEtiqueta">
                                             <div class="form-group">
                                                 <label for="txtModelo">MODELO</label>
                                                 <input type="text" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
@@ -329,53 +347,73 @@
                                                 <input type="text" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
                                             </div>
                                         </div>
-
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end divEtiqueta">
+                                        <div class="divEtiqueta">
+                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnVerDetalles" data-bs-toggle="modal" data-bs-target="#detallesEquipoModal">VER DETALLES</button>
                                         </div>
-
-                                        <div class="col-9">
+                                        </div> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-7">
                                             <div class="form-group">
-                                                <label for="txtDescripcionSoporte">DESCRIPCIÓN SOPORTE O PROBLEMA A REALIZAR</label>
+                                                <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
                                                 <textarea class="form-control" id="txtDescripcionSoporte" name="txtDescripcionSoporte" rows="3"></textarea>
                                             </div>
                                         </div>
+                                        <div class="col-5">
+                                            <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
+                                                <span id="tituloTareas"></span>
+                                                <ul id="ulTarea" style="font-size:0.75rem;">
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
 
-                                        <div class="col-3">
+                                        <!-- <div class="col-3">
                                             <div class="form-group">
                                                 <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
                                                 <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
                                             </div>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="col-12 justify-content-md-start">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="checkReplicar">
+                                        <br>
+                                        <div class="col-9 d-md-flex justify-content-md-end">
+                                            <div class="form-check" id="checkVer">
+                                                <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Replicar datos en el siguiente equipo
                                                 </label>
                                             </div>
                                         </div>
 
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >AÑADIR EQUIPO</button>
                                         </div>
                                         <br>
                                         <div class="col-12" id="divTablaEquipos">
                                             <table class="table">
-                                                <thead>
-                                                    <!-- <th>EQUIPO</th><th>SERVICIO</th><th>TAREAS</th><th>ESTATUS</th><th>OPCIONES</th> -->
-                                                    <th>EQUIPO</th><th>ESTATUS</th><th>CANTIDAD</th><th>OPCIONES</th>
+                                                <thead class="text-align:center;">
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN DEL PROBLEMA</th>
+                                                    <th></th>
                                                 </thead>
                                                 <tbody id="tbEquipos">
 
                                                 </tbody>
                                             </table>
                                         </div>
+                                     
                                         <br>
+                                        
+                                        <div class="col-12 lineaHr"></div>
+                                        
+                                        <br>
+                                        <br>
+                                        
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior3" >ANTERIOR</button>
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="fnGuardar()"> ACTUALIZAR</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="fnGuardar()"> REGISTRAR ORDEN</button>
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Equipos-->
@@ -451,7 +489,7 @@
             </div>
         </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
         </div>
     </div>
@@ -469,19 +507,75 @@
         </div>
         <div class="modal-body">
             <div class="col-12">
-                <div class="form-group" id="map">
+                <div class="form-group" id="map"> 
                     
                 </div>
             </div>
         </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
         </div>
     </div>
   </div>
 </div>
 <!-- FIN MODAL MAPA-->
+
+<!-- MODAL VER DETALLES EQUIPO -->
+<div class="modal fade" id="visualizarDetalleEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="visualizarDetalleEquipoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="visualizarDetalleEquipoModalLabel">Información Equipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+        <div class="row">
+            <div class="col-12"  id="divDetalleEquipoM">
+
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL VER DETALLES EQUIPO-->
+
+<!-- MODAL HISTORIAL EQUIPO -->
+<div class="modal fade" id="historialEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="historialEquipoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historialEquipoModalLabel">Historial del Equipo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body overflow-scroll">
+        <input type="hidden" id="etiquetaM" name="etiquetaM" value="" readonly>
+       <table class="table" id="tablaHistoricoE" >
+        <thead class="text-align:center;">
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ORDEN</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA FINALIZO</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO ATENDIO</th>
+            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SOLICITANTE</th>
+        </thead>
+        <tbody id="tbHistoricoE">
+            
+        </tbody>
+       </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL HISTORIAL EQUIPO-->
 
 <!-- MODAL EDITAR EQUIPO -->
 <div class="modal fade" id="detalleEquipoModal" tabindex="-1" aria-labelledby="detalleEquipoModalLabel" aria-hidden="true">
@@ -504,7 +598,11 @@
           </div>
 
           <div class="row">
-            <div class="col-6">
+            <div class="col-4">
+                <label for="txtEtiquetaM">ETIQUETA</label>
+                <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
+            </div>
+            <div class="col-4">
                 <div class="form-group">
                         <label for="selTipoServicioM">SERVICIO</label>
                     <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
@@ -527,7 +625,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <div class="form-group">
                     <label for="selTareaM">TAREA</label>
                     <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
@@ -639,6 +737,7 @@
     //         };
 
     $(document).ready(function () {
+        //load();
         // $("#divTablaEquipos").hide()
 
         // $("#btnSiguiente").hide()
@@ -681,6 +780,10 @@
                 msjeAlerta('', 'Debe ingresar el teléfono del solicitante', 'error');
             }
 
+            if(vTelefonoSolicitante.length<10){
+                msjeAlerta('', 'Debe ingresar 10 números en teléfono', 'error');
+            }
+
             if(vCorreoSolicitante==''){
                 msjeAlerta('', 'Debe ingresar el correo del solicitante', 'error');
             }else{
@@ -701,7 +804,7 @@
 
 
             if(vId_TipoOrden!=0 && vId_DepAtiende!=0 && vNombreSolicitante!='' && vTelefonoSolicitante!=''&& vCorreoSolicitante!=''&& bandC==0 
-            && vDescripcionReporte!='' ){
+            && vDescripcionReporte!='' && vTelefonoSolicitante.length==10 ){
                 $("#tab3").attr('class', 'nav-link');
                 $("#tab3").tab('show');
             }
@@ -725,6 +828,19 @@
             } else {  
                 // $("#divCantidad").hide();
                 // $("#divCantidad").val("1");
+                arrTareas=[];
+                $("#tbTarea").remove();
+                $("#selTipoEquipo").val("0").attr("selected",true);
+                $("#selTipoServicio").val("0").attr("selected",true);
+                $("#selTarea").val("0").attr("selected",true);
+                $("#txtDetEquipo").val("");
+                $("#txtCantidadEquipos").val(1);
+                $("#txtEtiquetaServicio").val("");
+                $("#txtMarca").val("");
+                $("#txtModelo").val(""); 
+                $("#txtNumeroSerie").val(""); 
+                $("#txtDescripcionSoporte").val(""); 
+                $("#txtUbicacionEquipo").val(""); 
             }  
         });  
 
@@ -732,18 +848,30 @@
             if($("#checkSolicitante").is(':checked')) {  
                 var vDirector = $("#txtDirectorCCT").val();
                  $("#txtNombreSolicitante").val(vDirector);
+                 $("#txtNombreSolicitante").prop('disabled', true);
             } else {  
                  $("#txtNombreSolicitante").val('');
+                 $("#txtNombreSolicitante").prop('disabled', false);
             }  
         });  
 
         $("#txtCantidadEquipos").change(function() {  
             cant=$("#txtCantidadEquipos").val();
             if(cant > 1) {  
-                 $(".divEtiqueta").show();
+                //  $(".divEtiqueta").hide();
+                $("#txtEtiquetaServicio").prop('disabled', true);
+                 $("#checkVer").hide();
             } else {  
-                 $(".divEtiqueta").hide();
+                //  $(".divEtiqueta").show();
+                $("#txtEtiquetaServicio").prop('disabled', false);
+                 $("#checkVer").show();
             }  
+
+            $("#txtEtiquetaServicio").val('');
+            $("#txtDetEquipo").val('');
+            $("#txtMarca").val('');
+            $("#txtModelo").val('');
+            $("#txtNumeroSerie").val('');
         });  
     
         var tablaEquipo='';
@@ -751,13 +879,17 @@
         // var arrEquipos = [];
         $("#btnAgregarEquipo").click(function(){
              var bandCheck='';
-            $("#checkReplicar").click(function() {  
+            // $("#checkReplicar").click(function() {  
                 if($("#checkReplicar").is(':checked')) {  
                     bandCheck=1;
+                    console.log(bandCheck+'---1');
                 } else {  
                     bandCheck=0;
+                    console.log(bandCheck+'---2');
                 }  
-            });  
+            // }); 
+
+            console.log(bandCheck+'---3');
 
             var etiquetaServicio = $("#txtEtiquetaServicio").val();
             var marca = $("#txtMarca").val();
@@ -778,42 +910,79 @@
             // $("#tbEquipos").html(tablaEquipo);
             // i=i+1;
             // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
-            arrEquipos.push({
-                con : i,
-                id_tipo_equipo : vId_TipoEquipo, 
-                desc_tipo_equipo : vTipoEquipo, 
-                etiquetaServicio : etiquetaServicio,
-                marca : marca,
-                modelo : modelo, 
-                numeroSerie : numeroSerie,
-                descripcionSoporte : descripcionSoporte,
-                ubicacionEquipo : ubicacionEquipo,
-                cantidad : vCantidad,
-                estatus_equipo : 1, 
-                nuevo : 1, 
-                aTarea : arrTareas, ///arreglo tareas
-                // aServicio : arrServicios /// arreglo servicios
-            })
-            //  arrTareas=[];
-            drawRowEquipo();
-            i=i+1;
-            if(bandCheck==0){
-                arrTareas=[];
-                $("#tbTarea").remove();
-                $("#selTipoEquipo").val("0").attr("selected",true);
-                $("#selTipoServicio").val("0").attr("selected",true);
-                $("#selTarea").val("0").attr("selected",true);
-                $("#txtEtiquetaServicio").val("");
-                $("#txtMarca").val("");
-                $("#txtModelo").val(""); 
-                $("#txtNumeroSerie").val(""); 
-                $("#txtDescripcionSoporte").val(""); 
-                $("#txtUbicacionEquipo").val(""); 
-            }
-            
-            
+            // console.log(arrTareas);
 
-            console.log(arrEquipos);
+            if(vId_TipoEquipo==0){
+                msjeAlerta('', 'Favor de seleccionar Tipo de Equipo', 'error')
+            }else if(arrTareas==null || arrTareas==[]){
+                msjeAlerta('', 'Favor de seleccionar Servicios y Tares', 'error')
+            }else if(descripcionSoporte==null || descripcionSoporte=='' ){
+                msjeAlerta('', 'Favor de ingresar Descripción de Soporte o Problema', 'error')
+            }else{
+
+        // if(vId_TipoEquipo!=0 && descripcionSoporte!='' && (arrTareas!=null || arrTareas!=[])){
+                arrEquipos.push({
+                    con : i,
+                    id_equipo_serv_solic : 0,
+                    id_tipo_equipo : vId_TipoEquipo, 
+                    desc_tipo_equipo : vTipoEquipo, 
+                    etiquetaServicio : etiquetaServicio,
+                    marca : marca,
+                    modelo : modelo, 
+                    numeroSerie : numeroSerie,
+                    descripcionSoporte : descripcionSoporte,
+                    ubicacionEquipo : ubicacionEquipo,
+                    cantidad : vCantidad,
+                    estatus_equipo : 1, 
+                    nuevo : 1, 
+                    aTarea : arrTareas, ///arreglo tareas
+                    // aServicio : arrServicios /// arreglo servicios
+                });
+                console.log(arrEquipos);
+                //  arrTareas=[];
+                drawRowEquipo();
+                i=i+1;
+                console.log(bandCheck+'---34');
+                if(bandCheck==0){
+                    arrTareas=[];
+                    $("#tbTarea").remove();
+                    $("#selTipoEquipo").val("0").attr("selected",true);
+                    $("#selTipoServicio").val("0").attr("selected",true);
+                    $("#selTarea").val("0").attr("selected",true);
+                    $("#txtDetEquipo").val("");
+                    $("#txtCantidadEquipos").val("");
+                    $("#txtEtiquetaServicio").val("");
+                    $("#txtMarca").val("");
+                    $("#txtModelo").val(""); 
+                    $("#txtNumeroSerie").val(""); 
+                    $("#txtDescripcionSoporte").val(""); 
+                    $("#txtUbicacionEquipo").val(""); 
+                    console.log(bandCheck+'---5');
+                 }
+            }
+            $("#txtCantidadEquipos").val(1);
+            $("#tituloTareas").text('');
+            $("#selTipoServicio").val("0").attr("selected",true);
+            console.log(bandCheck+'---6');
+            // if(bandCheck==0){
+            //     arrTareas=[];
+            //     $("#tbTarea").remove();
+            //     $("#selTipoEquipo").val("0").attr("selected",true);
+            //     $("#selTipoServicio").val("0").attr("selected",true);
+            //     $("#selTarea").val("0").attr("selected",true);
+            //     $("#txtEtiquetaServicio").val("");
+            //     $("#txtMarca").val("");
+            //     $("#txtModelo").val(""); 
+            //     $("#txtNumeroSerie").val(""); 
+            //     $("#txtDescripcionSoporte").val(""); 
+            //     $("#txtUbicacionEquipo").val(""); 
+            // }
+            
+            // $("#txtCantidadEquipos").val(1);
+            // $(".divEtiqueta").show();
+            // $("#checkVer").hide();
+
+            // console.log(arrEquipos);
         });
 
         var equipoServicio='';
@@ -848,31 +1017,50 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
+            vtipEqu= $("#selTipoEquipo").val();
+
             vTarea = $("#selTarea").val();
             vTareaText = $('select[id="selTarea"] option:selected').text();
 
 
             vTipoServicio = $("#selTipoServicio").val();
             vTipoServicioText = $('select[id="selTipoServicio"] option:selected').text();
+            
+            if(vtipEqu !=0){
+                if(vTipoServicio !=0){
+                    if(vTarea != 0){
+                    
+                        var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
-
-            if(vTarea != 0){
-                var index = arrTareas.findIndex(e => e.idTarea === vTarea);
-
-                if(index == -1){
-                    arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
-                    drawRowTarea();
-                    // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
-                    g=g+1;
+                        if(index == -1){
+                            arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+                            drawRowTarea();
+                            // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
+                            g=g+1;
+                        }else{
+                            $("#selTarea").val("0").attr("selected",true);
+                            msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')
+                        }
+                    }else{
+                        msjeAlerta('', 'Debe seleccionar la Tarea', 'error')
+                    }
+                    
                 }else{
-                    $("#selTarea").val("0").attr("selected",true);
-                    msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')
+                    msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
                 }
+            }else{
+                msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
             }
-            // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
+            $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
         $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
+
+            arrTareas=[];
+            $("#divListaTarea").removeClass('scrollVerticalTareas');
+            $("#tituloTareas").text('');
+            $("#ulTarea").empty();
+
             let urlEditar = '{{ route("consServicio", ":idEquipo") }}';
             urlEditar = urlEditar.replace(':idEquipo', this.value); 
             
@@ -933,6 +1121,7 @@
                 $("#txtMarca").val("DELL");
                 $("#txtModelo").val("12345");
                 $("#txtSerie").val("02325652");
+                $("#txtDetEquipo").val('Marca:DELL - MODELO:12345 - NÚMERO DE SERIE:02325652');
             }
         });
 
@@ -965,39 +1154,54 @@
         
         $.each(arrEquipos, function(j, val){
             if (!jQuery.isEmptyObject(arrEquipos[j])) { 
+
+                var vDatos='';
+                if(arrEquipos[j]['cantidad'] > 1){
+                    vDatos='';
+                }else{
+                    vDatos='Etiqueta:'+arrEquipos[j]['etiquetaServicio']+' - Marca: '+arrEquipos[j]['marca']+' - Modelo: '+arrEquipos[j]['modelo']+' - Número de Serie: '+arrEquipos[j]['numeroSerie'];
+                }
         
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
-                tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td>En Proceso</td>';
-                
-                tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td><td><div class="dropdown btn-group dropstart">';
+                tablaEquipo2+='<tr id="tr_'+j+'"><td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['descripcionSoporte']+'</td>';
+                // tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+vDatos+'</td>';
+                tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
                 tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
                 tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
                 tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
                 tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
                 tablaEquipo2+='                  </button>';
                 tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
+                tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verDetalleEquipoA('+j+')" class="dropdown-item"> '; 
+                tablaEquipo2+='                                  <i class="fas fa-eye"></i> Visualizar';
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verHistorialEquipo('+j+')" class="dropdown-item"> ';
+                tablaEquipo2+='                                  <i class="fas fa-book"></i> Historial'; //<!--web Service-->
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
+                tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
+                tablaEquipo2+='                              </a>';
+                tablaEquipo2+='                          </li>';
                 tablaEquipo2+='                      <li>';
                 tablaEquipo2+='                          <a  ';
-                // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
-                tablaEquipo2+='                          onclick="removeEquipo('+j+');" >';
-                tablaEquipo2+='                              <i class="fas fa-eye"></i> Eliminar';
+                tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item" >';
+                tablaEquipo2+='                              <i class="fas fa-trash"></i> Eliminar';
                 tablaEquipo2+='                          </a>';
                 tablaEquipo2+='                      </li>';
-                tablaEquipo2+='                          <li>';
-                tablaEquipo2+='                              <a onclick="verServicioEquipo('+j+')"> ';
-                // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
-                tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
-                tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
-                tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')"> ';
-                // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
-                tablaEquipo2+='                                  <i class="fas fa-download"></i> Editar Equipo';
-                tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
                 tablaEquipo2+='                  </ul>';
                 tablaEquipo2+='              </div></td>';
-                // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
                 tablaEquipo2+='</tr>';
             }
         });
@@ -1011,7 +1215,7 @@
         if(arrTareas.includes(item) ==false){ 
             if ( item !== -1 ) {
                 arrTareas.splice( item, 1 );
-                console.log(arrTareas);
+                // console.log(arrTareas);
                 $("#liT_"+item).remove();
                 drawRowTarea();
             }   else{
@@ -1056,7 +1260,8 @@
                 }
                 
                 listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
-                listaTarea2+='<td><button type="button" onclick="removeTarea('+j+');" class="btn colorBtnPrincipal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+                // class="btn colorBtnPrincipal"
+                listaTarea2+='<td><button type="button" class="btnEliminar" onclick="removeTarea('+j+');" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
                 listaTarea2+='<tr>';
             }
         });
@@ -1064,7 +1269,14 @@
         listaTarea2+='</tbody>';
         listaTarea2+='</table>';
 
+        if(listaTarea2!=''){
+            $("#divListaTarea").addClass('scrollVerticalTareas');
+        }else{
+            $("#divListaTarea").removeClass('scrollVerticalTareas');
+        }
+
         $("#ulTarea").empty();
+        $("#tituloTareas").text('LISTADO DE SERVICIOS/TAREAS ');
         $("#ulTarea").html(listaTarea2);
         $("#selTarea").val("0").attr("selected",true);
     }
@@ -1126,10 +1338,11 @@
         })
     }
 
-    function msjeAlerta2(titulo, contenido, icono){
+    function msjeAlerta2(titulo, contenido, icono, id_solic_serv){
+        // console.log(id_solic_serv);
         let urlEditar = '{{ route("download-pdf", ":id") }}';
-        urlEditar = urlEditar.replace(':id', 1);
-
+        urlEditar = urlEditar.replace(':id', id_solic_serv);
+        // console.log(urlEditar);
         Swal.fire({
             title: titulo,
             text: contenido,
@@ -1142,9 +1355,13 @@
             }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = urlEditar;
+                // download-pdf
+            }else{
+                window.location.href = '{{ route("listadoOrdenes") }}';
             }
         });
     }
+
     function fnConsEquipos(){
         var idSolic= $("#txtIdSolic").val();
         let urlEditar = '{{ route("consEquipos", ":idSolic") }}';
@@ -1169,14 +1386,15 @@
                             // console.log(data[0][i]);
                             arrEquipos.push({
                             con : i,
+                                id_equipo_serv_solic : data[0][i].id_equipo_serv_solic,
                                 id_tipo_equipo : data[0][i].id_tipo_equipo, 
                                 desc_tipo_equipo : data[0][i].tipo_equipo, 
-                                etiquetaServicio : '',
+                                etiquetaServicio : data[0][i].etiqueta,
                                 marca : '',
                                 modelo : '', 
                                 numeroSerie : '',
-                                descripcionSoporte : '',
-                                ubicacionEquipo : '',
+                                descripcionSoporte : data[0][i].desc_problema,
+                                ubicacionEquipo : data[0][i].ubicacion,
                                 cantidad : 1,
                                 estatus_equipo : 1, 
                                 nuevo : 0, 
@@ -1350,7 +1568,7 @@
                             // $("#btnHistorialCCT").show();
                             // $("#btnUbicacionCCT").show();
                             
-                            var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Ver Historial</button>';
+                            var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Historial</button>';
                             var divU='<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>';
                             $("#divHistorial").html(divH);
                             $("#divUbicacion").html(divU);
@@ -1362,13 +1580,13 @@
                                 $.each(data[1], function(j, val){
                                     if (!jQuery.isEmptyObject(data[1])) {
                                         htmlHist+='<tr><td>'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td>';
-                                        htmlHist+='<td><div class="dropdown btn-group dropstart">';
+                                        htmlHist+='<td><div class="dropdown btn-group dropend">';
                                         htmlHist+='<button class="btn btn-link text-secondary mb-0 "';
                                         htmlHist+='data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >';
                                         htmlHist+='<i class="fa fa-ellipsis-v text-xs"></i></button>';
                                         htmlHist+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
                                         htmlHist+='<li>';
-                                        htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')"> ';
+                                        htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')" class="dropdown-item"> ';
                                         htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
                                         htmlHist+='</a>';
                                         htmlHist+='</li>';
@@ -1384,6 +1602,7 @@
                                 // console.log(arrEscuelaTurno);
                                 
                                 $("#hist").html(htmlHist);
+                                $("#txtCentroTrabajo").val('');
                             }else{
                                 $("#hist").html('<span>No hay historial de este centro de trabajo</span>');
                             }
@@ -1472,32 +1691,41 @@
 
     function fnGuardar(){
         var claveCCT= $("#txtClaveCCT").val();
-        let urlEditar = '{{ route("actualizarOrden") }}';
+        let urlEditar = '{{ route("guardarOrden") }}';
         // urlEditar = urlEditar.replace(':claveCCT', claveCCT);
         var form = $('#formOrden')[0];
+        var checkDirector='';
+        if($("#checkSolicitante").is(':checked')) {  
+            checkDirector= true;
+        } else {  
+            checkDirector= false;
+        }  
          
          // FormData object 
          var data2 = new FormData(form);
-        //  data2.append('arrEquipos',arrEquipos);
-        data2.append('arrEquipos', JSON.stringify(arrEquipos))
-        // data2.append('equipo_servicio',equipo_servicio);
+        data2.append('arrEquipos', JSON.stringify(arrEquipos));
+        data2.append('checkDirector', JSON.stringify(checkDirector));
 
-        console.log(data2);
+        // $.ajax({
+        //     url: urlEditar,
+        //     type: 'POST',
+        //     data:data2,
+        //     dataType: 'json', 
+        //     processData: false,
+        //     contentType: false,
+        //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //     success: function(data) {
 
-        $.ajax({
-            url: urlEditar,
-            type: 'POST',
-            data:data2,
-            dataType: 'json', 
-            processData: false,
-            contentType: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function(data) {
-                //   console.log(data[0][0]);   //data[0][i].id_tarea
-                // console.log('hola');
-                msjeAlerta2('REGISTRO EXITOSO DE ORDEN DE SERVICIO','EL FOLIO DE SERVICIO DE TU ORDEN ES: O2023-00002 ','success')
-            }
-        });
+        //         var vequip = JSON.parse(data[0].inssolicservicio);
+
+        //         if(data[0]['inssolicservicio']!=''){ 
+        //             msjeAlerta2('REGISTRO EXITOSO DE ORDEN DE SERVICIO','EL FOLIO DE SERVICIO DE TU ORDEN ES: '+vequip.vpfolio,'success',vequip.vpid_solic_serv)
+        //         }else{ 
+        //             msjeAlerta('No se pudo realizar el registro de la Orden de Servicio ', '','error')
+        //         }
+                
+        //     }
+        // });
     }
 
     function fnLimpiar(){
@@ -1513,6 +1741,19 @@
     function fnVerOrdenCentro(idOrden){
         console.log(idOrden);
     }
+
+    // function fnValidarCorreo(){
+    //     var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+
+    //     if (! regex.test($('#email').val().trim())) {
+    //         // alert('Correo validado');
+    //         msjeAlerta('', 'El correo no es valido', 'error')
+
+    //     } 
+    //     // else {
+    //     //     msjeAlerta('', 'El correo no es valido', 'error')
+    //     // }
+    // }
 
     function verServicioEquipo(i){
         var html='';
@@ -1574,6 +1815,176 @@
 
         var marker = new google.maps.Marker({position: macc, map: map});
 
+    }
+
+    function verDetalleEquipoA(numArr){
+        var etiquetaServicio='';
+        var marca='';
+        var modelo='';
+        var numeroSerie='';
+        var ubicacion='';
+
+        if(arrEquipos[numArr].etiquetaServicio==''){
+            etiquetaServicio='-';
+        }else{
+            etiquetaServicio=arrEquipos[numArr].etiquetaServicio;
+        }
+
+        if(arrEquipos[numArr].marca==''){
+            marca='-';
+        }else{
+            marca=arrEquipos[numArr].marca;
+        }
+
+        if(arrEquipos[numArr].modelo==''){
+            modelo='-';
+        }else{
+            modelo=arrEquipos[numArr].modelo;
+        }
+
+        if(arrEquipos[numArr].numeroSerie==''){
+            numeroSerie='-';
+        }else{
+            numeroSerie=arrEquipos[numArr].numeroSerie;
+        }
+
+        if(arrEquipos[numArr].ubicacionEquipo==''){
+            ubicacion='-';
+        }else{
+            ubicacion=arrEquipos[numArr].ubicacionEquipo;
+        }
+
+        var htmlSel='';
+
+        htmlSel+='<table style="border:1px solid; width:100%;">';
+            htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
+            // htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
+            // htmlSel+='<td><label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
+            htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
+            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
+            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
+            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
+            htmlSel+='<td colspan="2"></td>';
+            htmlSel+='</tr>';
+
+            htmlSel+='<tr>';
+            htmlSel+='<td colspan="2">';
+            htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
+            htmlSel+='<td colspan="2">';
+            htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
+            htmlSel+='<td colspan="2">';
+            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+            htmlSel+='</td>';
+            htmlSel+='</tr>';
+
+            htmlSel+='<tr>';
+            htmlSel+='<td colspan="6">';
+            htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
+            htmlSel+='</td>';
+            htmlSel+='</tr>';
+
+            htmlSel+='<tr>';
+            htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
+            htmlSel+='</tr>';
+
+            htmlSel+='<tr>';
+            htmlSel+='<td colspan="6" style="text-align:center;">';
+
+                // var html='';
+                htmlSel+='<table>';
+                htmlSel+='<thead>';
+                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
+                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
+                htmlSel+='</thead>';
+                htmlSel+='<tbody>';
+    
+                var aTarea=arrEquipos[numArr]['aTarea'];
+                var aux='';
+                $.each(aTarea, function(j, val){
+                    if (!jQuery.isEmptyObject(aTarea[j])) {
+                        htmlSel+='<tr>';
+                        if(aux==aTarea[j]['desc_Servicio']){ 
+                            htmlSel+='<td >&nbsp;</td>';
+                            aux='';
+                        }else{
+                            aux=aTarea[j]['desc_Servicio'];
+                            htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
+                        }
+                        htmlSel+='<td class="text-xs text-secondary mb-0"> - '+aTarea[j]['desc_Tarea']+'</td>';
+                        htmlSel+='<tr>';
+                    }
+                });
+
+                htmlSel+='</tbody>';
+                htmlSel+='</table>';
+
+            htmlSel+='</td>';
+            htmlSel+='</tr>';
+
+            htmlSel+='</table>';
+            htmlSel+='<br>';
+
+            // htmlSel+='<tr>';
+            // htmlSel+='<td colspan="4">';
+            // htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label><br>';
+            // htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
+            // htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label><br>';
+            // htmlSel+='<label>Servicio(s):</label><label class="SinNegrita" id="lblServicios">'+arrEquipos[numArr].servicio+'</label><br>';
+            // htmlSel+='<label>Tarea(s):</label><label class="SinNegrita" id="lblTareas">'+arrEquipos[numArr].tarea+'</label><br>';
+            // htmlSel+='</td>';
+            // htmlSel+='</tr>';
+            // htmlSel+='</table>';
+            // htmlSel+='<br>';
+        
+            $("#divDetalleEquipoM").html(htmlSel);
+
+        $("#visualizarDetalleEquipoModal").modal("show");
+    }
+
+    function verHistorialEquipo(numArr){
+        var detE='';
+        if(arrEquipos[numArr].etiquetaServicio!=''){
+            let urlEditar = '{{ route("historialEquipo", ":etiqueta") }}';
+            urlEditar = urlEditar.replace(':etiqueta', arrEquipos[numArr].etiquetaServicio);
+
+            $.ajax({
+                url: urlEditar,
+                type: 'GET',
+                dataType: 'json', 
+                // processData: false,
+                // contentType: false,
+                // headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(data) {
+                    console.log(data);
+                    // var detE='';
+                    if(data.length > 0 ){
+                        $.each(data, function(j, val){
+                                detE+='<tr>';
+                                detE+='<td class="text-xs text-secondary mb-0">'+data[j]['folio']+'</td>';
+                                detE+='<td><h6 class="mb-0 text-sm">'+data[j]['nombrect']+'</h6><p class="text-xs text-secondary mb-0">'+data[j]['clave_ct']+'</p></td>';
+                                detE+='<td class="text-xs text-secondary mb-0">'+data[j]['fecha_finalizo']+'</td>';
+                                detE+='<td class="text-xs text-secondary mb-0">'+data[j]['tecnico']+'</td>';
+                                detE+='<td class="text-xs text-secondary mb-0">'+data[j]['solicitante']+'</td>'; 
+                                detE+='</tr>';
+                        });
+                    }else{
+                        detE+='<tr>';
+                        detE+='<td colspan="5" class="text-xs text-secondary mb-0">No existen registros</td>'; 
+                        detE+='</tr>';
+                    }
+
+                    $("#tbHistoricoE").html(detE);
+                }
+            });
+        }else{
+            detE+='<tr>';
+            detE+='<td colspan="5" class="text-xs text-secondary mb-0">No existen registros</td>'; 
+            detE+='</tr>';
+            $("#tbHistoricoE").html(detE);
+        }
+        
+
+        $("#historialEquipoModal").modal("show");
     }
 
     function verDetalleEquipo(j){
