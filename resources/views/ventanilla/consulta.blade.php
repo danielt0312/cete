@@ -24,7 +24,7 @@
                         <div class="col-2">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="radio_correo">
                                 <label class="form-check-label" for="flexRadioDefault1">
-                                &nbsp; Busqueda Por Fecha
+                                &nbsp; Busqueda Por Email
                                 </label>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
             </div>
             <div class="col-1">
                 <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_enviar">Enviar</button>
-                <button class="btn btn-secondary" hidden style="font-size:0.80em;" id="btn_enviar2">Enviar</button>
+                <button class="btn btn-secondary" hidden style="font-size:0.80em;" id="btn_enviar2">Consultar</button>
                 <button class="btn btn-secondary" hidden style="font-size:0.80em;" id="btn_nueva_busqueda">Nueva Busqueda</button>
             </div>
         </div>
@@ -97,7 +97,7 @@
                     </div>
                   </div>
                   <div style="text-align:center;  background-color:#ab0033;">
-                    <label style="color:white;">DATOS DE REPORTE</label>
+                    <label style="color:white;">DATOS DEL SOLICITANTE</label>
                   </div>
                   <br>
                   <div class="row">
@@ -414,6 +414,7 @@ gvToken = '';
     });
 
     function Mostrar_Servicio(id){
+        cond_show_edit = 0;
         console.log(id);
         html1='';
         html2='';
@@ -433,7 +434,7 @@ gvToken = '';
         $.ajax({
             url: '/solicitudes/buscar_folio/',
             type: 'GET',
-            data: {'folio_solicitud' : id}
+            data: {'id' : id, 'cond_show_edit' : cond_show_edit}
             }).always(function(r) {
                 $('#numero_solicitud').append('No. de Solicitud: '+r.data[0]['folio']+'');
                 console.log(r);
@@ -474,31 +475,21 @@ gvToken = '';
                 html1+='</div>';
                 html1+='</div>';
                 
-                html2+='<div class="row">';
-                html2+='<div class="col-6">';
-                    html2+='<label>Tipo de Orden : &nbsp;</label>';
-                    html2+='<span>Ordinaria</span>';
-                html2+='</div>';
-                html2+='</div>';
-                html2+='<div class="row">';
-                html2+='<div class="col-12">';
-                    html2+='<label>Dependencia que Atiende en el Servicio : &nbsp;</label>';
-                    html2+='<span>Centro Estatal de Tecnologia Educativa</span>';
-                html2+='</div>';
-                html2+='</div>';
+                
+                
                 html2+='<div class="row">';
                 html2+='<div class="col-5">';
-                    html2+='<label>Nombre del Solicitante : &nbsp;</label>';
+                    html2+='<label>Nombre : &nbsp;</label>';
                     html2+='<span>'+r.data[0]['solicitante']+'</span>';
                 html2+='</div>';
                 html2+='<div class="col-5">';
-                    html2+='<label>Telefono del Solicitante : &nbsp;</label>';
+                    html2+='<label>Telefono : &nbsp;</label>';
                     html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
                 html2+='</div>';
                 html2+='</div>';
                 html2+='<div class="row">';
                 html2+='<div class="col-12">';
-                    html2+='<label>Correo Electronico del Solicitante : &nbsp;</label>';
+                    html2+='<label>Correo Electronico : &nbsp;</label>';
                     html2+='<span>'+r.data[0]['correo_solic']+'</span>';
                 html2+='</div>';
                 html2+='</div>';

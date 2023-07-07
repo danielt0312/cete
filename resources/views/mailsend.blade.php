@@ -10,6 +10,5 @@
     <h1>{{ $details ['tittle'] }}</h1>
     <p>{{ $details ['body'] }}</p>
     <br>
-    <p>El token tiene vigencia de 5 Minutos..</p>
 </body>
 </html>

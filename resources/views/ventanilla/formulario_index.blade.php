@@ -2,7 +2,15 @@
 @section('title','CAS CETE')
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-    
+<style>
+
+
+    #map {
+        /* width: 100%;
+        height: 400px; */
+        background-color: grey;
+    }
+</style>
 @section('content')
 <div class="container-fluid py-4 mt-3">
     <div class="row mt-4">
@@ -14,12 +22,12 @@
         <div class="col-lg-12 mb-lg-0 mb-4">
             <div class="container">
                 <div class="m-4">
-                    <ul class="nav nav-tabs" id="myTab">
+                    <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a href="#home" id="tab1" class="nav-link active" data-bs-toggle="tab">DATOS DEL CENTRO DE TRABAJO</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#profile" id="tab2" class="nav-link " data-bs-toggle="tab">DATOS DEL REPORTE</a>
+                            <a href="#profile" id="tab2" class="nav-link disabled" data-bs-toggle="tab">DATOS DEL REPORTE</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a href="#messages" id="tab3" class="nav-link " data-bs-toggle="tab">EQUIPOS</a>
@@ -29,13 +37,17 @@
                         <div class="tab-pane fade show active" id="home">
                             <br>
                             <div class="row">
+                            <div id="hidden_centro_trabajo"></div>
+                            <br>
+                            <br>
                                 <div class="col-6">
                                     <span style="font-size:0.65em;">1.- INGRESA LA CALVE DE CENTRO DE TRABAJO DEL PLANTEL EDUCATIVO QUE REQUIERE EL SERVICIO</span>
 
                                 </div>
-                                <div id="hidden_centro_trabajo" class="col-3" style="text-align: right;"></div>
                                 
-                                <br>
+                                <!-- <div id="hidden_centro_trabajo" class="col-3" style="text-align: right;"></div> -->
+                                
+                                <!-- <br> -->
                                 <br>
                                 <label style="font-size:0.75em;">CENTRO DE TRABAJO</label>
                                 <div class="col-3">
@@ -91,19 +103,23 @@
                             </div>
                             <br>
                             <div style="text-align:right;" hidden id="div_btn_siguiente">
-                                <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
+                                <button class="btn btn-primary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="profile">
                             <br>
                             <div class="row">
-                                <div class="col-6">
+                            <div id="hidden_centro_trabajo2"></div>
+                            <br>
+                            <br>
+                            <!-- <div id="hidden_centro_trabajo"></div> -->
+                                <div class="col-12">
                                     <span style="font-size:0.65em;">3.- REGISTRA LOS DATOS DE LA SOLICITUD DE SERVICIO</span>
                                 </div>
-                                <div id="hidden_centro_trabajo2" class="col-3" style="text-align: right;"></div>
+                                
 
-                                <br>
-                                <br>
+                                <!-- <br> -->
+                                <!-- <br> -->
                                 <div class="col-4">
                                     <label style="font-size:0.75em;">NOMBRE DEL SOLICITANTE</label>
                                     <input type="text" class="form-control" id="vNombre_Solicitante">
@@ -142,7 +158,7 @@
                                 </div>
                                 <div class="input-group">
                                     <!-- <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_siguiente2">Siguiente</button> -->
-                                    <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_registrar2">Registrar</button>
+                                    <button class="btn btn-primary" style="font-size:0.80em;" id="btn_registrar2">Registrar</button>
                                 </div>
                             </div>
                             
@@ -246,31 +262,11 @@
  
     var bandera_servicio = 0;
     var eliminar_especifico = 0;
+
+    var vCentro_Trabajo = '';
     // console.log(arreglo_serv);
 
-    // $(function() {
 
-    //     var html='';
-    //     var html2='';
-
-    //     html+='<label style="font-size:0.75em;">ESPECIFIQUE EL TIPO DE EQUIPO A REVISAR</label>';
-    //     html+='<select class="form-select" aria-label="Default select example" id="tipo_equipo">';
-    //         html+='<option selected value="0">SELECCIONAR UN TIPO DE EQUIPO</option>';
-    //         for (var i = 0; i < arreglo_equipo.length; i++) {
-    //             html+='<option value="'+arreglo_equipo[i]['id_equipo']+'">'+arreglo_equipo[i]['desc_equipo']+'</option>';
-    //         }
-    //         html+='</select>';
-    //     $("#select_tipo_equipo").append(html);
-
-    //     html2+='<label style="font-size:0.75em;">TIPO DE SERVICIO</label>';
-    //     html2+='<select class="form-select" id="tipo_servicio">';
-    //         html2+='<option selected value="0">SELECCIONAR UN TIPO DE SERVICIO</option>';
-    //         for (var i = 0; i < arreglo_data_tipo_servicios.length; i++) {
-    //             html2+='<option value="'+arreglo_data_tipo_servicios[i]['id_servicio']+'">'+arreglo_data_tipo_servicios[i]['desc_servicio']+'</option>';
-    //         }
-    //         html2+='</select>';
-    //     $("#select_tipo_servicio").append(html2);
-    // });
 
     $("#vCentro_Trabajo").keyup(function(){
         if($('#vCentro_Trabajo').val().length > 0){
@@ -286,8 +282,16 @@
         }
     });
 
+    $("#vNombre_Solicitante").keyup(function(){
+        var txt = $(this).val();
+        $(this).val(txt.replace(/^(.)|\s(.)/g, function($1){ return $1.toUpperCase( ); }));
+    });
+
     $('#btn_consultar').click(function(){
-        var vCentro_Trabajo = $('#vCentro_Trabajo').val();
+        $("#hidden_centro_trabajo").html('');
+        $("#hidden_centro_trabajo2").html('');
+        $("#hidden_centro_trabajo3").html('');
+        vCentro_Trabajo = $('#vCentro_Trabajo').val();
         // if (vCentro_Trabajo == ''){
         //     Swal.fire({
         //         position: 'bottom-right',
@@ -331,8 +335,34 @@
                     $("#span_centro_trabajo").remove();
                     $("#span_centro_trabajo2").remove();
                     $("#span_centro_trabajo3").remove();
-                    html = '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
-                    html2 = '<b><span id="span_centro_trabajo2" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
+                    html='';
+                    html2='';
+                    html+= '<div class="row">';
+                        html+= '<div class="col">';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
+                            html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
+                            html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
+                            html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
+                            html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                        html+= '<div>';
+                    html+= '</div>';
+                    html2+= '<div class="row">';
+                        html2+= '<div class="col">';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
+                            html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
+                            html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
+                            html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
+                            html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                        html2+= '<div>';
+                    html2+= '</div>';
+                    // html = '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
+                    // html2 = '<b><span id="span_centro_trabajo2" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
                     html3 = '<b><span id="span_centro_trabajo3" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
                     $("#hidden_centro_trabajo").append(html);
                     $("#hidden_centro_trabajo2").append(html2);
@@ -629,8 +659,8 @@
     }
 
     $('#btn_registrar2').click(function(){//28ADG0180W
-        
-        var vCentro_Trabajo = $('#vCentro_Trabajo').val();
+
+        // var vCentro_Trabajo = $('#vCentro_Trabajo').val();
         // var vNombre = $('#vNombre').val();
         var vClave = $('#vClave').val();
         var vMunicipio = $('#vMunicipio').val();
@@ -653,53 +683,65 @@
             var vBandera_director = false;
         }
 
-        // console.log(vNombre);
+        // console.log(vNombre_Solicitante);
         if (vCentro_Trabajo != '' && vNombre != '' && vClave != '' && vMunicipio != '' &&
             vDireccion != '' && vTelefono != '' && vTurno != '' && vNivelEducativo != '' && vNombre_Solicitante != '' && 
             vTelefono_Solicitante != '' && vCorreo_Solicitante != '' && vDescripcion_Reporte != '') {
-            
-            arreglo_inf.push({
+                // $('#vTelefono_Solicitante').val().length;
+            if ($('#vTelefono_Solicitante').val().length != 10) {
+                Swal.fire({
+                    position: 'bottom-right',
+                    icon: 'warning',
+                    title: 'Favor de Agregar un Telefono de 10 Digitos',
+                    showConfirmButton: false,
+                    customClass: 'msj_aviso',
+                    timer: 2000
+                })
+            }
+            else{
+                arreglo_inf.push({
                 arreglo_centrotrabajo: arreglo_centrotrabajo, vNombre_Solicitante: vNombre_Solicitante, vTelefono_Solicitante: vTelefono_Solicitante,
                 vCorreo_Solicitante : vCorreo_Solicitante, vDescripcion_Reporte : vDescripcion_Reporte, vBandera_director : vBandera_director
-            });
+                });
 
-            console.log(arreglo_inf);
-            Swal.fire({
-                title: 'Esta seguro de Registrar la Solicitud?',
-                icon: 'warning',
-                showCancelButton: true,
-                customClass: 'msj_solicitud',
-                confirmButtonColor: '#b50915',
-                cancelButtonColor: '#d33',
-                cancelButtonText: 'No',
-                confirmButtonText: 'Si',
-                allowOutsideClick: false
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    
-                    $.ajax({
-                        url: '/ventanilla/formulario_registro/',
-                        type: 'GET',
-                        data: {'arreglo_inf' : arreglo_inf}
-                        }).always(function(r) {
-                            console.log(r.data);
-                            Swal.fire({
-                                title: 'Registrado',
-                                // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                                text: 'Se ha Registrado con Exito la Solicitud #'+r.data+'',
-                                customClass: 'msj_solicitud',
-                                icon: 'success',
-                                confirmButtonColor: '#b50915',
-                                allowOutsideClick: false
-                            }).then((result) => {
-                            if (result.isConfirmed) {
-                                // alert('Se redireccciona al index');
-                                // window.location.href = "indexVentanilla";
-                            }
-                        })
-                    });
-                }
-            })
+                // console.log(arreglo_inf);
+                Swal.fire({
+                    title: 'Esta seguro de Registrar la Solicitud?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    customClass: 'msj_solicitud',
+                    confirmButtonColor: '#b50915',
+                    cancelButtonColor: '#d33',
+                    cancelButtonText: 'No',
+                    confirmButtonText: 'Si',
+                    allowOutsideClick: false
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        $("#btn_registrar2").prop('disabled',true);
+                        $.ajax({
+                            url: '/ventanilla/formulario_registro/',
+                            type: 'GET',
+                            data: {'arreglo_inf' : arreglo_inf}
+                            }).always(function(r) {
+                                console.log(r);
+                                Swal.fire({
+                                    title: 'Registrado',
+                                    // text: 'Se ha Registrado con Exito la Solicitud #5884',
+                                    text: 'Se ha Registrado con Exito la Solicitud #'+r.data+'',
+                                    customClass: 'msj_solicitud',
+                                    icon: 'success',
+                                    confirmButtonColor: '#b50915',
+                                    allowOutsideClick: false
+                                }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // alert('Se redireccciona al index');
+                                    // window.location.href = "indexVentanilla";
+                                }
+                            })
+                        });
+                    }
+                })
+            }
 
         }
         else{

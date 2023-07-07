@@ -25,8 +25,9 @@
                     <div class="row">
                         <div class="col-3" ></div>
                         <div class="col-6" >
-                            <button type="button" id="btn_enviar" class="btn btn-secondary">ENVIAR</button>
-                            <button type="button" hidden id="btn_enviar2" class="btn btn-secondary">INGRESAR</button>
+                            <button type="button" id="btn_enviar3" class="btn btn-secondary">SIGUIENTE</button>
+                            <!-- <button type="button" id="btn_enviar" class="btn btn-secondary">ENVIAR</button> -->
+                            <!-- <button type="button" hidden id="btn_enviar2" class="btn btn-secondary">INGRESAR</button> -->
                         </div>
                         <div class="col-3" ></div>
                     </div>
@@ -138,7 +139,6 @@
 
                 var countdownTimer = setInterval(secondPassed, 1000);
             });
-
             
         }
     });
@@ -171,7 +171,33 @@
         }
     });
     
+    $('#btn_enviar3').click(function(){
+        // console.log('sdf');
+        vCorreoVerifica = $('#vCorreoVerifica').val();
+        var caract = new RegExp(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,3})+$/);
+        if (caract.test(vCorreoVerifica) == false){
+            // console.log('entro');
+            Swal.fire({
+                position: 'bottom-right',
+                icon: 'warning',
+                title: 'Favor de Ingresar un Correo Electronico Correcto.',
+                showConfirmButton: false,
+                customClass: 'msj_aviso',
+                timer: 2000
+            })
+        }
+        else{
+            $.ajax({
+                url: '/ventanilla/index_formulario_solicitud/',
+                type: 'GET',
+                data: {'vCorreoVerifica' : vCorreoVerifica}
+            }).always(function(r) {  
+                window.location.href = "formulario_index";
+            });
+            
 
+        }
+    });
 
     
 </script>

@@ -120,6 +120,12 @@ class VentanillaController extends Controller
     }
 
     public function formulario_registro(Request $request){
+
+        $data4 = DB::select("select * from cas_cete.fngenerafolio2(1,0)");
+        $pfolio_config  =  $data4[0]->fngenerafolio2;
+        $dato='';
+        // dd($request['arreglo_inf'][0]['vCorreo_Solicitante']);
+
         // dd($request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['clavecct']);
         $pId_cct = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['id'];
         $pClave_ct = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['clavecct'];
@@ -131,54 +137,37 @@ class VentanillaController extends Controller
         $pDescripcion_reporte = $request['arreglo_inf'][0]['vDescripcion_Reporte'];
         $pCoord_x = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['latitud'];
         $pCoord_y = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['longitud'];
-        $data =  DB::select("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.")");
+        $data =  DB::select("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.",'".$pfolio_config."')");
         // dd($data);
-        // ("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.")");;
-        $id_retorno = $data[0]->fn_insert_solicitud;
-        // dd($id_retorno);
-        $data2 = DB::select("select id_reg_captacion from cas_cete.solic_serv_track where id = ".$id_retorno."");
-        
-        $data3 = DB::select("select folio from cas_cete.registro_captacion where id = ".$data2[0]->id_reg_captacion."");
-        // dd($data2[0]->folio);
 
-        // $data2 =  DB::select("select * from cas_cete.fn_solicitud(".$id_retorno.")");
+        // $id_retorno = $data[0]->fn_insert_solicitud;
 
+        // Mail::to("$pCorreo_solicitante")->send(new MailSend($details));
+        // $token = uniqid();
+        // $token = strval( $token );
+        $details = [
+            'tittle' => 'Correo por Parte de la Secretaria de Educacion',
+            'body' => 'Este es el Folio de la Solicitud #'.$pfolio_config.',
+                    Un agente lo estará contactando por teléfono en el menor tiempo posible..'
 
+        ];
 
-
-        // dd($data[0]->fn_insert_solicitud);
-
-        // foreach ($request['arreglo_tabla'] as $key => $value) {
-        //     // $persona = DB::select("CALL public.sp_insert_solicitud_detalle($data[0]->fn_insert_solicitud,
-        //     //                     $value['vTipo_equipo'], $value['vTipo_servicio'], $value['vDescripcion_Problema'])");
-        //     $data2=  DB::select("CALL public.sp_insert_solicitud_detalle('".$data[0]->fn_insert_solicitud."','".$value['vTipo_equipo']."','".$value['vTipo_servicio']."','".$value['vDescripcion_Problema']."')");
-
-        //     // return $persona;
-        // }
-        // dd($data2);
-
+        Mail::to("$pCorreo_solicitante")->send(new MailSend($details));
         return array(
             "exito" => true,
-            "data" => $data3[0]->folio
+            // "dato" => $pfolio_config,
+            "data" => $pfolio_config
         );
 
 
 
     }
 
-    public function store(){
-        
-    }
-
-    public function edit(){
-        
-    }
-
-    public function update(){
-        
-    }
-
-    public function show(){
-        // return view('ordenes.index');
+    public function index_formulario_solicitud(Request $request){
+        $vCorreoVerifica = $request->vCorreoVerifica;
+        Session::put('vCorreoVerifica', $vCorreoVerifica);
+        return array(
+            "exito" => true
+        );
     }
 }
