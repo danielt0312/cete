@@ -29,23 +29,35 @@
 	<body>
 			
 		<!-- Logo y menus -->
-
-		<div class="container">
-			<div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-				<div class="btn-group" role="group" aria-label="First group">
-					<a href="" class="logo-a">
-						<img  style="widht:345; height:112px;" src="https://www.tamaulipas.gob.mx/educacion/wp-content/themes/secretarias-2022/img/logo/tam.png" alt="Secretaría de Educación - Gobierno del Estado de Tamaulipas">
-					</a>
-				</div>
-				<div class="input-group">
-					<a class="logo-a" href="https://www.tamaulipas.gob.mx/educacion">
-						<img style="widht:200; height:54;" class="logotam img-responsive" src="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/educacion2.png" alt="Secretaría de Educación - Gobierno del Estado de Tamaulipas">
-					</a>
+		<div style="background-color:#ab0033!important">
+			<div style=" background-color:white; border-radius: 0px 0px 0px 82px;">
+				<div class="container" >
+					<div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+						<div class="btn-group" role="group" aria-label="First group">
+							<a href="" class="logo-a">
+								<img  style="widht:345; height:112px;" src="https://www.tamaulipas.gob.mx/educacion/wp-content/themes/secretarias-2022/img/logo/tam.png" alt="Secretaría de Educación - Gobierno del Estado de Tamaulipas">
+							</a>
+						</div>
+						<div class="input-group">
+							<a class="logo-a" href="https://www.tamaulipas.gob.mx/educacion">
+								<img style="widht:200; height:54;" class="logotam img-responsive" src="https://www.tamaulipas.gob.mx/educacion/wp-content/uploads/sites/3/2016/10/educacion2.png" alt="Secretaría de Educación - Gobierno del Estado de Tamaulipas">
+							</a>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		
+		
 		<!-- /Logo y menus --><!-- Menú -->
-		<div id="menu-secretarias">
+		<div id="menu-secretarias" style="height: 150px;" class="min-height-300 position-absolute w-100">
+		<br>
+		<div class="container">
+		<div class="d-flex justify-content-between">
+            	<h1 id="encabezado_layout" class="mb-2" style="color:white;"></h1>
+          	</div>
+		</div>
+			
 			<input type="checkbox" name="menu-toggle" id="menu-open">
 			<div class="container">
 			

@@ -910,7 +910,8 @@
     let urlEditar = '{{ route("download-pdf", ":id") }}';
     urlEditar = urlEditar.replace(':id', idOrden);
  
-	  location.href = urlEditar;
+	  // location.href = urlEditar;
+    var win = window.open(urlEditar,'_blank');
  
     
     // $.ajax({

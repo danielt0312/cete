@@ -80,6 +80,26 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');
 
     }); 
+
+    Route::group(['prefix' => 'solicitudes'], function(){
+        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros');
+        Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
+        Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
+        Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
+        Route::get('/rechazar_solicitud', 'App\Http\Controllers\SolicitudesController@rechazar_solicitud')->name('rechazar_solicitud');
+        Route::get('/aprobar_solicitud', 'App\Http\Controllers\SolicitudesController@aprobar_solicitud')->name('aprobar_solicitud');
+        Route::get('/selects_equipo_servicio', 'App\Http\Controllers\SolicitudesController@selects_equipo_servicio')->name('selects_equipo_servicio');
+        Route::get('/select_servicio', 'App\Http\Controllers\SolicitudesController@select_servicio')->name('select_servicio');
+        Route::get('/select_tarea', 'App\Http\Controllers\SolicitudesController@select_tarea')->name('select_tarea');
+        Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
+        Route::get('/select_rechaza_solicitud', 'App\Http\Controllers\SolicitudesController@select_rechaza_solicitud')->name('select_rechaza_solicitud');
+        // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
+        // Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
+        // Route::get('/formulario_consulta', 'App\Http\Controllers\VentanillaController@formulario_consulta')->name('formulario_consulta');
+        // Route::get('/formulario_registro', 'App\Http\Controllers\VentanillaController@formulario_registro')->name('formulario_registro');
+        // Route::get('/formulario_index')->name('formulario_index');
+        // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
+    }); 
 }); 
     
 Route::group(['prefix' => 'ventanilla'], function(){
@@ -88,7 +108,9 @@ Route::group(['prefix' => 'ventanilla'], function(){
     Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');
     Route::get('/consulta_folio', 'App\Http\Controllers\VentanillaController@consulta_folio')->name('consulta_folio');
     Route::get('/consulta_folio_correo', 'App\Http\Controllers\VentanillaController@consulta_folio_correo')->name('consulta_folio_correo');
+    Route::get('/consulta_folio_solicitud', 'App\Http\Controllers\VentanillaController@consulta_folio_solicitud')->name('consulta_folio_solicitud');
     Route::get('/sendEmail', 'App\Http\Controllers\VentanillaController@sendEmail')->name('sendEmail');
+    Route::get('/sendEmail2', 'App\Http\Controllers\VentanillaController@sendEmail2')->name('sendEmail2');
     
     // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
     Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
@@ -102,30 +124,16 @@ Route::group(['prefix' => 'ventanilla'], function(){
     // Route::get('/sendEmail','App\Http\Controllers\MailController@sendEmail')->name('sendEmail');
 }); 
 
-Route::group(['prefix' => 'solicitudes'], function(){
-    Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros');
-    Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
-    Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
-    Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
-    Route::get('/rechazar_solicitud', 'App\Http\Controllers\SolicitudesController@rechazar_solicitud')->name('rechazar_solicitud');
-    Route::get('/aprobar_solicitud', 'App\Http\Controllers\SolicitudesController@aprobar_solicitud')->name('aprobar_solicitud');
-    Route::get('/selects_equipo_servicio', 'App\Http\Controllers\SolicitudesController@selects_equipo_servicio')->name('selects_equipo_servicio');
-    Route::get('/select_servicio', 'App\Http\Controllers\SolicitudesController@select_servicio')->name('select_servicio');
-    Route::get('/select_tarea', 'App\Http\Controllers\SolicitudesController@select_tarea')->name('select_tarea');
-    Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
-    Route::get('/select_rechaza_solicitud', 'App\Http\Controllers\SolicitudesController@select_rechaza_solicitud')->name('select_rechaza_solicitud');
-    // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
-    // Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
-    // Route::get('/formulario_consulta', 'App\Http\Controllers\VentanillaController@formulario_consulta')->name('formulario_consulta');
-    // Route::get('/formulario_registro', 'App\Http\Controllers\VentanillaController@formulario_registro')->name('formulario_registro');
-    // Route::get('/formulario_index')->name('formulario_index');
-    // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
-});  
+ 
 
     // Route::get('/logout', 'App\Http\Controllers\InicioController@logout');
 // });     
 
 // Route::get('/listadoOrdenes', [OrdenesController::class,"index"] );  // Si  finciona de esta manera
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

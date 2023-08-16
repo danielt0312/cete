@@ -338,8 +338,8 @@ class OrdenesController extends Controller
       view()->share('ordenes/downloadOrden',$ordenServiciosObject);
       $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
         // dd('hola');
-      return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
-      // return $pdf->stream();
+    //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
+      return $pdf->stream();
     }
 
     public function detalleOrden($idOrden){

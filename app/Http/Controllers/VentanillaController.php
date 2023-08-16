@@ -7,7 +7,9 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Mail\MailSend;
+use App\Mail\MailSend2;
 use Illuminate\Support\Facades\Mail;
+use Yajra\DataTables\DataTables;
 use Session;
 
 class VentanillaController extends Controller
@@ -56,7 +58,69 @@ class VentanillaController extends Controller
         $data=[];
         $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreo."')");
         // dd($data);
-        
+        if ($request->ajax()) {
+            // $data = User::latest()->get();
+            return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                // dd($row->folio_solicitud);
+                    $acciones = '
+                    <div class="dropdown btn-group dropstart">
+                        <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                            <i class="fa fa-ellipsis-v text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a onclick="Mostrar_Solicitud('.$row->id.')" class="dropdown-item"> 
+                                    <i class="fa fa-eye" aria-hidden="true"></i> Visualizar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>';
+                
+                return $acciones;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
+
+        return array(
+            // "exito" => false,
+            "data" => $data
+        );
+    }
+
+    public function consulta_folio_solicitud(Request $request){
+        $vFolio = $request->vFolio;
+        // dd($vCorreo);
+        $data=[];
+        $data =  DB::select("select * from cas_cete.fn_solicitud_folio('".$vFolio."')");
+        // dd($data);
+        if ($request->ajax()) {
+            // $data = User::latest()->get();
+            return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                // dd($row->folio_solicitud);
+                    $acciones = '
+                    <div class="dropdown btn-group dropstart">
+                        <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                            <i class="fa fa-ellipsis-v text-xs"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a onclick="Mostrar_Solicitud('.$row->id.')" class="dropdown-item"> 
+                                    <i class="fa fa-eye" aria-hidden="true"></i> Visualizar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>';
+                
+                return $acciones;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+        }
 
         return array(
             // "exito" => false,
@@ -83,6 +147,54 @@ class VentanillaController extends Controller
             "exito" => true,
             "TOKEN" => $token
         );
+    }
+
+    public function sendEmail2(Request $request){
+        $vCorreoVerifica = $request->vCorreoVerifica;
+
+        $data=[];
+        $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreoVerifica."')");
+        // dd($data);
+        if ($data == null) {
+            return array(
+                "exito" => false
+                // "data" => $data
+            );
+        }
+        else{
+
+            $token = uniqid();
+            $token = strval( $token );
+            Session::put('token', $token);
+            Session::put('vCorreoVerifica', $vCorreoVerifica);
+            $details = [
+                'tittle' => 'Verificacion de cuenta',
+                
+                // 'body1' => 'Estimado usuario: juan - C.C.T.',
+                
+                'body1' => 'Se ha solicitado autenticar tu cuenta para llevar a cabo una consulta de solicitudes de servicio.',
+    
+                'body2' => 'Por favor ingresa el siguiente token de seguridad: '.$token.'',
+                'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
+    
+                'body4' => 'Atentamente.',
+                'body5' => 'Centro Estatal de Tecnología Educativa',
+                'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+             <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
+    
+            ];
+    
+            // Mail::to("$pCorreo_solicitante")->send(new MailSend($details));
+    
+            Mail::to("$vCorreoVerifica")->send(new MailSend2($details));
+            return array(
+                "exito" => true,
+                "TOKEN" => $token
+            );
+        }
+
+
+
     }
 
     public function formulario_index(Request $request){
@@ -127,6 +239,7 @@ class VentanillaController extends Controller
         // dd($request['arreglo_inf'][0]['vCorreo_Solicitante']);
 
         // dd($request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['clavecct']);
+        $pNombrect = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['nombrect'];
         $pId_cct = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['id'];
         $pClave_ct = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['clavecct'];
         $pSolicitante = $request['arreglo_inf'][0]['vNombre_Solicitante'];
@@ -138,7 +251,7 @@ class VentanillaController extends Controller
         $pCoord_x = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['latitud'];
         $pCoord_y = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['longitud'];
         $data =  DB::select("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.",'".$pfolio_config."')");
-        // dd($data);
+        // dd($request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['nombrect']);
 
         // $id_retorno = $data[0]->fn_insert_solicitud;
 
@@ -146,9 +259,21 @@ class VentanillaController extends Controller
         // $token = uniqid();
         // $token = strval( $token );
         $details = [
-            'tittle' => 'Correo por Parte de la Secretaria de Educacion',
-            'body' => 'Este es el Folio de la Solicitud #'.$pfolio_config.',
-                    Un agente lo estará contactando por teléfono en el menor tiempo posible..'
+            'tittle' => 'Estimado usuario: '.$pSolicitante.' - '.$pNombrect.'',
+            
+            'body1' => 'Estimado usuario: '.$pSolicitante.' - '.$pNombrect.'',
+            
+            'body2' => 'Tu solicitud de servicio se encuentra',
+            'body2.1' => ' En espera',
+            'body2.2' => ' con el folio número:',
+            'body2.3' => ' '.$pfolio_config.'.',
+
+            'body3' => 'Conserva este folio para continuar con el seguimiento de tu solicitud, nos pondremos en contacto al teléfono proporcionado.',
+
+            'body4' => 'Atentamente.',
+            'body5' => 'Centro Estatal de Tecnología Educativa',
+            'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+             <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE.</ins></a>'
 
         ];
 
@@ -165,9 +290,23 @@ class VentanillaController extends Controller
 
     public function index_formulario_solicitud(Request $request){
         $vCorreoVerifica = $request->vCorreoVerifica;
-        Session::put('vCorreoVerifica', $vCorreoVerifica);
-        return array(
-            "exito" => true
-        );
+
+        $data_correo = DB::select("select * from insumos.cat_base_correos cbc where cbc.correo = '$vCorreoVerifica'");
+
+        if ($data_correo == '' || $data_correo == null) {
+            return array(
+                "exito" => false
+            );
+        }
+        else{
+            $vNombreCorreo = $data_correo[0]->nombre.' '.$data_correo[0]->apellidos;
+            Session::put('vCorreoVerifica', $vCorreoVerifica);
+            Session::put('vNombreCorreo', $vNombreCorreo);
+            return array(
+                "exito" => true
+            );
+        }
+
+
     }
 }
