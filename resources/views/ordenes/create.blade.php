@@ -36,13 +36,13 @@
                         <div class="col-12">
                             <ul class="nav nav-pills nav-justified" id="tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="tab1" aria-current="page" data-bs-toggle="tab" href="#tabCCT">DATOS DEL CENTRO DE TRABAJO</a>
+                                    <a class="nav-link active" id="tab1" aria-current="page" data-bs-toggle="tab" href="#tabCCT">Datos del Centro de Trabajo</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="tab2" aria-current="page" data-bs-toggle="tab" href="#tabReporte">DATOS DEL REPORTE</a>
+                                    <a class="nav-link disabled" id="tab2" aria-current="page" data-bs-toggle="tab" href="#tabReporte">Datos del reporte</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">EQUIPOS</a>
+                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">Equipos</a>
                                 </li>
                             </ul>
                         </div>
@@ -55,6 +55,11 @@
                         <div class="form-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tabCCT">
+                                    <div class="row">
+                                        <div class="col-12" id="datosGenCentro">
+                                            
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <!-- <div class="col-12">
                                             <div class="form-group">
@@ -164,12 +169,17 @@
 
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <!-- <button type="submit" class="btn btn-secondary" id="btnAnterior" >ANTERIOR</button> -->
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente" disabled>SIGUIENTE</button> 
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente" disabled>Siguiente</button> 
                                         </div>
                                     </div>
                                 </div>  <!--final del tab cct-->
 
                                 <div class="tab-pane fade" id="tabReporte">
+                                    <div class="row">
+                                        <div class="col-12" id="datosGenCentro2">
+                                            
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -214,13 +224,24 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-12 justify-content-md-start">
+                                        <div class="col-4 justify-content-md-start">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkSolicitante" name="checkSolicitante">
-                                                <label class="form-check-label" for="checkSolicitante">
+                                                <label style="font-weight: normal;" for="checkSolicitante">
                                                 Active la casilla en caso que el solicitante corresponda al Director del C.T
                                                 </label>
                                             </div>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <div class="form-check">
+                                                <label style="font-weight: normal;" >
+                                                Favor de ingresar teléfono celular. Nos pondremos en contacto a este número.
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4">
                                         </div>
 
                                         <div class="col-12">
@@ -231,14 +252,59 @@
                                         </div>
 
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnAnterior2" >ANTERIOR</button>
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >SIGUIENTE</button>
+                                            <button type="button" class="btn btn-secondary" id="btnAnterior2" >Regresar</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >Siguiente</button>
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Reporte-->
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
+                                        <div class="col-12" id="datosGenCentro3">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
+                                                <textarea class="form-control" id="txtDescripcionSoporte" name="txtDescripcionSoporte" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-3 divEtiqueta">
+                                            <div class="form-group">
+                                                <label for="txtEtiquetaServicio">ETIQUETA DE SERVICIO</label>
+                                                <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
+                                            </div>
+                                        </div>
+                                        <div class="col-6 divEtiqueta">
+                                            <div class="form-group">
+                                                <label for="txtMarca">DETALLE EQUIPO</label>
+                                                <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
+                                                <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
+                                                <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
+                                                <input type="hidden" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
+                                                <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-1" id="divCantidad">
+                                            <div class="form-group">
+                                                <label for="txtCantidadEquipos">CANTIDAD</label>
+                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
+                                            </div>
+                                        </div>
 
                                         <div class="col-3">
                                             <div class="form-group">
@@ -249,13 +315,6 @@
                                                         <option value="{{ $tipoEquipo->id }}">{{ $tipoEquipo->tipo_equipo }}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-1" id="divCantidad">
-                                            <div class="form-group">
-                                                <label for="txtCantidadEquipos">CANTIDAD</label>
-                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                             </div>
                                         </div>
 
@@ -313,93 +372,53 @@
                                          </div>
 
                                     </div>
+                                    
+
                                     <div class="row">
-
-                                        <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtEtiquetaServicio">ETIQUETA DE SERVICIO</label>
-                                                <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
-                                            </div>
-                                        </div>
-                                        <div class="col-6 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtMarca">DETALLE EQUIPO</label>
-                                                <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
-                                                <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
-                                                <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
-                                                <input type="hidden" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
-                                                <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
-                                            </div>
-                                        </div>
-
-                                        <!-- <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtModelo">MODELO</label>
-                                                <input type="text" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtNumeroSerie">NÚMERO DE SERIE</label>
-                                                <input type="text" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="divEtiqueta">
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnVerDetalles" data-bs-toggle="modal" data-bs-target="#detallesEquipoModal">VER DETALLES</button>
-                                        </div>
-                                        </div> -->
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-7">
+                                        <!-- <div class="col-7">
                                             <div class="form-group">
                                                 <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
                                                 <textarea class="form-control" id="txtDescripcionSoporte" name="txtDescripcionSoporte" rows="3"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-5">
+                                        </div> 09/08/2023 comentado cambios vistas-->
+                                        <div class="col-12">  <!--tenia col-5  09/08/2023 comentado cambios vistas-->
                                             <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                                <span id="tituloTareas"></span>
-                                                <ul id="ulTarea" style="font-size:0.75rem;">
+                                                <span id="tituloTareas" class="tituloTareas"></span>
+                                                <!-- <ul id="ulTarea" style="font-size:0.75rem;">
                                                     
-                                                </ul>
+                                                </ul> -->
+                                                <div id="ulTarea" style="font-size:0.75rem;">
+                                                    
+                                                </div>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
-                                                <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
-                                            </div>
-                                        </div> -->
-
-                                        <br>
-                                        <div class="col-9 d-md-flex justify-content-md-end">
-                                            <div class="form-check" id="checkVer">
+                                    <div class="row">
+                                        <div class="col-9 d-md-flex justify-content-md-start">
+                                            <div class="form-check replicar" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
-                                                    Replicar datos en el siguiente equipo
+                                                    Mantener descripción del problema y lista de tareas para el siguiente equipo.
                                                 </label>
                                             </div>
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >AÑADIR EQUIPO</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
                                         </div>
+                                    </div>
+                                    <div class="row">
                                         <br>
                                         <div class="col-12" id="divTablaEquipos">
                                             <table class="table">
                                                 <thead class="text-align:center;">
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN DEL PROBLEMA</th>
-                                                    <th></th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TAREA</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ACCIONES</th>
                                                 </thead>
                                                 <tbody id="tbEquipos">
 
@@ -415,8 +434,9 @@
                                         <br>
                                         
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnAnterior3" >ANTERIOR</button>
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="fnGuardar()"> REGISTRAR ORDEN</button>
+                                            <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>     
+                                            <!-- <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="fnGuardar()"> Guardar</button>     -->
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="msjeAlertConfirm()"> Guardar</button>    
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Equipos-->
@@ -478,23 +498,76 @@
 
 <!-- MODAL HISTORIAL -->
 <div class="modal fade" id="historialCCTModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="historialCCTModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="historialCCTModalLabel">Histórico de Órdenes por CCT</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        <!-- <div class="modal-header"> -->
+            <!-- <div class="container">
+            <div class="row">
+                <div class="col-12" style="text-align:right;">
+                    <span id="spclavecct" style="color:#ab0033;"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                    <span style="color:white;">Histórico de Órdenes</span>
+                </div>
+                <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                </div>
+            </div>
+            </div> -->
+
+            <!-- <h5 class="modal-title" id="historialCCTModalLabel">Histórico de Órdenes - <span id="spclavecct"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+        <!-- </div> -->
         <div class="modal-body">
-            <div class="col-12">
-                <div class="form-group" id="hist">
-                    
+        <!-- <div class="container"> -->
+            <div class="row">
+                <div class="col-12" style="text-align:right;">
+                    <span id="spclavecct" style="color:#ab0033;>"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                    <span style="color:white;">Histórico de Órdenes</span>
+                </div>
+                <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" >
+                </div>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="row">
+                <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                    <span style="color:white;">Histórico de Órdenes</span>
+                </div>
+                <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group" id="hist">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="text-align:right;;" >
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+         <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button> -->
             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
-        </div>
+        <!-- </div> -->
     </div>
   </div>
 </div>
@@ -504,21 +577,49 @@
 <div class="modal fade" id="ubicacionCCTModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="ubicacionCCTModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-        <div class="modal-header">
+        <!-- <div class="modal-header">
             <h5 class="modal-title" id="ubicacionCCTModalLabel">Ubicación</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+        </div> -->
         <div class="modal-body">
-            <div class="col-12">
-                <div class="form-group" id="map"> 
-                    
+            <div class="row">
+                <div class="col-12">
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                    <span style="color:white;">Ubicación</span>
+                </div>
+                <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" >
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group" id="map"> 
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="text-align:right;" >
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+         <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> -->
             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnElegirTurno" onclick="fnElegirTurno()">Aceptar</button> -->
-        </div>
+        <!-- </div> -->
     </div>
   </div>
 </div>
@@ -526,55 +627,110 @@
 
 <!-- MODAL VER DETALLES EQUIPO -->
 <div class="modal fade" id="visualizarDetalleEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="visualizarDetalleEquipoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="visualizarDetalleEquipoModalLabel">Información Equipo</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" >
-        <div class="row">
-            <div class="col-12"  id="divDetalleEquipoM">
+      </div> -->
+            <div class="modal-body" >
+                <div class="row">
+                    <div class="col-12">
+                        <br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <span style="color:white;">Información Equipo(s)</span>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12"  id="divDetalleEquipoM">
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+
+                    </div>
+                </div>
+                <div class="row" style="text-align:right;">
+                    <div class="col-12" >
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button> -->
         <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
-      </div>
+      <!-- </div> -->
+        </div>
     </div>
-  </div>
 </div>
 <!-- FIN MODAL VER DETALLES EQUIPO-->
 
 <!-- MODAL HISTORIAL EQUIPO -->
 <div class="modal fade" id="historialEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="historialEquipoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="historialEquipoModalLabel">Historial del Equipo</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body overflow-scroll">
-        <input type="hidden" id="etiquetaM" name="etiquetaM" value="" readonly>
-       <table class="table" id="tablaHistoricoE" >
-        <thead class="text-align:center;">
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ORDEN</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA FINALIZO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO ATENDIO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SOLICITANTE</th>
-        </thead>
-        <tbody id="tbHistoricoE">
-            
-        </tbody>
-       </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
-      </div>
+      </div> -->
+        <div class="modal-body"> <!---->
+            <div class="row">
+                <div class="col-12">
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                    <span style="color:white;">Historial del Equipo</span>
+                </div>
+                <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" >
+                </div>
+            </div>
+            <input type="hidden" id="etiquetaM" name="etiquetaM" value="" readonly>
+            <!-- <div class="row">
+                <div class="col-12" >
+                </div>
+            </div> -->
+            <table class="table overflow-scroll" id="tablaHistoricoE" >
+                <thead class="text-align:center;">
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ORDEN</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA DE CIERRE</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO ENCARGADO</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SOLICITANTE</th>
+                </thead>
+                <tbody id="tbHistoricoE">
+                    
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-12" >
+                </div>
+            </div>
+            <div class="row" style="text-align:right;">
+                <div class="col-12" >
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button> -->
+            <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
+        <!-- </div> -->
     </div>
   </div>
 </div>
@@ -601,14 +757,16 @@
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css"> -->
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script> -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
-      defer> </script> 
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer> </script>  -->
+      <script src="{{ asset('js/leaflet.js') }}"></script>
 
 <script>
     let arrTareas = [];
     let arrServicios = [];
     var arrEquipos = [];
     let arrEscuelaTurno = [];
+    // var vDirector='';
     // var equipo_servicio = {
     //             nom_equipo: '',
     //             num_inventario: '',
@@ -654,11 +812,13 @@
             }
 
             if(vTelefonoSolicitante==''){
-                msjeAlerta('', 'Debe ingresar el teléfono del solicitante', 'error');
+                // msjeAlerta('', 'Debe ingresar el teléfono del solicitante', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
             }
 
             if(vTelefonoSolicitante.length<10){
-                msjeAlerta('', 'Debe ingresar 10 números en teléfono', 'error');
+                // msjeAlerta('', 'Debe ingresar 10 números en teléfono', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
             }
 
             if(vCorreoSolicitante==''){
@@ -724,6 +884,7 @@
         $("#checkSolicitante").change(function() {  
             if($("#checkSolicitante").is(':checked')) {  
                 var vDirector = $("#txtDirectorCCT").val();
+                // vDirector = $("#txtDirectorCCT").val();
                  $("#txtNombreSolicitante").val(vDirector);
                  $("#txtNombreSolicitante").prop('disabled', true);
             } else {  
@@ -834,8 +995,11 @@
                     $("#txtDescripcionSoporte").val(""); 
                     $("#txtUbicacionEquipo").val(""); 
                     console.log(bandCheck+'---5');
+                 }else{
+                    // arrTareas=[];
                  }
             }
+            // arrTareas=[]; checarrr repolicarrrr
             $("#txtCantidadEquipos").val(1);
             $("#tituloTareas").text('');
             $("#selTipoServicio").val("0").attr("selected",true);
@@ -927,7 +1091,7 @@
             }else{
                 msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
             }
-            $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
+            // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
         $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
@@ -1036,14 +1200,28 @@
                     vDatos='';
                 }else{
                     vDatos='Etiqueta:'+arrEquipos[j]['etiquetaServicio']+' - Marca: '+arrEquipos[j]['marca']+' - Modelo: '+arrEquipos[j]['modelo']+' - Número de Serie: '+arrEquipos[j]['numeroSerie'];
-                }
+                } 
         
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
-                tablaEquipo2+='<tr id="tr_'+j+'"><td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+                tablaEquipo2+='<tr id="tr_'+j+'">';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['descripcionSoporte']+'</td>';
+
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
+                for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
+                    tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+                }
+                tablaEquipo2+='</td>';
+
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
+                for (var h = 0; h < arrEquipos[j]['aTarea'].length; h++) {
+                    tablaEquipo2+='- '+arrEquipos[j]['aTarea'][h]['desc_Tarea']+'<br>';
+                }
+                tablaEquipo2+='</td>';
+
                 // tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+vDatos+'</td>';
-                tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
+                tablaEquipo2+='<td><div class="dropdown btn-group dropstart" style="text-align:center;>';
                 tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
                 tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
                 tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
@@ -1092,6 +1270,19 @@
         $("#tbEquipos").html(tablaEquipo2);
     }
 
+    // function drawTareasEnEquipos(){
+    //     $.each(arrEquipos, function(j, val){
+    //         if (!jQuery.isEmptyObject(arrEquipos[j])) { 
+    //                 if (!jQuery.isEmptyObject(arrEquipos[j])) { 
+    //                     tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+aTareasEquipos[h]['descripcionSoporte']+'</td>';
+    //                     tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+aTareasEquipos[h]['descripcionSoporte']+'</td>';
+    //                 }else{
+
+    //                 }
+    //             }
+        
+    // }
+
 
     function removeTarea( item ) {
         if(arrTareas.includes(item) ==false){ 
@@ -1119,11 +1310,11 @@
     function drawRowTarea(){
         var listaTarea2 = '';
 
-        listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
+        listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTarea">';
         listaTarea2+='<thead>';
         listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
-        listaTarea2+='<th></th>';
+        listaTarea2+='<th>Eliminar</th>';
         listaTarea2+='</thead>';
         listaTarea2+='<tbody>';
 
@@ -1133,13 +1324,14 @@
             if (!jQuery.isEmptyObject(arrTareas[j])) {
             
                 listaTarea2+='<tr>';
-                if(aux==arrTareas[j]['desc_Servicio']){ 
-                    listaTarea2+='<td>&nbsp;</td>';
-                    aux='';
-                }else{
-                    aux=arrTareas[j]['desc_Servicio'];
-                    listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
-                }
+                // if(aux==arrTareas[j]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                //     listaTarea2+='<td>&nbsp;</td>';
+                //     aux='';
+                // }else{
+                //     aux=arrTareas[j]['desc_Servicio'];
+                //     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
+                // }
+                listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 
                 listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
                 // class="btn colorBtnPrincipal"
@@ -1227,19 +1419,42 @@
         // console.log(urlEditar);
         Swal.fire({
             title: titulo,
-            text: contenido,
+            html: contenido,
             icon: icono,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#b50915',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'DESCARGAR ORDEN',
-            cancelButtonText: 'ACEPTAR',
+            confirmButtonText: '<i class="fas fa-download"></i>Descargar orden',
+            cancelButtonText: 'Aceptar',
+            width: 600,
             }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = urlEditar;
                 // download-pdf
             }else{
                 window.location.href = '{{ route("listadoOrdenes") }}';
+            }
+        });
+    }
+
+    function msjeAlertConfirm(titulo, contenido, icono){
+        var titulo='';
+        var contenido='<p style="font-size:1rem !important;">¿Está seguro de registrar la orden de servicio?</p>';
+        var icono='warning';
+        
+        Swal.fire({
+            title: titulo,
+            html: contenido,
+            icon: icono,
+            showCancelButton: true,
+            confirmButtonColor: '#b50915',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            width: 600,
+            }).then((result) => {
+            if (result.isConfirmed) {
+                fnGuardar();
             }
         });
     }
@@ -1256,6 +1471,17 @@
 
         if(claveCCT==''){
             msjeAlerta('', 'Debe introducir la Clave de Centro de Trabajo ', 'error')
+            // $('#formOrden').trigger("reset");
+            // $("#divHistorial").html('');
+            // $("#divUbicacion").html('');
+            // $("#hist").html('');
+            fnLimpiar();
+            arrEquipos = [];
+            $("#btnSiguiente").prop('disabled', true);
+            $("#tbEquipos").html('');
+            $("#tbEquipos").empty();
+            $("#datosGenCentro2").html('');
+            $("#datosGenCentro3").html('');
         }else{
             $.ajax({
                 url: urlEditar,
@@ -1292,6 +1518,20 @@
                             $("#txtLatitud").val(data[0][0].latitud);
                             $("#txtLongitud").val(data[0][0].longitud);
 
+                            var divdatosGenCentro='';
+                             divdatosGenCentro+='<label>CENTRO DE TRABAJO:</label>';
+                             divdatosGenCentro+='<label>'+data[0][0].clavecct+'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                             divdatosGenCentro+='<label>NOMBRE DEL C.T:</label>';
+                             divdatosGenCentro+='<label>'+data[0][0].nombrect+'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                             divdatosGenCentro+='<label>NIVEL DEL C.T.:</label>';    
+                             divdatosGenCentro+='<label>'+data[0][0].nivel+'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                             divdatosGenCentro+='<label>MUNICIPIO DEL C.T.:</label>';    
+                             divdatosGenCentro+='<label>'+data[0][0].municipio+'</label><br><br>';
+
+                            $("#datosGenCentro").html(divdatosGenCentro);
+                            $("#datosGenCentro2").html(divdatosGenCentro);
+                            $("#datosGenCentro3").html(divdatosGenCentro);
+
                             $("#btnSiguiente").prop('disabled', false);
                             // $("#btnHistorialCCT").show();
                             // $("#btnUbicacionCCT").show();
@@ -1303,19 +1543,22 @@
 
                             if(data[1] !='' || data[1] !=null ){
                                 // $("#divHistorial").html(divH);
-                                var htmlHist='<table class="table"><thead><th>FOLIO</th><th>Fecha</th><th>Detalles</th></thead><tbody>';
+                                var htmlHist='<table class="table theadCentrar"><thead><th>Folio</th><th>Fecha de Solicitud</th><th>Fecha de Cierre</th><th>Acciones</th></thead><tbody>';
                                 var j=0;
                                 $.each(data[1], function(j, val){
                                     if (!jQuery.isEmptyObject(data[1])) {
-                                        htmlHist+='<tr><td>'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td>';
+                                        var nombree="'"+data[1][j].nombre_archivo+"'";
+
+                                        htmlHist+='<tr><td >'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td><td>'+data[1][j].fecha_cierre+'</td>';
                                         htmlHist+='<td><div class="dropdown btn-group dropend">';
                                         htmlHist+='<button class="btn btn-link text-secondary mb-0 "';
                                         htmlHist+='data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >';
                                         htmlHist+='<i class="fa fa-ellipsis-v text-xs"></i></button>';
                                         htmlHist+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
                                         htmlHist+='<li>';
-                                        htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')" class="dropdown-item"> ';
-                                        htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
+                                        htmlHist+='<a onclick="fnVerOrdenCentro('+nombree+')" class="dropdown-item"> ';
+                                        // htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
+                                        htmlHist+='<i class="fas fa-download"></i> Visualizar...';
                                         htmlHist+='</a>';
                                         htmlHist+='</li>';
                                         htmlHist+='</ul>';
@@ -1338,19 +1581,22 @@
                             msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
                             $("#btnSiguiente").prop('disabled', true);
 
-                            $("#divHistorial").html('');
-                            $("#divUbicacion").html('');
-                            $("#hist").html('');
+                            // $("#divHistorial").html('');
+                            // $("#divUbicacion").html('');
+                            // $("#hist").html('');
 
-                            fnLimpiar();
+                                fnLimpiar();
+                                $("#datosGenCentro").html('');
+                                $("#datosGenCentro2").html('');
+                                $("#datosGenCentro3").html('');
                             }
                     }else{
                         msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
                         $("#btnSiguiente").prop('disabled', true);
 
-                        $("#divHistorial").html('');
-                        $("#divUbicacion").html('');
-                        $("#hist").html('');
+                        // $("#divHistorial").html('');
+                        // $("#divUbicacion").html('');
+                        // $("#hist").html('');
 
                         fnLimpiar();
                         
@@ -1370,18 +1616,42 @@
         latitud=parseFloat(latitud);
         longitud=parseFloat(longitud);
 
-        var macc = {lat: latitud, lng: longitud};
         // var macc = {lat: latitud, lng: longitud};
+        // // var macc = {lat: latitud, lng: longitud};
 
-        var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 15, center: macc});
+        // var map = new google.maps.Map(
+        // document.getElementById('map'), {zoom: 15, center: macc});
 
-        var marker = new google.maps.Marker({position: macc, map: map});
+        // var marker = new google.maps.Marker({position: macc, map: map});
+
+        var map = L.map('map').setView([latitud, longitud], 15);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var marker = L.marker([latitud, longitud]).addTo(map);
+
+        var circle = L.circle([latitud, longitud], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(map);
+
+//         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+// maxZoom: 18
+// }).addTo(map);
 
     }
 
     function fnHistorial(){
-        var clave = $("#txtClaveCCT").val()
+        var clave = $("#txtClaveCCT").val();
+        var nombrecct = $("#txtNombreCCT").val();
+        $("#spclavecct").text('C.C.T.: '+clave +' - '+ nombrecct);  
+
         $("#historialCCTModal").modal("show");
     }
 
@@ -1421,23 +1691,28 @@
         var claveCCT= $("#txtClaveCCT").val();
         let urlEditar = '{{ route("guardarOrden") }}';
         // urlEditar = urlEditar.replace(':claveCCT', claveCCT);
-        var form = $('#formOrden')[0];
+        
         var checkDirector='';
+        var nombreSol='';
         if($("#checkSolicitante").is(':checked')) {  
             checkDirector= true;
+            nombreSol=$("#txtDirectorCCT").val();
         } else {  
             checkDirector= false;
+            nombreSol='';
         }  
          
+        var form = $('#formOrden')[0];
          // FormData object 
          var data2 = new FormData(form);
         //  data2.append('arrEquipos',arrEquipos);
         data2.append('arrEquipos', JSON.stringify(arrEquipos));
         data2.append('checkDirector', JSON.stringify(checkDirector));
+        data2.append('nombreSol', JSON.stringify(nombreSol));
         // data2.append('equipo_servicio',equipo_servicio);
-
-        // console.log(data2);
-
+        var vCorreo = data2.get('txtCorreoSolicitante');
+        //  console.log(data2);
+        
         $.ajax({
             url: urlEditar,
             type: 'POST',
@@ -1448,11 +1723,32 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function(data) {
 
-                var vequip = JSON.parse(data[0].inssolicservicio);
+                // var vequip = JSON.parse(data[0].inssolicservicio);  //V1 Con Equipos solamente sin detalle
+                var vequip = JSON.parse(data[0].inssolicservicioprueba2); //v2 Con Equipos y detalle
+                  
+                // if(data[0]['inssolicservicio']!=''){ 
+                 if(data[0]['inssolicservicioprueba2']!=''){ 
+                     msjeAlerta2('','Se ha registrado con éxito la orden de servicio con el folio: <span style="font-weight:bolder;">'+vequip.vpfolio+'.</span> <br>Favor de agendar cita para la visita de soporte y contactar al usuario.','success',vequip.vpid_solic_serv)
 
-                // if(data[0]['inssolicservicio']==false){  
-                if(data[0]['inssolicservicio']!=''){ 
-                    msjeAlerta2('REGISTRO EXITOSO DE ORDEN DE SERVICIO','EL FOLIO DE SERVICIO DE TU ORDEN ES: '+vequip.vpfolio,'success',vequip.vpid_solic_serv)
+                    
+                    $.ajax({
+                        url: '{{route('enviarCorreo')}}',
+                        type: 'POST',
+                        data: {
+                            folio: vequip.vpfolio,
+                            correo: vCorreo
+                        },
+                        dataType: 'json', 
+                        processData: false,
+                        contentType: false,
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        success: function(data) {
+                            console.log(data+'---correooo1');
+                            console.log(data.exito+'---correooo2');
+
+                            
+                        }
+                    });
                 }else{ 
                     msjeAlerta('No se pudo realizar el registro de la Orden de Servicio ', '','error')
                 }
@@ -1463,6 +1759,9 @@
 
     function fnLimpiar(){
         $("#formOrden")[0].reset();
+        $("#divHistorial").html('');
+        $("#divUbicacion").html('');
+        $("#hist").html('');
     }
 
     function fnNumero(){
@@ -1471,8 +1770,12 @@
         event.preventDefault()
     }
 
-    function fnVerOrdenCentro(idOrden){
-        console.log(idOrden);
+    function fnVerOrdenCentro(nombreA){
+        var nombre_archivo=nombreA;
+        let urlArchivo = '{{ asset("cierreOrden/:id") }}';
+        urlArchivo = urlArchivo.replace(':id', nombre_archivo);
+
+        window.open(urlArchivo, '_blank');
     }
 
     // function fnValidarCorreo(){
@@ -1540,13 +1843,20 @@
     function initMap() {
         // function initMap(latitud,longitud) {
 
-        var macc = {lat: 42.1382114, lng: -71.5212585};
-        // var macc = {lat: latitud, lng: longitud};
+        // var macc = {lat: 42.1382114, lng: -71.5212585};
+        // // var macc = {lat: latitud, lng: longitud};
 
-        var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 15, center: macc});
+        // var map = new google.maps.Map(
+        // document.getElementById('map'), {zoom: 15, center: macc});
 
-        var marker = new google.maps.Marker({position: macc, map: map});
+        // var marker = new google.maps.Marker({position: macc, map: map});
+
+        // var map = L.map('map').setView([51.505, -0.09], 13);
+
+        // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     maxZoom: 19,
+        //     attribution: '© OpenStreetMap'
+        // }).addTo(map);
 
     }
 
@@ -1589,42 +1899,80 @@
 
         var htmlSel='';
 
-        htmlSel+='<table style="border:1px solid; width:100%;">';
-            htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
-            // htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-            // htmlSel+='<td><label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-            htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
-            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
-            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
-            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
-            htmlSel+='<td colspan="2"></td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12"><br>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
-            htmlSel+='</td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12">';
+        htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6">';
-            htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
-            htmlSel+='</td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].etiquetaServicio+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+','+modelo+','+numeroSerie+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].cantidad+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
+        htmlSel+='<br>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12">';
+        htmlSel+='<label>Listado de Servicios/Tareas</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6" style="text-align:center;">';
+        // htmlSel+='<table style="border:1px solid; width:100%;">';
+        //     htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
+        //     htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
+        //     htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
+        //     htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
+        //     htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
+        //     htmlSel+='<td colspan="2"></td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        //     htmlSel+='</td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6">';
+        //     htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
+        //     htmlSel+='</td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6" style="text-align:center;">';
 
                 // var html='';
-                htmlSel+='<table>';
+                htmlSel+='<table class="table">';
                 htmlSel+='<thead>';
                 htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
                 htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
@@ -1635,14 +1983,15 @@
                 var aux='';
                 $.each(aTarea, function(j, val){
                     if (!jQuery.isEmptyObject(aTarea[j])) {
-                        htmlSel+='<tr>';
-                        if(aux==aTarea[j]['desc_Servicio']){ 
-                            htmlSel+='<td >&nbsp;</td>';
-                            aux='';
-                        }else{
-                            aux=aTarea[j]['desc_Servicio'];
-                            htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
-                        }
+                        // htmlSel+='<tr>';
+                        // if(aux==aTarea[j]['desc_Servicio']){ 
+                        //     htmlSel+='<td >&nbsp;</td>';
+                        //     aux='';
+                        // }else{
+                        //     aux=aTarea[j]['desc_Servicio'];
+                        //     htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
+                        // }
+                        htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
                         htmlSel+='<td class="text-xs text-secondary mb-0"> - '+aTarea[j]['desc_Tarea']+'</td>';
                         htmlSel+='<tr>';
                     }

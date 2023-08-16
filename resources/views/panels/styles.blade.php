@@ -19,6 +19,19 @@
 <!-- <link id="pagestyle" href="./assets/css/argon-dashboard.css?v=2.0.4" rel="stylesheet" /> -->
 <link id="pagestyle" href="{{ asset('css/cssTemplate/argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
 
+<link href="{{ asset('css/leaflet.css') }}" rel="stylesheet" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/>
+
+<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+   crossorigin=""/> -->
+<!-- Incluya el archivo JavaScript del folleto después del CSS del folleto: -->
+
+ <!-- Make sure you put this AFTER Leaflet's CSS
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+   crossorigin=""></script> -->
+
 <style>
   .marginraigt{
     margin-right: 1em;
@@ -98,6 +111,15 @@
     /* border: 1px solid; */
   }
 
+  .scrollVerticalEdiE{
+    height: 10em;
+    line-height: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 100%;
+    /* border: 1px solid; */
+  }
+
   .lineaHr{ 
     border-top: 1px solid #8392ab !important; 
     opacity: 0.7 !important;
@@ -109,8 +131,37 @@
   .btnEliminar{
     background-color: transparent !important;
     order: none !important;
-    color: #ab0033 !important;
+    /* color: #ab0033 !important; */
+    color: #a54565a !important;
     border:none;
+  }
+
+  #map { 
+    /* height: 400px; */
+    width: 100%;
+    height: 450px;
+    box-shadow: 5px 5px 5px #888;
+  } 
+
+  .replicar{
+    background-color: #8392ab75 !important;
+    border-radius: 10px;
+    height: 90%;
+    padding-left: 40px;
+    padding-top: 10px;;
+    padding-right: 140px;
+  }
+
+  .tituloTareas{
+    color:#ab0033 !important;;
+  }
+
+  .trCentrar{
+    text-align:center;
+  }
+  
+  .theadCentrar{
+    text-align:center;
   }
 
 </style>

@@ -149,32 +149,32 @@
             <td>
               <table class="sinbordetable">
                 <tr class="sinbordetable">
-                  <td class="sinbordetable"><span>Nombre del CT:</span> <span>ddddddddd</span></td>
-                  <td class="sinbordetable"> CCT: ddddddddd</td>
+                  <td class="sinbordetable"><span>Nombre del CT:</span> <span>{{ $ordenServiciosObject->nombrect }}</span></td>
+                  <td class="sinbordetable"> CCT: {{ $ordenServiciosObject->clave_ct }}</td>
                 </tr>
                 <tr class="sinbordetable">
-                  <td class="sinbordetable">Nombre del Director: ddddddddd</td>
-                  <td class="sinbordetable">Municipio: ddddddddd</td>
+                  <td class="sinbordetable">Nombre del Director: {{ $ordenServiciosObject->director }}</td>
+                  <td class="sinbordetable">Municipio: {{ $ordenServiciosObject->municipio }}</td>
                 </tr>
                 <tr class="sinbordetable">
-                  <td class="sinbordetable">Dirección: ddddddddd</td>
-                  <td class="sinbordetable">Teléfono: ddddddddd</td>
+                  <td class="sinbordetable">Dirección: {{ $ordenServiciosObject->domicilio }}</td>
+                  <td class="sinbordetable">Teléfono: {{ $ordenServiciosObject->telefono }}</td>
                 </tr>
               </table>
             </td>
             <td>
               <table  class="sinbordetable">
                 <tr class="sinbordetable">
-                  <td class="sinbordetable">Tipo de Orden: ddddddddd</td>
-                  <td class="sinbordetable">Fecha de Orden: ddddddddd</td>
-                  <td class="sinbordetable">Número de Orden: ddddddddd</td> 
+                  <td class="sinbordetable">Tipo de Orden: {{ $ordenServiciosObject->desc_tipo_orden }}</td>
+                  <td class="sinbordetable">Fecha de Orden: {{ $ordenServiciosObject->fecha_captacion }}</td>
+                  <td class="sinbordetable">Número de Orden: {{ $ordenServiciosObject->folio }}</td> 
                 </tr>
                 <tr class="sinbordetable">
-                  <td colspan="3" class="sinbordetable">Dependencia que atiende el servicio: ddddddddd</td>
+                  <td colspan="3" class="sinbordetable">Dependencia que atiende el servicio: {{ $ordenServiciosObject->area_atiende }}</td>
                 </tr>
                 <tr class="sinbordetable">
-                  <td colspan="2" class="sinbordetable">Nombre del Solicitante: ddddddddd</td>
-                  <td class="sinbordetable">Teléfono: ddddddddd</td>
+                  <td colspan="2" class="sinbordetable">Nombre del Solicitante: {{ $ordenServiciosObject->solicitante }}</td>
+                  <td class="sinbordetable">Teléfono: {{ $ordenServiciosObject->telef_solicitante }}</td>
                 </tr>
               </table>
             </td>
@@ -188,12 +188,14 @@
             <td>
               <table class="sinbordetable">
                 <tr class="sinbordetable">
-                  <td class="sinbordetable"><span>Técnico Encargado:</span> <span>ddddddddd</span></td>
-                  <td class="sinbordetable">Fecha - hora inicio: ddddddddd</td>
+                  <td class="sinbordetable"><span>Técnico Encargado:</span> 
+                  <span >{{ $ordenServiciosObject->tecnico_encargado }}</span> 
+                </td>
+                  <td class="sinbordetable">Fecha - hora inicio: {{ $ordenServiciosObject->fecha_inicio_programada }}</td>
                 </tr>
                 <tr class="sinbordetable">
-                <td class="sinbordetable"> Técnico(s) Auxiliares: ddddddddd</td>
-                  <td class="sinbordetable">Fecha - hora término: ddddddddd</td>
+                <td class="sinbordetable"> Técnico(s) Auxiliares: <span >{{ $ordenServiciosObject->tecnico_auxiliar }}</span> </td>
+                  <td class="sinbordetable">Fecha - hora término: {{ $ordenServiciosObject->fecha_fin_programada }}</td>
                 </tr>
                 
               </table>
@@ -204,7 +206,50 @@
           <tr>
             <th>EQUIPOS ATENDIDOS</th>
           </tr>
-          <tr>
+          @foreach(json_decode($ordenServiciosObject->jequipos) as $val )
+            <tr>
+              <td>
+                <table>
+                  <tr>
+                    <td class="sinbordetable" style="width:2%;"><span>1</span></td>
+                    <td class="sinbordetable" style="width:32%;">
+                      <table style="width:100%;">
+                        <tr class="sinbordetable">
+                          <td class="sinbordetable"><span>Equipo:</span><span>{{$val->tipo_equipo}}</span></td>
+                          <td class="sinbordetable"><span>Etiqueta:</span><span>{{$val->etiqueta}}</span></td>
+                        </tr>
+                        <tr class="sinbordetable">
+                          <td class="sinbordetable"><span>Núm de Serie:</span><span>-</span></td>
+                          <td class="sinbordetable"><span>Marca:</span><span> - </span></td>
+                        </tr>
+                        <tr class="sinbordetable">
+                          <td class="sinbordetable"><span>Ubicación:</span><span>{{$val->ubicacion}}</span></td>
+                          <td class="sinbordetable"><span>Modelo:</span><span> - </span></td>
+                        </tr>
+                      </table> 
+                    </td>
+                    <td class="sinbordetable" style="width:32%;">
+                      <span>Servicios:</span><span>dddddd</span> <br>
+                      <span>Tareas:</span>
+                      @foreach($val->tareas as $val2)
+                      <span>{{$val2->servicio}}</span>
+                      @endforeach
+                      <?php
+                      // var_dump($val->tareas);
+                      ?>
+                    </td>
+                    <td class="sinbordetable" style="width:33%;">
+                      <span>Descripción del Problema:</span> 
+                        <span>{{$val->desc_problema}}</span> 
+                      <br>
+                      <span>Diagnóstico / Solución:</span><span> - </span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          @endforeach
+          <!-- <tr>
             <td>
               <table>
                 <tr>
@@ -343,57 +388,35 @@
                 </tr>
               </table>
             </td>
-          </tr>
-          <tr>
-            <td>
-              <table>
-                <tr>
-                  <td class="sinbordetable" style="width:2%;"><span>1</span></td>
-                  <td class="sinbordetable" style="width:32%;">
-                    <table style="width:100%;">
-                      <tr class="sinbordetable">
-                        <td class="sinbordetable"><span>Equipo:</span><span>dddddd</span></td>
-                        <td class="sinbordetable"><span>Etiqueta:</span><span>dddddd</span></td>
-                      </tr>
-                      <tr class="sinbordetable">
-                        <td class="sinbordetable"><span>Núm de Serie:</span><span>dddddd</span></td>
-                        <td class="sinbordetable"><span>Marca:</span><span>dddddd</span></td>
-                      </tr>
-                      <tr class="sinbordetable">
-                        <td class="sinbordetable"><span>Ubicación:</span><span>dddddd</span></td>
-                        <td class="sinbordetable"><span>Modelo:</span><span>dddddd</span></td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td class="sinbordetable" style="width:32%;">
-                    <span>Servicios:</span><span>dddddd</span> <br>
-                    <span>Tareas:</span><span>dddddd</span>
-                  </td>
-                  <td class="sinbordetable" style="width:33%;">
-                    <span>Descripción del Problema:</span> 
-                      <span>Equipo no enciende, no tiene antivirus, no se conecta al inter, requiere actualizar software.</span> 
-                    <br>
-                    <span>Diagnóstico / Solución:</span><span>dddddd</span>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+          </tr> -->
 
           <tr>
             <td>
-              <table>
+              <table style="text-align:center;">
                 <tr>
                   <th>SOLICITANTE:</th>
                   <th>TÉCNICO(s) AUXLILIARES</th>
                   <th>TÉCNICO ENCARGADO</th>
                 </tr>
-  
-                <tr>
-                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>ATENCIÓN A USUARIOS</span><br><span>FIRMA</span></td>
-                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{-- $ordenServiciosObject->tecnico_encargado --}}</span><br><span>FIRMA</span></td>
-                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{-- $ordenServiciosObject->solicitante --}}</span><br><span>FIRMA</span></td>
-                </tr>
+                <!-- <tr>
+                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{ $ordenServiciosObject->solicitante }}</span></td>
+                  <td style="width: 33.3%; text-transform: uppercase;"><span>{{ $ordenServiciosObject->tecnico_auxiliar }}</span></td>
+                  <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{ $ordenServiciosObject->tecnico_encargado }}</span></td>
+                </tr> -->
+                <tbody>
+                  <tr>
+                    <td ></td>
+                    <td style="width: 33.3%; text-transform: uppercase;"><span>{{ $ordenServiciosObject->tecnico_auxiliar }}</span></td>
+                    <td ></td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td class="firmas" style="width: 33.3%; text-transform: uppercase; border-top:1px solid black;"><span>{{ $ordenServiciosObject->solicitante }}</span></td>
+                    <td style="width: 33.3%; text-transform: uppercase;"></td>
+                    <td class="firmas" style="width: 33.3%; text-transform: uppercase; border-top:1px solid black;"><span>{{ $ordenServiciosObject->tecnico_encargado }}</span></td>
+                  </tr>
+                </tfoot>
               </table>
             </td>
           </tr>
@@ -469,7 +492,7 @@
         </div>
         <br> -->
         <div>
-          <div>
+          <!-- <div>
             <table>
                 
               <tr>
@@ -484,7 +507,7 @@
                 <td class="firmas" style="width: 33.3%; text-transform: uppercase;"><span>{{-- $ordenServiciosObject->solicitante --}}</span><br><span>FIRMA</span></td>
               </tr>
             </table>
-          </div>                
+          </div>                 -->
           {{-- style="padding: 30px 1px 0px 1px;" --}}
 
           {{-- <br>

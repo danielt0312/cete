@@ -296,7 +296,8 @@
         <div class="col-12">
           <div class="form-group">
             <label for="estatus_id">Usuario Cancela</label>
-            <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="{{Auth()->user()->name}}" readonly>
+            <!-- <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="{{Auth()->user()->name}}" readonly> -->
+            <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="{{ $getUsername[0]->nameuser}}" readonly>
             <input type="hidden" id="hdIdSolicServ" name="hdIdSolicServ" class="form-control">
             <input type="hidden" id="hdIdUsuarioCancela" name="hdIdUsuarioCancela" class="form-control" value="{{Auth()->user()->id}}" >
             
@@ -340,13 +341,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="formCierre" name="formCierre" enctype="multipart/form-data">
+        <form id="formCierre" name="formCierre" method="POST" enctype="multipart/form-data">
           <div class="col-12">
             <div class="form-group">
               <!--<label for="estatus_id">Usuario Cancela</label>
               <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
                 <input type="hidden" id="hdIdOrdenCierra" name="hdIdOrdenCierra" class="form-control">
-                <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control"> 
+                <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
             </div>
           </div>
 
@@ -579,7 +580,8 @@
             <div class="col-6">
               <div class="form-group">
                 <label for="archivoCierre">Seleccionar Archivo:</label>
-                <input class="form-control" type="file" id="archivoCierre" name="archivoCierre">
+                <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre"> -->
+                <input class="form-control" type="file" multiple id="archivoCierre" name="archivoCierre[]" accept="png|jpg|jpeg"/>
               </div>
             </div>
           </div>
@@ -589,12 +591,39 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn colorBtnPrincipal" onclick="" id="btnCerrar">Cerrar Orden</button>
+        <button type="button" class="btn colorBtnPrincipal" onclick="fnCierreOrden()" id="btnCerrar">Cerrar Orden</button>
       </div>
     </div>
   </div>
 </div>
 <!-- FIN MODAL CERRAR-->
+
+<!-- MODAL VER ARCHIVO CIERRE  -->
+<div class="modal fade" id="verArchivoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="verArchivoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verArchivoModalLabel">Archivo de Cierre</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-12">
+          <div class="form-group" id="divArchivosCierre">
+
+            <!-- <img  id="archivoCierreOrden" />
+            <input type="hidden" id="rutaArchivoCierreO" name="rutaArchivoCierreO"> -->
+          </div>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <!-- <button type="button" class="btn colorBtnPrincipal" onclick="fnDescargarArchivo()" id="btnDescargarArchivo">Descargar</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FIN MODAL MODAL VER ARCHIVO CIERRE -->
 
 @endsection 
 
@@ -683,35 +712,66 @@
     tabla=$('#tablaPrueba2').DataTable({
           data:data[0],
           columns: [
-            { data: 'folio' },
+            // { data: 'folio' },
+            { data: null, render:function(data){
+              if(data.folio_solic!='' && data.folio_solic!=null){
+                return '<h6 class="mb-0 text-sm">'+data.folio+'</h6><span class="text-xs text-secondary mb-0">'+data.folio_solic+'</span>';
+              }else{
+                return '<h6 class="mb-0 text-sm">'+data.folio+'</h6>';
+              }
+                // return '<span class="text-xs">'+data.folio+'</span>';
+              }
+            },
             { data: null, render:function(data){
                  if(data.desc_estatus_orden=='TRABAJANDO'){
-                  return '<span style="background-color:grey; border-radius:0.5em; padding:0.17em; color:grey;">TRABAJANDO</span>';
+                  return '<span class="text-xs" style="background-color:grey; border-radius:0.5em; padding:0.17em; color:grey;">TRABAJANDO</span>';
                  }else{
-                  return '<span>'+data.desc_estatus_orden+'</span>';
+                  return '<span class="text-xs">'+data.desc_estatus_orden+'</span>';
                  }
               }
             },
             { data: null, render:function(data){
-                return '<h6 class="mb-0 text-sm">'+data.nombrecct+'</h6><p class="text-xs text-secondary mb-0">'+data.clavecct+'</p>';
+
+                // var str = data.nombrecct;
+                // var c = str.split(' ').length;
+                // var oo = str.split(' ');
+                // var hola='';
+                // if(c > 3){
+                //   for (let index = 0; index < oo.length; index++) {
+                //     if(index < 3){
+                //       hola += oo[index]+' ';
+                //     }else{
+                //       hola += '<br>'+oo[index]+' ';
+                //     }
+                //     hola.trim();
+                //   }
+                // }else{
+                //   hola=data.nombrecct;
+                // }
+                // return '<div><h6 class="mb-0 text-sm">'+hola+'</h6><p class="text-xs text-secondary mb-0">'+data.clavecct+'</p></div>';
+                return '<div><h6 class="mb-0 text-sm">'+data.nombrecct+'</h6><p class="text-xs text-secondary mb-0">'+data.clavecct+'</p></div>';
               }
             },
             { data: null, render:function(data){
-                return '<span>'+data.coordinacion+'</span>';
+                return '<span class="text-xs">'+data.coordinacion+'</span>';
               }
             },
-            { data: 'fecha_orden' },
+            // { data: 'fecha_orden' },
+            { data: null, render:function(data){
+                return '<span class="text-xs">'+data.fecha_orden+'</span>';
+              }
+            },
             // { data: 'estatus' },
             // { data: 'tiempo_apertura' },
             { data: null, render:function(data){
-                return '<span>'+data.captacion+'</span>';
+                return '<span class="text-xs">'+data.captacion+'</span>';
               }
             },
             { data: null, render:function(data){
                 if(data.tiempo_apertura>1){
-                  return '<span>'+data.tiempo_apertura+' DíAS</span>';
+                  return '<span class="text-xs">'+data.tiempo_apertura+' DíAS</span>';
                 }else{
-                  return '<span>'+data.tiempo_apertura+' DíA</span>';
+                  return '<span class="text-xs">'+data.tiempo_apertura+' DíA</span>';
                 }
               }
             },
@@ -776,6 +836,18 @@
                          '</ul>'+
                          '</div>';
                    return estatuss;
+                  }else if(data.desc_estatus_orden=='Atendida'){
+                   
+                   estatuss+= '<div class="dropdown btn-group dropstart">'+
+                         '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
+                         '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
+                         '<li>'+
+                        //  '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
+                         '<a onclick="imprimirPDFOrdenGuardado('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
+                         '</li>'+
+                         '</ul>'+
+                         '</div>';
+                   return estatuss;
                   }else{
                     estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
@@ -832,7 +904,7 @@
                 "last": "Ultimo",
                 "next": ">",
                 "previous": "<"
-            }
+            },
         },
         // dom: 'Bfrtip', //arriba   //dom: 'lfrtipB', ////abajo
         // buttons: [{
@@ -851,7 +923,8 @@
                         "visible": false,
                         "searchable": true
                     },
-        ]
+        ],
+        order: [[4, "desc"], [1, "asc"]] ///  ordenar campos de la tabla desde aqui
       });
   }
 
@@ -910,7 +983,8 @@
     let urlEditar = '{{ route("download-pdf", ":id") }}';
     urlEditar = urlEditar.replace(':id', idOrden);
  
-	  location.href = urlEditar;
+	  // location.href = urlEditar; // para que vaya a la url a descargar directo el pdf
+    var win = window.open(urlEditar, '_blank'); /// para abrir una nueva pestaña y que se muestre el pdf
  
     
     // $.ajax({
@@ -930,12 +1004,67 @@
     // });
   }
 
+  function imprimirPDFOrdenGuardado(idSolicServ){
+
+    let urlEditar = '{{ route("verArchivoCierre", ":id") }}';
+    urlEditar = urlEditar.replace(':id', idSolicServ);
+    
+    $.ajax({
+        url: urlEditar,
+        type: 'GET',
+        dataType: 'json', 
+        success: function(data) {
+          console.log(data);  
+          // var nombre="64cd883de4cd1_78.jpg";
+          var html='';
+          $.each(data, function(j, val){
+            if (!jQuery.isEmptyObject(data[j])) {
+
+              var nombre= data[j].nombre_archivo;
+              let urlArchivo = '{{ asset("cierreOrden/:id") }}';
+               urlArchivo = urlArchivo.replace(':id', nombre);
+
+              // html+='<a href="'+urlArchivo+'" target="_blank"><img id="archivo_'+j+'" src="'+urlArchivo+'" /></a>';
+              // $("#divArchivosCierre").html(html);
+              // $(location).attr('href',urlArchivo);
+              window.open(urlArchivo, '_blank');
+            }
+        });
+          // $("#verArchivoModal").modal("show");
+        }
+    });
+    
+    
+  }
+
+  function fnDescargarArchivo(){
+    document.location=$("#rutaArchivoCierreO") .val();
+  }
+
   function msjeAlertaPrincipal(titulo, contenido, icono){
-    Swal.fire(
-      titulo,
-      contenido,
-      icono
-    )
+    // Swal.fire(
+    //   titulo,
+    //   contenido,
+    //   icono
+    // )
+
+    Swal.fire({
+        title: titulo,
+        html: contenido,
+        icon: icono,
+        showCancelButton: false,
+        confirmButtonColor: '#b50915',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Ok',
+        // cancelButtonText: 'Aceptar',
+        width: 600,
+        }).then((result) => {
+        if (result.isConfirmed) {
+
+        }else{
+            
+        }
+    });
   }
 
   function msjeAlertaSecundario(titulo, contenido, icono){
@@ -966,6 +1095,56 @@
     $("#hdIdSolicServ").val(idSolicServ);
   }
 
+  function fnCierreOrden(){
+    var vidSolicServ = $("#hdIdOrdenCierra").val();
+    var archivoEvidencia = $("#archivoCierre").val();
+
+    var formCierre = $('#formCierre')[0];
+    var data2 = new FormData(formCierre);  
+
+    Swal.fire({
+        title: '',
+        text: '¿Está seguro que desea Cerrar la Orden de Servicio?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'SI',
+        cancelButtonText: 'NO',
+        }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+              url: "{{ route('cerrarOrden') }}",
+              data: data2,
+              type: 'POST',
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+              dataType: 'json', 
+              processData: false,  // tell jQuery not to process the data
+              contentType: false ,  // tell jQuery not to set contentType
+              success: function(data) {
+                // console.log(data);
+                if(data[0]['inscierrasolicitud']==0){
+                  msjeAlertaPrincipal('Orden cerrada correctamente','','success')
+                  $("cerrarOrdenModal").modal("hide");
+                  load();
+                }else{
+                  msjeAlertaPrincipal('No se cerró la Orden','','error')
+                }
+              }
+          });
+        }else{
+          console.log('no iniciar');
+            //window.location.href = '{{ route("listadoOrdenes") }}';
+        }
+
+        // {
+
+              //   // idSolicServ : vidSolicServ,
+              //   // ruta_evidencia : archivoEvidencia
+              // },
+    });
+  }
+
   function fnGuardarCancelacion(){
     var hdIdSolicServ = $("#hdIdSolicServ").val();
     var vId_motivo_canc = $("#selMotivoCancela").val();
@@ -978,13 +1157,13 @@
     }else{
       Swal.fire({
             title: '',
-            text: '¿Esta seguro que desea Cancelar la Orden de Servicio?',
-            icon: 'info',
+            text: '¿Está seguro que desea cancelar la orden de servicio?',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#b50915',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'SI',
-            cancelButtonText: 'NO',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
             }).then((result) => {
             if (result.isConfirmed) {
               $.ajax({
@@ -1022,18 +1201,20 @@
     $("#asignarTecnicosModal").modal("show");
     $("#idSolModTec").val(idOrden);
 
-    $("#fecha_inicio_prog").val('');
-    $("#fecha_fin_prog").val('');
-    // $('#fecha_inicio_prog').change(function() {
-    //   var date = new Date(checkInDate.value);
-    //   var offset = new Date().getTimezoneOffset();  
-    //   date.setDate(date.getDate() + 1);
-    //   $('#fecha_fin_prog').val(add_minutes(date, -offset).toISOString().replace("Z",""));
-    // });
+    // $("#fecha_inicio_prog").val('');
+    var now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    now.setMilliseconds(null);
+    now.setSeconds(null);
+    $('#fecha_inicio_prog').val(now.toISOString().slice(0, -1));
 
-    
-    
+    // $("#fecha_fin_prog").val('');
+    var objDate = new Date($('#fecha_inicio_prog').val());
+    var date=addHoursToDate(objDate,-4).toISOString().replace("Z","");
+    $('#fecha_fin_prog').val(date);
   }
+
+  
  
   function fnAgregarTecnicos(){
     // console.log('asignar tecnico');
@@ -1053,26 +1234,36 @@
     var data2 = new FormData(formTecnicos)
      data2.append('tecnicosAuxiliaresArray', JSON.stringify(tecnicosAuxiliaresArray))
     // console.log(data2);
-    $.ajax({
-        url: "{{ route('asignarTecnico') }}",
-        data:data2,
-        type: 'POST',
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        dataType: 'json', 
-        processData: false,  // tell jQuery not to process the data
-        contentType: false ,  // tell jQuery not to set contentType
-        success: function(data) {
-          // console.log('regreso tecnicos de asignar');
-          if(data[0]['fninstecnicos']==1){
-            msjeAlertaPrincipal('Técnicos asignados correctamente','','success')
-            load();
-            $("#asignarTecnicosModal").modal("hide");
-          }else{
-            msjeAlertaPrincipal('Técnicos No se asignados','','error')
-            $("#asignarTecnicosModal").modal("hide");
-          }
-        }
-    });
+    // console.log(tecnicosAuxiliaresArray[0].es_responsable);
+    if(tecnicosAuxiliaresArray != ''){
+      console.log('no esta vacio');
+      if(tecnicosAuxiliaresArray[0].es_responsable==1){
+        $.ajax({
+            url: "{{ route('asignarTecnico') }}",
+            data:data2,
+            type: 'POST',
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            dataType: 'json', 
+            processData: false,  // tell jQuery not to process the data
+            contentType: false ,  // tell jQuery not to set contentType
+            success: function(data) {
+              // console.log('regreso tecnicos de asignar');
+              if(data[0]['fninstecnicos']==1){
+                msjeAlertaPrincipal('Técnicos asignados correctamente','','success')
+                load();
+                $("#asignarTecnicosModal").modal("hide");
+              }else{
+                msjeAlertaPrincipal('Técnicos No se asignados','','error')
+                $("#asignarTecnicosModal").modal("hide");
+              }
+            }
+        });
+      }else{
+        msjeAlertaSecundario('Tiene que seleccionar un Técnico Encargado','','error')
+      }
+    }else{
+        msjeAlertaSecundario('','Tiene que seleccionar un Técnico Encargado','error')
+    }
 
   }
 
@@ -1199,9 +1390,35 @@
           var htmlSel='';
           // var vtecniA='';
           // var vtecniE='';
+          var vubicacion ='';
+          var vsolucion ='';
+
           for (var i = 0; i < vequip.length; i++) {
 
-            console.log(vequip[i].id_equipo_tarea);
+            if(vequip[i].ubicacion=='' || vequip[i].ubicacion==null){
+              vubicacion='-';
+            }else{
+              vubicacion=vequip[i].ubicacion;
+            }
+
+            if(vequip[i].solucion=='' || vequip[i].solucion==null){
+              vsolucion='-';
+            }else{
+              vsolucion=vequip[i].solucion;
+            }
+            
+            var vtareas=vequip[i].tareas;
+            var cadenaTareas='';
+            var cadenaServicios='';
+
+            for (var j = 0; j < vtareas.length; j++) {
+                // console.log(vtareas[j].tarea);
+              cadenaTareas += vtareas[j].tarea + ', ';
+
+              cadenaServicios += vtareas[j].servicio+ ', '; // checar que si es el mismo servicio que solo lo ponga una vez
+            } 
+
+            // console.log(vequip[i].id_equipo_tarea);
             htmlSel+='<table style="border:1px solid; width:100%;">';
             htmlSel+='<tr style="border:1px solid; background-color:#8392ab;">';
             htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+vequip[i].tipo_equipo+'</label></td>';
@@ -1212,11 +1429,11 @@
             htmlSel+='<tr>';
             htmlSel+='<td colspan="4">';
             htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+vequip[i].tipo_equipo+'</label><br>';
-            htmlSel+='<label>Servicio(s):</label><label class="SinNegrita" id="lblServicios">'+vequip[i].servicio+'</label><br>';
-            htmlSel+='<label>Tarea(s):</label><label class="SinNegrita" id="lblTareas">'+vequip[i].tarea+'</label><br>';
+            htmlSel+='<label>Servicio(s):</label><label class="SinNegrita" id="lblServicios">'+cadenaServicios+'</label><br>';
+            htmlSel+='<label>Tarea(s):</label><label class="SinNegrita" id="lblTareas">'+cadenaTareas+'</label><br>';
             htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+vequip[i].desc_problema+'</label><br>';
-            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+vequip[i].ubicacion+'</label><br>';
-            htmlSel+='<label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag">'+vequip[i].solucion+'</label><br>';
+            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+vubicacion+'</label><br>';
+            htmlSel+='<label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag">'+vsolucion+'</label><br>';
             htmlSel+='</td>';
             htmlSel+='</tr>';
             htmlSel+='</table>';
@@ -1246,7 +1463,6 @@
 
   $(document).ready(function () {
     load();
-
 
     $("#btnFiltrar").show();
     $("#pnFiltros").hide();
@@ -1584,11 +1800,15 @@
           }
         });
         $("#selTecnicosAuxiliares").prop('disabled', false);
-        // $("#btnAsignarTecnico").prop('disabled', false);
+        $("#btnAsignarTecnico").prop('disabled', false);
       }else{
-        // $("#btnAsignarTecnico").prop('disabled', true);
+        $("#btnAsignarTecnico").prop('disabled', true);
         $("#selTecnicosAuxiliares").prop('disabled', true);
         msjeAlertaSecundario('','Favor de seleccionar el Técnico Encargado','error');
+
+        tecnicosAuxiliaresArray = [];
+        $("#tbTecnicos").html('');
+        $("#tbTecnicos").empty();
       }
 
     });
@@ -1602,7 +1822,7 @@
           // $("#selTecnicosAuxiliares").val();
           //  $("#selTecnicosAuxiliares option[value='']").attr("selected",true);
           // document.getElementById("selTecnicosAuxiliares").value = null;
-          $("#btnAsignarTecnico").prop('disabled', true);
+          // $("#btnAsignarTecnico").prop('disabled', true);
         }else{
             var vTecnicoAux=$("#selTecnicosAuxiliares").val();
             // var tecnicosAuxiliaresArray = []; 
@@ -1614,13 +1834,28 @@
                   tecnicosAuxiliaresArray.push({id_tecnico:parseInt(tecnicosAux.options[i].value), nombre_tecnico:tecnicosAux.options[i].text, es_responsable:0});
                 }
             }
-            $("#btnAsignarTecnico").prop('disabled', false);
+            // $("#btnAsignarTecnico").prop('disabled', false);
 
             // console.log(tecnicosAuxiliaresArray);
         }
     });  
 
-  });
+    $('#fecha_inicio_prog').change(function() {
+      // console.log(this.value);
+       var objDate = new Date(this.value);
+      // console.log(addHoursToDate(objDate,-1));
+      var date=addHoursToDate(objDate,-4).toISOString().replace("Z","");
+
+      $('#fecha_fin_prog').val(date);
+    });
+});
+
+  function addHoursToDate(objDate, intHours) {
+      var numberOfMlSeconds = objDate.getTime();
+      var addMlSeconds = (intHours * 60)* 60000;
+      var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+      return newDateObj;
+  }
 
  </script>
 

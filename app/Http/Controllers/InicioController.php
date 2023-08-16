@@ -25,7 +25,9 @@ class InicioController extends Controller
 
         $total_aten=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('AT')");
         $total_atendidas=$total_aten[0]; 
-        
+
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
        
         return view('inicio', compact(
             'total_solicitudes',
@@ -33,6 +35,7 @@ class InicioController extends Controller
             'total_asignadas',
             'total_trabajando',
             'total_atendidas',
+            'getUsername'
         ) );
         // return view('inicio');
     }

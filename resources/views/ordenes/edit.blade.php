@@ -56,6 +56,18 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tabCCT">
                                     <div class="row">
+                                        <div class="col-12" id="datosGenCentro">
+                                            <label>CENTRO DE TRABAJO:</label>
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NOMBRE DEL C.T:</label>
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NIVEL DEL C.T.:</label>
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>MUNICIPIO DEL C.T.:</label> 
+                                            <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
 
                                         <!-- <label for="txtCentroTrabajo">CENTRO DE TRABAJO </label>
                                         <div class="col-4">
@@ -77,6 +89,7 @@
                                             <input type="text" id="txtNombreCCT" name="txtNombreCCT" class="form-control" value="{{ $ordenServiciosDetalle->nombrect }}" readonly >
                                             <input type="hidden" id="txtIdCCT" name="txtIdCCT" class="form-control" value="{{ $ordenServiciosDetalle->id_centro }}" readonly >
                                             <input type="hidden" id="txtIdSolic" name="txtIdSolic" class="form-control" value="{{ $ordenServiciosDetalle->id_solic }}" readonly >
+                                            <input type="hidden" id="txtNumFolio" name="txtNumFolio" class="form-control" value="{{ $ordenServiciosDetalle->folio }}" readonly >
                                             <!-- <label id="nombre_alumno" class="SinNegrita">{{-- $registro->nombre_alumno --}}</label> -->
                                             </div>
                                         </div>
@@ -149,12 +162,24 @@
 
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <!-- <button type="submit" class="btn btn-secondary" id="btnAnterior" >ANTERIOR</button> -->
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente">SIGUIENTE</button> 
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente">Siguiente</button> 
                                         </div>
                                     </div>
                                 </div>  <!--final del tab cct-->
 
                                 <div class="tab-pane fade" id="tabReporte">
+                                    <div class="row">
+                                        <div class="col-12" id="datosGenCentro2">
+                                            <label>CENTRO DE TRABAJO:</label>
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NOMBRE DEL C.T:</label>
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NIVEL DEL C.T.:</label>
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>MUNICIPIO DEL C.T.:</label> 
+                                            <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="form-group">
@@ -228,141 +253,143 @@
                                         </div>
 
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnAnterior2" >ANTERIOR</button>
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >SIGUIENTE</button>
+                                            <button type="button" class="btn btn-secondary" id="btnAnterior2" >Regresar</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >Siguiente</button>
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Reporte-->
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
-
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="selTipoEquipo">TIPO DE EQUIPO</label>
-                                                <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
-                                                    <option value="0" selected>Seleccionar</option>
-                                                    @foreach($catTipoEquipo as $tipoEquipo)
-                                                        <option value="{{ $tipoEquipo->id }}">{{ $tipoEquipo->tipo_equipo }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                        <div class="col-12" id="datosGenCentro">
+                                            <label>CENTRO DE TRABAJO:</label>
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NOMBRE DEL C.T:</label>
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>NIVEL DEL C.T.:</label>
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>MUNICIPIO DEL C.T.:</label> 
+                                            <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
                                         </div>
-
-                                        <div class="col-1" id="divCantidad">
-                                            <div class="form-group">
-                                                <label for="txtCantidadEquipos">CANTIDAD</label>
-                                                <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" readonly >
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4">
-                                            <div class="form-group">
-                                                 <label for="selTipoServicio">SERVICIO</label>
-                                                <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
-                                                    <option value="0" selected>Seleccionar</option>
-                                                </select> -->
-
-                                                <div class="input-group">
-                                                    <select class="form-select" id="selTipoServicio" name="selTipoServicio" aria-label="Example select with button addon">
-                                                        <option value="0" selected>Seleccionar</option>
-                                                        
-                                                    </select>
-                                                    <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
-                                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
+                                                    <textarea class="form-control" id="txtDescripcionSoporte" name="txtDescripcionSoporte" rows="3"></textarea>
                                                 </div>
                                             </div>
-                                            <!-- <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicio">
-                                                
-                                                <ul id="ulServicio">
-                                                    
-                                                </ul>
-                                            </div> -->
                                         </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="selTarea">TAREA</label>
-                                                <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
-                                                    <option value="0" selected>Seleccionar</option>
-                                                </select> -->
-                                                <!-- <div class="input-group"> -->
-                                                    <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
-                                                        <option value="0" selected>Seleccionar</option>
-                                                    </select>
-                                                    <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
-                                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
-                                                <!-- </div> -->
+
+                                        <div class="row">
+                                            <div class="col-3 divEtiqueta">
+                                                <div class="form-group">
+                                                    <label for="txtEtiquetaServicio">ETIQUETA DE SERVICIO</label>
+                                                    <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
+                                                </div>
                                             </div>
                                             
-                                            <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                                <span>LISTADO DE TAREAS</span>
-                                                <ul id="ulTarea">
+                                            <div class="col-6 divEtiqueta">
+                                                <div class="form-group">
+                                                    <label for="txtMarca">DETALLE EQUIPO</label>
+                                                    <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
+                                                    <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
+                                                    <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
+                                                    <input type="hidden" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
+                                                    <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-1" id="divCantidad">
+                                                <div class="form-group">
+                                                    <label for="txtCantidadEquipos">CANTIDAD</label>
+                                                    <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" readonly >
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="selTipoEquipo">TIPO DE EQUIPO</label>
+                                                    <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
+                                                        <option value="0" selected>Seleccionar</option>
+                                                        @foreach($catTipoEquipo as $tipoEquipo)
+                                                            <option value="{{ $tipoEquipo->id }}">{{ $tipoEquipo->tipo_equipo }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="form-group">
+                                                    <label for="selTipoServicio">SERVICIO</label>
+                                                    <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
+                                                        <option value="0" selected>Seleccionar</option>
+                                                    </select> -->
+
+                                                    <div class="input-group">
+                                                        <select class="form-select" id="selTipoServicio" name="selTipoServicio" aria-label="Example select with button addon">
+                                                            <option value="0" selected>Seleccionar</option>
+                                                            
+                                                        </select>
+                                                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
+                                                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicio">
                                                     
-                                                </ul>
-                                            </div> -->
+                                                    <ul id="ulServicio">
+                                                        
+                                                    </ul>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="selTarea">TAREA</label>
+                                                    <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
+                                                        <option value="0" selected>Seleccionar</option>
+                                                    </select> -->
+                                                    <!-- <div class="input-group"> -->
+                                                        <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
+                                                            <option value="0" selected>Seleccionar</option>
+                                                        </select>
+                                                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
+                                                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                                    <!-- </div> -->
+                                                </div>
+                                                
+                                                <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
+                                                    <span>LISTADO DE TAREAS</span>
+                                                    <ul id="ulTarea">
+                                                        
+                                                    </ul>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-1" style="padding-bottom:5px;"> 
+                                                <div class="form-group">
+                                                    <br>
+                                                    <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                                                </div>
+                                             </div>
                                         </div>
-
-                                        <div class="col-1" style="padding-bottom:5px;"> 
-                                        <div class="form-group">
-                                            <br>
-                                        <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
-                                         </div>
-                                         </div>
 
                                     </div>
-                                    <div class="row">
-
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
-                                                <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
-                                            </div>
-                                        </div>
-
-                                        <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtEtiquetaServicio">ETIQUETA DE SERVICIO</label>
-                                                <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
-                                            </div>
-                                        </div>
-                                        <div class="col-6 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtMarca">DETALLE EQUIPO</label>
-                                                <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
-                                                <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
-                                                <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
-                                                <input type="hidden" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
-                                            </div>
-                                        </div>
-
-                                        <!-- <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtModelo">MODELO</label>
-                                                <input type="text" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-3 divEtiqueta">
-                                            <div class="form-group">
-                                                <label for="txtNumeroSerie">NÚMERO DE SERIE</label>
-                                                <input type="text" id="txtNumeroSerie" name="txtNumeroSerie" class="form-control" value="" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="divEtiqueta">
-                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnVerDetalles" data-bs-toggle="modal" data-bs-target="#detallesEquipoModal">VER DETALLES</button>
-                                        </div>
-                                        </div> -->
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-7">
+                                    <div class="row" id="divRowListadoTareas">
+                                        <!-- <div class="col-7">
                                             <div class="form-group">
                                                 <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
                                                 <textarea class="form-control" id="txtDescripcionSoporte" name="txtDescripcionSoporte" rows="3"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-5">
+                                        </div> -->
+                                        <div class="col-12">
                                             <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                                <span id="tituloTareas"></span>
+                                                <span id="tituloTareas" class="tituloTareas"></span>
                                                 <ul id="ulTarea" style="font-size:0.75rem;">
                                                     
                                                 </ul>
@@ -375,28 +402,33 @@
                                                 <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
                                             </div>
                                         </div> -->
+                                    </div>
 
-                                        <br>
-                                        <div class="col-9 d-md-flex justify-content-md-end">
-                                            <div class="form-check" id="checkVer">
+                                    <div class="row">
+                                        <div class="col-9 d-md-flex justify-content-md-start">
+                                            <div class="form-check replicar" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
-                                                    Replicar datos en el siguiente equipo
+                                                    Mantener descripción del problema y lista de tareas para el siguiente equipo.
                                                 </label>
                                             </div>
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >AÑADIR EQUIPO</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
                                         </div>
-                                        <br>
+                                    </div>
+                                    
+                                    <div class="row">
                                         <div class="col-12" id="divTablaEquipos">
                                             <table class="table">
                                                 <thead class="text-align:center;">
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN DEL PROBLEMA</th>
-                                                    <th></th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TAREA</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ACCIONES</th>
                                                 </thead>
                                                 <tbody id="tbEquipos">
 
@@ -412,8 +444,8 @@
                                         <br>
                                         
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <button type="button" class="btn btn-secondary" id="btnAnterior3" >ANTERIOR</button>
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="fnGuardar()"> REGISTRAR ORDEN</button>
+                                            <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="msjeAlertConfirm()"> Actualizar</button>
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Equipos-->
@@ -523,181 +555,285 @@
 
 <!-- MODAL VER DETALLES EQUIPO -->
 <div class="modal fade" id="visualizarDetalleEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="visualizarDetalleEquipoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="visualizarDetalleEquipoModalLabel">Información Equipo</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" >
-        <div class="row">
-            <div class="col-12"  id="divDetalleEquipoM">
+      </div> -->
+            <div class="modal-body" >
+                <div class="row">
+                    <div class="col-12">
+                        <br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <span style="color:white;">Información Equipo(s)</span>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12"  id="divDetalleEquipoM">
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+
+                    </div>
+                </div>
+                <div class="row" style="text-align:right;">
+                    <div class="col-12" >
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+            </div> -->
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
-      </div>
     </div>
-  </div>
 </div>
 <!-- FIN MODAL VER DETALLES EQUIPO-->
 
 <!-- MODAL HISTORIAL EQUIPO -->
 <div class="modal fade" id="historialEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="historialEquipoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="historialEquipoModalLabel">Historial del Equipo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body overflow-scroll">
-        <input type="hidden" id="etiquetaM" name="etiquetaM" value="" readonly>
-       <table class="table" id="tablaHistoricoE" >
-        <thead class="text-align:center;">
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ORDEN</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA FINALIZO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO ATENDIO</th>
-            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SOLICITANTE</th>
-        </thead>
-        <tbody id="tbHistoricoE">
-            
-        </tbody>
-       </table>
-      </div>
-      <div class="modal-footer">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+        <!-- <div class="modal-header">
+            <h5 class="modal-title" id="historialEquipoModalLabel">Historial del Equipo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div> -->
+            <div class="modal-body overflow-scroll">
+                <div class="row">
+                    <div class="col-12">
+                        <br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <span style="color:white;">Historial del Equipo</span>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" >
+                    </div>
+                </div>
+
+                <input type="hidden" id="etiquetaM" name="etiquetaM" value="" readonly>
+
+                <table class="table overflow-scroll" id="tablaHistoricoE" >
+                    <thead class="text-align:center;">
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ORDEN</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CENTRO DE TRABAJO</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FECHA DE CIERRE</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO ENCARGADO</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SOLICITANTE</th>
+                    </thead>
+                    <tbody id="tbHistoricoE">
+                        
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-12" >
+                    </div>
+                </div>
+                <div class="row" style="text-align:right;">
+                    <div class="col-12" >
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnSalirRev">Aceptar</button> -->
-      </div>
+      </div> -->
+        </div>
     </div>
-  </div>
 </div>
 <!-- FIN MODAL HISTORIAL EQUIPO-->
 
 <!-- MODAL EDITAR EQUIPO -->
 <div class="modal fade" id="detalleEquipoModal" tabindex="-1" aria-labelledby="detalleEquipoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="detalleEquipoModalLabel">No. de Equipo:</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="formDetalleEquipo" name="formDetalleEquipo" enctype="multipart/form-data">
-          <div class="col-12">
-            <div class="form-group">
-              <!--<label for="estatus_id">Usuario Cancela</label>
-              <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
-                <input type="hidden" id="hdIdEquipoM" name="hdIdEquipoM" class="form-control">
-                <input type="hidden" id="hdIdSolServM" name="hdIdSolServM" class="form-control">
-                <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-4">
-                <label for="txtEtiquetaM">ETIQUETA</label>
-                <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                        <label for="selTipoServicioM">SERVICIO</label>
-                    <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
-                        <option value="0" selected>Seleccionar</option>
-                    </select> -->
-
-                    <div class="input-group">
-                        <select class="form-select" id="selTipoServicioM" name="selTipoServicioM" aria-label="Example select with button addon">
-                            <option value="0" selected>Seleccionar</option>
-                            
-                        </select>
-                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
-                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <!-- <div class="modal-header">
+                <h5 class="modal-title" id="detalleEquipoModalLabel">No. de Equipo:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div> -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <br>
                     </div>
                 </div>
-                <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicioM">
-                    <!-- <span>LISTADO DE SERVICIOS</span> -->
-                    <ul id="ulServicioM">
-                        
-                    </ul>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="selTareaM">TAREA</label>
-                    <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
-                        <option value="0" selected>Seleccionar</option>
-                    </select> -->
-                    <div class="input-group">
-                        <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
-                            <option value="0" selected>Seleccionar</option>
-                        </select>
-                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
-                        <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <span style="color:white;">EDITAR EQUIPO</span>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
                 </div>
-                <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                    <span>LISTADO DE TAREAS</span>
-                    <ul id="ulTarea">
-                        
-                    </ul>
-                </div> -->
-            </div>
+                <form id="formEditarEquipo" name="formEditarEquipo" enctype="multipart/form-data">
+                    <div class="col-12">
+                        <div class="form-group">
+                        <!--<label for="estatus_id">Usuario Cancela</label>
+                        <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
+                            <input type="hidden" id="hdIdEquipoM" name="hdIdEquipoM" class="form-control">
+                            <input type="hidden" id="hdIdSolServM" name="hdIdSolServM" class="form-control">
+                            <input type="hidden" id="hdIdTipoEquipo" name="hdIdTipoEquipo" class="form-control">
+                            <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="txtDescripcionSoporteM">DESCRIPCIÓN DEL PROBLEMA</label>
+                                <textarea class="form-control" id="txtDescripcionSoporteM" name="txtDescripcionSoporteM" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="txtEtiquetaM">ETIQUETA</label>
+                                <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="txtDetalleEquipoM">DETALLE EQUIPO</label>
+                                <input type="text" id="txtDetalleEquipoM" name="txtDetalleEquipoM" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="txtUbicacionM">UBICACIÓN</label>
+                                <input type="text" id="txtUbicacionM" name="txtUbicacionM" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- <div class="col-4">
+                            <label for="txtEtiquetaM">ETIQUETA</label>
+                            <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
+                        </div> -->
+                        <div class="col-4">
+                            <div class="form-group">
+                                    <label for="selTipoServicioM">SERVICIO</label>
+                                <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
+                                    <option value="0" selected>Seleccionar</option>
+                                </select> -->
+
+                                <div class="input-group">
+                                    <select class="form-select" id="selTipoServicioM" name="selTipoServicioM" aria-label="Example select with button addon" onchange="cargaTarea()">
+                                        <option value="0" selected>Seleccionar</option>
+                                        
+                                    </select>
+                                    <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
+                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                </div>
+                            </div>
+                            <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicioM">
+                                <!-- <span>LISTADO DE SERVICIOS</span> -->
+                                <ul id="ulServicioM">
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="selTareaM">TAREA</label>
+                                <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
+                                    <option value="0" selected>Seleccionar</option>
+                                </select> -->
+                                <div class="input-group">
+                                    <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
+                                        <option value="0" selected>Seleccionar</option>
+                                    </select>
+                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                </div>
+                            </div>
+                            <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
+                                <span>LISTADO DE TAREAS</span>
+                                <ul id="ulTarea">
+                                    
+                                </ul>
+                            </div> -->
+                        </div>
+                        <div class="col-1" style="padding-bottom:5px;">
+                            <div class="form-group">
+                                <br>
+                                <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 scrollVerticalEdiE" id="divEquiposReal">
+                            <span id="tituloTareasM"></span>
+                            <ul id="ulTareaM" style="font-size:0.75rem;">
+                                
+                            </ul>
+                        </div>
+                        <br>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                            <span style="color:white;">CIERRE DE EQUIPO</span>
+                        </div>
+                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <br>
+                                <label for="txtDiagnosticoM">Diagnóstico</label>
+                                <!-- <input type="text" id="txtDiagnosticoM" name="txtDiagnosticoM" class="form-control"> -->
+                                <textarea class="form-control" id="txtDiagnosticoM" name="txtDiagnosticoM" rows="3" placeholder="Capture el diagnóstico detectado en el equipo revisado."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="txtSolucionM">Solución</label>
+                                <!-- <input type="text" id="txtSolucionM" name="txtSolucionM" class="form-control"> -->
+                                <textarea class="form-control" id="txtSolucionM" name="txtSolucionM" rows="3" placeholder="Capture la solución/reparación llevada a cabo en el equipo."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <br>
+                                <label for="archivoEvidencia">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
+                                <input class="form-control" type="file" id="archivoEvidencia" name="archivoEvidencia">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
             </div>
 
-          <div class="row">
-            <div class="col-12 scrollVertical" id="divEquiposReal">
-              <!-- <table style="border:1px solid; width:100%;">
-                <tr style="border:1px solid; background-color:#8392ab;">
-                  <td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo"></label></td>
-                  <td><label>Marca:</label><label class="SinNegrita" id="lblMarca"></label></td>
-                  <td><label>Modelo:</label><label class="SinNegrita" id="lblModelo"></label></td>
-                  <td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie"></label></td>
-                </tr>
-                <tr>
-                  <td colspan="4">
-                    <label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo"></label><br>
-                    <label>Servicio(s):</label><label class="SinNegrita" id="lblServicios"></label><br>
-                    <label>Tarea(s):</label><label class="SinNegrita" id="lblTareas"></label><br>
-                    <label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema"></label><br>
-                    <label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic"></label><br>
-                    <label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag"></label><br>
-                  </td>
-                </tr>
-              </table>
-              <br> -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
             </div>
-          </div>
-
-          <!-- <div class="row">
-            <div class="col-12">
-              <div class="form-group">
-                <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>SUBIR ARCHIVO DE CIERRE DE ORDEN</span></div>
-              </div>
-            </div>
-          </div> -->
-
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label for="archivoEvidencia">Agregar evidencia:</label>
-                <input class="form-control" type="file" id="archivoEvidencia" name="archivoEvidencia">
-              </div>
-            </div>
-          </div>
-
-          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn colorBtnPrincipal" onclick="" id="btnCerrar">Actualizar</button>
-      </div>
+        </div>
     </div>
-  </div>
 </div>
 <!-- FIN MODAL EDITAR EQUIPO-->
 
@@ -730,6 +866,9 @@
     let arrServicios = [];
     var arrEquipos = [];
     let arrEscuelaTurno = [];
+    let arrTareasEdit = [];
+    let arrEquiposElim = [];
+    let arrTareasEditElim = [];
     // var equipo_servicio = {
     //             nom_equipo: '',
     //             num_inventario: '',
@@ -882,14 +1021,14 @@
             // $("#checkReplicar").click(function() {  
                 if($("#checkReplicar").is(':checked')) {  
                     bandCheck=1;
-                    console.log(bandCheck+'---1');
+                    // console.log(bandCheck+'---1');
                 } else {  
                     bandCheck=0;
-                    console.log(bandCheck+'---2');
+                    // console.log(bandCheck+'---2');
                 }  
             // }); 
 
-            console.log(bandCheck+'---3');
+            // console.log(bandCheck+'---3');
 
             var etiquetaServicio = $("#txtEtiquetaServicio").val();
             var marca = $("#txtMarca").val();
@@ -938,7 +1077,7 @@
                     aTarea : arrTareas, ///arreglo tareas
                     // aServicio : arrServicios /// arreglo servicios
                 });
-                console.log(arrEquipos);
+                console.log(arrEquipos,'-----');
                 //  arrTareas=[];
                 drawRowEquipo();
                 i=i+1;
@@ -963,6 +1102,7 @@
             $("#txtCantidadEquipos").val(1);
             $("#tituloTareas").text('');
             $("#selTipoServicio").val("0").attr("selected",true);
+            $("#divRowListadoTareas").hide();
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
             //     arrTareas=[];
@@ -982,7 +1122,7 @@
             // $(".divEtiqueta").show();
             // $("#checkVer").hide();
 
-            // console.log(arrEquipos);
+             console.log(arrEquipos);
         });
 
         var equipoServicio='';
@@ -1051,7 +1191,7 @@
             }else{
                 msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
             }
-            $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
+            // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
         $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
@@ -1125,11 +1265,176 @@
             }
         });
 
+        // $('#selTipoServicioM').on('change', function() { /// Cargar select Tarea en base a Servicio
+        //     var vtipEquipo=  $('#hdIdTipoEquipo').val();
+        //     var serv= this.value;
+
+        //     if(serv !=0){
+        //         let urlEditar = '{{ route("consTarea") }}';
+        //         // urlEditar = urlEditar.replace(':idserv', this.value);
+
+        //         $("#selTareaM").val("0").attr("selected",true);
+        //         let element = document.getElementById("selTareaM");
+        //         element.value = '0';
+
+        //         $.ajax({
+        //             url: urlEditar,
+        //             type: 'POST',
+        //             data:{idequi:vtipEquipo , idserv:serv},
+        //             dataType: 'json', 
+        //             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        //             success: function(data) {
+        //                 //  console.log(data[0][0]);
+        //                 var htmlSel='<option value="0" selected>Seleccionar</option>';
+        //                 for (var i = 0; i < data[0].length; i++) {
+        //                     htmlSel+='<option value="'+data[0][i].id_tarea+'">'+data[0][i].desc_tarea+'</option>'; 
+        //                 }
+
+        //                 $("#selTareaM").html(htmlSel);
+        //             }
+        //         });
+        //     }else{
+        //         console.log('no selecciono un servicio');
+        //     }
+        // });
+
+        var listaTareaM='';
+        var gM=0;
+        var vTareaM = 0;
+        var vTareaTextM = '';
+        $("#btnAgregarTareaM").click(function(){
+            // if(arrTareas.length==0){
+            //     g=0;
+            //     listaTarea='';
+            //     $("#ulTarea").html('');
+            // }
+            vtipEqu= $("#hdIdTipoEquipo").val();
+
+            vTareaM = $("#selTareaM").val();
+            vTareaTextM = $('select[id="selTareaM"] option:selected').text();
+
+
+            vTipoServicio = $("#selTipoServicioM").val();
+            vTipoServicioText = $('select[id="selTipoServicioM"] option:selected').text();
+            
+            if(vtipEqu !=0){
+                if(vTipoServicio !=0){
+                    if(vTareaM != 0){
+                        console.log(arrTareasEdit);
+                        // console.log($.inArray(vTipoServicio, arrTareasEdit.id_servicio) );
+                        // var indice = arrTareasEdit.indexOf(vTareaTextM);
+                        console.log(Validar_Array(vTareaM, vTipoServicio, arrTareasEdit));
+                        if(arrTareasEdit.includes(vTareaTextM)){
+                            console.log('ya existe');
+                        }else{
+                            var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
+                        // console.log(index);
+                        if(index == -1){
+                            arrTareasEdit.push(
+                                {   //cont:g, 
+                                    // idTarea:vTareaM, 
+                                    // desc_Tarea:vTareaTextM, 
+                                    // idServicio:vTipoServicio, 
+                                    // desc_Servicio:vTipoServicioText
+                                    id_equipo_detalle: 0,
+                                    id_equipo_tarea: 0,
+                                    id_equipos_serv: 0,
+                                    id_usuario_agrega: '',
+                                    fecha_agrega: '',
+                                    id_tipo_equipo: vtipEqu,
+                                    tipo_equipo: '',
+                                    id_servicio: vTipoServicio,
+                                    servicio: vTipoServicioText,
+                                    id_tarea: vTareaM,
+                                    tarea: vTareaTextM,
+                                    activo: false
+                                });
+                            drawRowTareaEdit();
+                            // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareasEdit});
+                            gM=gM+1;
+                        }else{
+                            $("#selTareaM").val("0").attr("selected",true);
+                            msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
+                        }
+                        }
+                        // var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
+                        // // console.log(index);
+                        // if(index == -1){
+                        //     arrTareasEdit.push(
+                        //         {   //cont:g, 
+                        //             // idTarea:vTareaM, 
+                        //             // desc_Tarea:vTareaTextM, 
+                        //             // idServicio:vTipoServicio, 
+                        //             // desc_Servicio:vTipoServicioText
+                        //             id_equipo_detalle: 0,
+                        //             id_equipo_tarea: 0,
+                        //             id_equipos_serv: 0,
+                        //             id_usuario_agrega: '',
+                        //             fecha_agrega: '',
+                        //             id_tipo_equipo: vtipEqu,
+                        //             tipo_equipo: '',
+                        //             id_servicio: vTipoServicio,
+                        //             servicio: vTipoServicioText,
+                        //             id_tarea: vTareaM,
+                        //             tarea: vTareaTextM,
+                        //             activo: 0
+                        //         });
+                        //     drawRowTareaEdit();
+                        //     // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareasEdit});
+                        //     gM=gM+1;
+                        // }else{
+                        //     $("#selTareaM").val("0").attr("selected",true);
+                        //     msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
+                        // }
+                    }else{
+                        msjeAlerta('', 'Debe seleccionar la Tarea', 'error')
+                    }
+                    
+                }else{
+                    msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
+                }
+            }else{
+                msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
+            }
+            $("#selTipoServicioM").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
+        });
+
+
     });
+ 
+    function Validar_Array(valor, valor2, arr) {
+        var b=false;
+        for (var i = 0; i < arr.length; i++) {
+            if(valor==arr[i].id_tarea && valor2==id_servicio){
+                b = true;
+                break;
+            }
+        }
+        return b;
+    }
 
     function removeEquipo( item ) {
         if(arrEquipos.includes(item) ==false){ 
             if ( item !== -1 ) {
+                if (arrEquipos[item].nuevo==0){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
+                    arrEquiposElim.push({
+                        // con : 0,
+                        id_equipo_serv_solic : arrEquipos[item].id_equipo_serv_solic, 
+                        // id_tipo_equipo : arrEquipos[item].id_tipo_equipo, 
+                        // desc_tipo_equipo : arrEquipos[item].desc_tipo_equipo, 
+                        // etiquetaServicio : arrEquipos[item].etiquetaServicio,
+                        // marca : '',
+                        // modelo : '', 
+                        // numeroSerie : '',
+                        // descripcionSoporte : arrEquipos[item].descripcionSoporte,
+                        // ubicacionEquipo : arrEquipos[item].ubicacionEquipo,
+                        // cantidad : 1,
+                        // estatus_equipo : 1, 
+                        // nuevo : 2, 
+                    });
+                }
+                
+                console.log(arrEquiposElim);
                 arrEquipos.splice( item, 1 );
                 $("#tr_"+item).remove();
                 drawRowEquipo();
@@ -1163,9 +1468,52 @@
                 }
         
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
-                tablaEquipo2+='<tr id="tr_'+j+'"><td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+                tablaEquipo2+='<tr id="tr_'+j+'">';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['descripcionSoporte']+'</td>';
+
+                var aTarea = [];
+
+                if(arrEquipos[j].nuevo==1){  //1 es igual equipo agregado nuevo
+                     aTarea=arrEquipos[j]['aTarea'];
+                }else{ // 0 es igual a que biene de BD
+                    aTarea = JSON.parse(arrEquipos[j]['aTarea']);
+                }
+
+                // var vtare='';
+                // if( typeof(aTarea[j]['tarea']) != "undefined" && aTarea[j]['tarea'] !== null){
+                //     vtare=aTarea[j]['tarea'];
+                // }else{
+                //     vtare=aTarea[j]['desc_Tarea'];
+                // }
+
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
+                for (var i = 0; i < aTarea.length; i++) {
+                    var vserv='';
+                    if( typeof(aTarea[i]['servicio']) != "undefined" && aTarea[i]['servicio'] !== null){  
+                        vserv=aTarea[i]['servicio'];
+                    }else{
+                        vserv=aTarea[i]['desc_Servicio'];
+                    }
+                    // tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+                    tablaEquipo2+='- '+vserv+'<br>';
+                }
+                tablaEquipo2+='</td>';
+
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
+                for (var h = 0; h < aTarea.length; h++) {
+                    var vtare='';
+                    if( typeof(aTarea[h]['tarea']) != "undefined" && aTarea[h]['tarea'] !== null){
+                        vtare=aTarea[h]['tarea'];
+                    }else{
+                        vtare=aTarea[h]['desc_Tarea'];
+                    }
+                    tablaEquipo2+='- '+vtare+'<br>';
+                    //     tablaEquipo2+='- '+arrEquipos[j]['aTarea'][h]['desc_Tarea']+'<br>';
+                }
+                tablaEquipo2+='</td>';
+
                 // tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+vDatos+'</td>';
                 tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
                 tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
@@ -1211,7 +1559,7 @@
     }
 
 
-    function removeTarea( item ) {
+    function removeTarea( item ) { 
         if(arrTareas.includes(item) ==false){ 
             if ( item !== -1 ) {
                 arrTareas.splice( item, 1 );
@@ -1237,11 +1585,11 @@
     function drawRowTarea(){
         var listaTarea2 = '';
 
-        listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
+        listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTarea">';
         listaTarea2+='<thead>';
         listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
-        listaTarea2+='<th></th>';
+        listaTarea2+='<th>Eliminar</th>';
         listaTarea2+='</thead>';
         listaTarea2+='<tbody>';
 
@@ -1258,7 +1606,7 @@
                     aux=arrTareas[j]['desc_Servicio'];
                     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 }
-                
+                listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
                 // class="btn colorBtnPrincipal"
                 listaTarea2+='<td><button type="button" class="btnEliminar" onclick="removeTarea('+j+');" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -1339,25 +1687,71 @@
     }
 
     function msjeAlerta2(titulo, contenido, icono, id_solic_serv){
-        // console.log(id_solic_serv);
+        // // console.log(id_solic_serv);
+        // let urlEditar = '{{ route("download-pdf", ":id") }}';
+        // urlEditar = urlEditar.replace(':id', id_solic_serv);
+        // // console.log(urlEditar);
+        // Swal.fire({
+        //     title: titulo,
+        //     text: contenido,
+        //     icon: icono,
+        //     showCancelButton: true,
+        //     confirmButtonColor: '#3085d6',
+        //     cancelButtonColor: '#d33',
+        //     confirmButtonText: 'DESCARGAR ORDEN',
+        //     cancelButtonText: 'ACEPTAR',
+        //     }).then((result) => {
+        //     if (result.isConfirmed) {
+        //         window.location.href = urlEditar;
+        //         // download-pdf
+        //     }else{
+        //         window.location.href = '{{ route("listadoOrdenes") }}';
+        //     }
+        // });
+
         let urlEditar = '{{ route("download-pdf", ":id") }}';
         urlEditar = urlEditar.replace(':id', id_solic_serv);
         // console.log(urlEditar);
         Swal.fire({
             title: titulo,
-            text: contenido,
+            html: contenido,
             icon: icono,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#b50915',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'DESCARGAR ORDEN',
-            cancelButtonText: 'ACEPTAR',
+            confirmButtonText: '<i class="fas fa-download"></i>Descargar orden',
+            cancelButtonText: 'Aceptar',
+            width: 600,
             }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = urlEditar;
+                // window.location.href = urlEditar;
+                window.open(urlEditar, '_blank');
+                window.location.href = '{{ route("listadoOrdenes") }}';
                 // download-pdf
             }else{
                 window.location.href = '{{ route("listadoOrdenes") }}';
+            }
+        });
+    }
+
+    function msjeAlertConfirm(titulo, contenido, icono){
+        var titulo='';
+        var contenido='<p style="font-size:1rem !important;">¿Está seguro de editar la orden de servicio?</p>';
+        var icono='warning';
+        
+        Swal.fire({
+            title: titulo,
+            html: contenido,
+            icon: icono,
+            showCancelButton: true,
+            confirmButtonColor: '#b50915',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            width: 600,
+            }).then((result) => {
+            if (result.isConfirmed) {
+                fnGuardar();
             }
         });
     }
@@ -1377,13 +1771,14 @@
                 //  var coche = JSON.parse(data[0][0].arrequipos);
 
                 // console.log(coche);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
-                 
+                
                     // console.log(data[0].length); 
                 if(data[0] !='' || data[0] !=null || data[0].length!=0){
-
+                    
                     $.each(data[0], function(i, val){
                         if (!jQuery.isEmptyObject(data[0][i])) {
                             // console.log(data[0][i]);
+                            console.log(data[0][i].jstareas);
                             arrEquipos.push({
                             con : i,
                                 id_equipo_serv_solic : data[0][i].id_equipo_serv_solic,
@@ -1398,12 +1793,12 @@
                                 cantidad : 1,
                                 estatus_equipo : 1, 
                                 nuevo : 0, 
-                                aTarea : '', ///arreglo tareas
+                                aTarea : data[0][i].jstareas, ///arreglo tareas
                             // aServicio : arrServicios /// arreglo servicios
                             })
                         }
                     });
-                    // console.log(arrEquipos);
+                     console.log(arrEquipos);
                     // arrEquipos.push({
                     //     con : i,
                     //     id_tipo_equipo : vId_TipoEquipo, 
@@ -1691,41 +2086,49 @@
 
     function fnGuardar(){
         var claveCCT= $("#txtClaveCCT").val();
-        let urlEditar = '{{ route("guardarOrden") }}';
+        var folio= $("#txtNumFolio").val();
+        var idSolicServ= $("#txtIdSolic").val();
+        let urlEditar = '{{ route("actualizarOrden") }}'; 
         // urlEditar = urlEditar.replace(':claveCCT', claveCCT);
-        var form = $('#formOrden')[0];
+       
         var checkDirector='';
+        var nombreSol='';
         if($("#checkSolicitante").is(':checked')) {  
             checkDirector= true;
+            nombreSol=$("#txtDirectorCCT").val();
         } else {  
             checkDirector= false;
+            nombreSol='';
         }  
-         
+        var form = $('#formOrden')[0];
          // FormData object 
          var data2 = new FormData(form);
         data2.append('arrEquipos', JSON.stringify(arrEquipos));
+        data2.append('arrEquiposElim', JSON.stringify(arrEquiposElim));
         data2.append('checkDirector', JSON.stringify(checkDirector));
+        data2.append('nombreSol', JSON.stringify(nombreSol)); 
 
-        // $.ajax({
-        //     url: urlEditar,
-        //     type: 'POST',
-        //     data:data2,
-        //     dataType: 'json', 
-        //     processData: false,
-        //     contentType: false,
-        //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-        //     success: function(data) {
+        $.ajax({
+            url: urlEditar,
+            type: 'POST',
+            data:data2,
+            dataType: 'json', 
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function(data) {
 
-        //         var vequip = JSON.parse(data[0].inssolicservicio);
-
-        //         if(data[0]['inssolicservicio']!=''){ 
-        //             msjeAlerta2('REGISTRO EXITOSO DE ORDEN DE SERVICIO','EL FOLIO DE SERVICIO DE TU ORDEN ES: '+vequip.vpfolio,'success',vequip.vpid_solic_serv)
-        //         }else{ 
-        //             msjeAlerta('No se pudo realizar el registro de la Orden de Servicio ', '','error')
-        //         }
+                var vequip = JSON.parse(data[0].updsolicservicio);
+                console.log(vequip+'-------------');
+                console.log(data[0]['updsolicservicio']+'-------------');
+                if(data[0]['updsolicservicio']!=''){ 
+                    msjeAlerta2('','Se ha editado con éxito la orden de servicio con el folio: <span style="font-weight:bolder;">'+folio+'</span>','success',idSolicServ)
+                }else{ 
+                    msjeAlerta('No se pudo realizar el registro de la orden de servicio ', '','error')
+                }
                 
-        //     }
-        // });
+            }
+        });
     }
 
     function fnLimpiar(){
@@ -1856,61 +2259,127 @@
 
         var htmlSel='';
 
-        htmlSel+='<table style="border:1px solid; width:100%;">';
-            htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
-            // htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-            // htmlSel+='<td><label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-            htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
-            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
-            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
-            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
-            htmlSel+='<td colspan="2"></td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12"><br>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-            htmlSel+='<td colspan="2">';
-            htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
-            htmlSel+='</td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12">';
+        htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6">';
-            htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
-            htmlSel+='</td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].etiquetaServicio+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+','+modelo+','+numeroSerie+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
-            htmlSel+='</tr>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].cantidad+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
+        htmlSel+='</div>';
+        htmlSel+='<div class="col-4">';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
+        htmlSel+='<br>';
+        htmlSel+='<div class="row">';
+        htmlSel+='<div class="col-12">';
+        htmlSel+='<label>Listado de Servicios/Tareas</label>';
+        htmlSel+='</div>';
+        htmlSel+='</div>';
 
-            htmlSel+='<tr>';
-            htmlSel+='<td colspan="6" style="text-align:center;">';
+        // htmlSel+='<table style="border:1px solid; width:100%;">';
+        //     htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
+        //     // htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
+        //     // htmlSel+='<td><label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
+        //     htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
+        //     htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
+        //     htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
+        //     htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
+        //     htmlSel+='<td colspan="2"></td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
+        //     htmlSel+='<td colspan="2">';
+        //     htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        //     htmlSel+='</td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6">';
+        //     htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
+        //     htmlSel+='</td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
+        //     htmlSel+='</tr>';
+
+        //     htmlSel+='<tr>';
+        //     htmlSel+='<td colspan="6" style="text-align:center;">';
 
                 // var html='';
-                htmlSel+='<table>';
+                htmlSel+='<table class="table">';
                 htmlSel+='<thead>';
                 htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
                 htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
                 htmlSel+='</thead>';
                 htmlSel+='<tbody>';
-    
-                var aTarea=arrEquipos[numArr]['aTarea'];
+
+                var aTarea = [];
+
+                if(arrEquipos[numArr].nuevo==1){  //1 es igual equipo agregado nuevo
+                     aTarea=arrEquipos[numArr]['aTarea'];
+                     
+                }else{ // 0 es igual a que biene de BD
+                    aTarea = JSON.parse(arrEquipos[numArr]['aTarea']);
+                    // console.log(aTarea)
+                }
+                // console.log(aTarea)
+                // var aTarea = JSON.parse(arrEquipos[numArr]['aTarea']);
+                // var aTarea=arrEquipos[numArr]['aTarea'];
                 var aux='';
                 $.each(aTarea, function(j, val){
                     if (!jQuery.isEmptyObject(aTarea[j])) {
-                        htmlSel+='<tr>';
-                        if(aux==aTarea[j]['desc_Servicio']){ 
-                            htmlSel+='<td >&nbsp;</td>';
-                            aux='';
+                        var vserv='';
+                        var vtare='';
+                        if( typeof(aTarea[j]['servicio']) != "undefined" && aTarea[j]['servicio'] !== null){  
+                            vserv=aTarea[j]['servicio'];
                         }else{
-                            aux=aTarea[j]['desc_Servicio'];
-                            htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
+                            vserv=aTarea[j]['desc_Servicio'];
                         }
-                        htmlSel+='<td class="text-xs text-secondary mb-0"> - '+aTarea[j]['desc_Tarea']+'</td>';
+
+                        if( typeof(aTarea[j]['tarea']) != "undefined" && aTarea[j]['tarea'] !== null){
+                            vtare=aTarea[j]['tarea'];
+                        }else{
+                            vtare=aTarea[j]['desc_Tarea'];
+                        }
+
+                        htmlSel+='<tr>';
+                        // if(aux==aTarea[j]['servicio']){ 
+                        //     htmlSel+='<td >&nbsp;</td>';
+                        //     aux='';
+                        // }else{
+                        //     aux=aTarea[j]['servicio'];
+                        //     htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                        // }
+                        htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                        htmlSel+='<td class="text-xs text-secondary mb-0"> - '+vtare+'</td>';
                         htmlSel+='<tr>';
                     }
                 });
@@ -1987,11 +2456,306 @@
         $("#historialEquipoModal").modal("show");
     }
 
-    function verDetalleEquipo(j){
-        console.log(j);
+    function verDetalleEquipo(j){   /////Modal de Editar el Equipoo
+        // console.log(j);
         $("#detalleEquipoModal").modal("show");
+        // console.log(arrEquipos[j].aTarea);
+        arrTareasEdit = [];
+        cargaServicio(arrEquipos[j].id_tipo_equipo);
+        $("#hdIdTipoEquipo").val(arrEquipos[j].id_tipo_equipo);
+
+        $("#hdIdEquipoM").val(arrEquipos[j].id_equipo_serv_solic);
+        $("#hdIdSolServM").val( $("#txtIdSolic").val() );
+
+        $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
+        //  drawRowTareaEdit();
+
+        $("#txtDescripcionSoporteM").val(arrEquipos[j].descripcionSoporte);
+        $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
+        // $("#txtDetalleEquipoM").val(); ws
+        $("#txtUbicacionM").val(arrEquipos[j].ubicacionEquipo);
+
+        //  var TareasAux = JSON.parse(arrEquipos[j].aTarea); /// este funcionaba al 03/08/2023
+        var TareasAux = [];
+
+        if(arrEquipos[j].nuevo==1){  //1 es igual equipo agregado nuevo
+            TareasAux=arrEquipos[j]['aTarea'];
+                
+        }else{ // 0 es igual a que biene de BD
+            TareasAux = JSON.parse(arrEquipos[j]['aTarea']);
+            // console.log(aTarea)
+        }
+
+        //  var TareasAux = arrEquipos[j].aTarea;
+        //    console.log(TareasAux);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+
+        $.each(TareasAux, function(i, val){
+            if (!jQuery.isEmptyObject(TareasAux)) {
+
+                var vserv='';
+                var vtare='';
+                if( typeof(TareasAux[i].servicio) != "undefined" && TareasAux[i].servicio !== null){  
+                    vserv=TareasAux[i].servicio;
+                }else{
+                    vserv=aTarea[j]['desc_Servicio'];
+                }
+
+                if( typeof(TareasAux[j].tarea) != "undefined" && TareasAux[j].tarea !== null){
+                    vtare=TareasAux[j].tarea;
+                }else{
+                    vtare=TareasAux[j]['desc_Tarea'];
+                }
+
+                arrTareasEdit.push({
+                    id_equipo_detalle: TareasAux[i].id_equipo_detalle,
+                    id_equipo_tarea: TareasAux[i].id_equipo_tarea,
+                    id_equipos_serv: TareasAux[i].id_equipos_serv,
+                    id_usuario_agrega: TareasAux[i].id_usuario_agrega,
+                    fecha_agrega: TareasAux[i].fecha_agrega,
+                    id_tipo_equipo: TareasAux[i].id_tipo_equipo,
+                    tipo_equipo: TareasAux[i].tipo_equipo,
+                    id_servicio: TareasAux[i].id_servicio,
+                    servicio: vserv,//TareasAux[i].servicio,
+                    id_tarea: TareasAux[i].id_tarea,
+                    tarea: TareasAux[i].tarea,
+                    activo: TareasAux[i].activo
+                });
+            }
+        });
+
+        var listaTarea2 = '';
+
+        listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTareaM">';
+        listaTarea2+='<thead>';
+        listaTarea2+='<th>Servicio</th>';
+        listaTarea2+='<th>Tarea</th>';
+        listaTarea2+='<th>Acciones</th>';
+        listaTarea2+='</thead>';
+        listaTarea2+='<tbody>';
+        console.log(arrTareasEdit);
+        // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
+        var aux='';
+        $.each(arrTareasEdit, function(j, val){
+            if (!jQuery.isEmptyObject(arrTareasEdit[j])) {
+                // listaTarea2+='<br><br>';
+                listaTarea2+='<tr>';
+                if(aux==arrTareasEdit[j]['servicio']){ 
+                    listaTarea2+='<td>&nbsp;</td>';
+                    aux='';
+                }else{
+                    aux=arrTareasEdit[j]['servicio'];
+                    listaTarea2+='<td>'+arrTareasEdit[j]['servicio']+'&nbsp;</td>';
+                }
+                
+                listaTarea2+='<td> - '+arrTareasEdit[j]['tarea']+'</td>';
+                // class="btn colorBtnPrincipal"
+                listaTarea2+='<td><button type="button" class="btnEliminar" onclick="removeTareaEdit('+j+');" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+                listaTarea2+='<tr>';
+            }
+        });
+
+        listaTarea2+='</tbody>';
+        listaTarea2+='</table>';
+
+        if(listaTarea2!=''){
+            $("#divListaTareaM").addClass('scrollVerticalTareas');
+        }else{
+            $("#divListaTareaM").removeClass('scrollVerticalTareas');
+        }
+
+        $("#ulTareaM").empty();
+        $("#tituloTareasM").text('LISTADO DE SERVICIOS/TAREAS ');
+        $("#ulTareaM").html(listaTarea2);
+        $("#selTareaM").val("0").attr("selected",true);
+
     }
 
+    function removeTareaEdit( item ) { 
+        if(arrTareasEdit.includes(item) ==false){ 
+            if ( item !== -1 ) {
+                if (arrTareasEdit[item].activo==true){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
+                   console.log( arrTareasEdit[item].activo);
+                    arrTareasEditElim.push({
+                        // con : 0,
+                        id_equipo_detalle : arrTareasEdit[item].id_equipo_detalle, 
+                        // id_tipo_equipo : arrEquipos[item].id_tipo_equipo, 
+                        // desc_tipo_equipo : arrEquipos[item].desc_tipo_equipo, 
+                        // etiquetaServicio : arrEquipos[item].etiquetaServicio,
+                        // marca : '',
+                        // modelo : '', 
+                        // numeroSerie : '',
+                        // descripcionSoporte : arrEquipos[item].descripcionSoporte,
+                        // ubicacionEquipo : arrEquipos[item].ubicacionEquipo,
+                        // cantidad : 1,
+                        // estatus_equipo : 1, 
+                        // nuevo : 2, 
+                    });
+                }
+
+                arrTareasEdit.splice( item, 1 );
+                // console.log(arrTareasEdit);
+                $("#liTM_"+item).remove();
+                drawRowTareaEdit();
+            }   else{
+                arrTareasEdit = [];
+                 g=0;
+                listaTarea='';
+                $("#ulTareaM").html('');
+                $("#ulTareaM").empty();
+            }
+        }else{
+            console.log('No existe en el arreglo');
+            g=0;
+            listaTarea='';
+            $("#ulTareaM").html('');
+            $("#ulTareaM").empty();
+        }
+    }
+
+    function drawRowTareaEdit(){
+
+        
+        var listaTarea2 = '';
+
+        listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTareaM">';
+        listaTarea2+='<thead>';
+        listaTarea2+='<th>Servicio</th>';
+        listaTarea2+='<th>Tarea</th>';
+        listaTarea2+='<th></th>';
+        listaTarea2+='</thead>';
+        listaTarea2+='<tbody>';
+
+        // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
+        var aux='';
+        $.each(arrTareasEdit, function(j, val){
+            if (!jQuery.isEmptyObject(arrTareasEdit[j])) {
+                listaTarea2+='<tr>';
+                if(aux==arrTareasEdit[j]['servicio']){ 
+                    listaTarea2+='<td>&nbsp;</td>';
+                    aux='';
+                }else{
+                    aux=arrTareasEdit[j]['servicio'];
+                    listaTarea2+='<td>'+arrTareasEdit[j]['servicio']+'&nbsp;</td>';
+                }
+                
+                listaTarea2+='<td> - '+arrTareasEdit[j]['tarea']+'</td>';
+                // class="btn colorBtnPrincipal"
+                listaTarea2+='<td><button type="button" class="btnEliminar" onclick="removeTareaEdit('+j+');" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+                listaTarea2+='<tr>';
+            }
+        });
+
+        listaTarea2+='</tbody>';
+        listaTarea2+='</table>';
+
+        if(listaTarea2!=''){
+            $("#divListaTareaM").addClass('scrollVerticalTareas');
+        }else{
+            $("#divListaTareaM").removeClass('scrollVerticalTareas');
+        }
+
+        $("#ulTareaM").empty();
+        $("#tituloTareasM").text('LISTADO DE SERVICIOS/TAREAS ');
+        $("#ulTareaM").html(listaTarea2);
+        $("#selTareaM").val("0").attr("selected",true);
+    }
+
+    function cargaTarea(){
+        var vtipEquipo=  $('#hdIdTipoEquipo').val();
+            // var serv= this.value;
+            var serv= $("#selTipoServicioM").val();
+
+            if(serv !=0){
+                let urlEditar = '{{ route("consTarea") }}';
+                // urlEditar = urlEditar.replace(':idserv', this.value);
+
+                $("#selTareaM").val("0").attr("selected",true);
+                let element = document.getElementById("selTareaM");
+                element.value = '0';
+
+                $.ajax({
+                    url: urlEditar,
+                    type: 'POST',
+                    data:{idequi:vtipEquipo , idserv:serv},
+                    dataType: 'json', 
+                    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    success: function(data) {
+                        //  console.log(data[0][0]);
+                        var htmlSel='<option value="0" selected>Seleccionar</option>';
+                        for (var i = 0; i < data[0].length; i++) {
+                            htmlSel+='<option value="'+data[0][i].id_tarea+'">'+data[0][i].desc_tarea+'</option>'; 
+                        }
+
+                        $("#selTareaM").html(htmlSel);
+                    }
+                });
+            }else{
+                console.log('no selecciono un servicio');
+            }
+    }
+
+    function cargaServicio(id_tipo_equipo){
+
+        arrTareas=[];
+        $("#divListaTareaM").removeClass('scrollVerticalTareas');
+        $("#tituloTareasM").text('');
+        $("#ulTareaM").empty();
+
+        let urlEditar = '{{ route("consServicio", ":idEquipo") }}';
+        urlEditar = urlEditar.replace(':idEquipo', id_tipo_equipo); 
+
+        $("#selTipoServicioM").val("0").attr("selected",true);
+        let element = document.getElementById("selTipoServicioM");
+        element.value = '0';
+
+        $.ajax({
+            url: urlEditar,
+            type: 'GET',
+            dataType: 'json', 
+            success: function(data) {
+                //  console.log(data[0][0]);
+                var htmlSel='<option value="0" selected>Seleccionar</option>';
+                for (var i = 0; i < data[0].length; i++) {
+                    htmlSel+='<option value="'+data[0][i].id+'">'+data[0][i].servicio+'</option>'; 
+                }
+
+                $("#selTipoServicioM").html(htmlSel);
+            }
+        });
+    }
+
+    function fnActualizarEquipo(){
+        var claveCCT= $("#txtClaveCCT").val();
+        let urlEditar = '{{ route("actualizarEquipo") }}'; 
+        var idSolic_serv= $("#txtIdSolic").val();
+        // urlEditar = urlEditar.replace(':claveCCT', claveCCT);
+        var form = $('#formEditarEquipo')[0];
+         
+        var data2 = new FormData(form);
+        data2.append('arrTareasEdit', JSON.stringify(arrTareasEdit));
+        data2.append('arrTareasEditElim', JSON.stringify(arrTareasEditElim));
+
+        $.ajax({
+            url: urlEditar,
+            type: 'POST',
+            data:data2,
+            dataType: 'json', 
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            success: function(data) {
+                console.log(data);
+                var vequip = JSON.parse(data[0].updtareasequipo);
+
+                if(data[0]['updtareasequipo']!=''){ 
+                    msjeAlerta2('','Se actualizo correctamente el Equipo ','success',txtIdSolic) ////este no se
+                }else{ 
+                    msjeAlerta('No se pudo actualizar el Equipo ', '','error')
+                }
+                
+            }
+        });
+    }
 
 </script>
 @endsection

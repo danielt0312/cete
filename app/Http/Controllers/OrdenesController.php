@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade as PDF;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Support\Facades\Mail;
+// use App\Http\Controllers\Mail; 
+use App\Mail\MailSendO;
 
 class OrdenesController extends Controller
 {
@@ -17,11 +20,16 @@ class OrdenesController extends Controller
         $catCoordinaciones =  DB::connection('pgsql')->select("select * from cas_cete.getCatCoordinaciones()");
         $catEstatusOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatEstatusOrden()");
         $catMotivoCancela=  DB::connection('pgsql')->select("select * from cas_cete.getCatMotivoCancela()");
+
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
+        // $getUsername=$getUsername[0]->nameuser;
         // dd ($catEstatusOrden);
         return view('ordenes.index', compact(
             'catCoordinaciones',
             'catEstatusOrden',
-            'catMotivoCancela'
+            'catMotivoCancela',
+            'getUsername'
         ) );
         // return view('ordenes.index');
         
@@ -37,12 +45,16 @@ class OrdenesController extends Controller
         // $catTipoServicio =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoServicio()");]
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
         $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
+        
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
         return view('ordenes.create', compact(
             'catTipoOrden',
             // 'catTipoServicio',
             'catTipoEquipo',
-            'catAreasAtiendeOrden'
+            'catAreasAtiendeOrden',
+            'getUsername'
         ) );
     }
 
@@ -52,7 +64,8 @@ class OrdenesController extends Controller
         $equipos=$request->arrEquipos;
         //  var_dump($equipos);
         //  dd('murio');
-        //dd($request->checkDirector);
+        //dd($request->txtNombreSolicitante);
+        // dd($request->checkDirector);
         $arr = json_decode($equipos);
         //  var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
         //   var_dump($arr);
@@ -65,19 +78,39 @@ class OrdenesController extends Controller
         //     echo $p->idTarea;
         // }
 
+        $nombreSoliictante='';  /// SI ES DIRECTOR O NO QUE TOME NOMBRE EN SOLICITANTE O NO
+
+        if($request->checkDirector == true){
+            $nombreSoliictante = $request->nombreSol; // quitar comillas dobles "nombre"
+            $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+        }else{
+            $nombreSoliictante = $request->txtNombreSolicitante;
+        }
+
         //SI FUNCIONAA  SP
         //$insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
         $vidModoCaptacion=2;
         $vid_usuario=Auth()->user()->id;
-        //FUNCION
-        $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
+        //FUNCIONinssolicservicioPrueba2
+        // $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
+        $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicioPrueba2(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$nombreSoliictante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
     
         $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
         // $catTipoServicio =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoServicio()");]
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
         $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
 
-        return response()->json($insSolicServicio);
+        $result1 =$insSolicServicio[0]->inssolicservicioprueba2;
+        $result2 = json_decode($result1);
+
+        if($insSolicServicio != null){
+            $this->sendCorreo($result2->vpfolio, $request->txtCorreoSolicitante, $nombreSoliictante, $request->txtNombreCCT);
+
+            return response()->json($insSolicServicio);
+        }
+
+        // return response()->json($insSolicServicio);
+
         // foreach ($arr as $e) {
 
         //     if($e->cantidad > 1){
@@ -116,21 +149,37 @@ class OrdenesController extends Controller
         $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
         $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
         return view('ordenes.edit', compact(
             'ordenServiciosDetalle',
             'catTipoOrden',
             'catTipoEquipo',
-            'catAreasAtiendeOrden'
+            'catAreasAtiendeOrden',
+            'getUsername'
         ) );
     }
 
     public function update(Request $request){
+        // dd($request);
         // dd($request->arrEquipos);  //"[object Object]"
-        dd($request->txtIdSolic);
+        //dd($request->txtIdSolic);
         $equipos=$request->arrEquipos;
+        $equiposElim=$request->arrEquiposElim;
         // var_dump($equipos);
 
+        $nombreSoliictante='';  /// SI ES DIRECTOR O NO QUE TOME NOMBRE EN SOLICITANTE O NO
+
+        if($request->checkDirector == true){
+            $nombreSoliictante = $request->nombreSol; // quitar comillas dobles "nombre"
+            $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+        }else{
+            $nombreSoliictante = $request->txtNombreSolicitante;
+        }
+
+        $vidModoCaptacion=2;
+        $vid_usuario=Auth()->user()->id;
         $arr = json_decode($equipos);
         // var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
 
@@ -140,33 +189,35 @@ class OrdenesController extends Controller
         // foreach ($arrTarea as $p) {
         //     echo $p->idTarea;
         // }
-        $insSolicServicio =  DB::connection('pgsql')->select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."',true,'".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
+        // $insSolicServicio =  DB::connection('pgsql')->select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."',true,'".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.")");
+        $updSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.updSolicServicio(".$request->txtIdSolic.",".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$nombreSoliictante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."','".$equiposElim."')");
 
-        foreach ($arr as $e) {
+        // foreach ($arr as $e) {
 
-            if($e->cantidad > 1){
-                echo $e->cantidad.'<br>';
-                for ($i=0; $i < $e->cantidad; $i++) { 
-                    echo $e->desc_tipo_equipo .'---'.$i.'<br>';
+        //     if($e->cantidad > 1){
+        //         echo $e->cantidad.'<br>';
+        //         for ($i=0; $i < $e->cantidad; $i++) { 
+        //             echo $e->desc_tipo_equipo .'---'.$i.'<br>';
 
-                    // echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
-                    $arrTarea=$e->aTarea;
-                    foreach ($arrTarea as $p) {
-                        // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
-                        echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
-                    }
-                }
-            }else{
-                echo '<br>';
-                echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
-                $arrTarea=$e->aTarea;
-                foreach ($arrTarea as $p) {
-                    // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
-                    echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
-                }
-            }
+        //             // echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+        //             $arrTarea=$e->aTarea;
+        //             foreach ($arrTarea as $p) {
+        //                 // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+        //                 echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+        //             }
+        //         }
+        //     }else{
+        //         echo '<br>';
+        //         echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
+        //         $arrTarea=$e->aTarea;
+        //         foreach ($arrTarea as $p) {
+        //             // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
+        //             echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
+        //         }
+        //     }
             
-        }
+        // }
+        return response()->json($updSolicServicio);
     }
 
     public function show(Request $request){
@@ -245,10 +296,12 @@ class OrdenesController extends Controller
 
     public function downloadPdf($id)
     {
-        $ordenServicios = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenDetalle(".$id.")");
+        $ordenServicios = DB::connection('pgsql')->select("select * from cas_cete.gettordendetallepdf(".$id.")");
 
         // dd($ordenServicios[0]);
         $ordenServiciosObject=$ordenServicios[0];
+
+        // return $ordenServiciosObject;
         // return response()->json([$ordenes]);
     //   $ordenServicios = DB::connection('pgsql')->table('cas_orden_servicio as orden')
     //   ->join('users as user', 'user.id', '=', 'orden.usuario_atiende_id_fk')
@@ -338,8 +391,8 @@ class OrdenesController extends Controller
       view()->share('ordenes/downloadOrden',$ordenServiciosObject);
       $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
         // dd('hola');
-      return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf');
-      // return $pdf->stream();
+    //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf'); // para que vaya a la url a descargar directo el pdf
+       return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
     }
 
     public function detalleOrden($idOrden){
@@ -362,12 +415,87 @@ class OrdenesController extends Controller
         return response()->json($tenicosAuxD);
     }
 
-    public function updCerrar(){
-        dd($request->idOrden,'----',$request->idEstatusOrden);
-        $exito = DB::connection('pgsql')->select("select * from cascete.updEstatusOrden(".$request->idOrden.",".$request->idEstatusOrden.")");
-        // dd($exito);
-        // return response()->json([$exito]); 
-        return response()->json($exito);
+    public function updCerrar(Request $request){
+        // dd($request, $_FILES["archivoCierre"]);
+        // dd($request);
+        
+        $vusuario=Auth()->user()->id;
+        
+        // $ruta = $request->ruta_evidencia;
+        // $ruta = explode('\\', $request->ruta_evidencia);
+        // $ruta = $ruta[2];
+        $vidSolicServ=$request->hdIdOrdenCierra;
+        
+
+        // $request->validate([
+        //   'imageFile' => 'required|image|max:2048'
+        // ]);
+
+        // "name" => "PRESENTACIÓN SISTEMA C.A.S_VS 16_05_23 (1).pdf"
+        // "type" => "application/pdf"
+        // "tmp_name" => "C:\Users\Infraestructura\AppData\Local\Temp\phpF07A.tmp"
+        // "error" => 0
+        // "size" => 3543845
+
+        $file2 = $_FILES["archivoCierre"];
+
+        
+        // var_dump($file2);
+        //dd($file2);
+        // $file_size1 = $file2->size;
+        // $file_name1 = $file2->filename;
+
+        // dd($file2, $file_size1, $file_name1);
+        
+        if($request->hasfile('archivoCierre')){ 
+
+            if($request->hasFile("archivoCierre")){
+
+                $file=$request->file("archivoCierre");
+                // dd($file[0]);
+                $ext=substr($file[0]->getClientOriginalName(), -3);
+                if($ext === "pdf" ){
+                    $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
+                    
+                    $ruta = public_path("cierreOrden/".$nombre);
+    
+                // if($file->getExtension()()=="pdf"){
+                
+                    copy($file[0], $ruta);
+                    
+                 }
+    
+            }else{
+               
+            }
+    
+
+             /*$i=1;
+             foreach($file2 as $file){
+                $sub=substr($file[0], -3);
+                if($sub === "pdf" ){
+                    $nombre = uniqid() .'_'. $vidSolicServ.'.'.$sub;
+
+                    $file=$request->file("archivoCierre");
+                    $ruta = public_path("cierreOrden/".$nombre);
+                    //   sdd($sub,$fileName,$file,$ruta);
+                    copy($file[0], $ruta);  
+                    
+                    $i++;
+                }else{
+                }
+             }*/
+        }else{
+            dd('no entro');
+        }
+        
+        $ruta_archivo=$ruta;
+        $nombre_archivo=$nombre;
+        
+        // $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$request->idSolicServ.",".$vusuario.",'".$ruta."')");
+        $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$vidSolicServ.",".$vusuario.",'".$nombre_archivo."','".$ruta_archivo."')");
+       
+         return response()->json($exito);
         
     }
 
@@ -381,7 +509,10 @@ class OrdenesController extends Controller
     }
 
     public function insTecnico(Request $request){
-        //  dd($request->All());
+        //   dd($request->All());
+        
+        $arrTec=$request->tecnicosAuxiliaresArray;
+        $arrTec2 = json_decode($arrTec);
 
         // dd($request->fecha_inicio_prog);
         $vusuario=Auth()->user()->id;
@@ -390,9 +521,49 @@ class OrdenesController extends Controller
         // $exito = DB::select("CALL cas_cete.spInsertTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",true)");
         $exito = DB::connection('pgsql')->select("select * from cas_cete.fnInsTecnicos(".$request->idSolModTec.",".$vusuario.",'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",'".$request->tecnicosAuxiliaresArray."')");
 
-        // dd($exito);
-        // return response()->json([$exito]); 
-        return response()->json($exito);
+        // return response()->json($exito);
+        
+        if($exito != null || $exito != ''){
+            $correo='aida.rangel@set.edu.mx';
+            $nomTecEncargado='';
+            $nomTecAux='';
+
+            for ($i=0; $i < count($arrTec2); $i++) { 
+                if($arrTec2[$i]->es_responsable==1){
+                    $nomTecEncargado=$arrTec2[$i]->nombre_tecnico;
+                }else{
+                    if($nomTecAux==''){
+                        $nomTecAux=$arrTec2[$i]->nombre_tecnico;
+                    }else{
+                        $nomTecAux=$nomTecAux.', '.$arrTec2[$i]->nombre_tecnico;
+                    }
+                }
+            }
+            $folio='ddd';
+            $details = [
+                'tittle' => 'Estimado usuario:',
+                
+                // 'body1' => 'Estimado usuario: juan - C.C.T.',
+                
+                'body1' => 'La orden de servicio con el folio número: '.$folio.'.',
+
+                'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
+                // 'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
+
+                'body4' => 'Atentamente.',
+                'body5' => 'Centro Estatal de Tecnología Educativa',
+            //     'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+            //  <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
+            ];
+
+            Mail::to("$correo")->send(new MailSendO($details));
+            // return array(
+            //     "exito" => true
+            // );
+            return response()->json($exito);
+        }else{
+
+        }
     }
 
     public function getHistorialEquipo($etiqueta){
@@ -404,5 +575,78 @@ class OrdenesController extends Controller
     public function getMostDetalleEquipo($idEquipo){
         $equipo =  DB::connection('pgsql')->select("select * from cas_cete.getMostDetalleEquipo('".$idEquipo."')");
         return response()->json($equipo);
+    }
+
+    public function updEquipo(Request $request){
+        // dd($request); 
+
+        $tareasEquipo=$request->arrTareasEdit;
+        $tareasEquipoElim=$request->arrTareasEditElim;
+        dd($request->arrTareasEditEli);
+        $evidencia='';
+        $etiqueta=$request->txtEtiquetaM;
+
+        $vid_usuario=Auth()->user()->id;
+
+        $updTareasEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.updTareasEquipo(".$request->hdIdSolServM.",".$request->hdIdEquipoM.",".$request->hdIdTipoEquipo.",'".$etiqueta."','".$evidencia."',".$vid_usuario.",'".$tareasEquipo."','".$tareasEquipoElim."')");
+    }
+
+    public function getArchivoCierre($idSolicServ){
+        $archivo =  DB::connection('pgsql')->select("select * from cas_cete.getArchivoCierre('".$idSolicServ."')");
+        // dd($archivo);
+        // $ruta = public_path("cierreOrden/".$archivo[0]->ruta_evidencia);
+        // $nombre = $archivo[0]->ruta_evidencia;
+        // dd($ruta);
+        //  return response()->json($nombre);
+         return response()->json($archivo);
+    }
+
+    public function sendCorreo($folio, $correo, $solicitante, $nombrecct){
+        // $vCorreoVerifica = $request->vCorreoVerifica;
+        //  dd($request->folio, $request->correo);
+        // $data=[];
+        // $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreoVerifica."')");
+        // // dd($data);
+        // if ($data == null) {
+        //     return array(
+        //         "exito" => false
+        //         // "data" => $data
+        //     );
+        // }
+        // else{
+            // $vCorreoVerifica='aida.rangel@set.edu.mx';
+            // $token = uniqid();
+            // $token = strval( $token );
+
+            //  $folio=$request->folio;
+            $estatus='en espera';
+
+            // Session::put('token', $token);
+            // Session::put('vCorreoVerifica', $vCorreoVerifica);
+            $details = [
+                'tittle' => 'Estimado usuario: '.$solicitante .' - '. $nombrecct,
+                
+                // 'body1' => 'Estimado usuario: juan - C.C.T.',
+                
+                'body1' => 'Se ha generado una orden de servicio con el folio número: '.$folio.' para atender su solicitud, la cual se encuentra '.$estatus.' para ser atendida por un técnico de soporte.',
+    
+                'body2' => 'Conserva este folio para continuar con el seguimiento de tu orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado',
+                // 'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
+    
+                'body4' => 'Atentamente.',
+                'body5' => 'Centro Estatal de Tecnología Educativa',
+            //     'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+            //  <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
+    
+            ];
+    
+            // Mail::to("$pCorreo_solicitante")->send(new MailSend($details));
+    
+            Mail::to("$correo")->send(new MailSendO($details));
+            return array(
+                "exito" => true//,
+                // "TOKEN" => $token
+            );
+        // }
     }
 }
