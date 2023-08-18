@@ -168,13 +168,14 @@ class VentanillaController extends Controller
             Session::put('token', $token);
             Session::put('vCorreoVerifica', $vCorreoVerifica);
             $details = [
-                'tittle' => 'Verificacion de cuenta',
+                'tittle' => 'Verificación de cuenta',
                 
                 // 'body1' => 'Estimado usuario: juan - C.C.T.',
                 
                 'body1' => 'Se ha solicitado autenticar tu cuenta para llevar a cabo una consulta de solicitudes de servicio.',
     
-                'body2' => 'Por favor ingresa el siguiente token de seguridad: '.$token.'',
+                'body2' => 'Por favor ingresa el siguiente token de seguridad: ',
+                'body2.1' => $token,
                 'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
     
                 'body4' => 'Atentamente.',

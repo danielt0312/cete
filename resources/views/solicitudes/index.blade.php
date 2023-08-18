@@ -64,7 +64,7 @@
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">C.C.T</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Municipio</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Solicitud</th>
-                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medio de Captacion</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medio de Captación</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tiempo de Apertura</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" width="100px">Acciones</th>
                           </tr>
@@ -203,7 +203,7 @@
                       <!-- <br> -->
                       <div class="row">
                         <div class="col-12">
-                          <label style="font-size:0.75em;">DESCRIPCION DEL PROBLEMA O SOPORTE A REALIZAR</label>
+                          <label style="font-size:0.75em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
                           <textarea style="height: 127px;" class="form-control" id="txtDescripcionSoporte" ></textarea>
                           <!-- <textarea class="form-control" id="vDescripcion_Problema" ></textarea> -->
                         </div>
@@ -255,7 +255,7 @@
                                 <th>TIPO DE EQUIPO</th>
                                 <th>TIPO DE SERVICIO</th>
                                 <th>TIPO DE TAREA</th>
-                                <th>DESCRIPCION DEL SERVICIO</th>
+                                <th>DESCRIPCIÓN DEL SERVICIO</th>
                                 <th></th>
                             </tr>
                             
@@ -271,10 +271,10 @@
                       </div> -->
                     </div>
                     <div id="div_añadir_equipo" hidden>
-                      <div class="row" style="background-color: #e6e6e6b5;">
-                        <div style="text-align: left;" class="col-6">
+                      <div class="row" >
+                        <div style="border-radius:10px; text-align: left; background-color: #e6e6e6b5; " class="col-6">
                           <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;
-                          <label>Mantener descripcion del problema y lista de tareas para el siguiente equipo.</label>
+                          <label>Mantener descripción del problema y lista de tareas para el siguiente equipo.</label>
                         </div>
                         <div style="text-align: right;" class="col-6">
                           <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar equipo</button>
@@ -466,22 +466,22 @@ var arrReplicar = [];
             // {data: 'folio', name: 'folio', className: "text-center"},
             // {data: 'nombre_solicitante', name: 'nombre_solicitante'},
             {data: 'estatus_solicitud', name: 'estatus_solicitud', className: "text-center"},
-            { data: null, className: "text-center", render:function(data){
+            { data: null, className: "text-left", render:function(data){
                 return '<h6 class="mb-0 text-sm">'+data.nombrect+'</h6><p class="text-xs text-secondary mb-0">'+data.clave_ct+' ,  '+data.municipio+'</p>';
               }
             },
             {data: 'municipio', name: 'municipio', className: "text-center"},
             {data: 'fecha_captacion', name: 'fecha_captacion', className: "text-center"},
             {data: 'captacion', name: 'captacion', className: "text-center"},
-            { data: null, render:function(data){
+            { data: null,className: "text-center", render:function(data){
               if (data.fecha_apertura > 1) {
-                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DIAS</p>';
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍAS</p>';
               }
               else if(data.fecha_apertura == 0){
-                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DIAS</p>';
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍAS</p>';
               }
               else{
-                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DIA</p>';
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍA</p>';
               }
               }
             },
@@ -635,7 +635,7 @@ var arrReplicar = [];
             html1+='</div>';
             html1+='<div class="row">';
               html1+='<div class="col-5">';
-                html1+='<label>Direccion : &nbsp;</label>';
+                html1+='<label>Dirección : &nbsp;</label>';
                   html1+='<span>'+r.data[0]['domicilio']+'</span>';
               html1+='</div>';
               html1+='<div class="col-3">';
@@ -656,19 +656,19 @@ var arrReplicar = [];
                   html2+='<span>'+r.data[0]['solicitante']+'</span>';
               html2+='</div>';
               html2+='<div class="col-5">';
-                html2+='<label>Telefono : &nbsp;</label>';
+                html2+='<label>Teléfono : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-12">';
-                html2+='<label>Correo Electronico : &nbsp;</label>';
+                html2+='<label>Correo Electrónico : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['correo_solic']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-6">';
-                html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+                html2+='<label>Descripción del Reporte : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
               html2+='</div>';
             html2+='</div>';
@@ -732,7 +732,7 @@ var arrReplicar = [];
             html1+='</div>';
             html1+='<div class="row">';
               html1+='<div class="col-5">';
-                html1+='<label>Direccion : &nbsp;</label>';
+                html1+='<label>Dirección : &nbsp;</label>';
                   html1+='<span>'+r.data[0]['domicilio']+'</span>';
               html1+='</div>';
               html1+='<div class="col-3">';
@@ -753,19 +753,19 @@ var arrReplicar = [];
                   html2+='<span>'+r.data[0]['solicitante']+'</span>';
               html2+='</div>';
               html2+='<div class="col-5">';
-                html2+='<label>Telefono : &nbsp;</label>';
+                html2+='<label>Teléfono : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-12">';
-                html2+='<label>Correo Electronico : &nbsp;</label>';
+                html2+='<label>Correo Electrónico : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['correo_solic']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-6">';
-                html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+                html2+='<label>Descripción del Reporte : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
               html2+='</div>';
             html2+='</div>';
@@ -1060,7 +1060,7 @@ var arrReplicar = [];
           html1+='</div>';
           html1+='<div class="row">';
             html1+='<div class="col-5">';
-              html1+='<label>Direccion : &nbsp;</label>';
+              html1+='<label>Dirección : &nbsp;</label>';
                 html1+='<span>'+r.data[0]['domicilio']+'</span>';
             html1+='</div>';
             html1+='<div class="col-3">';
@@ -1093,12 +1093,12 @@ var arrReplicar = [];
                 html2+='<input class="form-control" type="text" id="editar_nombre_solicitante" value="'+r.data[0]['solicitante']+'">';
             html2+='</div>';
             html2+='<div class="col-4">';
-              html2+='<label>Telefono : &nbsp;</label>';
+              html2+='<label>Teléfono : &nbsp;</label>';
                 html2+='<input class="form-control" type="number" id="editar_telefono_solicitante" value="'+r.data[0]['telef_solicitante']+'">';
                 // html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
             html2+='</div>';
             html2+='<div class="col-4">';
-              html2+='<label>Correo Electronico : &nbsp;</label>';
+              html2+='<label>Correo Electrónico : &nbsp;</label>';
               html2+='<br>'
               // html2+='<input class="form-control" id="editar_correo_solicitante" value="'+r.data[0]['correo_solic']+'">';
                 html2+='<span>'+r.data[0]['correo_solic']+'</span>';
@@ -1106,7 +1106,7 @@ var arrReplicar = [];
           html2+='</div>';
           // html2+='<div class="row">';
           //   html2+='<div class="col-12">';
-          //     html2+='<label>Correo Electronico : &nbsp;</label>';
+          //     html2+='<label>Correo Electrónico : &nbsp;</label>';
           //     html2+='<input class="form-control" id="editar_correo_solicitante" value="'+r.data[0]['correo_solic']+'">';
           //       // html2+='<span>'+r.data[0]['correo_solic']+'</span>';
           //   html2+='</div>';
@@ -1114,7 +1114,7 @@ var arrReplicar = [];
           html2+='<br>'
           html2+='<div class="row">';
             html2+='<div class="col-12">';
-              html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+              html2+='<label>Descripción del Reporte : &nbsp;</label>';
                 html2+='<textarea style="height: 127px;" class="form-control" id="editar_descripcion_solicitante">'+r.data[0]['descrip_reporte']+'</textarea class="form-control">';
             html2+='</div>';
           html2+='</div>';
@@ -1403,7 +1403,7 @@ var arrReplicar = [];
                   var vId_TipoEquipo= $("#selTipoEquipo").val();
                   var vTipoEquipo= $('select[id="selTipoEquipo"] option:selected').text();
                   var vCantidad=$("#txtCantidadEquipos").val(); 
-
+                  vTarea2 = $("#selTarea").val();
                   // tablaEquipo+='<tr id="tr_'+i+'"><td>'+vTipoEquipo+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+i+')">Ver</button></td><td>En Proceso</td>';
                   // // tablaEquipo+='<tr id="tr_'+i+'"><td>PC</td><td>Mantemiento</td><td>Limpieza</td><td>En Proceso</td>';
                   // tablaEquipo+='<td><button type="button" class="btn colorBtnPrincipal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -1427,32 +1427,26 @@ var arrReplicar = [];
                     $("#divTablaEquipos").prop('hidden',false);
                     $("#label_datos_ct").prop('hidden',false);
                     $("#divTablaEquipos").show();
-                // if(vId_TipoEquipo!=0 && descripcionSoporte!='' && (arrTareas!=null || arrTareas!=[])){
 
-                        
-                        arrEquipos.push({
-                          con : i,
-                          id_tipo_equipo : vId_TipoEquipo, 
-                          desc_tipo_equipo : vTipoEquipo, 
-                          etiquetaServicio : etiquetaServicio,
-                          marca : marca,
-                          modelo : modelo, 
-                          numeroSerie : numeroSerie,
-                          descripcionSoporte : descripcionSoporte,
-                          ubicacionEquipo : ubicacionEquipo,
-                          cantidad : vCantidad,
-                          estatus_equipo : 1, 
-                          nuevo : 1, 
-                          aTarea : arrTareas, ///arreglo tareas
-                          // aServicio : arrServicios /// arreglo servicios
-                          vJson : 0
-                      });
-                      
+                    arrEquipos.push({
+                      con : i,
+                      id_tipo_equipo : vId_TipoEquipo, 
+                      desc_tipo_equipo : vTipoEquipo, 
+                      etiquetaServicio : etiquetaServicio,
+                      marca : marca,
+                      modelo : modelo, 
+                      numeroSerie : numeroSerie,
+                      descripcionSoporte : descripcionSoporte,
+                      ubicacionEquipo : ubicacionEquipo,
+                      cantidad : vCantidad,
+                      estatus_equipo : 1, 
+                      nuevo : 1, 
+                      prueba : arrTareas,
+                      aTarea : arrTareas, ///arreglo tareas
+                      vJson : 0
+                    });
 
-                      
                       console.log(arrEquipos);
-                      // console.log(arrTareas);
-                      
                       
                       //  arrTareas=[];
                       drawRowEquipo();
@@ -1465,7 +1459,7 @@ var arrReplicar = [];
                       // }8341194720
                       // console.log(arrContadorTabla);
                       if (bandCheck==1) {
-                        // arrTareas=[];
+                        // arrReplicar=[];
                         var last_element = arrEquipos[arrEquipos.length - 1];
                         // console.log(last_element['aTarea']);
                         // console.log(last_element);
@@ -1548,7 +1542,10 @@ var arrReplicar = [];
                       var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                       if(index == -1){
-                          arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+                          arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText,
+                             idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+
+                          // arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
                           drawRowTarea();
                           // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
                           g=g+1;
@@ -1823,7 +1820,7 @@ var arrReplicar = [];
                     Swal.fire({
                       position: 'bottom-right',
                       icon: 'warning',
-                      title: 'El Telefono del Solicitante debe ser de 10 digitos..',
+                      title: 'El teléfono del solicitante debe ser de 10 digitos.',
                       showConfirmButton: false,
                       customClass: 'msj_aviso',
                       timer: 2000
@@ -1846,8 +1843,8 @@ var arrReplicar = [];
                     }).always(function(r) {
                       Swal.fire({
                             // title: 'Editado',
-                            html:'<p>Se ha actualizado con exito la solicitud con el folio: '+folio_solicitud_global+'</p>'+
-                                  '<p>A continuacion, realice la aprobacion o rechazo de la misma a traves del menu "Acciones" del sistema</p>',
+                            html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
+                                  '<p>A continuacion, realice la aprobacion o rechazo de la misma a traves del menú "Acciones" del sistema.</p>',
                             customClass: 'msj_solicitud',
                             icon: 'success',
                             confirmButtonColor: '#b50915',
@@ -1892,7 +1889,7 @@ var arrReplicar = [];
                     Swal.fire({
                       position: 'bottom-right',
                       icon: 'warning',
-                      title: 'El Telefono del Solicitante debe ser de 10 digitos..',
+                      title: 'El teléfono del solicitante debe ser de 10 digitos.',
                       showConfirmButton: false,
                       customClass: 'msj_aviso',
                       timer: 2000
@@ -1914,8 +1911,26 @@ var arrReplicar = [];
                     }
                     }).always(function(r) {
                       Swal.fire({
+                        // position: 'bottom-right',
+                        // icon: 'warning',
+                        // width: 600,
+                        html: '<div class="fa-3x" style="height: 180px;">'+
+                                    // '<div class="fa-3x">'+
+                                '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                '<p></p>'+
+                                '<p>Espere por favor</p>'+
+                                    
+                                '</div>',
+                                // '</div>',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        customClass: 'msj_aviso'
+                        // timer: 2000
+                      })  
+                      Swal.fire({
                             // title: 'Editado',
-                            html:'<p>Se ha actualizado con exito la solicitud con el folio: '+folio_solicitud_global+'</p>',
+                            html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
+                            '<p>A continuacion, realice la aprobacion o rechazo de la misma a traves del menú "Acciones" del sistema.</p>',
                             customClass: 'msj_solicitud',
                             icon: 'success',
                             confirmButtonColor: '#b50915',
@@ -2326,7 +2341,7 @@ var arrReplicar = [];
     Swal.fire({
       // title: 'Aprobar Solicitud',
       icon: 'warning',
-      text: '¿Esta seguro de aprobar la solicitud?',
+      text: '¿Está seguro de aprobar la solicitud?',
       showCancelButton: true,
       customClass: 'msj_solicitud',
       confirmButtonColor: '#b50915',
@@ -2335,7 +2350,23 @@ var arrReplicar = [];
       confirmButtonText: 'Aceptar'
       }).then((result) => {
       if (result.isConfirmed) {
-
+        Swal.fire({
+            // position: 'bottom-right',
+            // icon: 'warning',
+            width: 300,
+            html: '<div class="fa-3x" style="height: 180px;">'+
+                        // '<div class="fa-3x">'+
+                    '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                    '<p></p>'+
+                    '<p>Espere por favor</p>'+
+                        
+                    '</div>',
+                    // '</div>',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            customClass: 'msj_aviso'
+            // timer: 2000
+        })  
         $.ajax({
           url: '/solicitudes/aprobar_solicitud/',
           type: 'GET',
@@ -2348,8 +2379,8 @@ var arrReplicar = [];
               Swal.fire({
                 // title: 'Aprobar Solicitud',
                 // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                html: '<p>Se ha aprobado con exito la solicitud con el folio:</p>'+
-                      '<strong>'+folio_solicitud+'</strong>',
+                html: '<p>Se ha aprobado con éxito la solicitud con el folio:</p>'+
+                      '<strong>'+folio_solicitud+'.</strong>',
                 customClass: 'msj_solicitud',
                 icon: 'success',
                 confirmButtonColor: '#b50915',
@@ -2469,6 +2500,23 @@ var arrReplicar = [];
         }
       }).then((result) => {
         if (result.isConfirmed) {
+          Swal.fire({
+                // position: 'bottom-right',
+                // icon: 'warning',
+                width: 300,
+                html: '<div class="fa-3x" style="height: 180px;">'+
+                            // '<div class="fa-3x">'+
+                        '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                        '<p></p>'+
+                        '<p>Espere por favor</p>'+
+                            
+                        '</div>',
+                        // '</div>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                customClass: 'msj_aviso'
+                // timer: 2000
+            })
             // console.log(select_rechazar);
             // console.log(comentario_rechazar);
           $.ajax({
@@ -2484,9 +2532,9 @@ var arrReplicar = [];
                 Swal.fire({
                   // title: 'Rechazar Solicitud',
                   // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                  html: '<p style="font-size:1rem !important;">Se ha rechazado con exito la solicitud con el folio:</p>'+
-                  '<strong>'+r.folio_solicitud+'</strong>'+
-                  '<p style="font-size:1rem !important;">Se ha notificado al usuario mediante el correo electronico proporcionado.</p>',
+                  html: '<p style="font-size:1rem !important;">Se ha rechazado con éxito la solicitud con el folio:</p>'+
+                  '<strong>'+r.folio_solicitud+'.</strong>'+
+                  '<p style="font-size:1rem !important;">Se ha notificado al usuario mediante el correo electrónico proporcionado.</p>',
 
                   customClass: 'msj_solicitud',
                   icon: 'success',

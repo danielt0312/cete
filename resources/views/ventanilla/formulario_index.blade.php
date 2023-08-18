@@ -124,9 +124,18 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div style="text-align:right;" hidden id="div_btn_siguiente">
-                                    <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
+                                <div class="row">
+                                    <!-- <div class="col-3"> -->
+                                        <div class="col-6" style="text-align:left;" id="div_btn_regresar">
+                                            <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar3">Regresar</button>
+                                        </div>
+                                        <div class="col-6" style="text-align:right;" hidden id="div_btn_siguiente">
+                                            <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
+                                        </div>
+                                    <!-- </div> -->
+                                    
                                 </div>
+                                
                             </div>
                             <div class="tab-pane fade" id="profile">
                                 <br>
@@ -166,7 +175,7 @@
                                     </div>
                                     <div class="col-4">
                                         <label style="font-size:0.75em;" >
-                                            Favor de ingresar teléfono celular. Nos pondremos en contacto a este numero.
+                                            Favor de ingresar teléfono celular. Nos pondremos en contacto a este número.
                                         </label>
                                     </div>
                                 </div>
@@ -174,7 +183,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-12">
-                                        <label style="font-size:0.75em;">DESCRIPCION DEL REPORTE</label>
+                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL REPORTE</label>
                                         <textarea class="form-control" id="vDescripcion_Reporte" rows="3"></textarea>
 
                                     </div>
@@ -208,7 +217,7 @@
                                         <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_servicio">+</button>
                                     </div>
                                     <div class="col-5">
-                                        <label style="font-size:0.75em;">DESCRIPCION DEL PROBLEMA O SOPORTE A REALIZAR</label>
+                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
                                         <textarea class="form-control" id="vDescripcion_Problema" ></textarea>
                                     </div>
                                     <!-- </div> -->
@@ -237,7 +246,7 @@
                                         <tr>
                                             <th>TIPO DE EQUIPO</th>
                                             <th>TIPO DE SERVICIO</th>
-                                            <th>DESCRIPCION DEL SERVICIO</th>
+                                            <th>DESCRIPCIÓN DEL SERVICIO</th>
                                             <th></th>
                                         </tr>
                                         
@@ -476,7 +485,7 @@
                 Swal.fire({
                 // position: 'bottom-right',
                 icon: 'warning',
-                html: '<p style="font-size:1rem !important;">Favor de Ingresar un Correo Electronico Correcto.</p>',
+                html: '<p style="font-size:1rem !important;">Favor de Ingresar un Correo Electrónico Correcto.</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -736,7 +745,7 @@
                 Swal.fire({
                     // position: 'bottom-right',
                     icon: 'warning',
-                    html: '<p style="font-size:1rem !important;">Favor de Agregar un Telefono de 10 Digitos</p>',
+                    html: '<p style="font-size:1rem !important;">Favor de agregar un teléfono de 10 digitos.</p>',
                     showConfirmButton: false,
                     customClass: 'msj_aviso',
                     timer: 2000
@@ -769,10 +778,13 @@
                             // position: 'bottom-right',
                             // icon: 'warning',
                             // width: 600,
-                            html: '<div class="fa-3x" style="height: 150px;">'+
+                            html: '<div class="fa-3x" style="height: 180px;">'+
                                         // '<div class="fa-3x">'+
                                     '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
-                                        '</div>',
+                                    '<p></p>'+
+                                    '<p>Espere por favor</p>'+
+                                        
+                                    '</div>',
                                     // '</div>',
                             allowOutsideClick: false,
                             showConfirmButton: false,
@@ -789,7 +801,7 @@
                             }).always(function(r) {
                                 console.log(r);
                                 Swal.fire({
-                                    title: 'Registrado',
+                                    // title: 'Registrado',
                                     html:'<p style="font-size:1rem !important;">Se ha registrado con exito la solicitud con el folio: <strong>'+r.data+'</strong>.</p>'+
                                             '<p style="font-size:1rem !important;">Nos pondremos en contacto al teléfono proporcionado para seguimiento.</p>',
                                     // text: 'Se ha Registrado con Exito la Solicitud #5884',
@@ -830,6 +842,10 @@
 
         
         
+    });
+
+    $('#div_btn_regresar').click(function(){
+        window.location.href = "indexVentanilla";
     });
 
 </script>

@@ -14,10 +14,12 @@
     <h2>{{ $details ['tittle'] }}</h2>
     <hr color="#ab0033!important;">
     <p>{{ $details ['body1'] }}</p>
-    <b><p>{{ $details ['body2'] }}</p></b>
+    <p>{{ $details ['body2'] }}<b>{{ $details ['body2.1'] }}</b></p>
     <!-- <br><br> -->
     <p>{{ $details ['body3'] }}</p>
-    <center><b><p>{{ $details ['body4'] }}<br>{{ $details ['body5'] }}<br></p></b></center>
+    <br>
+    <!-- <br> -->
+    <center><b><p>{{ $details ['body4'] }}<br><br>{{ $details ['body5'] }}<br></p></b></center>
 </div>
     <br>
 <img src="{{ $message->embed((asset('images/img/ventanilla/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">

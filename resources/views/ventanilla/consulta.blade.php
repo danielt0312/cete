@@ -106,8 +106,8 @@
                             </div>
                             <div class="col-1"><button class="btn btn-primary" id="btn_enviar">Buscar</button></div>
                             <p></p>
-                            <p class="card-text">Ingresa el token de seguridad enviado al correo electronico proporcionado.</p>
-                            <p class="card-text">No olvides revisar tu bandeja de correo no deseado</p>
+                            <p class="card-text">Ingresa el token de seguridad enviado al correo electrónico proporcionado.</p>
+                            <p class="card-text">No olvides revisar tu bandeja de correo no deseado.</p>
 
                             <div class="col-9">
                                 <div class="input-group mb-3">
@@ -337,7 +337,7 @@
                         <table class="table" >
                           <thead>
                             <th>EQUIPO</th>
-                            <th>DESCRIPCION</th>
+                            <th>DESCRIPCIÓN</th>
                             <th>SERVICIO</th>
                             <th>TAREA</th>
                           </thead>
@@ -449,7 +449,24 @@
                 timer: 2000
             }) 
         }
-        else{            
+        else{ 
+            Swal.fire({
+                // position: 'bottom-right',
+                // icon: 'warning',
+                // width: 600,
+                html: '<div class="fa-3x" style="height: 180px;">'+
+                            // '<div class="fa-3x">'+
+                        '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                        '<p></p>'+
+                        '<p>Espere por favor</p>'+
+                            
+                        '</div>',
+                        // '</div>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                customClass: 'msj_aviso'
+                // timer: 2000
+            })           
             $.ajax({
                 url: '/ventanilla/sendEmail2/',
                 type: 'GET',
@@ -475,10 +492,10 @@
                     Swal.fire({
                         // position: 'bottom-right',
                         icon: 'warning',
-                        html:'<p style="font-size:1rem !important;">Favor de ingresar el token de autenticación, que ha sido enviado al correo electrónico registrado.</p>',
+                        html:'<p style="font-size:1rem !important;">Favor de ingresar el token de autenticación que ha sido enviado al correo electrónico registrado.</p>',
                         showConfirmButton: false,
                         customClass: 'msj_aviso',
-                        timer: 5000
+                        timer: 7000  //
                     }) 
                     $('#datatable_solicitudes').prop('hidden',true);
                     $('#vCorreo').prop('disabled',true);
@@ -999,7 +1016,7 @@
                     html1+='</div>';
                     html1+='<div class="row">';
                     html1+='<div class="col-5">';
-                        html1+='<label>Direccion : &nbsp;</label>';
+                        html1+='<label>Dirección : &nbsp;</label>';
                         html1+='<span>'+r.data[0]['domicilio']+'</span>';
                     html1+='</div>';
                     html1+='<div class="col-3">';
@@ -1020,19 +1037,19 @@
                         html2+='<span>'+r.data[0]['solicitante']+'</span>';
                     html2+='</div>';
                     html2+='<div class="col-5">';
-                        html2+='<label>Telefono : &nbsp;</label>';
+                        html2+='<label>Teléfono : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
                     html2+='<div class="row">';
                     html2+='<div class="col-12">';
-                        html2+='<label>Correo Electronico : &nbsp;</label>';
+                        html2+='<label>Correo Electrónico : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['correo_solic']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
                     html2+='<div class="row">';
                     html2+='<div class="col-6">';
-                        html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+                        html2+='<label>Descripción del Reporte : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
@@ -1098,7 +1115,7 @@
                     html1+='</div>';
                     html1+='<div class="row">';
                     html1+='<div class="col-5">';
-                        html1+='<label>Direccion : &nbsp;</label>';
+                        html1+='<label>Dirección : &nbsp;</label>';
                         html1+='<span>'+r.data[0]['domicilio']+'</span>';
                     html1+='</div>';
                     html1+='<div class="col-3">';
@@ -1121,19 +1138,19 @@
                         html2+='<span>'+r.data[0]['solicitante']+'</span>';
                     html2+='</div>';
                     html2+='<div class="col-5">';
-                        html2+='<label>Telefono : &nbsp;</label>';
+                        html2+='<label>Teléfono : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
                     html2+='<div class="row">';
                     html2+='<div class="col-12">';
-                        html2+='<label>Correo Electronico : &nbsp;</label>';
+                        html2+='<label>Correo Electrónico : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['correo_solic']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
                     html2+='<div class="row">';
                     html2+='<div class="col-6">';
-                        html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+                        html2+='<label>Descripción del Reporte : &nbsp;</label>';
                         html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
                     html2+='</div>';
                     html2+='</div>';

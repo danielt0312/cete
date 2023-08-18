@@ -26,6 +26,6 @@ class MailSend3 extends Mailable
      */
     public function build()
     {
-        return $this->subject('No es posible atender tu  solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend3');
+        return $this->subject('No es posible atender su solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend3');
     }
 }

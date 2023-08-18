@@ -15,12 +15,12 @@
     <p>{{ $details ['body1'] }}<b>{{ $details ['body1.1'] }}</b>{{ $details ['body1.2'] }}<b>{{ $details ['body1.3'] }}</b>{{ $details ['body1.4'] }}</p>
     <p>{{ $details ['body2'] }}</p>
     
-    <!-- <br><br> -->
+    <br>
     <br>
     <center><b><p>{{ $details ['body4'] }}<br><br>{{ $details ['body5'] }}<br></p></b></center>
     <br>
-    <br>
-    De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+    <!-- <br> -->
+    De igual manera, puedes consultar el seguimiento de su solicitud de servicio a través del sitio:
     <a href="http://cascete.test:8080/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE.</ins></a>
 </div>
     <br>

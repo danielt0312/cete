@@ -15,6 +15,7 @@
     <p>{{ $details ['body2'] }}<b>{{ $details ['body2.1'] }}</b>{{ $details ['body2.2'] }}<b>{{ $details ['body2.3'] }}</b></p>
     <p>{{ $details ['body3'] }}</p>
     <br>
+    <!-- <br> -->
     <center><b><p>{{ $details ['body4'] }}<br><br>{{ $details ['body5'] }}<br></p></b></center>
     <br>
     De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:

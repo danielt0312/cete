@@ -35,9 +35,11 @@ class SolicitudesController extends Controller
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                            Ver Detalles Solicitud...
+                                        <i class="fa fa-eye"></i>
+                                            Ver Detalles Solicitud
                                         </a>
                                         <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                        <i class="fas fa-download"></i>
                                             Imprimir Solicitud
                                         </a>
                                     </li>
@@ -53,9 +55,11 @@ class SolicitudesController extends Controller
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                            Ver Detalles Solicitud...
+                                        <i class="fa fa-eye"></i>
+                                            Ver Detalles Solicitud
                                         </a>
                                         <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                        <i class="fas fa-download"></i>
                                             Imprimir Solicitud
                                         </a>
                                     </li>
@@ -71,18 +75,23 @@ class SolicitudesController extends Controller
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                            Ver Detalles Solicitud...
+                                        <i class="fa fa-eye"></i>
+                                            Ver Detalles Solicitud
                                         </a>
                                         <a onclick="fnActualizarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                            Editar Solicitud...
+                                        <i class="fas fa-edit"></i>
+                                            Editar Solicitud
                                         </a>
                                         <a onclick="fnAprobarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                            Aprobar Solicitud...
+                                        <i class="fa fa-check"></i>
+                                            Aprobar Solicitud
                                         </a>
                                         <a onclick="fnRechazarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                            Rechazar Solicitud...
+                                        <i class="	fas fa-times"></i>
+                                            Rechazar Solicitud
                                         </a>
                                         <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                        <i class="fas fa-download"></i>
                                             Imprimir Solicitud
                                         </a>
                                     </li>
@@ -367,14 +376,16 @@ class SolicitudesController extends Controller
         // $pId_reg_captacion = $data2[0]->id;
         $data = DB::select("select * from cas_cete.fn_rechazar_solicitud(".$pId_solic_ser.",".$select_rechazar." ,'".$comentario_rechazar."',1 ,'Administrador',3 )");
         // dd($data);
-
+        $folio_solicitud = $data[0]->fn_rechazar_solicitud;
         $details = [
             // 'tittle' => 'Estimado usuario: ',
             'tittle' => 'Estimado usuario: '.$vNombre_solicitante.' - '.$vNombrect.'',
             
-            'body1' => 'Lamentablemente no podemos proceder con su solicitud de servicio en este momento. 
-            Nuestro equipo de Mesa de Ayuda se estará comunicando al teléfono proporcionado para explicar los detalles específicos y requerimientos necesarios que permitan llevar a cabo el desarrollo de su solicitud de manera exitosa.
+            'body1' => 'Lamentablemente no podemos proceder con su solicitud de servicio número: ',
+            'body1.2' => $folio_solicitud,
+            'body1.3' =>'. Nuestro equipo de Mesa de Ayuda se estará comunicando al teléfono proporcionado para explicar los detalles específicos y requerimientos necesarios que permitan llevar a cabo el desarrollo de su solicitud de manera exitosa.
             ',
+            'body1.4' =>'Agradecemos su confianza en nuestros servicios. Si tiene alguna duda, contacte a nuestro equipo de soporte.',
             // 'body1' => 'Se ha aprobado tu solicitud con el numero de folio: '.$pfolio_config.'. 
             // Se ha creado una orden en espera de ser asignada con el personal tecnico especializado.',
             
@@ -385,7 +396,7 @@ class SolicitudesController extends Controller
 
             'body4' => 'Atentamente.',
             'body5' => 'Centro Estatal de Tecnología Educativa',
-            'body6' => 'De igual manera, puedes consultar las observaciones de tu solicitud de servicio a través del sitio:
+            'body6' => 'De igual manera, puedes consultar las observaciones de su solicitud de servicio a través del sitio:
              <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
 
         ];
@@ -453,7 +464,7 @@ class SolicitudesController extends Controller
             'body1.1' => ' '.$vFolio.' ',
             'body1.2' => ' .Se ha creado una orden',
             'body1.3' => ' En Espera',
-            'body1.4' => ' de ser asignada con el personal tecnico especializado.',
+            'body1.4' => ' de ser asignada con el personal técnico especializado.',
             // 'body1' => 'Se ha aprobado tu solicitud con el numero de folio: '.$pfolio_config.'. 
             // Se ha creado una orden en espera de ser asignada con el personal tecnico especializado.',
             
