@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailSend2 extends Mailable
+class MailSendO extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -25,7 +25,7 @@ class MailSend2 extends Mailable
      * @return $this
      */
     public function build()
-    {
-        return $this->subject('Verificación de cuenta - Sistema C.A.S. - C.E.T.E.')->view('ordenes.correo');
+    {   //dd($this->details['asunto']);
+        return $this->subject( $this->details['asunto'] )->view('ordenes.correo');
     }
 }

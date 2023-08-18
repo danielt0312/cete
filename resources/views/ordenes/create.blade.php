@@ -265,6 +265,18 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Agregar equipo(s) a la orden de servicio</span>
+                                        </div>
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" >
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="txtDescripcionSoporte">DESCRIPCIÓN DEL PROBLEMA</label>
@@ -409,6 +421,22 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-12">
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Descripción de equipos agregados</span>
+                                        </div>
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" >
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <br>
                                         <div class="col-12" id="divTablaEquipos">
                                             <table class="table">
@@ -477,7 +505,7 @@
 <!-- FIN MODAL ELEGIR CENTRO TRABAJO-->
 
 <!-- MODAL VER DETALLES EQUIPO -->
-<div class="modal fade" id="detallesEquipoModal" tabindex="-1" aria-labelledby="detallesEquipoModalLabel" aria-hidden="true">
+<div class="modal fade" id="detallesEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="detallesEquipoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -559,7 +587,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12" style="text-align:right;;" >
+                <div class="col-12" style="text-align:right;" >
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -1324,14 +1352,14 @@
             if (!jQuery.isEmptyObject(arrTareas[j])) {
             
                 listaTarea2+='<tr>';
-                // if(aux==arrTareas[j]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
-                //     listaTarea2+='<td>&nbsp;</td>';
-                //     aux='';
-                // }else{
-                //     aux=arrTareas[j]['desc_Servicio'];
-                //     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
-                // }
-                listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
+                if(aux==arrTareas[j]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                    listaTarea2+='<td>&nbsp;</td>';
+                    aux='';
+                }else{
+                    aux=arrTareas[j]['desc_Servicio'];
+                    listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
+                }
+                // listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 
                 listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
                 // class="btn colorBtnPrincipal"
@@ -1983,15 +2011,15 @@
                 var aux='';
                 $.each(aTarea, function(j, val){
                     if (!jQuery.isEmptyObject(aTarea[j])) {
-                        // htmlSel+='<tr>';
-                        // if(aux==aTarea[j]['desc_Servicio']){ 
-                        //     htmlSel+='<td >&nbsp;</td>';
-                        //     aux='';
-                        // }else{
-                        //     aux=aTarea[j]['desc_Servicio'];
-                        //     htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
-                        // }
-                        htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
+                        htmlSel+='<tr>';
+                        if(aux==aTarea[j]['desc_Servicio']){ 
+                            htmlSel+='<td >&nbsp;</td>';
+                            aux='';
+                        }else{
+                            aux=aTarea[j]['desc_Servicio'];
+                            htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
+                        }
+                        // htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
                         htmlSel+='<td class="text-xs text-secondary mb-0"> - '+aTarea[j]['desc_Tarea']+'</td>';
                         htmlSel+='<tr>';
                     }

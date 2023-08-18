@@ -273,6 +273,18 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Agregar equipo(s) a la orden de servicio</span>
+                                        </div>
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" >
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
@@ -418,6 +430,23 @@
                                             <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Descripción de equipos agregados</span>
+                                        </div>
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" >
+                                        </div>
+                                    </div>
                                     
                                     <div class="row">
                                         <div class="col-12" id="divTablaEquipos">
@@ -486,7 +515,7 @@
 <!-- FIN MODAL ELEGIR CENTRO TRABAJO-->
 
 <!-- MODAL VER DETALLES EQUIPO -->
-<div class="modal fade" id="detallesEquipoModal" tabindex="-1" aria-labelledby="detallesEquipoModalLabel" aria-hidden="true">
+<div class="modal fade" id="detallesEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="detallesEquipoModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -662,7 +691,7 @@
 <!-- FIN MODAL HISTORIAL EQUIPO-->
 
 <!-- MODAL EDITAR EQUIPO -->
-<div class="modal fade" id="detalleEquipoModal" tabindex="-1" aria-labelledby="detalleEquipoModalLabel" aria-hidden="true">
+<div class="modal fade" id="detalleEquipoModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="detalleEquipoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <!-- <div class="modal-header">
@@ -819,19 +848,30 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <br>
-                                <label for="archivoEvidencia">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
-                                <input class="form-control" type="file" id="archivoEvidencia" name="archivoEvidencia">
+                                <label for="archivoCierreEquipo">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
+                                <input class="form-control" type="file" id="archivoCierreEquipo" name="archivoCierreEquipo">
                             </div>
                         </div>
                     </div>
 
                 </form>
+                <div class="row">
+                    <div class="col-12">
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12" style="text-align:rigth;">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="modal-footer">
+            <!-- <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
@@ -1021,14 +1061,14 @@
             // $("#checkReplicar").click(function() {  
                 if($("#checkReplicar").is(':checked')) {  
                     bandCheck=1;
-                    // console.log(bandCheck+'---1');
+                    console.log(bandCheck+'---1');
                 } else {  
                     bandCheck=0;
-                    // console.log(bandCheck+'---2');
+                    console.log(bandCheck+'---2');
                 }  
             // }); 
 
-            // console.log(bandCheck+'---3');
+            console.log(bandCheck+'---3');
 
             var etiquetaServicio = $("#txtEtiquetaServicio").val();
             var marca = $("#txtMarca").val();
@@ -1077,7 +1117,7 @@
                     aTarea : arrTareas, ///arreglo tareas
                     // aServicio : arrServicios /// arreglo servicios
                 });
-                console.log(arrEquipos,'-----');
+                console.log(arrEquipos,'-----fff');
                 //  arrTareas=[];
                 drawRowEquipo();
                 i=i+1;
@@ -1102,7 +1142,7 @@
             $("#txtCantidadEquipos").val(1);
             $("#tituloTareas").text('');
             $("#selTipoServicio").val("0").attr("selected",true);
-            $("#divRowListadoTareas").hide();
+            // $("#divRowListadoTareas").hide();
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
             //     arrTareas=[];
@@ -1522,11 +1562,13 @@
                 tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
                 tablaEquipo2+='                  </button>';
                 tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
-                tablaEquipo2+='                          <li>';
-                tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
-                tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
-                tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
+                if(arrEquipos[j].nuevo!=1){ //si es diferente a 1 viene de bd y muestra opcion de editar equipo
+                    tablaEquipo2+='                          <li>';
+                    tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
+                    tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
+                    tablaEquipo2+='                              </a>';
+                    tablaEquipo2+='                          </li>';
+                }
                 tablaEquipo2+='                          <li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoA('+j+')" class="dropdown-item"> '; 
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Visualizar';
@@ -1606,7 +1648,7 @@
                     aux=arrTareas[j]['desc_Servicio'];
                     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 }
-                listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
+                // listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
                 listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
                 // class="btn colorBtnPrincipal"
                 listaTarea2+='<td><button type="button" class="btnEliminar" onclick="removeTarea('+j+');" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -2371,14 +2413,14 @@
                         }
 
                         htmlSel+='<tr>';
-                        // if(aux==aTarea[j]['servicio']){ 
-                        //     htmlSel+='<td >&nbsp;</td>';
-                        //     aux='';
-                        // }else{
-                        //     aux=aTarea[j]['servicio'];
-                        //     htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
-                        // }
-                        htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                        if(aux==aTarea[j]['servicio']){ 
+                            htmlSel+='<td >&nbsp;</td>';
+                            aux='';
+                        }else{
+                            aux=aTarea[j]['servicio'];
+                            htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                        }
+                        // htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
                         htmlSel+='<td class="text-xs text-secondary mb-0"> - '+vtare+'</td>';
                         htmlSel+='<tr>';
                     }
@@ -2478,36 +2520,36 @@
         //  var TareasAux = JSON.parse(arrEquipos[j].aTarea); /// este funcionaba al 03/08/2023
         var TareasAux = [];
 
-        if(arrEquipos[j].nuevo==1){  //1 es igual equipo agregado nuevo
-            TareasAux=arrEquipos[j]['aTarea'];
+        // if(arrEquipos[j].nuevo==1){  //1 es igual equipo agregado nuevo
+        //     TareasAux=arrEquipos[j]['aTarea'];
                 
-        }else{ // 0 es igual a que biene de BD
+        // }else{ // 0 es igual a que biene de BD
             TareasAux = JSON.parse(arrEquipos[j]['aTarea']);
             // console.log(aTarea)
-        }
+        // }
 
         //  var TareasAux = arrEquipos[j].aTarea;
-        //    console.log(TareasAux);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+           console.log(TareasAux);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
 
         $.each(TareasAux, function(i, val){
             if (!jQuery.isEmptyObject(TareasAux)) {
 
-                var vserv='';
-                var vtare='';
-                if( typeof(TareasAux[i].servicio) != "undefined" && TareasAux[i].servicio !== null){  
-                    vserv=TareasAux[i].servicio;
-                }else{
-                    vserv=aTarea[j]['desc_Servicio'];
-                }
+                // var vserv='';
+                // var vtare='';
+                // if( typeof(TareasAux[i].servicio) != "undefined" && TareasAux[i].servicio !== null){  
+                //     vserv=TareasAux[i].servicio;
+                // }else{
+                //     vserv=aTarea[j]['desc_Servicio'];
+                // }
 
-                if( typeof(TareasAux[j].tarea) != "undefined" && TareasAux[j].tarea !== null){
-                    vtare=TareasAux[j].tarea;
-                }else{
-                    vtare=TareasAux[j]['desc_Tarea'];
-                }
-
+                // if( typeof(TareasAux[j].tarea) != "undefined" && TareasAux[j].tarea !== null){
+                //     vtare=TareasAux[j].tarea;
+                // }else{
+                //     vtare=TareasAux[j]['desc_Tarea'];
+                // }
+                    
                 arrTareasEdit.push({
-                    id_equipo_detalle: TareasAux[i].id_equipo_detalle,
+                    id_equipo_detalle: TareasAux[i].id,
                     id_equipo_tarea: TareasAux[i].id_equipo_tarea,
                     id_equipos_serv: TareasAux[i].id_equipos_serv,
                     id_usuario_agrega: TareasAux[i].id_usuario_agrega,
@@ -2515,7 +2557,8 @@
                     id_tipo_equipo: TareasAux[i].id_tipo_equipo,
                     tipo_equipo: TareasAux[i].tipo_equipo,
                     id_servicio: TareasAux[i].id_servicio,
-                    servicio: vserv,//TareasAux[i].servicio,
+                    // servicio: vserv,//TareasAux[i].servicio,
+                    servicio: TareasAux[i].servicio,
                     id_tarea: TareasAux[i].id_tarea,
                     tarea: TareasAux[i].tarea,
                     activo: TareasAux[i].activo
@@ -2532,7 +2575,7 @@
         listaTarea2+='<th>Acciones</th>';
         listaTarea2+='</thead>';
         listaTarea2+='<tbody>';
-        console.log(arrTareasEdit);
+        console.log(arrTareasEdit+'-------prueba');
         // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
         var aux='';
         $.each(arrTareasEdit, function(j, val){
@@ -2574,7 +2617,8 @@
         if(arrTareasEdit.includes(item) ==false){ 
             if ( item !== -1 ) {
                 if (arrTareasEdit[item].activo==true){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
-                   console.log( arrTareasEdit[item].activo);
+                //    console.log( arrTareasEdit[item].activo);
+                //    console.log( arrTareasEdit[item].id_equipo_detalle);
                     arrTareasEditElim.push({
                         // con : 0,
                         id_equipo_detalle : arrTareasEdit[item].id_equipo_detalle, 
@@ -2593,7 +2637,7 @@
                 }
 
                 arrTareasEdit.splice( item, 1 );
-                // console.log(arrTareasEdit);
+                //  console.log(arrTareasEditElim[0]['id_equipo_detalle']+'elim');
                 $("#liTM_"+item).remove();
                 drawRowTareaEdit();
             }   else{

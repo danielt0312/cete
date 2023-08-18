@@ -164,4 +164,21 @@
     text-align:center;
   }
 
+  .colorBtnCancelar{ /*Estilo boton guindo*/
+    background-color: #ff0000 !important;
+    color:#FFFFFF !important;
+  }
+
+  .colorBtnCancelar:hover{ 
+    background-color: #ff0000 !important;
+    color:#FFFFFF !important;
+  }
+
+  .colorBtnCancelar:active {
+    background-color: #ff0000 !important;
+    color:#FFFFFF !important;
+  }
+
+  .colorBtnCancelar:focus { outline: none; } 
+
 </style>

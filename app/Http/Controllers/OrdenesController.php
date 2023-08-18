@@ -12,6 +12,7 @@ use Dompdf\Options;
 use Illuminate\Support\Facades\Mail;
 // use App\Http\Controllers\Mail; 
 use App\Mail\MailSendO;
+use DateTime;
 
 class OrdenesController extends Controller
 {
@@ -82,7 +83,9 @@ class OrdenesController extends Controller
 
         if($request->checkDirector == true){
             $nombreSoliictante = $request->nombreSol; // quitar comillas dobles "nombre"
-            $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+            // $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+            $nombreSoliictante = str_replace('"', '', $nombreSoliictante);
+            $nombreSoliictante = trim($nombreSoliictante);
         }else{
             $nombreSoliictante = $request->txtNombreSolicitante;
         }
@@ -108,35 +111,6 @@ class OrdenesController extends Controller
 
             return response()->json($insSolicServicio);
         }
-
-        // return response()->json($insSolicServicio);
-
-        // foreach ($arr as $e) {
-
-        //     if($e->cantidad > 1){
-        //         echo $e->cantidad.'<br>';
-        //         for ($i=0; $i < $e->cantidad; $i++) { 
-        //             echo $e->desc_tipo_equipo .'---'.$i.'<br>';
-
-        //             // echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
-        //             $arrTarea=$e->aTarea;
-        //             foreach ($arrTarea as $p) {
-        //                 // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
-        //                 echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
-        //             }
-        //         }
-        //     }else{
-        //         echo '<br>';
-        //         echo $e->desc_tipo_equipo.'--'.$e->con.'--<br>';
-        //         $arrTarea=$e->aTarea;
-        //         foreach ($arrTarea as $p) {
-        //             // echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';//Tareas
-        //             echo $p->idTarea.' - '.$p->desc_Tarea.' - '.$p->idServicio.' - '.$p->desc_Servicio.'<br>';
-        //         }
-        //     }
-            
-        // }
-        
     }
 
     public function edit($idOrden){
@@ -279,120 +253,144 @@ class OrdenesController extends Controller
     // }
 
     public function updEstatusOrden(Request $request){
-        //  dd($request->All());
+        //   dd($request->All());
         $exito = DB::connection('pgsql')->select("select * from cas_cete.insCancelaSolicitud(".$request->idSolicServ.",".$request->id_motivo_canc.",'".$request->comentarios."',".$request->id_usuario.",'".$request->desc_rol_usr."')");
         // dd($exito);
-        // return response()->json([$exito]); 
-        return response()->json($exito);
+        // return response()->json($exito);
+
+        if($exito != null || $exito != ''){ 
+            $folio = $request->hdFolio;
+            $folio_solic = $request->hdFolioSol;
+            $correo = $request->hdCorreo;
+            $nombrecct = $request->hdNombrecct;
+            $solicitante = $request->hdSolicitante;
+
+            if($folio_solic != null){ // si viene desde solicitud
+                $msje_asunto='No es posible atender su solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Lamentablemente no podemos proceder con su solicitud de servicio número ';
+                $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                $band_ventanilla='1';
+                $folio2=$folio_solic;
+            }else{
+                $msje_asunto='No es posible atender su orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Lamentablemente no podemos proceder con su orden de servicio número '; 
+                $msje_ventanilla='';
+                $band_ventanilla='0';
+                $folio2=$folio;
+            }
+            $details = [
+                'asunto' => $msje_asunto,
+                'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                'folio' => $folio2.' ',
+                'estatus' => '',
+                
+                'body1' => $msje_correo,
+                
+                'body2' => 'en este momento. Nuestro equipo de Mesa de Ayuda se estará comunicando al teléfono proporcionado para explicar los detalles específicos y requerimientos necesarios que permitan llevar a cabo el desarrollo de su solicitud de manera exitosa.',
+                
+                'body3' => 'Agradecemos su confianza en nuestros servicios. Si tiene alguna duda, agradecemos ponerse en contacto con nuestro equipo de soporte.',
+                'body4' => '',
+
+                'firma1' => 'Atentamente.',
+                'firma2' => 'Centro Estatal de Tecnología Educativa',
+                'band_ventanilla' => $band_ventanilla,
+                'ventanilla' => $msje_ventanilla
+            ];
+
+            Mail::to("$correo")->send(new MailSendO($details));
+
+            return response()->json($exito);
+        }else{
+
+        }
+        
     }
 
     public function updIniciar(Request $request){
-        //dd($request->All());
+        //  dd($request->All());
        $exito = DB::connection('pgsql')->select("select * from cas_cete.insIniciaSolicitud(".$request->idSolicServ.")");
        // dd($exito);
-       // return response()->json([$exito]); 
-       return response()->json($exito);
+    //    return response()->json($exito);
+        if($exito != null || $exito != ''){ 
+            $folio = $request->folio;
+            $folio_solic = $request->folioSol;
+            $correo = $request->correo;
+            $nombrecct = $request->nombrecct;
+            $solicitante = $request->solicitante;
+
+            if($folio_solic != null  && $folio_solic != "null"){ // si viene desde solicitud
+                $msje_asunto='Se ha iniciado la solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha iniciado la solicitud de servicio con el folio número ';
+                $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                $band_ventanilla='1';
+                $folio2=$folio_solic;
+            }else{
+                $msje_asunto='Se ha iniciado la orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha iniciado la orden de servicio con el folio número '; 
+                $msje_ventanilla='';
+                $band_ventanilla='0';
+                $folio2=$folio;
+            }
+            $details = [
+                'asunto' => $msje_asunto,
+                'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                'folio' => $folio2.' ',
+                'estatus' => '',
+                
+                'body1' => $msje_correo,
+                
+                'body2' => 'por parte de nuestros técnicos de soporte especializados. Te mantendremos informado sobre el progreso correspondiente.',
+                
+                'body3' => 'De igual manera, le recomendamos mantener el número de folio de su orden para que pueda contactarnos para su seguimiento.',
+                'body4' => '',
+
+                'firma1' => 'Atentamente.',
+                'firma2' => 'Centro Estatal de Tecnología Educativa',
+                'band_ventanilla' => $band_ventanilla,
+                'ventanilla' => $msje_ventanilla
+            ];
+
+            Mail::to("$correo")->send(new MailSendO($details));
+
+            return response()->json($exito);
+        }else{
+
+        }
    }
 
     public function downloadPdf($id)
     {
         $ordenServicios = DB::connection('pgsql')->select("select * from cas_cete.gettordendetallepdf(".$id.")");
-
         // dd($ordenServicios[0]);
         $ordenServiciosObject=$ordenServicios[0];
-
-        // return $ordenServiciosObject;
-        // return response()->json([$ordenes]);
-    //   $ordenServicios = DB::connection('pgsql')->table('cas_orden_servicio as orden')
-    //   ->join('users as user', 'user.id', '=', 'orden.usuario_atiende_id_fk')
-    //   ->join('users as tecnico','tecnico.id', '=','orden.tecnico_encargado_id_fk')
-    //   ->join('aula_catcentrostrabajo as centro', 'orden.centro_id_fk', '=', 'centro.id')
-    //   ->join('cas_cat_areaatencion as area','area.id','=','orden.area_atiende_id_fk')
-    //   ->select('orden.id', 'orden.folio as folio', 'orden.nom_quien_reporta','area.nombre as area',
-    //   'orden.telefono_quien_reporta', 'orden.cantidad_equipos_aprox', 
-    //   'orden.desc_reporte',DB::connection('pgsql')->raw('DATE_FORMAT(orden.fecha_inicio,"%Y-%m-%d") as fecha_inicio'),DB::connection('pgsql')->raw('DATE_FORMAT(orden.fecha_finalizacion,"%Y-%m-%d") as fecha_finalizacion'), 
-    //   DB::connection('pgsql')->raw('CONCAT(user.name," ",user.paterno," ",user.materno) as usuario'), DB::connection('pgsql')->raw('CONCAT(tecnico.name," ",tecnico.paterno," ",tecnico.materno) as tecnico_encargado'),
-    //   'user.telefono', 'centro.nombrect', 'centro.clavecct', 'centro.domicilio', 'centro.entrecalle', 'centro.ycalle', 'orden.solicitante')
-    //   ->where('orden.id', $id)
-    //   ->get();
-    //   $ordenServiciosObject = $ordenServicios[0];
-    //   $folioOrden = $ordenServiciosObject->folio;
-    //   $idOrden = $ordenServiciosObject->id;
-
-    //   $existenciaTareas = DB::connection('pgsql')->table('cas_orden_servicio as orden')
-    //   ->join('cas_tareas_equipos_servicio as tareaEquipo','tareaEquipo.orden_servicio_id_fk','=','orden.id')
-    //   ->select('tareaEquipo.id')
-    //   ->where('orden.id', '=', $id)
-    //   ->get();
-
-    //   $tecnicos_aux = DB::connection('pgsql')->table('cas_orden_servicio as orden')
-    //   ->join('cas_tecnicos_aux_orden_servicio as tecnicos', 'orden.id','=','tecnicos.orden_servicio_id_fk')
-    //   ->join('users as usuario','tecnicos.tecnico_auxiliar_id_fk','=','usuario.id')
-    //   ->select(DB::connection('pgsql')->raw('CONCAT(usuario.name, " ", usuario.paterno, ", ") as nombre_tec'))
-    //   ->where('orden.id', '=', $id)
-    //   ->get();
-
-    //   if(count($existenciaTareas) >= 1) {
-
-    //     $equipos = DB::connection('pgsql')->table('cas_orden_servicio as orden')
-    //     ->join('cas_equipos_servicio as equipo','equipo.orden_servicio_id_fk','=','orden.id')
-    //     ->join('cas_cat_estatus as estatusEquipo','equipo.estatus_equipo','=','estatusEquipo.estatus_id')
-    //     ->join('cas_cat_tipo_equipo as Tipoequipo', 'equipo.id_tipo_equipo', '=', 'Tipoequipo.id')
-    //     ->join('cas_tareas_equipos_servicio as tareaEquipo','tareaEquipo.equipo_servicio_id_fk','=','equipo.id')
-    //     ->join('cas_cat_tarea as tarea','tareaEquipo.id_tarea','=','tarea.tarea_id')
-    //     ->join('cas_cat_estatus as estatusTarea','tareaEquipo.id_estatus_tarea','=','estatusTarea.estatus_id')
-    //     ->select('equipo.id as id','equipo.nombre_equipo', 
-    //     'equipo.numero_serie', 'equipo.numero_inventario', 
-    //     'equipo.estatus_equipo', 'equipo.orden_servicio_id_fk as id_orden', 
-    //     'estatusEquipo.nombre as estatus', 'Tipoequipo.tipo_equipo as tipo_equipo',
-    //     'tarea.nombre as nombreTarea', 'estatusTarea.nombre as estatus_tarea')
-    //     ->where('orden.id', '=', $id)
-    //     ->orderBy('equipo.numero_serie', 'desc')
-    //     ->get();
-
-    //   }else{
-
-    //     $equipos = DB::connection('pgsql')->table('cas_orden_servicio as orden')
-    //     ->join('cas_equipos_servicio as equipo','equipo.orden_servicio_id_fk','=','orden.id')
-    //     ->join('cas_cat_estatus as estatusEquipo','equipo.estatus_equipo','=','estatusEquipo.estatus_id')
-    //     ->join('cas_cat_tipo_equipo as Tipoequipo', 'equipo.id_tipo_equipo', '=', 'Tipoequipo.id')
-    //     ->select('equipo.id as id','equipo.nombre_equipo', 
-    //     'equipo.numero_serie', 'equipo.numero_inventario', 
-    //     'equipo.estatus_equipo', 'equipo.orden_servicio_id_fk as id_orden', 
-    //     'estatusEquipo.nombre as estatus', 'Tipoequipo.tipo_equipo as tipo_equipo',)
-    //     ->where('orden.id', '=', $id)
-    //     ->orderBy('equipo.numero_serie', 'desc')
-    //     ->get();
-
-    //   }
-
-      // ,DB::connection('pgsql')->raw('LCASE(CONCAT(tecnico.name," ",tecnico.paterno," ",tecnico.materno)) as tecnico_encargado_equipo')
       
-      $options = new Options();
-      $options->set('isRemoteEnabled', TRUE);
-      $options->set('isHtml5ParserEnabled', TRUE);
-      $pdf = new Dompdf($options);
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $pdf = new Dompdf($options);
 
-      $path = base_path('public/images/logo/logoTam2022.png');
-      $type = pathinfo($path, PATHINFO_EXTENSION);
-      $data = file_get_contents($path);
-      $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
-      $path_footer = base_path('public/images/logo/ceteNI.png');
-      $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
-      $data_footer = file_get_contents($path_footer);
-      $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
+        $path = base_path('public/images/logo/logoTam2022.png');
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
+        $path_footer = base_path('public/images/logo/ceteNI.png');
+        $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
+        $data_footer = file_get_contents($path_footer);
+        $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
 
-      $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
-      $fecha = date('Y-m-d');
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $fecha = date('Y-m-d');
 
     //   view()->share('servicios::ordenes_servicio/downloadOrden',$ordenServiciosObject, $equipos, $tecnicos_aux);
     //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
 
-      view()->share('ordenes/downloadOrden',$ordenServiciosObject);
-      $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
+        view()->share('ordenes/downloadOrden',$ordenServiciosObject);
+        $pdf = PDF::loadView('ordenes/downloadOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
         // dd('hola');
     //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf'); // para que vaya a la url a descargar directo el pdf
-       return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
+        return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
     }
 
     public function detalleOrden($idOrden){
@@ -417,74 +415,28 @@ class OrdenesController extends Controller
 
     public function updCerrar(Request $request){
         // dd($request, $_FILES["archivoCierre"]);
-        // dd($request);
+        //  dd($request);
         
         $vusuario=Auth()->user()->id;
-        
-        // $ruta = $request->ruta_evidencia;
-        // $ruta = explode('\\', $request->ruta_evidencia);
-        // $ruta = $ruta[2];
+
         $vidSolicServ=$request->hdIdOrdenCierra;
-        
-
-        // $request->validate([
-        //   'imageFile' => 'required|image|max:2048'
-        // ]);
-
-        // "name" => "PRESENTACIÓN SISTEMA C.A.S_VS 16_05_23 (1).pdf"
-        // "type" => "application/pdf"
-        // "tmp_name" => "C:\Users\Infraestructura\AppData\Local\Temp\phpF07A.tmp"
-        // "error" => 0
-        // "size" => 3543845
 
         $file2 = $_FILES["archivoCierre"];
-
-        
-        // var_dump($file2);
-        //dd($file2);
-        // $file_size1 = $file2->size;
-        // $file_name1 = $file2->filename;
-
-        // dd($file2, $file_size1, $file_name1);
         
         if($request->hasfile('archivoCierre')){ 
 
-            if($request->hasFile("archivoCierre")){
-
-                $file=$request->file("archivoCierre");
-                // dd($file[0]);
-                $ext=substr($file[0]->getClientOriginalName(), -3);
-                if($ext === "pdf" ){
-                    $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
-                    
-                    $ruta = public_path("cierreOrden/".$nombre);
-    
-                // if($file->getExtension()()=="pdf"){
+            $file=$request->file("archivoCierre");
+            // dd($file[0]);
+            $ext=substr($file[0]->getClientOriginalName(), -3);
+            
+            if($ext === "pdf" ){
+                $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
                 
-                    copy($file[0], $ruta);
-                    
-                 }
-    
-            }else{
-               
+                $ruta = public_path("cierreOrden/".$nombre);
+            
+                copy($file[0], $ruta);
             }
     
-
-             /*$i=1;
-             foreach($file2 as $file){
-                $sub=substr($file[0], -3);
-                if($sub === "pdf" ){
-                    $nombre = uniqid() .'_'. $vidSolicServ.'.'.$sub;
-
-                    $file=$request->file("archivoCierre");
-                    $ruta = public_path("cierreOrden/".$nombre);
-                    //   sdd($sub,$fileName,$file,$ruta);
-                    copy($file[0], $ruta);  
-                    
-                    $i++;
-                }else{
-                }
-             }*/
         }else{
             dd('no entro');
         }
@@ -494,8 +446,54 @@ class OrdenesController extends Controller
         
         // $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$request->idSolicServ.",".$vusuario.",'".$ruta."')");
         $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$vidSolicServ.",".$vusuario.",'".$nombre_archivo."','".$ruta_archivo."')");
-       
-         return response()->json($exito);
+                
+        //  return response()->json($exito);
+        if($exito != null || $exito != ''){
+            $folio = $request->hdFolioCierra;
+            $folio_solic = $request->hdFolioSolCierra;
+            $correo = $request->correoCierre;
+            $nombrecct = $request->nombrecctCierre;
+            $solicitante = $request->solicitanteCierre;
+
+            if($folio_solic != null ){ // si viene desde solicitud
+                $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha finalizado la solicitud de servicio con el folio número ';
+                $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                $band_ventanilla='1'; 
+                $folio2=$folio_solic;
+            }else{
+                $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha finalizado la orden de servicio con el folio número '; 
+                $msje_ventanilla='';
+                $band_ventanilla='0';
+                $folio2=$folio;
+            }
+            $details = [
+                'asunto' => $msje_asunto,
+                'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                'folio' => $folio2.' ',
+                'estatus' => '',
+                
+                'body1' => $msje_correo,
+                
+                'body2' => 'por parte de nuestros técnicos de soporte especializados.',
+                
+                'body3' => 'Agradecemos su confianza en nuestros servicios. Quedamos a sus órdenes para cualquier duda o aclaración sobre el diagnóstico y solución de su(s) equipos.',
+                'body4' => '',
+
+                'firma1' => 'Atentamente.',
+                'firma2' => 'Centro Estatal de Tecnología Educativa',
+                'band_ventanilla' => $band_ventanilla,
+                'ventanilla' => $msje_ventanilla
+            ];
+
+            Mail::to("$correo")->send(new MailSendO($details));
+
+            return response()->json($exito);
+        }else{
+
+        }
         
     }
 
@@ -509,7 +507,7 @@ class OrdenesController extends Controller
     }
 
     public function insTecnico(Request $request){
-        //   dd($request->All());
+            // dd($request->All());
         
         $arrTec=$request->tecnicosAuxiliaresArray;
         $arrTec2 = json_decode($arrTec);
@@ -524,7 +522,7 @@ class OrdenesController extends Controller
         // return response()->json($exito);
         
         if($exito != null || $exito != ''){
-            $correo='aida.rangel@set.edu.mx';
+            $correo=$request->correoModTec;
             $nomTecEncargado='';
             $nomTecAux='';
 
@@ -539,21 +537,53 @@ class OrdenesController extends Controller
                     }
                 }
             }
-            $folio='ddd';
+
+            $folio_solic=$request->folioSolModTec;
+
+            // "fecha_inicio_prog" => "2023-08-17T11:44"
+            $fecha_inicio=$request->fecha_inicio_prog;
+            $fecha_fin=$request->fecha_fin_prog;
+
+            // $date1 = new DateTime($fecha_inicio);
+            // $fechaInicio = strval(date_format($date1, 'Y/m/d H:i:s'));
+
+            $folio=$request->folioModTec;
+            $solicitante=$request->solicitanteModTec;
+            $nombrecct=$request->nombrecctModTec; 
+            // date_format($date,"Y/m/d H:i:s");
+
+            if($folio_solic != null){ // si viene desde solicitud
+                $msje_asunto='Programación de cita para solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='La solicitud de servicio con el folio número: ';
+                $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                $band_ventanilla='1';
+                $folio2 = $folio_solic;
+            }else{
+                $msje_asunto='Programación de cita para  orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='La orden de servicio con el folio número: '; 
+                $msje_ventanilla='';
+                $band_ventanilla='0';
+                $folio2 = $folio;
+            }
             $details = [
-                'tittle' => 'Estimado usuario:',
+                'asunto' => $msje_asunto,
+                'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                'folio' => $folio2.' ',
+                'estatus' => '',
                 
-                // 'body1' => 'Estimado usuario: juan - C.C.T.',
-                
-                'body1' => 'La orden de servicio con el folio número: '.$folio.'.',
+                 'body1' => $msje_correo,
+                // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
+                // 'body3' => '',
+                'body2' => 'ha sido asignada a nuestros técnicos de soporte especializados, quientes estarán presentes en su Centro de Trabajo  el dia __________ para brindar la asistencia.',
+                // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
+                'body3' => 'Le recomendamos mantener el número de folio de su orden para que pueda dar seguimiento a su progreso.',
+                'body4' => '',
 
-                'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
-                // 'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
-
-                'body4' => 'Atentamente.',
-                'body5' => 'Centro Estatal de Tecnología Educativa',
-            //     'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
-            //  <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
+                'firma1' => 'Atentamente.',
+                'firma2' => 'Centro Estatal de Tecnología Educativa',
+                'band_ventanilla' => $band_ventanilla,
+                'ventanilla' => $msje_ventanilla
             ];
 
             Mail::to("$correo")->send(new MailSendO($details));
@@ -578,17 +608,40 @@ class OrdenesController extends Controller
     }
 
     public function updEquipo(Request $request){
-        // dd($request); 
+        dd($request);
+        $vid_usuario=Auth()->user()->id;
+        $vidSolicServ=$request->hdIdOrdenCierra;
 
         $tareasEquipo=$request->arrTareasEdit;
         $tareasEquipoElim=$request->arrTareasEditElim;
-        dd($request->arrTareasEditEli);
-        $evidencia='';
+        
         $etiqueta=$request->txtEtiquetaM;
 
-        $vid_usuario=Auth()->user()->id;
+        //Archivo Cierre Equipo
+        $file2 = $_FILES["archivoCierreEquipo"];
+        
+        if($request->hasfile('archivoCierreEquipo')){ 
+
+            $file=$request->file("archivoCierreEquipo");
+            // dd($file[0]);
+            $ext=substr($file[0]->getClientOriginalName(), -3);
+            
+            if($ext === "pdf" ){
+                $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
+                
+                $ruta = public_path("cierreEquipo/".$nombre);
+            
+                copy($file[0], $ruta);
+            }
+        }else{
+            dd('no hay archivo');
+        }
+        
+        $ruta_archivo=$ruta;
+        $nombre_archivo=$nombre;
 
         $updTareasEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.updTareasEquipo(".$request->hdIdSolServM.",".$request->hdIdEquipoM.",".$request->hdIdTipoEquipo.",'".$etiqueta."','".$evidencia."',".$vid_usuario.",'".$tareasEquipo."','".$tareasEquipoElim."')");
+        return response()->json($updTareasEquipo);
     }
 
     public function getArchivoCierre($idSolicServ){
@@ -602,51 +655,31 @@ class OrdenesController extends Controller
     }
 
     public function sendCorreo($folio, $correo, $solicitante, $nombrecct){
-        // $vCorreoVerifica = $request->vCorreoVerifica;
         //  dd($request->folio, $request->correo);
-        // $data=[];
-        // $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreoVerifica."')");
-        // // dd($data);
-        // if ($data == null) {
-        //     return array(
-        //         "exito" => false
-        //         // "data" => $data
-        //     );
-        // }
-        // else{
-            // $vCorreoVerifica='aida.rangel@set.edu.mx';
-            // $token = uniqid();
-            // $token = strval( $token );
+        $msje_ventanilla='';
+        $band_ventanilla='0';
+        $estatus='en espera';
 
-            //  $folio=$request->folio;
-            $estatus='en espera';
+        $details = [
+            'asunto' => 'Registro exitoso de orden de servicio - Sistema C.A.S. - C.E.T.E.',
+            'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+            'folio' => $folio.' ',
+            'estatus' => $estatus,
+            
+             'body1' => 'Se ha generado una orden de servicio con el folio número:  ',
+            'body2' => ' para atender su solicitud, la cual se encuentra',
+            'body3' => ' para ser atendida por un técnico de soporte.',
+            'body4' => 'Conserve este folio para continuar con el seguimiento de su orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado',
 
-            // Session::put('token', $token);
-            // Session::put('vCorreoVerifica', $vCorreoVerifica);
-            $details = [
-                'tittle' => 'Estimado usuario: '.$solicitante .' - '. $nombrecct,
-                
-                // 'body1' => 'Estimado usuario: juan - C.C.T.',
-                
-                'body1' => 'Se ha generado una orden de servicio con el folio número: '.$folio.' para atender su solicitud, la cual se encuentra '.$estatus.' para ser atendida por un técnico de soporte.',
+            'firma1' => 'Atentamente.',
+            'firma2' => 'Centro Estatal de Tecnología Educativa',
+            'band_ventanilla' => $band_ventanilla,
+            'ventanilla' => $msje_ventanilla
+        ];
     
-                'body2' => 'Conserva este folio para continuar con el seguimiento de tu orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado',
-                // 'body3' => 'Si el código no funciona, intenta copiando y pegando el mismo desde tu navegador.',
-    
-                'body4' => 'Atentamente.',
-                'body5' => 'Centro Estatal de Tecnología Educativa',
-            //     'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
-            //  <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
-    
-            ];
-    
-            // Mail::to("$pCorreo_solicitante")->send(new MailSend($details));
-    
-            Mail::to("$correo")->send(new MailSendO($details));
-            return array(
-                "exito" => true//,
-                // "TOKEN" => $token
-            );
-        // }
+        Mail::to("$correo")->send(new MailSendO($details));
+        return array(
+            "exito" => true
+        );
     }
 }

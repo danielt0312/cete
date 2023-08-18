@@ -229,14 +229,15 @@
                       </table> 
                     </td>
                     <td class="sinbordetable" style="width:32%;">
-                      <span>Servicios:</span><span>dddddd</span> <br>
-                      <span>Tareas:</span>
+                      <span>Servicios:</span>
                       @foreach($val->tareas as $val2)
-                      <span>{{$val2->servicio}}</span>
+                        <span>{{$val2->servicio}}</span>
+                      @endforeach <br>
+                      
+                      <span>Tareas:</span>
+                      @foreach($val->tareas as $val3)
+                        <span>{{$val3->tarea}}</span> 
                       @endforeach
-                      <?php
-                      // var_dump($val->tareas);
-                      ?>
                     </td>
                     <td class="sinbordetable" style="width:33%;">
                       <span>Descripción del Problema:</span> 

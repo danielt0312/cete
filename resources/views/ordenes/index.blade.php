@@ -187,11 +187,28 @@
 <div class="modal fade" id="asignarTecnicosModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="asignarTecnicosModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="asignarTecnicosModalLabel">Asignar Técnicos</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+      </div>-->
+      <div class="modal-body"> 
+        <div class="row">
+            <div class="col-12">
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                <span style="color:white;">Asignar técnicos</span>
+            </div>
+            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" >
+                <br>
+            </div>
+        </div>
       <form id="formTecnicos" name="formTecnicos" enctype="multipart/form-data">
         <div class="col-12">
             <div class="form-group">
@@ -201,6 +218,11 @@
                   
                 </select>
                 <input type="hidden" name="idSolModTec" id="idSolModTec" value="">
+                <input type="hidden" name="folioModTec" id="folioModTec" value="">
+                <input type="hidden" name="folioSolModTec" id="folioSolModTec" value="">
+                <input type="hidden" name="correoModTec" id="correoModTec" value="">
+                <input type="hidden" name="nombrecctModTec" id="nombrecctModTec" value="">
+                <input type="hidden" name="solicitanteModTec" id="solicitanteModTec" value="">
             </div>
             <!-- </div> -->
         </div>
@@ -215,7 +237,7 @@
             </div>
             <!-- </div> -->
         </div>
-        <div class="col-12">
+        <div class="col-12" style="text-align:right;">
           <div class="form-group">
               <button type="button" class="btn colorBtnPrincipal" disabled id="btnAsignarTecnico" onclick="fnAgregarTecnicos()">Agregar</button>
               <br>
@@ -225,7 +247,10 @@
             <div class="" id="divTecnicos">
                 <table id="tablaTecnicos" class="table">
                     <thead>
-                        <th>#</th><th>TÉCNICO</th><th>TIPO DE TÉCNICO</th><th></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NÚMERO</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TIPO DE TÉCNICO</th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ELIMINAR</th>
                     </thead>
                     <tbody id="tbTecnicos">
 
@@ -274,11 +299,21 @@
           </div> -->
         </div>
         </form>
+        <div class="row">
+            <div class="col-12" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" style="text-align:right;" >
+              <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal" onclick="fnCancelarModTecnicos()">Cancelar</button>
+              <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTec" onclick="fnAsignarTecnicos()">Asignar</button>
+            </div>
+        </div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="fnCancelarModTecnicos()">Cancelar</button>
         <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTec" onclick="fnAsignarTecnicos()">Asignar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -288,17 +323,40 @@
 <div class="modal fade" id="cancelOrdenModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cancelOrdenModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="cancelOrdenModalLabel">Datos de la Cancelación</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+      </div> -->
       <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8" style="text-align:center;  background-color:#ab0033;">
+                <span style="color:white;">Cancelación de orden de servicio</span>
+            </div>
+            <div class="col-4" style="text-align:center; border-bottom:3px solid #ab0033;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" >
+                <br>
+            </div>
+        </div>
+
         <div class="col-12">
           <div class="form-group">
-            <label for="estatus_id">Usuario Cancela</label>
+            <label for="estatus_id">Usuario que cancela:</label>
             <!-- <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="{{Auth()->user()->name}}" readonly> -->
             <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="{{ $getUsername[0]->nameuser}}" readonly>
             <input type="hidden" id="hdIdSolicServ" name="hdIdSolicServ" class="form-control">
+            <input type="hidden" id="hdFolio" name="hdFolio" class="form-control">
+            <input type="hidden" id="hdFolioSol" name="hdFolioSol" class="form-control">
+            <input type="hidden" id="hdCorreo" name="hdCorreo" class="form-control">
+            <input type="hidden" id="hdNombrecct" name="hdNombrecct" class="form-control">
+            <input type="hidden" id="hdSolicitante" name="hdSolicitante" class="form-control">
             <input type="hidden" id="hdIdUsuarioCancela" name="hdIdUsuarioCancela" class="form-control" value="{{Auth()->user()->id}}" >
             
             <!-- <input type="hidden" id="hdIdEstatusCancela" name="hdIdEstatusCancela" class="form-control"> -->
@@ -306,9 +364,9 @@
         </div>
         <div class="col-12">
           <div class="form-group">
-            <label for="selMotivoCancela">Motivo de cancelación</label>
+            <label for="selMotivoCancela">Motivo de cancelación:</label>
             <select class="form-select" aria-label="Default select example" id="selMotivoCancela" name="selMotivoCancela">
-              <option value="0" selected>Seleccionar</option>
+              <option value="0" selected>Seleccione motivo de cancelación de orden</option>
               @foreach($catMotivoCancela as $cancelaOrden)
                 <option value="{{ $cancelaOrden->id }}">{{ $cancelaOrden->motivo }}</option>
               @endforeach
@@ -317,16 +375,26 @@
         </div>
         <div class="col-12">
           <div class="form-group">
-            <label for="txtComentarios">Comentarios</label>
+            <label for="txtComentarios">Describa comentarios adicionales:</label>
             <input type="text" id="txtComentarios" name="txtComentarios" class="form-control">
           </div>
         </div>
         
+        <div class="row">
+            <div class="col-12" >
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" style="text-align:right;" >
+              <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn colorBtnPrincipal" onclick="fnGuardarCancelacion()" id="btnGuardarCancelacion">Aceptar</button>
+            </div>
+        </div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn colorBtnPrincipal" onclick="fnGuardarCancelacion()" id="btnGuardarCancelacion">Guardar</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -336,28 +404,52 @@
 <div class="modal fade" id="cerrarOrdenModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="cerrarOrdenModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
+      <!-- <div class="modal-header">
         <h5 class="modal-title" id="cerrarOrdenModalLabel">No. de Orden:</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+      </div> -->
       <div class="modal-body">
+        <div class="row">
+            <div class="col-12" style="text-align:right;">
+                <!-- <span id="spclavecct" style="color:#ab0033;>"></span> -->
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                <span style="color:white;">Datos del Centro de Trabajo</span>
+            </div>
+            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" >
+              <br>
+            </div>
+        </div>
+
         <form id="formCierre" name="formCierre" method="POST" enctype="multipart/form-data">
           <div class="col-12">
             <div class="form-group">
               <!--<label for="estatus_id">Usuario Cancela</label>
               <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
                 <input type="hidden" id="hdIdOrdenCierra" name="hdIdOrdenCierra" class="form-control">
-                <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
+                <input type="hidden" id="hdFolioCierra" name="hdFolioCierra" class="form-control">
+                <input type="hidden" id="hdFolioSolCierra" name="hdFolioSolCierra" class="form-control">
+                <input type="hidden" id="correoCierre" name="correoCierre" class="form-control">
+                <input type="hidden" id="nombrecctCierre" name="nombrecctCierre" class="form-control">
+                <input type="hidden" id="solicitanteCierre" name="solicitanteCierre" class="form-control"> 
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>DATOS DEL CENTRO DE TRABAJO</span></div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-4">
               <div class="form-group">
@@ -438,12 +530,31 @@
           </div>
 
           <div class="row">
+              <div class="col-12">
+                <br>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                  <span style="color:white;">Datos del Solicitante</span>
+              </div>
+              <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12" >
+                <br>
+              </div>
+          </div>
+
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>DATOS DEL REPORTE</span></div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- <div class="row">
             <div class="col-12">
@@ -512,12 +623,30 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>TECNICOS DE SOPORTE ASIGNADOS</span></div>
               </div>
             </div>
+          </div> -->
+
+          <div class="row">
+              <div class="col-12">
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                  <span style="color:white;">Técnicos de Soporte Asignados</span>
+              </div>
+              <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12" >
+                <br>
+              </div>
           </div>
 
           <div class="row">
@@ -536,63 +665,101 @@
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>EQUIPOS ATENDIDOS</span></div>
               </div>
             </div>
+          </div> -->
+
+          <div class="row">
+              <div class="col-12" style="text-align:right;">
+                <br>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                  <span style="color:white;">Equipos Atendidos</span>
+              </div>
+              <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12" >
+                <br>
+              </div>
           </div>
 
           <div class="row">
             <div class="col-12 scrollVertical" id="divEquiposRealizados">
-              <!-- <table style="border:1px solid; width:100%;">
-                <tr style="border:1px solid; background-color:#8392ab;">
-                  <td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo"></label></td>
-                  <td><label>Marca:</label><label class="SinNegrita" id="lblMarca"></label></td>
-                  <td><label>Modelo:</label><label class="SinNegrita" id="lblModelo"></label></td>
-                  <td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie"></label></td>
-                </tr>
-                <tr>
-                  <td colspan="4">
-                    <label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo"></label><br>
-                    <label>Servicio(s):</label><label class="SinNegrita" id="lblServicios"></label><br>
-                    <label>Tarea(s):</label><label class="SinNegrita" id="lblTareas"></label><br>
-                    <label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema"></label><br>
-                    <label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic"></label><br>
-                    <label>Solución/Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag"></label><br>
-                  </td>
-                </tr>
-              </table>
-              <br> -->
+              
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-12">
               <div class="form-group">
                 <div style="background-color:#ab0033; color:#FFFFFF; text-align:center;"><span>SUBIR ARCHIVO DE CIERRE DE ORDEN</span></div>
               </div>
             </div>
+          </div> -->
+
+          <div class="row">
+              <div class="col-12" style="text-align:right;">
+                <br>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                  <span style="color:white;">Cierre de Orden de Servicio</span>
+              </div>
+              <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-12" >
+                <br>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-12" >
+                <div class="form-group">
+                  <label for="archivoCierre">Agregar orden de servicio impresa en formato .PDF con la firma y sello de las autoridades solicitantes, así como firmal del Técnico encargado de la orden.</label>
+                </div>
+              </div>
           </div>
 
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label for="archivoCierre">Seleccionar Archivo:</label>
+                <!-- <label for="archivoCierre">Agregar orden de servicio impresa en formato .PDF con la firma y sello de las autoridades solicitantes, así como firmal del Técnico encargado de la orden.</label> -->
                 <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre"> -->
-                <input class="form-control" type="file" multiple id="archivoCierre" name="archivoCierre[]" accept="png|jpg|jpeg"/>
+                <input class="form-control" type="file" multiple id="archivoCierre" name="archivoCierre[]" accept="pdf"/>
               </div>
             </div>
           </div>
 
           
         </form>
+        <div class="row">
+              <div class="col-12" >
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-12" style="text-align:right;" >
+                <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn colorBtnPrincipal" onclick="fnCierreOrden()" id="btnCerrar">Cerrar Orden</button>
+              </div>
+          </div>
       </div>
-      <div class="modal-footer">
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" class="btn colorBtnPrincipal" onclick="fnCierreOrden()" id="btnCerrar">Cerrar Orden</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -710,6 +877,8 @@
     }
     console.log(data[0]);
     tabla=$('#tablaPrueba2').DataTable({
+        // processing:true,
+        // responsive:true,
           data:data[0],
           columns: [
             // { data: 'folio' },
@@ -769,9 +938,9 @@
             },
             { data: null, render:function(data){
                 if(data.tiempo_apertura>1){
-                  return '<span class="text-xs">'+data.tiempo_apertura+' DíAS</span>';
+                  return '<span class="text-xs">'+data.tiempo_apertura+' DÍAS</span>';
                 }else{
-                  return '<span class="text-xs">'+data.tiempo_apertura+' DíA</span>';
+                  return '<span class="text-xs">'+data.tiempo_apertura+' DÍA</span>';
                 }
               }
             },
@@ -786,6 +955,19 @@
             // },
             { data: null, render:function(data){
               var estatuss='';
+              var fol="'"+data.folio+"'";
+              var folSol='';
+
+              if(data.folio_solic==null ){
+                folSol=data.folio_solic;
+              }else{
+                folSol="'"+data.folio_solic+"'";
+              }
+
+              var correoSol="'"+data.correo_solicitante+"'";
+              var nombrecctSol="'"+data.nombrecct+"'";
+              var solicitanteSol="'"+data.nombre_solicitante+"'"; 
+
                 if(data.desc_estatus_orden=='Cancelada' ){
                   estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
@@ -797,7 +979,7 @@
                     return estatuss;
                 }else{
                   if(data.desc_estatus_orden=='En espera'){
-                   
+                    // console.log(fol);
                     estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                           '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
@@ -805,13 +987,13 @@
                           '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden...</a>'+
                           '</li>'+
                           '<li>'+
-                          '<a onclick="verTecnicos('+data.id_orden+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
-                          '</li>'+
+                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
+                          '</li>'+ 
                           '<li>'+
                           '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                           '</li>'+
                           '<li>'+
-                          '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
+                          '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
                           '</li>'+
                           '</ul>'+
                           '</div>';
@@ -825,13 +1007,13 @@
                          '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden...</a>'+
                          '</li>'+
                          '<li>'+
-                          '<a onclick="updEstatusOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
+                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
                           '</li>'+
                          '<li>'+
                          '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                          '</li>'+
                          '<li>'+
-                         '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
+                         '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
                          '</li>'+
                          '</ul>'+
                          '</div>';
@@ -857,25 +1039,24 @@
                           '</li>';
                           if(data.desc_estatus_orden!='Trabajando' ){
                             estatuss+='<li>'+
-                          '<a onclick="verTecnicos('+data.id_orden+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
+                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
                           '</li>';
                           }
                           
                           if(data.desc_estatus_orden!='Trabajando' ){
                             estatuss+='<li>'+
-                          '<a onclick="updEstatusOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
+                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
                           '</li>';
                           }
                           estatuss+='<li>'+
                           '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                           '</li>'+
                           '<li>'+
-                          '<a onclick="fnCerrarOrden('+data.id_orden+',4)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cerrarOrdenModal" > <i class="fas fa-check"></i> Cerrar Orden...</a>'+
-                          // '<a onclick="updEstatusOrden('+data.id_orden+',4)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal"> <i class="fas fa-check"></i> Cerrar Orden</a>'+
+                          '<a onclick="fnCerrarOrden('+data.id_orden+',4,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cerrarOrdenModal" > <i class="fas fa-check"></i> Cerrar Orden...</a>'+
                           '</li>';
                     if(data.desc_estatus_orden=='En espera' || data.desc_estatus_orden=='Trabajando'){
                       estatuss+='<li>'+
-                            '<a onclick="cancelarOrden('+data.id_orden+',5)" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
+                            '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
                             '</li>';
                     }
                     estatuss+='</ul>'+
@@ -906,17 +1087,6 @@
                 "previous": "<"
             },
         },
-        // dom: 'Bfrtip', //arriba   //dom: 'lfrtipB', ////abajo
-        // buttons: [{
-        // extend: 'excel', //Botón para Excel
-        // footer: true,
-        // title: 'Archivo',
-        // filename: 'Export_File',
-        // text: '<button class="btn btn-secondary">Excel <i class="fas fa-file-excel"></i></button>', //Aquí es donde generas el botón personalizado
-        // exportOptions: {
-        //         columns: [0,1,2,3,5,6]
-        //     }
-        //   }],
         columnDefs: [
                     {
                         // "targets": [ hideColumn ],
@@ -928,30 +1098,31 @@
       });
   }
 
-  function updEstatusOrden(vidSolicServ){
+  function updEstatusOrden(vidSolicServ, folio, folioSol, correo, nombrecct, solicitante){
+
     Swal.fire({
             title: '',
-            text: '¿Esta seguro que desea Iniciar la Orden de Servicio?',
-            icon: 'info',
+            text: '¿Está seguro que desea iniciar la orden de servicio?',
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#ab0033',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'SI',
-            cancelButtonText: 'NO',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
             }).then((result) => {
             if (result.isConfirmed) {
               $.ajax({
                   url: "{{ route('updEstatusI') }}",
-                  data:{idSolicServ : vidSolicServ},
+                  data:{idSolicServ : vidSolicServ, folio : folio, folioSol : folioSol, correo : correo, nombrecct : nombrecct, solicitante : solicitante},
                   type: 'POST',
                   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                   dataType: 'json', 
                   success: function(data) {
                     if(data[0]['insiniciasolicitud']==false){
-                      msjeAlertaPrincipal('Estatus actualizado correctamente','','success')
+                      msjeAlertaPrincipal('','Se ha iniciado con éxito la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado.','success')
                       load();
                     }else{
-                      msjeAlertaPrincipal('Estatus No se actualizó','','error')
+                      msjeAlertaPrincipal('No se pudo iniciar la orden','','error')
                     }
                   }
               });
@@ -1042,20 +1213,15 @@
   }
 
   function msjeAlertaPrincipal(titulo, contenido, icono){
-    // Swal.fire(
-    //   titulo,
-    //   contenido,
-    //   icono
-    // )
 
     Swal.fire({
         title: titulo,
         html: contenido,
         icon: icono,
         showCancelButton: false,
-        confirmButtonColor: '#b50915',
+        confirmButtonColor: '#ab0033',
         // cancelButtonColor: '#d33',
-        confirmButtonText: 'Ok',
+        confirmButtonText: 'Aceptar',
         // cancelButtonText: 'Aceptar',
         width: 600,
         }).then((result) => {
@@ -1086,71 +1252,97 @@
       })
   }
 
-  function cancelarOrden(idSolicServ,idEstatusOrden){
+  function cancelarOrden(idSolicServ,idEstatusOrden, folio, folioSol, correo, nombrecct, solicitante){
     $("#hdIdSolicServ").val("");
     $("#selMotivoCancela").val('');
     $("#txtComentarios").val('');
+    $("#hdFolio").val('');
+    $("#hdFolioSol").val('');
+    $("#hdCorreo").val('');
+    $("#hdNombrecct").val('');
+    $("#hdSolicitante").val('');
 
     $("#cancelOrdenModal").modal("show");
-    $("#hdIdSolicServ").val(idSolicServ);
-  }
 
+    $("#hdIdSolicServ").val(idSolicServ);
+    $("#hdFolio").val(folio);
+    $("#hdFolioSol").val(folioSol);
+    $("#hdCorreo").val(correo);
+    $("#hdNombrecct").val(nombrecct);
+    $("#hdSolicitante").val(solicitante);
+  }
+ 
   function fnCierreOrden(){
     var vidSolicServ = $("#hdIdOrdenCierra").val();
     var archivoEvidencia = $("#archivoCierre").val();
+    var folio = $("#hdFolioCierra").val();
 
     var formCierre = $('#formCierre')[0];
     var data2 = new FormData(formCierre);  
 
-    Swal.fire({
-        title: '',
-        text: '¿Está seguro que desea Cerrar la Orden de Servicio?',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'SI',
-        cancelButtonText: 'NO',
-        }).then((result) => {
-        if (result.isConfirmed) {
-          $.ajax({
-              url: "{{ route('cerrarOrden') }}",
-              data: data2,
-              type: 'POST',
-              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-              dataType: 'json', 
-              processData: false,  // tell jQuery not to process the data
-              contentType: false ,  // tell jQuery not to set contentType
-              success: function(data) {
-                // console.log(data);
-                if(data[0]['inscierrasolicitud']==0){
-                  msjeAlertaPrincipal('Orden cerrada correctamente','','success')
-                  $("cerrarOrdenModal").modal("hide");
-                  load();
-                }else{
-                  msjeAlertaPrincipal('No se cerró la Orden','','error')
-                }
-              }
-          });
-        }else{
-          console.log('no iniciar');
-            //window.location.href = '{{ route("listadoOrdenes") }}';
-        }
+    // console.log(archivoEvidencia);
 
-        // {
+    if(archivoEvidencia=='' || archivoEvidencia==null){
+      msjeAlertaSecundario('','Debe seleccionar el archivo de cierre de la orden','error');
+    }else{
+      var extension=archivoEvidencia.substr(-3);
+      // console.log(extension);
+      if(extension!='pdf' && extension!='PDF' ){
+        msjeAlertaSecundario('','Debe seleccionar un archivo tipo pdf','error');
+      }else{
 
-              //   // idSolicServ : vidSolicServ,
-              //   // ruta_evidencia : archivoEvidencia
-              // },
-    });
+        Swal.fire({
+            title: '',
+            text: '¿Está seguro que desea finalizar la orden de servicio?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ab0033',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            }).then((result) => {
+            if (result.isConfirmed) {
+              $.ajax({
+                  url: "{{ route('cerrarOrden') }}",
+                  data: data2,
+                  type: 'POST',
+                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                  dataType: 'json', 
+                  processData: false,  // tell jQuery not to process the data
+                  contentType: false ,  // tell jQuery not to set contentType
+                  success: function(data) {
+                    // console.log(data);
+                    if(data[0]['inscierrasolicitud']==0){
+                      msjeAlertaPrincipal('','Se ha finalizado con éxito la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado','success')
+                      $("#cerrarOrdenModal").modal("hide");
+                      load();
+                    }else{
+                      msjeAlertaPrincipal('No se cerró la orden','','error')
+                    }
+                  }
+              });
+            }else{
+              // console.log('no iniciar');
+                //window.location.href = '{{ route("listadoOrdenes") }}';
+            }
+        });
+
+      }
+      
+    }
   }
 
   function fnGuardarCancelacion(){
     var hdIdSolicServ = $("#hdIdSolicServ").val();
+    var hdFolio = $("#hdFolio").val();
     var vId_motivo_canc = $("#selMotivoCancela").val();
     var vComentarios= $("#txtComentarios").val();
     var vId_usuario= $("#hdIdUsuarioCancela").val();
     var vDesc_rol_usr= 'admin';
+    var hdFolioSol= $("#hdFolioSol").val();
+    var hdCorreo= $("#hdCorreo").val();
+    var hdNombrecct= $("#hdNombrecct").val();
+    var hdSolicitante= $("#hdSolicitante").val();
 
     if( $("#selMotivoCancela").val() == 0 ){
       msjeAlertaSecundario('', 'Debe seleccionar motivo cancelación', 'error');
@@ -1160,7 +1352,7 @@
             text: '¿Está seguro que desea cancelar la orden de servicio?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#b50915',
+            confirmButtonColor: '#ab0033',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Aceptar',
             cancelButtonText: 'Cancelar',
@@ -1168,13 +1360,13 @@
             if (result.isConfirmed) {
               $.ajax({
                   url: "{{ route('updEstatusO') }}",
-                  data:{idSolicServ : hdIdSolicServ, id_motivo_canc : vId_motivo_canc, comentarios:vComentarios, id_usuario:vId_usuario, desc_rol_usr:vDesc_rol_usr},
+                  data:{idSolicServ : hdIdSolicServ, id_motivo_canc : vId_motivo_canc, comentarios:vComentarios, id_usuario:vId_usuario, desc_rol_usr:vDesc_rol_usr, hdFolioSol : hdFolioSol, hdCorreo : hdCorreo, hdNombrecct : hdNombrecct, hdSolicitante : hdSolicitante,},
                   type: 'POST',
                   headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                   dataType: 'json', 
                   success: function(data) {
                     if(data[0]['inscancelasolicitud']==false){
-                      msjeAlertaPrincipal('Cancelada correctamente','','success')
+                      msjeAlertaPrincipal('','Se ha cancelado con éxito la orden de servicio con el folio: '+hdFolio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado','success')
                       load();
                       $("#cancelOrdenModal").modal("hide");
                     }else{
@@ -1185,7 +1377,7 @@
                   }
               });
             }else{
-              console.log('no cancelo');
+              // console.log('no cancelo');
                 //window.location.href = '{{ route("listadoOrdenes") }}';
             }
         });
@@ -1196,10 +1388,18 @@
   //       return new Date(dt.getTime() + minutes*60000);
   //   }
 
-  function verTecnicos(idOrden){
+  function verTecnicos(idOrden, folio, folioSol, correo,nombrecct,solicitante){
     $("#idSolModTec").val('');
+    $("#folioModTec").val('');
+    $("#folioSolModTec").val('');
+    $("#correoModTec").val('');
     $("#asignarTecnicosModal").modal("show");
     $("#idSolModTec").val(idOrden);
+    $("#folioModTec").val(folio);
+    $("#folioSolModTec").val(folioSol);
+    $("#correoModTec").val(correo);
+    $("#nombrecctModTec").val(nombrecct);
+    $("#solicitanteModTec").val(solicitante); 
 
     // $("#fecha_inicio_prog").val('');
     var now = new Date();
@@ -1229,6 +1429,9 @@
   }
 
   function fnAsignarTecnicos(){
+    var folio=$("#folioModTec").val();
+    var folioSol=$("#folioSolModTec").val();
+    var correo=$("#correoModTec").val();;
 
     var formTecnicos = $('#formTecnicos')[0];
     var data2 = new FormData(formTecnicos)
@@ -1249,11 +1452,11 @@
             success: function(data) {
               // console.log('regreso tecnicos de asignar');
               if(data[0]['fninstecnicos']==1){
-                msjeAlertaPrincipal('Técnicos asignados correctamente','','success')
+                msjeAlertaPrincipal('','Se han asignado correctamente los Técnicos de Soporte a la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado.','success')
                 load();
                 $("#asignarTecnicosModal").modal("hide");
               }else{
-                msjeAlertaPrincipal('Técnicos No se asignados','','error')
+                msjeAlertaPrincipal('Técnicos no se asignados','','error')
                 $("#asignarTecnicosModal").modal("hide");
               }
             }
@@ -1270,14 +1473,14 @@
   function drawRowTecnico(){
     var htmlSel='';
     for (var i = 0; i < tecnicosAuxiliaresArray.length; i++) {
-        htmlSel+='<tr_'+i+'><td>'+i+'</td><td>'+tecnicosAuxiliaresArray[i].nombre_tecnico+'</td><td>'; 
+        htmlSel+='<tr_'+i+'><td class="text-xs text-secondary mb-0">'+i+'</td><td class="text-xs text-secondary mb-0">'+tecnicosAuxiliaresArray[i].nombre_tecnico+'</td><td class="text-xs text-secondary mb-0">'; 
         // htmlSel+='<tr><td>'+i+'</td><td>'+tecnicosAuxiliaresArray[i]+'</td><td>';
         if(i==0){
           htmlSel+='<span>Técnico Encargado</span></td>'; 
         }else{
           htmlSel+='<span>Técnico Auxiliar</span></td>'; 
         }
-        htmlSel+='<td><button type="button" style="font-size:0.75rem;" onclick="removeTecnico('+i+');" class="btn colorBtnPrincipal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>'
+        htmlSel+='<td><button type="button" class="btnEliminar" onclick="removeTecnico('+i+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>'
         htmlSel+='</tr>';
     }
 
@@ -1314,15 +1517,26 @@
     window.location = urlEditar;
   }
 
-  function fnCerrarOrden(idOrden,idEstatusOrden){
+  function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante){
 
     $("#hdIdOrdenCierra").val("");
     $("#hdIdEstatusCierra").val("");
+    $("#hdFolioCierra").val(""); 
+    $("#archivoCierre").val(""); 
+    $("#hdFolioSolCierra").val(""); 
+    $("#correoCierre").val(""); 
+    $("#nombrecctCierre").val(""); 
+    $("#solicitanteCierre").val(""); 
 
     $("#cerrarOrdenModal").modal("show");
 
     $("#hdIdOrdenCierra").val(idOrden);
     $("#hdIdEstatusCierra").val(idEstatusOrden);
+    $("#hdFolioCierra").val(folio);
+    $("#hdFolioSolCierra").val(folioSol); 
+    $("#correoCierre").val(correo); 
+    $("#nombrecctCierre").val(nombrecct); 
+    $("#solicitanteCierre").val(solicitante); 
 
     let urlEditar = '{{ route("verDetalleOrden", ":id") }}';
     urlEditar = urlEditar.replace(':id', idOrden);
@@ -1410,12 +1624,22 @@
             var vtareas=vequip[i].tareas;
             var cadenaTareas='';
             var cadenaServicios='';
-
+            var auxSe='';
             for (var j = 0; j < vtareas.length; j++) {
                 // console.log(vtareas[j].tarea);
               cadenaTareas += vtareas[j].tarea + ', ';
 
-              cadenaServicios += vtareas[j].servicio+ ', '; // checar que si es el mismo servicio que solo lo ponga una vez
+              if(auxSe != vtareas[j].servicio){
+                auxSe=vtareas[j].servicio;
+                if(cadenaServicios==''){
+                  cadenaServicios = auxSe;
+                }else{
+                  cadenaServicios = cadenaServicios+', '+auxSe;
+                }
+                
+              }
+              
+              // cadenaServicios += vtareas[j].servicio+ ', '; // checar que si es el mismo servicio que solo lo ponga una vez
             } 
 
             // console.log(vequip[i].id_equipo_tarea);
