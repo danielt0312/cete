@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailSend extends Mailable
+class MailSend3 extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -26,6 +26,6 @@ class MailSend extends Mailable
      */
     public function build()
     {
-        return $this->subject('Registro exitoso de solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend');
+        return $this->subject('No es posible atender su solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend3');
     }
 }

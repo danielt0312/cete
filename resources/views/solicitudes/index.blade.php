@@ -1,7 +1,33 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
+<style>
+.tableFixHead          { overflow: auto; height: 100px; }
+.tableFixHead thead th { position: sticky; top: 0; z-index: 1; }
+.table-wrapper {
+  width: 100%;
+  height: 200px; /* Altura de ejemplo */
+  overflow: auto;
+}
 
+.table-wrapper table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-wrapper table thead {
+  position: -webkit-sticky; /* Safari... */
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.table-wrapper table thead th,
+.table-wrapper table tbody td {
+  /* border: 1px solid #000; */
+  background-color: #FFF;
+}
+</style>
 @section('content')
 
 <div class="container-fluid py-4 mt-3">
@@ -23,9 +49,10 @@
           </div>
         </div>
 
-        <div class="container">
+        <div class="table-responsive">
           <!-- <div class="row"> -->
-              <div class="table-responsive">
+              <div>
+              <!-- <div class="table-responsive"> -->
                   <table class="table " id="tabla_solicitudes" width="100%">
                     
 
@@ -33,13 +60,13 @@
                       <thead>
                           <tr>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Folio de Solicitud</th>
-                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estatus Solicitud</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">C.C.T</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Municipio</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha Solicitud</th>
-                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medio de Captacion</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Medio de Captación</th>
                               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tiempo de Apertura</th>
-                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estatus</th>
-                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" width="100px">Action</th>
+                              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" width="100px">Acciones</th>
                           </tr>
                       </thead>
                       <tbody></tbody>
@@ -72,13 +99,13 @@
                   </div> -->
                   <div class="container ">
                     <div class="row ">
-                        <div class="col-4 " id="span_solicitud">
+                        <div class="col-4 " style="color:#ab0033;" id="span_solicitud">
                             <!-- col-sm-7 -->
                         </div>
-                        <div class="col-4 " id="span_estatus">
+                        <div class="col-4 " style="color:#ab0033;" id="span_estatus">
                             <!-- col-sm-5 -->
                         </div>
-                        <div class="col-4 " id="span_orden">
+                        <div class="col-4 " style="color:#ab0033;" id="span_orden">
                             <!-- col-sm-5 -->
                         </div>
                     </div>
@@ -87,41 +114,84 @@
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
                 <div class="modal-body" id="modal_body">
-                  <div style="text-align:center;  background-color:#ab0033;">
-                    <label style="color:white;">DATOS DEL CENTRO DE TRABAJO</label>
+                  <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <label style="color:white;">DATOS DEL CENTRO DE TRABAJO</label>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
                   </div>
                   <br>
                   <div class="row">
                     <div id="modal_solicitud_inf">
                     </div>
                   </div>
-                  <div style="text-align:center;  background-color:#ab0033;">
-                    <label style="color:white;">DATOS DEL SOLICITANTE</label>
+                  <div class="row">
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <label style="color:white;">DATOS DEL SOLICITANTE</label>
+                    </div>
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
                   </div>
                   <br>
                   <div class="row">
                     <div id="modal_solicitud_inf2">
                     </div>
                   </div>
-                  <div style="text-align:center;  background-color:#ab0033;" id="titulo_equipos" hidden>
-                    <label style="color:white;">DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</label>
+                  <br>
+                  <div id="div_inf_rechazada" hidden>
+                      <div class="row">
+                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                            <label  style="color:white;">DATOS DE LA SOLICITUD RECHAZADA</label>
+                        </div>
+                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                      </div>
+                    <br>
+                    <div class="row">
+                      <div id="modal_solicitud_inf6">
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div id="div_inf_orden" hidden>
+                    <div class="row">
+                      <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <label id="label_orden" style="color:white;">DATOS DE LA ORDEN</label>
+                        <label id="label_equipos" hidden style="color:white;">DATOS DE LOS EQUIPOS</label>
+                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                      </div>
+                      <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                    </div>
+                    
+                    <br>
+                    <div class="row">
+                      <div id="modal_solicitud_inf5">
+                      </div>
+                      <div class="table-wrapper ">
+                        <table class="table" >
+                          <thead>
+                            <th>EQUIPO</th>
+                            <th>DESCRIPCION</th>
+                            <th>SERVICIO</th>
+                            <th>TAREA</th>
+                          </thead>
+                          <!-- <tbody id="tbody_orden_equipos" style="max-height: 150px;overflow: auto;display:inline-block;"> -->
+                          <tbody id="tbody_orden_equipos" >
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div  id="titulo_equipos" hidden>
+                    <div class="row">
+                    <div class="col-5" style="text-align:center;  background-color:#ab0033;"><label style="color:white;">DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</label></div>
+                    <div class="col-7" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                    </div>
+                    
                   </div>
                   <br>
                   <div class="row">
                     <div id="modal_solicitud_inf3">
-                      <div class="row">
-                        <div class="col-3" id="select_tipo_equipo"></div>
-                        <div class="col-3" id="select_tipo_servicio"></div>
-                        <div class="col-1">
-                          <!-- <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_servicio">+</button> -->
-                        </div>
-                        <div class="col-3" id="select_tipo_tarea"></div>
-                        <div class="col-1">
-                          <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
-
-                          <!-- <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_arreglo_registro">+</button> -->
-                        </div>
-                      </div>
+                      
                       <div class="row">
                         <div class="col-3"></div>
                         <!-- <div class="col-3"><table id="table_tipo_servicio"></table></div> -->
@@ -130,16 +200,47 @@
                         <div class="col-5"><table id="table_tarea"></table></div>
                         <div class="col-1"></div>
                       </div>
-                      <br>
+                      <!-- <br> -->
                       <div class="row">
-                        <div class="col-7">
-                          <label style="font-size:0.75em;">DESCRIPCION DEL PROBLEMA O SOPORTE A REALIZAR</label>
-                          <textarea class="form-control" id="txtDescripcionSoporte" ></textarea>
+                        <div class="col-12">
+                          <label style="font-size:0.75em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
+                          <textarea style="height: 127px;" class="form-control" id="txtDescripcionSoporte" ></textarea>
                           <!-- <textarea class="form-control" id="vDescripcion_Problema" ></textarea> -->
                         </div>
-                        <div class="col-3"></div>
+                        <!-- <div class="col-3"></div>
                         <div class="col-1"></div>
-                        <div class="col-1"></div>
+                        <div class="col-1"></div> -->
+                        <!-- <div class="col-7">
+                          <div class="form-group col-12 scrollVerticalTareas"  style="font-size:0.75rem;" id="divListaTarea">
+                              <span>LISTADO DE TAREAS</span>
+                              <ul id="ulTarea" style="font-size:0.75rem;">
+                                  
+                              </ul>
+                          </div>
+                        </div> -->
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-3" id="select_tipo_equipo"></div>
+                        <div class="col-3" id="select_tipo_servicio"></div>
+                        <div class="col-5" id="select_tipo_tarea"></div>
+                        <div class="col-1">
+                          <br>
+                          <button type="button"  class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+
+                          <!-- <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_arreglo_registro">+</button> -->
+                        </div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        <div class="col-12">
+                        <span id="span_listado_tareas" style="color:#ab0033;">LISTADO DE TAREAS</span>
+                          <div class="table-wrapper scrollVerticalTareas"   id="divListaTarea">
+                              <ul id="ulTarea" >
+                                  
+                              </ul>
+                          </div>
+                        </div>
                       </div>
                       <!-- <div style="text-align: right;">
                           <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;<label style="font-size:0.65em;">Replicar Datos en el Siguiente Equipo</label>
@@ -154,42 +255,62 @@
                                 <th>TIPO DE EQUIPO</th>
                                 <th>TIPO DE SERVICIO</th>
                                 <th>TIPO DE TAREA</th>
-                                <th>DESCRIPCION DEL SERVICIO</th>
+                                <th>DESCRIPCIÓN DEL SERVICIO</th>
                                 <th></th>
                             </tr>
                             
                         </table>
-                    </div> -->
-                    <div class="col-8">
-                                            <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                                <span>LISTADO DE TAREAS</span>
-                                                <ul id="ulTarea" style="font-size:0.75rem;">
-                                                    
-                                                </ul>
-                                            </div>
-                                        </div>
+                      </div> -->
+                      <!-- <div class="col-8">
+                          <div class="form-group col-12 overflow-auto"  style="font-size:0.75rem;" id="divListaTarea">
+                              <span>LISTADO DE TAREAS</span>
+                              <ul id="ulTarea" style="font-size:0.75rem;">
+                                  
+                              </ul>
+                          </div>
+                      </div> -->
                     </div>
-                    <div style="text-align: right;" id="div_añadir_equipo" hidden>
-                          <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;<label style="font-size:0.65em;">Replicar Datos en el Siguiente Equipo</label>
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >AÑADIR EQUIPO</button>
+                    <div id="div_añadir_equipo" hidden>
+                      <div class="row" >
+                        <div style="border-radius:10px; text-align: left; background-color: #e6e6e6b5; " class="col-6">
+                          <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;
+                          <label>Mantener descripción del problema y lista de tareas para el siguiente equipo.</label>
+                        </div>
+                        <div style="text-align: right;" class="col-6">
+                          <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar equipo</button>
+                        </div>
+                      </div>
+                          
+                          
+                          
 
                           <!-- <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_registro">Agregar</button> -->
                       </div>
-                    <div class="col-12" id="divTablaEquipos">
+                      <br><br>
+                      <div id="label_datos_ct">
+                        <div class="row">
+                          <div  class="col-4" style="text-align:center;  background-color:#ab0033;">
+                            <label style="color:white;">DATOS DEL CENTRO DE TRABAJO</label>
+                          </div>
+                          <div class="col-12"  style="border-bottom:3px solid #ab0033;">
+                          </div>
+                        </div>
+                      </div>
+                    <div class="col-12 table-wrapper" id="divTablaEquipos">
+                    
                       <table class="table">
                           <thead>
                               <th>EQUIPO</th>
                               <th>DESCRIPCION</th>
                               <th>SERVICIO</th>
                               <th>TAREA</th>
-                              <th>OPCIONES</th>
+                              <th>ACCIONES</th>
                           </thead>
                           <tbody id="tbEquipos">
 
                           </tbody>
                       </table>
-                  </div>
+                    </div>
                   </div>
                   <!-- <div style="text-align:center;  background-color:#ab0033;">
                     <label style="color:white;">TECNICOS DE SOPORTE ASIGNADOS</label>
@@ -209,7 +330,7 @@
                     <!-- <button type="button"  class="btn btn-primary " id="btn_aprobar_solicitud">Aprobar Solicitud</button>
                     <button type="button"  class="btn btn-danger" id="btn_rechazar_solicitud">Rechazar Solicitud</button> -->
                     <!-- <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="fnGuardar()"> GUARDAR</button> -->
-                    <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" > GUARDAR</button>
+                    <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" > Guardar</button>
 
                     <button type="button"  class="btn btn-secondary " id="btn_cerrar" data-bs-dismiss="modal">Cerrar</button>
                     
@@ -236,13 +357,14 @@
 <script src="//cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script src="//cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
 <script src="//cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
 
 <link rel="stylesheet" href="//cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+
 
 <!-- <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.css"> -->
 <!-- <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.js"> -->
@@ -290,16 +412,19 @@ var arrEquipos = [];
 let arrEscuelaTurno = [];
 var id_solicitud_global
 var cond_show_edit = 0;
-
+var bandera_dibujo = 0;
+var arrEliminarEquipos = [];
+var arrContadorTabla = [];
+var arrReplicar = [];
 
   $(function () {
     $('#exampleModal').modal({backdrop: 'static', keyboard: false})
-    var dias = 2;
+    // var dias = 2;
     var table = $('#tabla_solicitudes').DataTable({
       // dom: 'Bfrtip',
-        rowReorder: {
-            selector: 'td:nth-child(2)'
-        },
+        // rowReorder: {
+        //     selector: 'td:nth-child(2)'
+        // },
         // buttons: [
         //     {
         //         extend: 'excelHtml5',
@@ -316,10 +441,10 @@ var cond_show_edit = 0;
         //         }
         //     }
         // ],
-        order: [3, 'desc'],
+        order: [4, 'desc'],
         responsive: true,
         processing: true,
-        serverSide: true,
+        // serverSide: true,
         
         ajax: {
         type: 'GET',
@@ -327,17 +452,41 @@ var cond_show_edit = 0;
         url: "/solicitudes/solicitudes_registros/"
         },
         columns: [
-            {data: 'folio', name: 'folio', className: "text-center"},
-            // {data: 'nombre_solicitante', name: 'nombre_solicitante'},
             { data: null, render:function(data){
-                return '<h6 class="mb-0 text-sm">'+data.solicitante+'</h6><p class="text-xs text-secondary mb-0">'+data.clave_ct+' ,  '+data.municipio+'</p>';
+                if (data.folio != data.folio_orden) {
+                  return '<h6 class="mb-0 text-sm">'+data.folio+'</h6><p class="text-xs text-secondary mb-0">'+data.folio_orden+'</p>';
+                  
+                }
+                else{
+                  return '<h6 class="mb-0 text-sm">'+data.folio+'</h6>';
+
+                }
+              }
+            },
+            // {data: 'folio', name: 'folio', className: "text-center"},
+            // {data: 'nombre_solicitante', name: 'nombre_solicitante'},
+            {data: 'estatus_solicitud', name: 'estatus_solicitud', className: "text-center"},
+            { data: null, className: "text-left", render:function(data){
+                return '<h6 class="mb-0 text-sm">'+data.nombrect+'</h6><p class="text-xs text-secondary mb-0">'+data.clave_ct+' ,  '+data.municipio+'</p>';
               }
             },
             {data: 'municipio', name: 'municipio', className: "text-center"},
             {data: 'fecha_captacion', name: 'fecha_captacion', className: "text-center"},
             {data: 'captacion', name: 'captacion', className: "text-center"},
-            {data: 'fecha_apertura', name: 'fecha_apertura', className: "text-center"},
-            {data: 'estatus', name: 'estatus', className: "text-center"},
+            { data: null,className: "text-center", render:function(data){
+              if (data.fecha_apertura > 1) {
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍAS</p>';
+              }
+              else if(data.fecha_apertura == 0){
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍAS</p>';
+              }
+              else{
+                return '<p class="mb-0 text-sm">'+data.fecha_apertura+' DÍA</p>';
+              }
+              }
+            },
+            // {data: 'fecha_apertura', name: 'fecha_apertura', className: "text-center"},
+            
             // {data: 'desc_estatus_solicitud', name: 'desc_estatus_solicitud'},
             // { data: null, render:function(data){
             //     if(data.estatus>1){
@@ -357,7 +506,7 @@ var cond_show_edit = 0;
             //     }
             //   }
             // },
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+            {data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center"},
         ],
         "language": {
           "emptyTable": "No hay información",
@@ -377,7 +526,14 @@ var cond_show_edit = 0;
               "next": ">",
               "previous": "<"
           }
-        }
+        },
+        columnDefs: [
+                    {
+                        // "targets": [ hideColumn ],
+                        "visible": false,
+                        "searchable": true
+                    },
+        ]
     });
 
     $.ajax({
@@ -401,11 +557,15 @@ var cond_show_edit = 0;
   function fnMostrarInfo(id){
     $('#titulo_equipos').prop('hidden',true);
     $('#div_añadir_equipo').prop('hidden',true);
+    $('#div_inf_orden').prop('hidden',true);
+    $('#div_inf_rechazada').prop('hidden',true);
     // $('#btn_replicar').prop('hidden',true);
     // $('#btnAgregarEquipo').prop('hidden',true);
     console.log('entro al detalle');
     var bandera_orden = 0;
     $("#divTablaEquipos").prop('hidden',true);
+    $("#label_datos_ct").prop('hidden',true);
+    
     $("#btnGuardar").prop('hidden',true);
 
     html1='';
@@ -415,9 +575,13 @@ var cond_show_edit = 0;
     html5='';
     html6='';
     html7='';
+    html8='';
 
     $('#modal_solicitud_inf').html(html1);
     $('#modal_solicitud_inf2').html(html2);
+    $('#modal_solicitud_inf5').html(html3);
+    $('#modal_solicitud_inf6').html(html8);
+    $('#tbody_orden_equipos').html(html4);
     $('#span_solicitud').html(html5);
     $('#span_estatus').html(html6);
     $('#span_orden').html(html7);
@@ -435,17 +599,12 @@ var cond_show_edit = 0;
         data: {'id' : id, 'bandera_orden' : bandera_orden}
         }).always(function(r) {
           console.log(r);
+          if (r.data[0]['id_estatus'] == 6) {
+            $('#div_inf_rechazada').prop('hidden',false);
 
-          if (r.data[0]['id_estatus'] != 1 || r.data[0]['id_estatus'] != 6 || r.data[0]['id_estatus'] != 7) {
-            console.log('tiene equipos o tecnicos');
-          }
-
+            console.log('entro la rechazada');
             html5+='No. de Solicitud: '+r.data[0]['folio']+'';
-            html6+='Estatus : '+r.estatus+'';
-            if (r.folio_orden!= null) {
-              html7+='No. de Orden : '+r.folio_orden+'';
-            }
-
+            html6+='Estatus Solicitud: '+r.estatus_solicitud+'';
             html1+='<div class="row">';
               html1+='<div class="col-5">';
                 html1+='<label>Nombre del C.T. : &nbsp;</label>';
@@ -469,14 +628,14 @@ var cond_show_edit = 0;
                 html1+='<label>Fecha de la Solicitud : &nbsp;</label>';
                   html1+='<span>'+r.data[0]['fecha_captacion']+'</span>';
               html1+='</div>';
-              html1+='<div class="col-2">';
-                html1+='<label>Estatus : &nbsp;</label>';
-                  html1+='<span>'+r.data[0]['estatus']+'</span>';
+              html1+='<div class="col-3">';
+                html1+='<label>Estatus Solicitud: &nbsp;</label>';
+                  html1+='<span>'+r.estatus_solicitud+'</span>';
               html1+='</div>';
             html1+='</div>';
             html1+='<div class="row">';
               html1+='<div class="col-5">';
-                html1+='<label>Direccion : &nbsp;</label>';
+                html1+='<label>Dirección : &nbsp;</label>';
                   html1+='<span>'+r.data[0]['domicilio']+'</span>';
               html1+='</div>';
               html1+='<div class="col-3">';
@@ -490,48 +649,220 @@ var cond_show_edit = 0;
                   html1+='<span>'+r.data[0]['subnivel']+'</span>';
               html1+='</div>';
             html1+='</div>';
-            
-            // html2+='<div class="row">';
-            //   html2+='<div class="col-6">';
-            //     html2+='<label>Tipo de Orden : &nbsp;</label>';
-            //       html2+='<span>Ordinaria</span>';
-            //   html2+='</div>';
-            // html2+='</div>';
-            // html2+='<div class="row">';
-            //   html2+='<div class="col-12">';
-            //     html2+='<label>Dependencia que Atiende en el Servicio : &nbsp;</label>';
-            //       html2+='<span>Centro Estatal de Tecnologia Educativa</span>';
-            //   html2+='</div>';
-            // html2+='</div>';
+
             html2+='<div class="row">';
               html2+='<div class="col-5">';
                 html2+='<label>Nombre : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['solicitante']+'</span>';
               html2+='</div>';
               html2+='<div class="col-5">';
-                html2+='<label>Telefono : &nbsp;</label>';
+                html2+='<label>Teléfono : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-12">';
-                html2+='<label>Correo Electronico : &nbsp;</label>';
+                html2+='<label>Correo Electrónico : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['correo_solic']+'</span>';
               html2+='</div>';
             html2+='</div>';
             html2+='<div class="row">';
               html2+='<div class="col-6">';
-                html2+='<label>Descripcion del Reporte : &nbsp;</label>';
+                html2+='<label>Descripción del Reporte : &nbsp;</label>';
                   html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
               html2+='</div>';
             html2+='</div>';
 
-        $('#span_solicitud').append(html5);
-        $('#span_estatus').append(html6);
-        $('#span_orden').append(html7);
-        
-        $('#modal_solicitud_inf').append(html1);
-        $('#modal_solicitud_inf2').append(html2);
+            html8+='<div class="row">';
+              html8+='<div class="col-5">';
+                html8+='<label>Motivo : &nbsp;</label>';
+                  html8+='<span>'+r.motivo_rechazo[0]['motivo']+'</span>';
+              html8+='</div>';
+              html8+='<div class="col-5">';
+                html8+='<label>Comentarios : &nbsp;</label>';
+                  html8+='<span>'+r.motivo_rechazo[0]['comentario']+'</span>';
+              html8+='</div>';
+            html8+='</div>';
+            $('#tbody_orden_equipos').append(html4);
+            $('#span_solicitud').append(html5);
+            $('#span_estatus').append(html6);
+            $('#span_orden').append(html7);
+            
+            $('#modal_solicitud_inf').append(html1);
+            $('#modal_solicitud_inf2').append(html2);
+            $('#modal_solicitud_inf5').append(html3);
+            $('#modal_solicitud_inf6').append(html8);
+          }
+          else{
+            html5+='No. de Solicitud: '+r.data[0]['folio']+'';
+            if (r.folio_orden!= null) {
+              html6+='Estatus Orden: '+r.estatus+'';
+              html7+='No. de Orden : '+r.folio_orden+'';
+            }
+            else{
+                html6+='Estatus Solicitud: '+r.estatus_solicitud+'';
+            }
+            html1+='<div class="row">';
+              html1+='<div class="col-5">';
+                html1+='<label>Nombre del C.T. : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['nombrect']+'</span>';
+              html1+='</div>';
+              html1+='<div class="col-4">';
+                html1+='<label>Clave del C.T. : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['clave_ct']+'</span>';
+              html1+='</div>';
+              html1+='<div class="col-3">';
+                html1+='<label>Municipio : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['municipio']+'</span>';
+              html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+              html1+='<div class="col-5">';
+                html1+='<label>Nombre del Director : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['director']+'</span>';
+              html1+='</div>';
+              html1+='<div class="col-4">';
+                html1+='<label>Fecha de la Solicitud : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['fecha_captacion']+'</span>';
+              html1+='</div>';
+              html1+='<div class="col-3">';
+                html1+='<label>Estatus Solicitud: &nbsp;</label>';
+                  html1+='<span>'+r.estatus_solicitud+'</span>';
+              html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+              html1+='<div class="col-5">';
+                html1+='<label>Dirección : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['domicilio']+'</span>';
+              html1+='</div>';
+              html1+='<div class="col-3">';
+                html1+='<label>Turno : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['desc_turno']+'</span>';
+              html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+              html1+='<div class="col-5">';
+                html1+='<label>Nivel Educativo : &nbsp;</label>';
+                  html1+='<span>'+r.data[0]['subnivel']+'</span>';
+              html1+='</div>';
+            html1+='</div>';
+
+            html2+='<div class="row">';
+              html2+='<div class="col-5">';
+                html2+='<label>Nombre : &nbsp;</label>';
+                  html2+='<span>'+r.data[0]['solicitante']+'</span>';
+              html2+='</div>';
+              html2+='<div class="col-5">';
+                html2+='<label>Teléfono : &nbsp;</label>';
+                  html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
+              html2+='</div>';
+            html2+='</div>';
+            html2+='<div class="row">';
+              html2+='<div class="col-12">';
+                html2+='<label>Correo Electrónico : &nbsp;</label>';
+                  html2+='<span>'+r.data[0]['correo_solic']+'</span>';
+              html2+='</div>';
+            html2+='</div>';
+            html2+='<div class="row">';
+              html2+='<div class="col-6">';
+                html2+='<label>Descripción del Reporte : &nbsp;</label>';
+                  html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
+              html2+='</div>';
+            html2+='</div>';
+
+            
+            if (r.datos_orden != '') {
+              
+              $('#div_inf_orden').prop('hidden',false);
+              if (r.tecnicos_auxiliares !='' && r.tecnicos_auxiliares != undefined) {
+                $('#label_orden').prop('hidden', false);
+                $('#label_equipos').prop('hidden', true);
+              
+                html3+='<div class="row">';
+                  html3+='<div class="col-5">';
+                    html3+='<label>Tecnico : &nbsp;</label>';
+                    for (let i = 0; i < r.tecnicos_auxiliares.length; i++) {
+                      if (r.tecnicos_auxiliares[i]['es_responsable'] == 1) {
+                        html3+='<span><br>'+r.tecnicos_auxiliares[i]['nombre_completo']+'</span>';
+                      }
+                      else{
+                        html3+='';
+                      }
+                    }
+                  html3+='</div><br>';
+                  html3+='<div class="col-5">';
+                    html3+='<label>Auxiliares : &nbsp;</label><br>';
+                    for (let i = 0; i < r.tecnicos_auxiliares.length; i++) {
+                      if (r.tecnicos_auxiliares[i]['es_responsable'] == 0) {
+                        html3+='<span>'+r.tecnicos_auxiliares[i]['nombre_completo']+'<br></span>';
+                      }
+                      else{
+                        html3+='';
+                      }
+                    }
+                  html3+='</div>';
+                html3+='</div>';                
+              }
+              else{
+                $('#label_orden').prop('hidden', true);
+                $('#label_equipos').prop('hidden', false);
+              }
+
+              var id_equipo_detalle = '';
+              var desc_problema = '';
+              var tipo_equipo = '';
+              var servicio = '';
+              // var tarea = '';
+              console.log('entor');
+              console.log(r.datos_orden);
+              for (let i = 0; i < r.datos_orden.length; i++) {
+                html4+='<tr>';
+                console.log(id_equipo_detalle+'_'+r.datos_orden[i]['tipo_equipo']);
+                if (id_equipo_detalle+r.datos_orden[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
+                  html4+='<td></td>';
+                }
+                else{
+                  html4+='<td>- '+r.datos_orden[i]['tipo_equipo']+'</td>';
+                }
+                if (r.datos_orden[i]['desc_problema'] == desc_problema) {
+                  html4+='<td></td>';
+                }
+                else{
+                  html4+='<td>- '+r.datos_orden[i]['desc_problema']+'</td>';
+                }
+                if (r.datos_orden[i]['servicio'] == servicio) {
+                  html4+='<td></td>';
+                }
+                else{
+                  html4+='<td>- '+r.datos_orden[i]['servicio']+'</td>';
+                }
+                html4+='<td>- '+r.datos_orden[i]['tarea']+'</td>';
+                html4+='</tr>'; 
+                id_equipo_detalle = r.datos_orden[i]['id_equipo_detalle'];
+                desc_problema = r.datos_orden[i]['desc_problema'];
+                tipo_equipo = r.datos_orden[i]['tipo_equipo'];
+                servicio = r.datos_orden[i]['servicio'];
+              }              
+            }
+
+            
+            // html4+='<tr>'; 
+            // html4+='</tr>';
+                
+            $('#tbody_orden_equipos').append(html4);
+            $('#span_solicitud').append(html5);
+            $('#span_estatus').append(html6);
+            $('#span_orden').append(html7);
+            
+            $('#modal_solicitud_inf').append(html1);
+            $('#modal_solicitud_inf2').append(html2);
+            $('#modal_solicitud_inf5').append(html3);
+          }
+          // if (r.data[0]['id_estatus'] != 1 || r.data[0]['id_estatus'] != 6 || r.data[0]['id_estatus'] != 7) {
+          //   console.log('tiene equipos o tecnicos');
+          // }
+
+            
 
     });
 
@@ -599,16 +930,19 @@ var cond_show_edit = 0;
   } 
 
   function fnActualizarSolicitud(id){
+    $('#div_inf_orden').prop('hidden',true);
     $('#div_añadir_equipo').prop('hidden',false);
-    console.log(arrEquipos);
-    console.log(arrTareas);
+    // console.log(arrEquipos);
+    // console.log(arrTareas);
 
 
     bandera_orden = 1;
     $("#divListaTarea").prop('hidden', true);
+    $("#span_listado_tareas").prop('hidden', true);
+    
     $("#btnGuardar").prop('hidden',false);
     id_solicitud_global = id;
-    // console.log(folio_solicitud_global);
+    // console.log(id_solicitud_global);
     // console.log('entro a la actualizacion');
     editar_nombre_solicitante = '';
     editar_telefono_solicitante = '';
@@ -640,28 +974,62 @@ var cond_show_edit = 0;
     $.ajax({
         url: '/solicitudes/buscar_folio/',
         type: 'GET',
+        dataType: 'json',
         data: {'id' : id, 'bandera_orden' : bandera_orden}
         }).always(function(r) {
-          console.log(r);
+          // console.log(r);
           folio_solicitud_global = r.data[0]['folio'];
-          $('#numero_solicitud').append('No. de Solicitud: '+r.data[0]['folio']+'');
+          // $('#numero_solicitud').append('No. de Solicitud: '+r.data[0]['folio']+'');
+          // console.log(r.data3);
+          if (r.data3['original'].length!=0) {
+            if(r.data3['original'] !='' || r.data3['original'] !=null || r.data3['original'].length!=0){
+            bandera_dibujo = 1;
+            $.each(r.data3['original'], function(i, val){
+              // console.log('entro');
+                if (!jQuery.isEmptyObject(r.data3['original'][i])) {
+                  // console.log(r.data3['original'][i]['id_solic_serv']);
+                    // console.log(r.data3[0][i]["id_equipo_tarea"]);
+                    // console.log(r.data3['original'][i]['tareas'][i].id);
+                    // console.log(r.data3['original'][i]['tareas']['id']);
+                    // console.log(r.data3[0][i]['id_equipo_tarea']);
+                    // console.log(r.data3[0][i]);
+                  arrEquipos.push({
+                    con : i,
+                    id_equipo_serv_solic : r.data3['original'][i]['id'],
+                    id_tipo_equipo : r.data3['original'][i]['id_tipo_equipo'], 
+                    desc_tipo_equipo : r.data3['original'][i]['tipo_equipo'], 
+                    etiquetaServicio : '',
+                    marca : '',
+                    modelo : '', 
+                    numeroSerie : '',
+                    descripcionSoporte : r.data3['original'][i]['desc_problema'],
+                    ubicacionEquipo : '',
+                    cantidad : 1,
+                    estatus_equipo : 1, 
+                    nuevo : 0, 
+                    aTarea : r.data3['original'][i]['tareas'], ///arreglo tareas
+                    vJson : 1
+                  
+                  })
+                }
+              });        
+            }
+            drawRowEquipo2();
+          }
+          else{
+            $("#divTablaEquipos").hide()
+            $("#label_datos_ct").prop('hidden',true);
+          }
+          
+          // console.log(bandera_dibujo);
+          
+          // console.log(arrEquipos);
+          // else{
+              
+          // }
 
-              var g2=0;    
-              var i2=0;    
-              var id_tipo_equipo2 = '';
-              var banderapp = 0;
-              // for (var i = 0; i < r.data2.length; i++) {
-              //   arrTareas.push({
-              //     cont:g2, idTarea:r.data2[i]['id_tarea'],
-              //     desc_Tarea:r.data2[i]['tarea'],
-              //     idServicio:r.data2[i]['id_servicio'],
-              //     desc_Servicio:r.data2[i]['servicio']
-              //   });
-              //   g2=g2+1;
-              // }
-              // console.log(arrEquipos);
               html5+='No. de Solicitud: '+r.data[0]['folio']+'';
-              html6+='Estatus : '+r.data[0]['estatus']+'';
+              html6+='Estatus Solicitud: '+r.data[0]['estatus']+'';
           html1+='<div class="row">';
             html1+='<div class="col-5">';
               html1+='<label>Nombre del C.T. : &nbsp;</label>';
@@ -685,14 +1053,14 @@ var cond_show_edit = 0;
               html1+='<label>Fecha de la Solicitud : &nbsp;</label>';
                 html1+='<span>'+r.data[0]['fecha_captacion']+'</span>';
             html1+='</div>';
-            html1+='<div class="col-2">';
-              html1+='<label>Estatus : &nbsp;</label>';
+            html1+='<div class="col-3">';
+              html1+='<label>Estatus Solicitud : &nbsp;</label>';
                 html1+='<span>'+r.data[0]['estatus']+'</span>';
             html1+='</div>';
           html1+='</div>';
           html1+='<div class="row">';
             html1+='<div class="col-5">';
-              html1+='<label>Direccion : &nbsp;</label>';
+              html1+='<label>Dirección : &nbsp;</label>';
                 html1+='<span>'+r.data[0]['domicilio']+'</span>';
             html1+='</div>';
             html1+='<div class="col-3">';
@@ -725,12 +1093,12 @@ var cond_show_edit = 0;
                 html2+='<input class="form-control" type="text" id="editar_nombre_solicitante" value="'+r.data[0]['solicitante']+'">';
             html2+='</div>';
             html2+='<div class="col-4">';
-              html2+='<label>Telefono : &nbsp;</label>';
+              html2+='<label>Teléfono : &nbsp;</label>';
                 html2+='<input class="form-control" type="number" id="editar_telefono_solicitante" value="'+r.data[0]['telef_solicitante']+'">';
                 // html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
             html2+='</div>';
             html2+='<div class="col-4">';
-              html2+='<label>Correo Electronico : &nbsp;</label>';
+              html2+='<label>Correo Electrónico : &nbsp;</label>';
               html2+='<br>'
               // html2+='<input class="form-control" id="editar_correo_solicitante" value="'+r.data[0]['correo_solic']+'">';
                 html2+='<span>'+r.data[0]['correo_solic']+'</span>';
@@ -738,19 +1106,20 @@ var cond_show_edit = 0;
           html2+='</div>';
           // html2+='<div class="row">';
           //   html2+='<div class="col-12">';
-          //     html2+='<label>Correo Electronico : &nbsp;</label>';
+          //     html2+='<label>Correo Electrónico : &nbsp;</label>';
           //     html2+='<input class="form-control" id="editar_correo_solicitante" value="'+r.data[0]['correo_solic']+'">';
           //       // html2+='<span>'+r.data[0]['correo_solic']+'</span>';
           //   html2+='</div>';
           // html2+='</div>';
           html2+='<br>'
           html2+='<div class="row">';
-            html2+='<div class="col-6">';
-              html2+='<label>Descripcion del Reporte : &nbsp;</label>';
-                html2+='<textarea class="form-control" id="editar_descripcion_solicitante">'+r.data[0]['descrip_reporte']+'</textarea class="form-control">';
+            html2+='<div class="col-12">';
+              html2+='<label>Descripción del Reporte : &nbsp;</label>';
+                html2+='<textarea style="height: 127px;" class="form-control" id="editar_descripcion_solicitante">'+r.data[0]['descrip_reporte']+'</textarea class="form-control">';
             html2+='</div>';
           html2+='</div>';
           html2+='<br>'
+          
           htmlselect1+='<label for="selTipoEquipo">TIPO DE EQUIPO A REVISAR</label>';
           htmlselect1+='<select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >';
             htmlselect1+='<option selected value="0">SELECCIONAR EQUIPO</option>';
@@ -885,7 +1254,7 @@ var cond_show_edit = 0;
 
           $(document).ready(function () {
               //load();
-              $("#divTablaEquipos").hide()
+              // $("#divTablaEquipos").hide()
 
               // $("#btnSiguiente").hide()
               // $("#btnSiguiente").prop('disabled', true);
@@ -993,19 +1362,34 @@ var cond_show_edit = 0;
               });  
           
               var tablaEquipo='';
-              var i=0;
+              if (bandera_dibujo == 1) {
+                console.log(r.data3['original'].length);
+                i=r.data3['original'].length;
+                // i=i+1
+              }
+              else if (bandera_dibujo == 0) {
+                var i=0;
+              }
+              
               // var arrEquipos = [];
               $("#btnAgregarEquipo").click(function(){
-                $("#divListaTarea").prop('hidden', true);
+                // let arrTareas = [];
+                // console.log(arrTareas);
+                
+
+                $("#selTipoEquipo").prop('disabled',false);
+                // $("#divListaTarea").prop('hidden', true);
                 $("#divTablaEquipos").prop('hidden',false);
+                
                   var bandCheck='';
                   // $("#btn_replicar").click(function() {  
-                      if($("#btn_replicar").is(':checked')) {  
-                        // console.log('entro');
-                          bandCheck=1;
-                      } else {  
-                          bandCheck=0;
-                      }  
+                  if($("#btn_replicar").is(':checked')) {  
+                    // console.log('entro');
+                      bandCheck=1;
+                      $("#selTipoEquipo").prop('disabled',true);
+                  } else {  
+                      bandCheck=0;
+                  }  
                   // }); 
 
                   var etiquetaServicio = $("#txtEtiquetaServicio").val();
@@ -1015,11 +1399,11 @@ var cond_show_edit = 0;
                   var descripcionSoporte = $("#txtDescripcionSoporte").val();
                   var ubicacionEquipo = $("#txtUbicacionEquipo").val(); 
                   
-                  $("#divTablaEquipos").show();
+                  
                   var vId_TipoEquipo= $("#selTipoEquipo").val();
                   var vTipoEquipo= $('select[id="selTipoEquipo"] option:selected').text();
                   var vCantidad=$("#txtCantidadEquipos").val(); 
-
+                  vTarea2 = $("#selTarea").val();
                   // tablaEquipo+='<tr id="tr_'+i+'"><td>'+vTipoEquipo+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+i+')">Ver</button></td><td>En Proceso</td>';
                   // // tablaEquipo+='<tr id="tr_'+i+'"><td>PC</td><td>Mantemiento</td><td>Limpieza</td><td>En Proceso</td>';
                   // tablaEquipo+='<td><button type="button" class="btn colorBtnPrincipal"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -1027,43 +1411,67 @@ var cond_show_edit = 0;
                   // $("#tbEquipos").html(tablaEquipo);
                   // i=i+1;
                   // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
-                  console.log(arrTareas);
+                  // console.log(arrTareas);
 
-                  if(vId_TipoEquipo==0){
-                      msjeAlerta('', 'Favor de seleccionar Tipo de Equipo', 'error')
+                  if(vId_TipoEquipo==0 && vId_TipoEquipo=='0'){
+                    // console.log(vId_TipoEquipo);
+                      // msjeAlerta('', 'Favor de seleccionar Tipo de Equipo', 'error')
                   }else if(arrTareas==null || arrTareas==[]){
                       msjeAlerta('', 'Favor de seleccionar Servicios y Tares', 'error')
+                      $("#selTipoEquipo").prop('disabled',true);
                   }else if(descripcionSoporte==null || descripcionSoporte=='' ){
                       msjeAlerta('', 'Favor de ingresar Descripción de Soporte o Problema', 'error')
+                      $("#selTipoEquipo").prop('disabled',true);
                   }else{
+                    $("#label_datos_ct").prop('hidden',false);
+                    $("#divTablaEquipos").prop('hidden',false);
+                    $("#label_datos_ct").prop('hidden',false);
+                    $("#divTablaEquipos").show();
 
-                // if(vId_TipoEquipo!=0 && descripcionSoporte!='' && (arrTareas!=null || arrTareas!=[])){
-                      arrEquipos.push({
-                          con : i,
-                          id_tipo_equipo : vId_TipoEquipo, 
-                          desc_tipo_equipo : vTipoEquipo, 
-                          etiquetaServicio : etiquetaServicio,
-                          marca : marca,
-                          modelo : modelo, 
-                          numeroSerie : numeroSerie,
-                          descripcionSoporte : descripcionSoporte,
-                          ubicacionEquipo : ubicacionEquipo,
-                          cantidad : vCantidad,
-                          estatus_equipo : 1, 
-                          nuevo : 1, 
-                          aTarea : arrTareas, ///arreglo tareas
-                          // aServicio : arrServicios /// arreglo servicios
-                      });
-                  
+                    arrEquipos.push({
+                      con : i,
+                      id_tipo_equipo : vId_TipoEquipo, 
+                      desc_tipo_equipo : vTipoEquipo, 
+                      etiquetaServicio : etiquetaServicio,
+                      marca : marca,
+                      modelo : modelo, 
+                      numeroSerie : numeroSerie,
+                      descripcionSoporte : descripcionSoporte,
+                      ubicacionEquipo : ubicacionEquipo,
+                      cantidad : vCantidad,
+                      estatus_equipo : 1, 
+                      nuevo : 1, 
+                      prueba : arrTareas,
+                      aTarea : arrTareas, ///arreglo tareas
+                      vJson : 0
+                    });
+
+                      console.log(arrEquipos);
+                      
                       //  arrTareas=[];
                       drawRowEquipo();
                       i=i+1;
-                      
+                      // console.log($("#tbEquipos > tr").length);
+                      contadortabla = $("#tbEquipos > tr").length;
+                      // for (let i = 0; i < contadortabla; i++) {
+                        arrContadorTabla.push(contador = contadortabla)
+                        
+                      // }8341194720
+                      // console.log(arrContadorTabla);
                       if (bandCheck==1) {
+                        // arrReplicar=[];
+                        var last_element = arrEquipos[arrEquipos.length - 1];
+                        // console.log(last_element['aTarea']);
+                        // console.log(last_element);
+                        arrReplicar = last_element['aTarea'];
+                        $('#divListaTarea').prop('hidden',false);
+                        $("#span_listado_tareas").prop('hidden', false);
                         $('#selTarea').prop('disabled',false);
                         $('#selTipoServicio').prop('disabled',false);
                       }
                       else{
+                        $("#divListaTarea").prop('hidden',true);
+                        $("#span_listado_tareas").prop('hidden', true);
                         $('#selTarea').prop('disabled',true);
                         $('#selTipoServicio').prop('disabled',true);
                       }
@@ -1086,25 +1494,8 @@ var cond_show_edit = 0;
                       }
                   }
 
-                  // if(bandCheck==0){
-                  //     arrTareas=[];
-                  //     $("#tbTarea").remove();
-                  //     $("#selTipoEquipo").val("0").attr("selected",true);
-                  //     $("#selTipoServicio").val("0").attr("selected",true);
-                  //     $("#selTarea").val("0").attr("selected",true);
-                  //     $("#txtEtiquetaServicio").val("");
-                  //     $("#txtMarca").val("");
-                  //     $("#txtModelo").val(""); 
-                  //     $("#txtNumeroSerie").val(""); 
-                  //     $("#txtDescripcionSoporte").val(""); 
-                  //     $("#txtUbicacionEquipo").val(""); 
-                  // }
-                  
-                  // $("#txtCantidadEquipos").val(1);
-                  // $(".divEtiqueta").show();
-                  // $("#checkVer").hide();
 
-                  console.log(arrEquipos);
+                  // console.log(arrEquipos);
               });
 
               var equipoServicio='';
@@ -1151,11 +1542,16 @@ var cond_show_edit = 0;
                       var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                       if(index == -1){
-                          arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+                          arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText,
+                             idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+
+                          // arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
                           drawRowTarea();
                           // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
                           g=g+1;
+                          $("#selTipoEquipo").prop('disabled',true);
                           $("#divListaTarea").prop('hidden',false);
+                          $("#span_listado_tareas").prop('hidden', false);
                           $('#btnAgregarEquipo').prop('hidden',false);
                           $('#btnAgregarTarea').prop('disabled',true);
                           
@@ -1272,160 +1668,7 @@ var cond_show_edit = 0;
               var txt = $(this).val();
               $(this).val(txt.replace(/^(.)|\s(.)/g, function($1){ return $1.toUpperCase( ); }));
           });
-        // function removeEquipo( item ) {
-        //     if(arrEquipos.includes(item) ==false){ 
-        //         if ( item !== -1 ) {
-        //             arrEquipos.splice( item, 1 );
-        //             $("#tr_"+item).remove();
-        //             drawRowEquipo();
-        //         }   else{
-        //             arrEquipos = [];
-        //             g=0;
-        //             tablaEquipo='';
-        //             $("#tbEquipos").html('');
-        //             $("#tbEquipos").empty();
-        //         }
-        //     }else{
-        //         console.log('No existe en el arreglo');
-        //         g=0;
-        //         tablaEquipo='';
-        //         $("#tbEquipos").html('');
-        //         $("#tbEquipos").empty();
-        //     }
-        // }
 
-        // function drawRowEquipo(){
-        //     var tablaEquipo2 = '';
-            
-        //     $.each(arrEquipos, function(j, val){
-        //         if (!jQuery.isEmptyObject(arrEquipos[j])) { 
-            
-        //         // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
-        //             tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
-        //             tablaEquipo2+='<td>';
-        //             for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
-        //               tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
-        //             }
-        //             tablaEquipo2+='</td>';
-        //             tablaEquipo2+='<td>';
-        //             for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
-        //               tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Tarea']+'<br>';
-        //             }
-        //             tablaEquipo2+='</td>';
-        //             // tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td>';
-        //             // tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
-        //             // tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
-        //             // tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
-        //             // tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
-        //             // tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
-        //             // tablaEquipo2+='                  </button>';
-        //             // tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
-        //             // tablaEquipo2+='                      <li>';
-        //             // tablaEquipo2+='                          <a  ';
-        //             // // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
-        //             // tablaEquipo2+='                          onclick="removeEquipo('+j+');" >';
-        //             // tablaEquipo2+='                              <i class="fas fa-eye"></i> Eliminar';
-        //             // tablaEquipo2+='                          </a>';
-        //             // tablaEquipo2+='                      </li>';
-        //             // tablaEquipo2+='                          <li>';
-        //             // tablaEquipo2+='                              <a onclick="verServicioEquipo('+j+')"> ';
-        //             // // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
-        //             // tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
-        //             // tablaEquipo2+='                              </a>';
-        //             // tablaEquipo2+='                          </li>';
-        //             // tablaEquipo2+='                  </ul>';
-        //             // tablaEquipo2+='              </div></td>';
-        //             tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
-        //             tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "data-bs-toggle="dropdown"<i class="fa fa-ellipsis-v text-xs"></i></button>';
-        //                 tablaEquipo2+='<div class="dropdown btn-group dropstart">';
-        //                     tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
-        //                         tablaEquipo2+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-        //                             tablaEquipo2+='<li><a onclick="removeEquipo('+j+')" class="dropdown-item" ><i class="fas fa-trash">Elimninar</i></a></li>';
-        //                         tablaEquipo2+='</ul>';
-        //         tablaEquipo2+='</div></td>';
-        //             // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
-        //             tablaEquipo2+='</tr>';
-        //         }
-        //     });
-
-        //     $("#tbEquipos").empty();
-        //     $("#tbEquipos").html(tablaEquipo2);
-            
-
-
-        // }
-
-        
-        // function removeTarea( item ) {
-        //     if(arrTareas.includes(item) ==false){ 
-        //         if ( item !== -1 ) {
-        //             arrTareas.splice( item, 1 );
-        //             console.log(arrTareas);
-        //             $("#liT_"+item).remove();
-        //             drawRowTarea();
-        //         }   else{
-        //             arrTareas = [];
-        //             g=0;
-        //             listaTarea='';
-        //             $("#ulTarea").html('');
-        //             $("#ulTarea").empty();
-        //         }
-        //     }else{
-        //         console.log('No existe en el arreglo');
-        //         g=0;
-        //         listaTarea='';
-        //         $("#ulTarea").html('');
-        //         $("#ulTarea").empty();
-        //     }
-        // }
-        
-
-        // function drawRowTarea(){
-        //     var listaTarea2 = '';
-
-        //     listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
-        //     listaTarea2+='<thead>';
-        //     listaTarea2+='<th>Servicio</th>';
-        //     listaTarea2+='<th>Tarea</th>';
-        //     listaTarea2+='<th></th>';
-        //     listaTarea2+='</thead>';
-        //     listaTarea2+='<tbody>';
-
-        //     // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
-        //     var aux='';
-        //     $.each(arrTareas, function(j, val){
-        //         if (!jQuery.isEmptyObject(arrTareas[j])) {
-                
-        //             listaTarea2+='<tr>';
-        //             if(aux==arrTareas[j]['desc_Servicio']){ 
-        //                 listaTarea2+='<td>&nbsp;</td>';
-        //                 aux='';
-        //             }else{
-        //                 aux=arrTareas[j]['desc_Servicio'];
-        //                 listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
-        //             }
-                    
-        //             listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
-                    
-        //             // listaTarea2+='<td><button type="button" class="btn btn-secondary " id="prueba"  >fdsfdsf</button>';
-        //             listaTarea2+='<td><button type="button" id="btn_prueba" onclick="removeTarea('+j+')" class="btn colorBtnPrincipal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
-        //             listaTarea2+='<tr>';
-                    
-        //         }
-        //     });
-
-        //     listaTarea2+='</tbody>';
-        //     listaTarea2+='</table>';
-
-        //     $("#ulTarea").empty();
-        //     $("#ulTarea").html(listaTarea2);
-        //     $("#selTarea").val("0").attr("selected",true);
-        //     // console.log(arrTareas);
-
-
-            
-            
-        // }
 
         
         function removeServicio( item ) {
@@ -1505,178 +1748,6 @@ var cond_show_edit = 0;
             });
         }
 
-        function fnBuscarCCT(){
-        
-            var claveCCT= $("#txtCentroTrabajo").val();
-            let urlEditar = '{{ route("consCCT", ":claveCCT") }}';
-            urlEditar = urlEditar.replace(':claveCCT', claveCCT);
-            arrEscuelaTurno=[];
-            // $("#selTarea").val("0").attr("selected",true);
-            // let element = document.getElementById("selTarea");
-            // element.value = '0';
-
-            if(claveCCT==''){
-                msjeAlerta('', 'Debe introducir la Clave de Centro de Trabajo ', 'error')
-            }else{
-                $.ajax({
-                    url: urlEditar,
-                    type: 'GET',
-                    dataType: 'json', 
-                    success: function(data) {
-                        // console.log(data);   //data[0][i].id_tarea
-                        console.log(data[0].length);
-                        if(data[0] !='' || data[0] !=null || data[0].length!=0){
-                            if(data[0].length>1){
-                                var html='';
-                                var i=0;
-                                data[0].forEach(element => {
-                                    i=i+1;
-                                    arrEscuelaTurno.push(element);
-                                    html+='<option value="'+i+'" selected>'+element['turno']+'</option>';
-                                    //  console.log(element['turno']);
-                                    
-                                });
-                                // console.log(arrEscuelaTurno);
-                                $("#selTurno").html(html);
-                                $("#centroTrabajoModal").modal("show");
-                            }else if(data[0].length==1){
-                                $("#txtIdCCT").val(data[0][0].id);
-                                $("#txtNombreCCT").val(data[0][0].nombrect);
-                                $("#txtClaveCCT").val(data[0][0].clavecct);
-                                $("#txtMunicipioCCT").val(data[0][0].municipio)
-                                $("#txtDirectorCCT").val(data[0][0].director);
-                                $("#txtDireccionCCT").val(data[0][0].domicilio);
-                                $("#txtCoordinacion").val(data[0][0].coordinacion);
-                                $("#txtTelefono").val(data[0][0].telefono);
-                                $("#txtTurno").val(data[0][0].turno);
-                                $("#txtNivelEducativo").val(data[0][0].nivel);
-                                $("#txtLatitud").val(data[0][0].latitud);
-                                $("#txtLongitud").val(data[0][0].longitud);
-
-                                $("#btnSiguiente").prop('disabled', false);
-                                // $("#btnHistorialCCT").show();
-                                // $("#btnUbicacionCCT").show();
-                                
-                                var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Ver Historial</button>';
-                                var divU='<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>';
-                                $("#divHistorial").html(divH);
-                                $("#divUbicacion").html(divU);
-
-                                if(data[1] !='' || data[1] !=null ){
-                                    // $("#divHistorial").html(divH);
-                                    var htmlHist='<table class="table"><thead><th>FOLIO</th><th>Fecha</th><th>Detalles</th></thead><tbody>';
-                                    var j=0;
-                                    $.each(data[1], function(j, val){
-                                        if (!jQuery.isEmptyObject(data[1])) {
-                                            htmlHist+='<tr><td>'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td>';
-                                            htmlHist+='<td><div class="dropdown btn-group dropstart">';
-                                            htmlHist+='<button class="btn btn-link text-secondary mb-0 "';
-                                            htmlHist+='data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >';
-                                            htmlHist+='<i class="fa fa-ellipsis-v text-xs"></i></button>';
-                                            htmlHist+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                                            htmlHist+='<li>';
-                                            htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')"> ';
-                                            htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
-                                            htmlHist+='</a>';
-                                            htmlHist+='</li>';
-                                            htmlHist+='</ul>';
-                                            htmlHist+='</div></td></tr>';
-                                            //  console.log(element['turno']);
-                                            j=j+1;
-                                        }
-                                    });
-
-
-                                    htmlHist+='</tbody></table>';
-                                    // console.log(arrEscuelaTurno);
-                                    
-                                    $("#hist").html(htmlHist);
-                                }else{
-                                    $("#hist").html('<span>No hay historial de este centro de trabajo</span>');
-                                }
-                            }else{
-                                msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
-                                $("#btnSiguiente").prop('disabled', true);
-
-                                $("#divHistorial").html('');
-                                $("#divUbicacion").html('');
-                                $("#hist").html('');
-
-                                fnLimpiar();
-                                }
-                        }else{
-                            msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
-                            $("#btnSiguiente").prop('disabled', true);
-
-                            $("#divHistorial").html('');
-                            $("#divUbicacion").html('');
-                            $("#hist").html('');
-
-                            fnLimpiar();
-                            
-                        }
-                    }
-                });
-            }
-        }
-
-        function fnMapa(){
-            $("#ubicacionCCTModal").modal("show");
-            // initMap(42.1382114, -71.5212585);
-            // initMap();
-            var latitud=$("#txtLatitud").val();
-            var longitud=$("#txtLongitud").val();
-
-            latitud=parseFloat(latitud);
-            longitud=parseFloat(longitud);
-
-            var macc = {lat: latitud, lng: longitud};
-            // var macc = {lat: latitud, lng: longitud};
-
-            var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 15, center: macc});
-
-            var marker = new google.maps.Marker({position: macc, map: map});
-
-        }
-
-        function fnHistorial(){
-            var clave = $("#txtClaveCCT").val()
-            $("#historialCCTModal").modal("show");
-        }
-
-        function fnElegirTurno(){
-            var vTurno = $("#selTurno").val();
-            console.log(vTurno);
-            if(vTurno==1){
-                var textTurno='Vespertino';
-            }else{
-                var textTurno='Matutino';
-            }
-
-            
-            arrEscuelaTurno.forEach(element => {
-                if(element['turno']==textTurno){
-                    console.log(element['turno'] +'--'+textTurno);
-                    console.log('entro'+'--'+element['turno']);
-                    $("#txtNombreCCT").val(element['nombre']);
-                    $("#txtClaveCCT").val(element['clave']);
-                    $("#txtMunicipioCCT").val(element['municipio'])
-                    $("#txtDirectorCCT").val(element['director']);
-                    $("#txtDireccionCCT").val(element['direccion']);
-                    $("#txtCoordinacion").val(element['coordinacion']);
-                    $("#txtTelefono").val(element['telefono']);
-                    $("#txtTurno").val(element['turno']);
-                    $("#txtNivelEducativo").val(element['nivel_educativo']);
-
-                    $("#btnSiguiente").prop('disabled', false);
-
-                    $("#centroTrabajoModal").modal("hide");
-                    
-                }
-            });
-        }
-
         function fnGuardar(){
             var claveCCT= $("#txtClaveCCT").val();
             let urlEditar = '{{ route("guardarOrden") }}';
@@ -1713,86 +1784,10 @@ var cond_show_edit = 0;
                 }
             });
         }
-
-        function fnLimpiar(){
-            $("#formOrden")[0].reset();
-        }
-
-        function fnNumero(){
-            var tecla = event.key;
-            if (['.','e'].includes(tecla))
-            event.preventDefault()
-        }
-
-        function fnVerOrdenCentro(idOrden){
-            console.log(idOrden);
-        }
-
-        function verServicioEquipo(i){
-          var html='';
-
-          html+='<table>';
-          html+='<thead>';
-          html+='<th>Servicio</th>';
-          html+='<th>Tarea</th>';
-          html+='</thead>';
-          html+='<tbody>';
-              
-          var aTarea=arrEquipos[i]['aTarea'];
-          var aux='';
-          $.each(aTarea, function(j, val){
-              if (!jQuery.isEmptyObject(aTarea[j])) {
-
-                  html+='<tr>';
-                  if(aux==aTarea[j]['desc_Servicio']){ 
-                      html+='<td >&nbsp;</td>';
-                      // console.log(aux+'---1');
-                      aux='';
-                  }else{
-                      aux=aTarea[j]['desc_Servicio'];
-                      // console.log(aux+'---2');
-                      html+='<td >'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
-                      
-                  }
-                  
-                  html+='<td> - '+aTarea[j]['desc_Tarea']+'</td>';
-                  html+='<tr>';
-                  
-              }
-          });
-          
-          html+='</tbody>';
-          html+='</table>';
-
-          Swal.fire({
-              title: 'Tareas',
-              html: html,
-              icon: '',
-              confirmButtonColor: '#3085d6',
-              confirmButtonText: 'OK',
-              }).then((result) => {
-              if (result.isConfirmed) {
-              // window.location.href = urlEditar;
-              }
-          });
-        }
-      
-        function initMap() {
-            // function initMap(latitud,longitud) {
-
-            var macc = {lat: 42.1382114, lng: -71.5212585};
-            // var macc = {lat: latitud, lng: longitud};
-
-            var map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 15, center: macc});
-
-            var marker = new google.maps.Marker({position: macc, map: map});
-
-        }
-
       
         $("#btnGuardar").click(function(){
           // var bandera_guardar = 0;
+          var bandera_condicion = 0;
           var editar_nombre_solicitante = $('#editar_nombre_solicitante').val();
           var editar_telefono_solicitante = $('#editar_telefono_solicitante').val();
           var editar_descripcion_solicitante = $('#editar_descripcion_solicitante').val();
@@ -1802,11 +1797,14 @@ var cond_show_edit = 0;
           // console.log($('#editar_telefono_solicitante').val());
           // console.log(r.data[0]['descrip_reporte']);
           // console.log($('#editar_descripcion_solicitante').val());
+          console.log(arrEquipos);
+          // console.log(bandera_dibujo);
 
-          if (r.data[0]['solicitante'] != editar_nombre_solicitante ||
-              r.data[0]['telef_solicitante'] != editar_telefono_solicitante ||
-              r.data[0]['descrip_reporte'] != editar_descripcion_solicitante ||
-              arrEquipos != '') {
+          if (bandera_dibujo == 1) {
+            // if (r.data[0]['solicitante'] != editar_nombre_solicitante ||
+            //   r.data[0]['telef_solicitante'] != editar_telefono_solicitante ||
+            //   r.data[0]['descrip_reporte'] != editar_descripcion_solicitante ||
+            //   bandera_condicion == 1) {
                 if (editar_nombre_solicitante == '' || editar_telefono_solicitante == '' || editar_descripcion_solicitante =='') {
                   Swal.fire({
                     position: 'bottom-right',
@@ -1822,7 +1820,7 @@ var cond_show_edit = 0;
                     Swal.fire({
                       position: 'bottom-right',
                       icon: 'warning',
-                      title: 'El Telefono del Solicitante debe ser de 10 digitos..',
+                      title: 'El teléfono del solicitante debe ser de 10 digitos.',
                       showConfirmButton: false,
                       customClass: 'msj_aviso',
                       timer: 2000
@@ -1833,8 +1831,9 @@ var cond_show_edit = 0;
                     url: '/solicitudes/actualizar_solicitud/',
                     type: 'GET',
                     data: {
-                      'folio_solicitud_global' : folio_solicitud_global,
+                      // 'folio_solicitud_global' : folio_solicitud_global,
                       'arrEquipos' : arrEquipos,
+                      'arrEliminarEquipos' : arrEliminarEquipos,
                       'id_solicitud_global' : id_solicitud_global,
                       'editar_nombre_solicitante' : editar_nombre_solicitante,
                       'editar_telefono_solicitante' : editar_telefono_solicitante,
@@ -1843,9 +1842,95 @@ var cond_show_edit = 0;
                     }
                     }).always(function(r) {
                       Swal.fire({
-                            title: 'Editado',
-                            // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                            text: 'Se ha Editado Correctamente la Solicitud #'+folio_solicitud_global+'',
+                            // title: 'Editado',
+                            html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
+                                  '<p>A continuacion, realice la aprobacion o rechazo de la misma a traves del menú "Acciones" del sistema.</p>',
+                            customClass: 'msj_solicitud',
+                            icon: 'success',
+                            confirmButtonColor: '#b50915',
+                            allowOutsideClick: false
+                          }).then((result) => {
+                          if (result.isConfirmed) {
+                            // alert('Se redireccciona al index');
+                            window.location.href = "solicitudes_registros";
+                        }
+                      })
+                    });
+                  }
+                }
+              // }
+              // else{
+              //   Swal.fire({
+              //       position: 'bottom-right',
+              //       icon: 'warning',
+              //       title: 'Debe editar o agregar algun dato para poder Guardar la Solicitud..',
+              //       showConfirmButton: false,
+              //       customClass: 'msj_aviso',
+              //       timer: 2000
+              //   })
+              // }
+          }
+          else if(bandera_dibujo == 0){
+            if (r.data[0]['solicitante'] != editar_nombre_solicitante ||
+              r.data[0]['telef_solicitante'] != editar_telefono_solicitante ||
+              r.data[0]['descrip_reporte'] != editar_descripcion_solicitante || arrEquipos != '') {
+                if (editar_nombre_solicitante == '' || editar_telefono_solicitante == '' || editar_descripcion_solicitante =='') {
+                  Swal.fire({
+                    position: 'bottom-right',
+                    icon: 'warning',
+                    title: 'Revisar que ningun campo del Solicitante vaya vacio..',
+                    showConfirmButton: false,
+                    customClass: 'msj_aviso',
+                    timer: 2000
+                  })
+                }
+                else{
+                  if (editar_telefono_solicitante.length != 10) {
+                    Swal.fire({
+                      position: 'bottom-right',
+                      icon: 'warning',
+                      title: 'El teléfono del solicitante debe ser de 10 digitos.',
+                      showConfirmButton: false,
+                      customClass: 'msj_aviso',
+                      timer: 2000
+                    })
+                  }
+                  else{
+                    $.ajax({
+                    url: '/solicitudes/actualizar_solicitud/',
+                    type: 'GET',
+                    data: {
+                      // 'folio_solicitud_global' : folio_solicitud_global,
+                      'arrEquipos' : arrEquipos,
+                      'arrEliminarEquipos' : arrEliminarEquipos,
+                      'id_solicitud_global' : id_solicitud_global,
+                      'editar_nombre_solicitante' : editar_nombre_solicitante,
+                      'editar_telefono_solicitante' : editar_telefono_solicitante,
+                      'editar_descripcion_solicitante' : editar_descripcion_solicitante
+                      // 'bandera_guardar' : bandera_guardar
+                    }
+                    }).always(function(r) {
+                      Swal.fire({
+                        // position: 'bottom-right',
+                        // icon: 'warning',
+                        // width: 600,
+                        html: '<div class="fa-3x" style="height: 180px;">'+
+                                    // '<div class="fa-3x">'+
+                                '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                '<p></p>'+
+                                '<p>Espere por favor</p>'+
+                                    
+                                '</div>',
+                                // '</div>',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        customClass: 'msj_aviso'
+                        // timer: 2000
+                      })  
+                      Swal.fire({
+                            // title: 'Editado',
+                            html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
+                            '<p>A continuacion, realice la aprobacion o rechazo de la misma a traves del menú "Acciones" del sistema.</p>',
                             customClass: 'msj_solicitud',
                             icon: 'success',
                             confirmButtonColor: '#b50915',
@@ -1870,80 +1955,7 @@ var cond_show_edit = 0;
                     timer: 2000
                 })
               }
-
-          // if(arrEquipos == ''){
-          //   Swal.fire({
-          //       position: 'bottom-right',
-          //       icon: 'warning',
-          //       title: 'Favor de Agregar un Equipo',
-          //       showConfirmButton: false,
-          //       customClass: 'msj_aviso',
-          //       timer: 2000
-          //   })
-          // }
-          // else{
-          //   console.log('va lleno');
-          //   $('#btnGuardar').prop('disabled',true);
-
-          //   console.log('esta lleno');
-          //   $.ajax({
-          //     url: '/solicitudes/actualizar_solicitud/',
-          //     type: 'GET',
-          //     data: {
-          //       'folio_solicitud_global' : folio_solicitud_global,
-          //       'arrEquipos' : arrEquipos,
-          //       'id_solicitud_global' : id_solicitud_global
-                
-          //     }
-          //     }).always(function(r) {
-          //       if (r.exito == true) {
-          //           Swal.fire({
-          //             title: 'Editado',
-          //             // text: 'Se ha Registrado con Exito la Solicitud #5884',
-          //             text: 'Se ha Guardado Correctamente la Solicitud #'+folio_solicitud_global+'',
-          //             customClass: 'msj_solicitud',
-          //             icon: 'success',
-          //             confirmButtonColor: '#b50915',
-          //             allowOutsideClick: false
-          //           }).then((result) => {
-          //           if (result.isConfirmed) {
-          //             // alert('Se redireccciona al index');
-          //             window.location.href = "solicitudes_registros";
-          //         }
-          //     })
-          //       }
-          //       else{
-          //         Swal.fire({
-          //             position: 'bottom-right',
-          //             icon: 'warning',
-          //             title: 'Hubo un detalle al momento de guardar',
-          //             showConfirmButton: false,
-          //             customClass: 'msj_aviso',
-          //             timer: 2000
-          //         })
-          //       }
-          //         // console.log(r.data);
-          //     //     Swal.fire({
-          //     //         title: 'Registrado',
-          //     //         // text: 'Se ha Registrado con Exito la Solicitud #5884',
-          //     //         text: 'Se ha Registrado con Exito la Solicitud #'+r.data+'',
-          //     //         customClass: 'msj_solicitud',
-          //     //         icon: 'success',
-          //     //         confirmButtonColor: '#b50915',
-          //     //         allowOutsideClick: false
-          //     //     }).then((result) => {
-          //     //     if (result.isConfirmed) {
-          //     //         // alert('Se redireccciona al index');
-          //     //         // window.location.href = "indexVentanilla";
-          //     //     }
-          //     // })
-          //   });
-          // }
-          // console.log(arrEquipos);
-          // console.log(folio_solicitud_global);
-
-
-
+          }
 
 
         });
@@ -1958,11 +1970,11 @@ var cond_show_edit = 0;
   function drawRowTarea(){
     var listaTarea2 = '';
 
-    listaTarea2+='<table style="font-size:0.75rem;" id="tbTarea">';
+    listaTarea2+='<table class="table" id="tbTarea">';
     listaTarea2+='<thead>';
     listaTarea2+='<th>Servicio</th>';
     listaTarea2+='<th>Tarea</th>';
-    listaTarea2+='<th></th>';
+    listaTarea2+='<th>Eliminar</th>';
     listaTarea2+='</thead>';
     listaTarea2+='<tbody>';
 
@@ -1983,7 +1995,7 @@ var cond_show_edit = 0;
             listaTarea2+='<td> - '+arrTareas[j]['desc_Tarea']+'</td>';
             
             // listaTarea2+='<td><button type="button" class="btn btn-secondary " id="prueba"  >fdsfdsf</button>';
-            listaTarea2+='<td><button type="button" id="btn_prueba" onclick="removeTarea('+j+')" class="btn colorBtnPrincipal" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+            listaTarea2+='<td><button type="button" id="btn_prueba" onclick="removeTarea('+j+')" class="btn btn-secondary" ><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
             listaTarea2+='<tr>';
             
         }
@@ -1995,8 +2007,8 @@ var cond_show_edit = 0;
     $("#ulTarea").empty();
     $("#ulTarea").html(listaTarea2);
     $("#selTarea").val("0").attr("selected",true);
-    // $("#divListaTarea").prop('hidden',false);
     $("#divListaTarea").prop('hidden', false);
+    $("#span_listado_tareas").prop('hidden', false);
     // console.log(arrTareas);
 
 
@@ -2013,7 +2025,13 @@ var cond_show_edit = 0;
               drawRowTarea();
               // divListaTarea
               if (arrTareas == '') {
+                $("#selTipoEquipo").prop('disabled',false);
+                $("#btnAgregarEquipo").prop('hidden',true);
                 $("#divListaTarea").prop('hidden',true);
+                $("#span_listado_tareas").prop('hidden', true);
+                $("#selTipoEquipo").val("0").attr("selected",true);
+                $("#selTipoServicio").val("0").attr("selected",true);
+                $("#selTarea").val("0").attr("selected",true);
               }
               
           }   else{
@@ -2042,7 +2060,9 @@ var cond_show_edit = 0;
             $("#tr_"+item).remove();
             drawRowEquipo();
             if (arrEquipos == '') {
+              $("#selTipoEquipo").prop('disabled',false);
                 $("#divTablaEquipos").prop('hidden',true);
+                $("#label_datos_ct").prop('hidden',true);
               }
             // console.log('entro1');
         }   else{
@@ -2061,28 +2081,214 @@ var cond_show_edit = 0;
         $("#tbEquipos").empty();
     }
   }
+  function removeEquipo2( item ) {
+    var posicion = item;
+    // console.log(arrEquipos[posicion]);
+    // for (i = 0; i < arrEquipos[posicion].length; i++) {
+    //   console.log(arrEquipos);
+      arrEliminarEquipos.push({id_elimina : arrEquipos[posicion]['id_equipo_serv_solic']});
+    // }
+    // console.log(arrEliminarEquipos);
+    if(arrEquipos.includes(item) ==false){ 
+        if ( item !== -1 ) {
+            arrEquipos.splice( item, 1 );
+            $("#tr_"+item).remove();
+            drawRowEquipo2();
+            if (arrEquipos == '') {
+              $("#selTipoEquipo").prop('disabled',false);
+                $("#divTablaEquipos").prop('hidden',true);
+                $("#label_datos_ct").prop('hidden',true);
+              }
+            // console.log('entro1');
+        }   else{
+          // console.log('entro2');
+            arrEquipos = [];
+            g=0;
+            tablaEquipo='';
+            $("#tbEquipos").html('');
+            $("#tbEquipos").empty();
+        }
+    }
+    else{
+        console.log('No existe en el arreglo');
+        g=0;
+        tablaEquipo='';
+        $("#tbEquipos").html('');
+        $("#tbEquipos").empty();
+    }
+  }
 
   function drawRowEquipo(){
+    // console.log(arrEquipos);
     var tablaEquipo2 = '';
-    
+    // console.log('entro');
     $.each(arrEquipos, function(j, val){
         if (!jQuery.isEmptyObject(arrEquipos[j])) { 
-    
-        // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
+          // console.log('entro2');
+          // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
             tablaEquipo2+='<tr id="tr_'+j+'">';
               tablaEquipo2+='<td>- '+arrEquipos[j]['desc_tipo_equipo']+'</td>';
               tablaEquipo2+='<td>- '+arrEquipos[j]['descripcionSoporte']+'</td>';
-            
-              tablaEquipo2+='<td>';
-              for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
-                tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+              var desc_problema_vJson = '';
+              var desc_problema_vJson2 = '';
+              if (arrEquipos[j]['vJson'] == 1) {
+                jsonTareas = JSON.parse(arrEquipos[j]['aTarea']);
+                tablaEquipo2+='<td>';
+                // if (bandera_dibujo == 0) {
+                $.each(jsonTareas, function(j2, val){
+                  if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
+                    // console.log(jsonTareas[j2]['id']);
+                    if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
+                      tablaEquipo2+='';
+                    }
+                    else{
+                      tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
+                    }
+                      // tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
+                    desc_problema_vJson = jsonTareas[j2]['servicio'];
+                  }
+                });
+                tablaEquipo2+='</td>';
+                tablaEquipo2+='<td>';
+                $.each(jsonTareas, function(j2, val){
+                  if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
+                    // console.log(jsonTareas[j2]['id']);
+                      tablaEquipo2+='- '+jsonTareas[j2]['tarea']+'<br>';
+                  }
+                });
+                tablaEquipo2+='</td>';
               }
+              else if(arrEquipos[j]['vJson'] == 0){
+                // console.log('entrooooo');
+                tablaEquipo2+='<td>';
+                for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
+                  if (desc_problema_vJson2 == arrEquipos[j]['aTarea'][i]['desc_Servicio']) {
+                    tablaEquipo2+='';
+                  }
+                  else{
+                    tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+                  }
+                  // tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+                  desc_problema_vJson2 = arrEquipos[j]['aTarea'][i]['desc_Servicio'];
+                }
               tablaEquipo2+='</td>';
               tablaEquipo2+='<td>';
               for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
                 tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Tarea']+'<br>';
               }
               tablaEquipo2+='</td>';
+              }
+
+
+              
+            // tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td>';
+            // tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
+            // tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
+            // tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
+            // tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
+            // tablaEquipo2+='                      <i class="fa fa-ellipsis-v text-xs"></i>';
+            // tablaEquipo2+='                  </button>';
+            // tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
+            // tablaEquipo2+='                      <li>';
+            // tablaEquipo2+='                          <a  ';
+            // // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
+            // tablaEquipo2+='                          onclick="removeEquipo('+j+');" >';
+            // tablaEquipo2+='                              <i class="fas fa-eye"></i> Eliminar';
+            // tablaEquipo2+='                          </a>';
+            // tablaEquipo2+='                      </li>';
+            // tablaEquipo2+='                          <li>';
+            // tablaEquipo2+='                              <a onclick="verServicioEquipo('+j+')"> ';
+            // // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
+            // tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
+            // tablaEquipo2+='                              </a>';
+            // tablaEquipo2+='                          </li>';
+            // tablaEquipo2+='                  </ul>';
+            // tablaEquipo2+='              </div></td>';
+            tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
+            // tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "data-bs-toggle="dropdown"<i class="fa fa-ellipsis-v text-xs"></i></button>';
+                // tablaEquipo2+='<div class="dropdown btn-group dropstart">';
+                    tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
+                        tablaEquipo2+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
+                            tablaEquipo2+='<li><a onclick="removeEquipo('+j+')" class="dropdown-item" ><i class="fas fa-trash">&nbsp;&nbsp;&nbsp;Eliminar</i></a></li>';
+                        tablaEquipo2+='</ul>';
+        tablaEquipo2+='</div></td>';
+            // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
+            tablaEquipo2+='</tr>';
+        }
+    });
+
+    $("#tbEquipos").empty();
+    $("#tbEquipos").html(tablaEquipo2);
+    // console.log(tablaEquipo2);
+          
+
+
+  }
+  function drawRowEquipo2(){
+    // console.log(arrEquipos);
+    var tablaEquipo2 = '';
+    // console.log('entro a drawRowEquipo2');
+    var jsonTareas = '';
+    $.each(arrEquipos, function(j, val){
+        if (!jQuery.isEmptyObject(arrEquipos[j])) { 
+          // console.log('entro2');
+          jsonTareas = JSON.parse(arrEquipos[j]['aTarea']);
+          
+          
+          // console.log(arrEquipos[j]['aTarea']['id']);
+          
+          // console.log(jsonTareas);
+          // console.log(jsonTareas[j]);
+          // console.log(jsonTareas[0]);
+        // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
+            
+        
+
+            tablaEquipo2+='<tr id="tr_'+j+'">';
+
+              tablaEquipo2+='<td>- '+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+              tablaEquipo2+='<td>- '+arrEquipos[j]['descripcionSoporte']+'</td>';
+              var desc_problema_vJson = '';
+              var desc_problema_vJson2 = '';
+              if (arrEquipos[j]['vJson'] == 1) {
+                jsonTareas = JSON.parse(arrEquipos[j]['aTarea']);
+              tablaEquipo2+='<td>';
+              // if (bandera_dibujo == 0) {
+                $.each(jsonTareas, function(j2, val){
+                  if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
+                    // console.log(jsonTareas[j2]['id']);
+                    if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
+                      tablaEquipo2+='';
+                    }
+                    else{
+                      tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
+                    }
+                      // tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
+                      desc_problema_vJson = jsonTareas[j2]['servicio'];
+                  }
+                });
+                tablaEquipo2+='</td>';
+                tablaEquipo2+='<td>';
+                $.each(jsonTareas, function(j2, val){
+                  if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
+                    // console.log(jsonTareas[j2]['id']);
+                      tablaEquipo2+='- '+jsonTareas[j2]['tarea']+'<br>';
+                  }
+                });
+                tablaEquipo2+='</td>';
+              }
+              // }
+              
+              // tablaEquipo2+='<td>';
+              // for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
+              //   tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+              // }
+              // tablaEquipo2+='</td>';
+              // tablaEquipo2+='<td>';
+              // for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
+              //   tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Tarea']+'<br>';
+              // }
+              // tablaEquipo2+='</td>';
             // tablaEquipo2+='<td>'+arrEquipos[j]['cantidad']+'</td>';
             // tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
             // tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
@@ -2108,10 +2314,10 @@ var cond_show_edit = 0;
             // tablaEquipo2+='              </div></td>';
             tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
             tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "data-bs-toggle="dropdown"<i class="fa fa-ellipsis-v text-xs"></i></button>';
-                tablaEquipo2+='<div class="dropdown btn-group dropstart">';
+                // tablaEquipo2+='<div class="dropdown btn-group dropstart">';
                     tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
                         tablaEquipo2+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                            tablaEquipo2+='<li><a onclick="removeEquipo('+j+')" class="dropdown-item" ><i class="fas fa-trash">Elimninar</i></a></li>';
+                            tablaEquipo2+='<li><a onclick="removeEquipo2('+j+')" class="dropdown-item" ><i class="fas fa-trash">&nbsp;&nbsp;&nbsp;Eliminar</i></a></li>';
                         tablaEquipo2+='</ul>';
         tablaEquipo2+='</div></td>';
             // tablaEquipo2+='<td><button type="button" class="btn colorBtnPrincipal" onclick="removeEquipo('+j+');"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg></button></td>';
@@ -2121,6 +2327,9 @@ var cond_show_edit = 0;
 
     $("#tbEquipos").empty();
     $("#tbEquipos").html(tablaEquipo2);
+    // $("#divTablaEquipos").show();
+    // $("#divTablaEquipos").css("display", "block");
+    // console.log(tablaEquipo2);
           
 
 
@@ -2130,18 +2339,34 @@ var cond_show_edit = 0;
     
     // console.log(id_solicitud);
     Swal.fire({
-      title: 'Aprobar Solicitud',
-      // icon: 'warning',
-      text: 'Esta Seguro de Aprobar la Solicitud..',
+      // title: 'Aprobar Solicitud',
+      icon: 'warning',
+      text: '¿Está seguro de aprobar la solicitud?',
       showCancelButton: true,
       customClass: 'msj_solicitud',
       confirmButtonColor: '#b50915',
       cancelButtonColor: '#d33',
-      cancelButtonText: 'No',
-      confirmButtonText: 'Si'
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Aceptar'
       }).then((result) => {
       if (result.isConfirmed) {
-
+        Swal.fire({
+            // position: 'bottom-right',
+            // icon: 'warning',
+            width: 300,
+            html: '<div class="fa-3x" style="height: 180px;">'+
+                        // '<div class="fa-3x">'+
+                    '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                    '<p></p>'+
+                    '<p>Espere por favor</p>'+
+                        
+                    '</div>',
+                    // '</div>',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            customClass: 'msj_aviso'
+            // timer: 2000
+        })  
         $.ajax({
           url: '/solicitudes/aprobar_solicitud/',
           type: 'GET',
@@ -2149,14 +2374,17 @@ var cond_show_edit = 0;
         }).always(function(r) {
             console.log(r.data);
             if (r.respuesta == true) {
-              folio_solicitud = r.folio;
+              folio_orden = r.folio;
+              folio_solicitud = r.folio_solicitud;
               Swal.fire({
-                title: 'Aprobar Solicitud',
+                // title: 'Aprobar Solicitud',
                 // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                text: 'Se ha Aprobador con Exito la Solicitud y se Genero el Folio de Orden #'+folio_solicitud+'',
+                html: '<p>Se ha aprobado con éxito la solicitud con el folio:</p>'+
+                      '<strong>'+folio_solicitud+'.</strong>',
                 customClass: 'msj_solicitud',
                 icon: 'success',
                 confirmButtonColor: '#b50915',
+                confirmButtonText: 'Aceptar',
                 allowOutsideClick: false
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -2199,6 +2427,18 @@ var cond_show_edit = 0;
         // console.log(r);
         htmlselect = '';
         console.log(r.data);
+
+        html34='';
+        // <select class="swal2-select style="display: flex;"">
+        html34+='<select class="swal2-select" style="display: flex;" id="swal-input34">';
+        html34+='<option value="0">Seleccione motivo de rechazo de solicitud</option>'
+        for (var i = 0; i < r.data['tipo_rechazo'].length; i++) {
+          html34+='<option value="'+r.data['tipo_rechazo'][i]['id']+'">'+r.data['tipo_rechazo'][i]['motivo']+'</option>';
+        }
+        
+        html34+='</select>';
+        console.log(html34);
+
         for (var i = 0; i < r.data['tipo_rechazo'].length; i++) {
           // console.log(r.data['tipo_rechazo']);
           myArrayOfThings.push({id: r.data['tipo_rechazo'][i]['id'], name: r.data['tipo_rechazo'][i]['motivo']});
@@ -2216,29 +2456,34 @@ var cond_show_edit = 0;
             });
         // console.log(htmlselect);
         Swal.fire({
-        title: 'Rechazar Solicitud',
+        // title: 'Rechazar Solicitud',
         // text: 'Escriba el motivo por el cual Rechaza la Solicitud',
-        input: 'select',
-        inputOptions: options,
-        inputPlaceholder: 'Seleccione un Motivo de Rechazo',
+        // input: 'select',
+        // input2: 'textarea',
+        // inputOptions: options,
+        // inputPlaceholder: 'Seleccione motivo de rechazo de solicitud',
         showCancelButton: true,
 
         // animation: 'slide-from-top',
         
         html:
-            '<div class="swal_input_wrapper">'+
-              '<div class="label_wrapper">Comentarios: </div>'+
-                '<textarea id="swal-input3" style="width:80%" class="swal2-textarea"></textarea>'+
-            '</div>',
+            // '<div class="swal_input_wrapper">'+
+              // '<div class="label_wrapper">Descrbia comentarios adicionales: </div>'+
+              html34+
+              '<br>'+
+              'Describa comentarios adicionales: '+
+                '<textarea id="swal-input3" style="width:80%" class="swal2-textarea"></textarea>',
+            // '</div>',
         confirmButtonColor: '#b50915',
         cancelButtonColor: '#d33',
         cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Siguiente',
+        confirmButtonText: 'Aceptar',
+        width: 600,
         allowOutsideClick: false,
         // input: 'select',
         // inputOptions: inputOptionsPromise,
-        preConfirm: (value) => {
-          if (!value) {
+        preConfirm: () => {
+          if ($('#swal-input34').val() == 0) {
             Swal.showValidationMessage(
                 'El Combo de Rechazo no puede ir Vacio..'
             )
@@ -2249,72 +2494,78 @@ var cond_show_edit = 0;
               )
           }
           else{
-            select_rechazar = value;
+            select_rechazar = $('#swal-input34').val();
             comentario_rechazar = $('#swal-input3').val();
           }
         }
       }).then((result) => {
         if (result.isConfirmed) {
-
           Swal.fire({
-              title: 'Rechazar Solicitud',
-              text: 'Esta Seguro de Rechazar la Solicitud ?',
-              customClass: 'msj_solicitud',
-              // icon: 'success',
-              showCancelButton: true,
-              confirmButtonColor: '#b50915',
-              cancelButtonColor: '#d33',
-              cancelButtonText: 'No',
-              confirmButtonText: 'Si',
-              allowOutsideClick: false
-            }).then((result) => {
-              if (result.isConfirmed) {
-    
-                $.ajax({
-                  url: '/solicitudes/rechazar_solicitud/',
-                  type: 'GET',
-                  data: {
-                    'comentario_rechazar' : comentario_rechazar,
-                    'select_rechazar' : select_rechazar,
-                    'id' : id}
-                }).always(function(r) {
-                    console.log(r.data);
-                    if (r.respuesta == true) {
-                      Swal.fire({
-                        title: 'Rechazar Solicitud',
-                        // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                        text: 'Se ha Rechazado con Exito la Solicitud # S2023-'+r.folio_solicitud+'',
-                        customClass: 'msj_solicitud',
-                        icon: 'success',
-                        confirmButtonColor: '#b50915',
-                        allowOutsideClick: false
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                            // alert('Se redireccciona al index');
-                            window.location.href = "solicitudes_registros";
-                        }
-                      })
-                    }
-                    else if(r.respuesta == false){
-                      Swal.fire({
-                        title: 'Rechazar Solicitud',
-                        // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                        text: 'Vuelva a Intentarlo',
-                        customClass: 'msj_solicitud',
-                        icon: 'error',
-                        confirmButtonColor: '#b50915',
-                        allowOutsideClick: false
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                            // alert('Se redireccciona al index');
-                            // window.location.href = "indexVentanilla";
-                        }
-                      })
-                    }
-                    
-                });
+                // position: 'bottom-right',
+                // icon: 'warning',
+                width: 300,
+                html: '<div class="fa-3x" style="height: 180px;">'+
+                            // '<div class="fa-3x">'+
+                        '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                        '<p></p>'+
+                        '<p>Espere por favor</p>'+
+                            
+                        '</div>',
+                        // '</div>',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                customClass: 'msj_aviso'
+                // timer: 2000
+            })
+            // console.log(select_rechazar);
+            // console.log(comentario_rechazar);
+          $.ajax({
+            url: '/solicitudes/rechazar_solicitud/',
+            type: 'GET',
+            data: {
+              'comentario_rechazar' : comentario_rechazar,
+              'select_rechazar' : select_rechazar,
+              'id' : id}
+          }).always(function(r) {
+              console.log(r.data);
+              if (r.respuesta == true) {
+                Swal.fire({
+                  // title: 'Rechazar Solicitud',
+                  // text: 'Se ha Registrado con Exito la Solicitud #5884',
+                  html: '<p style="font-size:1rem !important;">Se ha rechazado con éxito la solicitud con el folio:</p>'+
+                  '<strong>'+r.folio_solicitud+'.</strong>'+
+                  '<p style="font-size:1rem !important;">Se ha notificado al usuario mediante el correo electrónico proporcionado.</p>',
+
+                  customClass: 'msj_solicitud',
+                  icon: 'success',
+                  confirmButtonColor: '#b50915',
+                  confirmButtonText: 'Aceptar',
+                  allowOutsideClick: false
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                      // alert('Se redireccciona al index');
+                      window.location.href = "solicitudes_registros";
+                  }
+                })
               }
-          })
+              else if(r.respuesta == false){
+                Swal.fire({
+                  // title: 'Rechazar Solicitud',
+                  // text: 'Se ha Registrado con Exito la Solicitud #5884',
+                  text: 'Vuelva a Intentarlo',
+                  customClass: 'msj_solicitud',
+                  icon: 'error',
+                  confirmButtonColor: '#b50915',
+                  allowOutsideClick: false
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                      // alert('Se redireccciona al index');
+                      window.location.href = "indexVentanilla";
+                  }
+                })
+              }
+              
+          });
         }
       })
     });
@@ -2328,7 +2579,9 @@ var cond_show_edit = 0;
   $('#btn_cerrar').click(function(){
 
     $("#divListaTarea").prop('hidden', true);
+    $("#span_listado_tareas").prop('hidden', true);
     $("#divTablaEquipos").prop('hidden',false);
+    $("#label_datos_ct").prop('hidden',false);
     arrTareas = [];
     arrServicios = [];
     arrEquipos = [];
@@ -2469,7 +2722,7 @@ var cond_show_edit = 0;
                       html+='<div class="dropdown btn-group dropstart">';
                           html+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
                               html+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                                  html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Elimninar</i></a></li>';
+                                  html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Eliminar</i></a></li>';
                               html+='</ul>';
               html+='</div></td>';
           html+='</tr>';
@@ -2960,7 +3213,7 @@ var cond_show_edit = 0;
                       html+='<div class="dropdown btn-group dropstart">';
                           html+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
                               html+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                                  html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Elimninar</i></a></li>';
+                                  html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Eliminar</i></a></li>';
                               html+='</ul>';
               html+='</div></td>';
             html+='</tr>';
@@ -2990,7 +3243,7 @@ var cond_show_edit = 0;
       //               html+='<div class="dropdown btn-group dropstart">';
       //                   html+='<button class="btn btn-link text-secondary mb-0 " data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>';
       //                       html+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-      //                           html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Elimninar</i></a></li>';
+      //                           html+='<li><a onclick="Eliminar('+contador_id_tabla+')" class="dropdown-item" ><i class="fas fa-trash">Eliminar</i></a></li>';
       //                       html+='</ul>';
       //       html+='</div></td>';
       //     html+='</tr>';

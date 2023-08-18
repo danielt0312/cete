@@ -4,238 +4,270 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <style>
 
+.colorTabPrincipal{ 
+    background-color: #ab0033!important;
+    color:#FFFFFF !important;
+}
+.colorTabSecondary{ 
+    background-color: #e9ecef4a!important;
+    color:#000000 !important;
+}
 
     #map {
         /* width: 100%;
         height: 400px; */
         background-color: grey;
     }
+
+    .sweet_loader {
+	width: 140px;
+	height: 140px;
+	margin: 0 auto;
+	animation-duration: 0.5s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-name: ro;
+	transform-origin: 50% 50%;
+	transform: rotate(0) translate(0,0);
+}
+@keyframes ro {
+	100% {
+		transform: rotate(-360deg) translate(0,0);
+	}
+}
 </style>
 @section('content')
-<div class="container-fluid py-4 mt-3">
-    <div class="row mt-4">
-        <div class="d-flex justify-content-between ">
-            <h1 class="mb-2 colorTitle">Nueva Solicitud </h1>
-        </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-lg-12 mb-lg-0 mb-4">
-            <div class="container">
-                <div class="m-4">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a href="#home" id="tab1" class="nav-link active" data-bs-toggle="tab">DATOS DEL CENTRO DE TRABAJO</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#profile" id="tab2" class="nav-link disabled" data-bs-toggle="tab">DATOS DEL REPORTE</a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a href="#messages" id="tab3" class="nav-link " data-bs-toggle="tab">EQUIPOS</a>
-                        </li> -->
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="home">
-                            <br>
-                            <div class="row">
-                            <div id="hidden_centro_trabajo"></div>
-                            <br>
-                            <br>
+<div style="height: 15%;"></div>
+<div class="card mb-3 shadow p-3 mb-5 bg-body rounded" style="max-width: 100%;">
+    <div class="container-fluid py-4 mt-3">
+        <div class="row" style="margin-top: -2.75rem!important;">
+            <div class="col-lg-12 mb-lg-0 mb-4">
+                <div class="container">
+                    <div class="m-4">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a href="#home" id="tab1"  class="nav-link active colorTabPrincipal" data-bs-toggle="tab">DATOS DEL CENTRO DE TRABAJO</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#profile" id="tab2" class="nav-link disabled colorTabSecondary" data-bs-toggle="tab">DATOS DEL REPORTE</a>
+                            </li>
+                            <!-- <li class="nav-item">
+                                <a href="#messages" id="tab3" class="nav-link " data-bs-toggle="tab">EQUIPOS</a>
+                            </li> -->
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="home">
+                                <br>
+                                <div class="row">
+                                <div id="hidden_centro_trabajo"></div>
+                                <br>
+                                <br>
                                 <div class="col-6">
                                     <span style="font-size:0.65em;">1.- INGRESA LA CALVE DE CENTRO DE TRABAJO DEL PLANTEL EDUCATIVO QUE REQUIERE EL SERVICIO</span>
 
                                 </div>
-                                
-                                <!-- <div id="hidden_centro_trabajo" class="col-3" style="text-align: right;"></div> -->
-                                
-                                <!-- <br> -->
+                                    
+                                    <!-- <div id="hidden_centro_trabajo" class="col-3" style="text-align: right;"></div> -->
+                                    
+                                    <!-- <br> -->
+                                    <br>
+                                    <label style="font-size:0.75em;">CENTRO DE TRABAJO</label>
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" id="vCentro_Trabajo">
+                                        <!-- <button disabled id="btn_consultar" class="btn btn-secondary">Consultar</button> -->
+                                        <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
+                                    </div>
+                                    <div class="col-3">
+                                        <!-- <input type="text" class="form-control" id="vCentro_Trabajo"> -->
+                                        <button disabled id="btn_consultar" class="btn btn-primary">Consultar</button>
+                                        <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <span style="font-size:0.65em;">2.- VALIDA LOS DATOS DEL CENTRO DE TRABAJO</span>
+                                    <br>
+                                    <div class="col-6">
+                                        <label style="font-size:0.75em;">NOMBRE</label>
+                                        <input type="text" disabled class="form-control" id="vNombre">
+                                    </div>
+                                    <div class="col-3">
+                                        <label style="font-size:0.75em;">CLAVE</label>
+                                        <input type="text" disabled class="form-control" id="vClave">
+                                    </div>
+                                    <div class="col-3">
+                                        <label style="font-size:0.75em;">MUNICIPIO DEL C.T.</label>
+                                        <input type="text" disabled class="form-control" id="vMunicipio">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label style="font-size:0.75em;">DIRECTOR</label>
+                                        <input type="text" disabled class="form-control" id="vDirector">
+                                    </div>
+                                    <div class="col-6">
+                                        <label style="font-size:0.75em;">DIRECCION</label>
+                                        <input type="text" disabled class="form-control" id="vDireccion">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <label style="font-size:0.75em;">TELEFONO DEL CENTRO DE TRABAJO</label>
+                                        <input type="text" disabled class="form-control" id="vTelefono">
+                                    </div>
+                                    <div class="col-3">
+                                        <label style="font-size:0.75em;">TURNO</label>
+                                        <input type="text" disabled class="form-control" id="vTurno">
+                                    </div>
+                                    <div class="col-3">
+                                        <label style="font-size:0.75em;">NIVEL EDUCATIVO</label>
+                                        <input type="text" disabled class="form-control" id="vNivelEducativo">
+                                    </div>
+                                </div>
                                 <br>
-                                <label style="font-size:0.75em;">CENTRO DE TRABAJO</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" id="vCentro_Trabajo">
-                                    <!-- <button disabled id="btn_consultar" class="btn btn-secondary">Consultar</button> -->
-                                    <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
-                                </div>
-                                <div class="col-3">
-                                    <!-- <input type="text" class="form-control" id="vCentro_Trabajo"> -->
-                                    <button disabled id="btn_consultar" class="btn btn-secondary">Consultar</button>
-                                    <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
-                                </div>
-                            </div>
-                            <div class="row">
-                                <span style="font-size:0.65em;">2.- VALIDA LOS DATOS DEL CENTRO DE TRABAJO</span>
-                                <br>
-                                <div class="col-6">
-                                    <label style="font-size:0.75em;">NOMBRE</label>
-                                    <input type="text" disabled class="form-control" id="vNombre">
-                                </div>
-                                <div class="col-3">
-                                    <label style="font-size:0.75em;">CLAVE</label>
-                                    <input type="text" disabled class="form-control" id="vClave">
-                                </div>
-                                <div class="col-3">
-                                    <label style="font-size:0.75em;">MUNICIPIO DEL C.T.</label>
-                                    <input type="text" disabled class="form-control" id="vMunicipio">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <label style="font-size:0.75em;">DIRECTOR</label>
-                                    <input type="text" disabled class="form-control" id="vDirector">
-                                </div>
-                                <div class="col-6">
-                                    <label style="font-size:0.75em;">DIRECCION</label>
-                                    <input type="text" disabled class="form-control" id="vDireccion">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3">
-                                    <label style="font-size:0.75em;">TELEFONO DEL CENTRO DE TRABAJO</label>
-                                    <input type="text" disabled class="form-control" id="vTelefono">
-                                </div>
-                                <div class="col-3">
-                                    <label style="font-size:0.75em;">TURNO</label>
-                                    <input type="text" disabled class="form-control" id="vTurno">
-                                </div>
-                                <div class="col-3">
-                                    <label style="font-size:0.75em;">NIVEL EDUCATIVO</label>
-                                    <input type="text" disabled class="form-control" id="vNivelEducativo">
-                                </div>
-                            </div>
-                            <br>
-                            <div style="text-align:right;" hidden id="div_btn_siguiente">
-                                <button class="btn btn-primary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="profile">
-                            <br>
-                            <div class="row">
-                            <div id="hidden_centro_trabajo2"></div>
-                            <br>
-                            <br>
-                            <!-- <div id="hidden_centro_trabajo"></div> -->
-                                <div class="col-12">
-                                    <span style="font-size:0.65em;">3.- REGISTRA LOS DATOS DE LA SOLICITUD DE SERVICIO</span>
-                                </div>
-                                
-
-                                <!-- <br> -->
-                                <!-- <br> -->
-                                <div class="col-4">
-                                    <label style="font-size:0.75em;">NOMBRE DEL SOLICITANTE</label>
-                                    <input type="text" class="form-control" id="vNombre_Solicitante">
-                                </div>
-                                <div class="col-4">
-                                    <label style="font-size:0.75em;">TELEFONO DEL SOLICITANTE</label>
-                                    <input type="number" class="form-control" id="vTelefono_Solicitante">
-                                </div>
-                                <div class="col-4">
-                                    <label style="font-size:0.75em;">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
-                                    <input type="text" class="form-control" disabled id="vCorreo_Solicitante" value="{{ session('vCorreoVerifica') }}">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="check_vNombre_Solicitante">
-                                        <label style="font-size:0.75em;" class="form-check-label">
-                                        Active la casilla en caso que el solicitante corresponda al Director del C.T.
-                                        </label>
-                                    </div>                                    
-                                </div>
-                            </div>
-                            <br>
-                            <div class="row">
-                                <div class="col-12">
-                                    <label style="font-size:0.75em;">DESCRIPCION DEL REPORTE</label>
-                                    <textarea class="form-control" id="vDescripcion_Reporte" rows="3"></textarea>
-
-                                </div>
-                            </div>
-                            <br>
-                            <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                                <div class="btn-group" role="group" aria-label="First group">
-                                    <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar1">Regresar</button>
-                                </div>
-                                <div class="input-group">
-                                    <!-- <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_siguiente2">Siguiente</button> -->
-                                    <button class="btn btn-primary" style="font-size:0.80em;" id="btn_registrar2">Registrar</button>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="tab-pane fade" id="messages">
-                            <br>
-                            <div class="row">
-                                <div class="col-6">
-                                    <span style="font-size:0.65em;">4.- DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</span>
-
-                                </div>
-                                <div id="hidden_centro_trabajo3" class="col-3" style="text-align: right;"></div>
-                                <br>
-                                <br>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-3" id="select_tipo_equipo">
+                                <div class="row">
+                                    <!-- <div class="col-3"> -->
+                                        <div class="col-6" style="text-align:left;" id="div_btn_regresar">
+                                            <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar3">Regresar</button>
+                                        </div>
+                                        <div class="col-6" style="text-align:right;" hidden id="div_btn_siguiente">
+                                            <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
+                                        </div>
+                                    <!-- </div> -->
                                     
                                 </div>
-                                <div class="col-3" id="select_tipo_servicio">
-                                        
-                                </div>
-                                <div class="col-1">
-                                    <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_servicio">+</button>
-                                </div>
-                                <div class="col-5">
-                                    <label style="font-size:0.75em;">DESCRIPCION DEL PROBLEMA O SOPORTE A REALIZAR</label>
-                                    <textarea class="form-control" id="vDescripcion_Problema" ></textarea>
-                                </div>
-                                <!-- </div> -->
+                                
                             </div>
-                            <div class="row">
-                                <div class="col-3">
-                                </div>
-                                <div class="col-3">
-                                    <table id="table_tipo_servicio">
+                            <div class="tab-pane fade" id="profile">
+                                <br>
+                                <div class="row">
+                                <div id="hidden_centro_trabajo2"></div>
+                                <br>
+                                <br>
+                                <!-- <div id="hidden_centro_trabajo"></div> -->
+                                    <div class="col-12">
+                                        <span style="font-size:0.65em;">3.- REGISTRA LOS DATOS DE LA SOLICITUD DE SERVICIO</span>
+                                    </div>
+                                    
 
+                                    <!-- <br> -->
+                                    <!-- <br> -->
+                                    <div class="col-4">
+                                        <label style="font-size:0.75em;">NOMBRE DEL SOLICITANTE</label>
+                                        <input type="text" class="form-control" id="vNombre_Solicitante" value="{{ session('vNombreCorreo') }}">
+                                    </div>
+                                    <div class="col-4">
+                                        <label style="font-size:0.75em;">TELEFONO DEL SOLICITANTE</label>
+                                        <input type="number" class="form-control" id="vTelefono_Solicitante">
+                                    </div>
+                                    <div class="col-4">
+                                        <label style="font-size:0.75em;">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
+                                        <input type="text" class="form-control" disabled id="vCorreo_Solicitante" value="{{ session('vCorreoVerifica') }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="check_vNombre_Solicitante">
+                                            <label style="font-size:0.75em;" class="form-check-label">
+                                                Active la casilla en caso que el solicitante corresponda al Director del C.T.
+                                            </label>
+                                        </div>                                    
+                                    </div>
+                                    <div class="col-4">
+                                        <label style="font-size:0.75em;" >
+                                            Favor de ingresar teléfono celular. Nos pondremos en contacto a este número.
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <br>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL REPORTE</label>
+                                        <textarea class="form-control" id="vDescripcion_Reporte" rows="3"></textarea>
+
+                                    </div>
+                                </div>
+                                <br>
+                                <div style="text-align:right;">
+                                    <button class="btn btn-secondary float-right" style="font-size:0.80em;" id="btn_regresar1">Regresar</button>
+                                    <button class="ms-3 btn btn-primary float-right" style="font-size:0.80em;" id="btn_registrar2">Registrar</button>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="messages">
+                                <br>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span style="font-size:0.65em;">4.- DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</span>
+
+                                    </div>
+                                    <div id="hidden_centro_trabajo3" class="col-3" style="text-align: right;"></div>
+                                    <br>
+                                    <br>
+                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-3" id="select_tipo_equipo">
+                                        
+                                    </div>
+                                    <div class="col-3" id="select_tipo_servicio">
+                                            
+                                    </div>
+                                    <div class="col-1">
+                                        <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_servicio">+</button>
+                                    </div>
+                                    <div class="col-5">
+                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
+                                        <textarea class="form-control" id="vDescripcion_Problema" ></textarea>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                    </div>
+                                    <div class="col-3">
+                                        <table id="table_tipo_servicio">
+
+                                        </table>
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div class="col-5"></div>
+                                    <!-- </div> -->
+                                </div>
+                                <br>
+                                <div style="text-align: right;">
+                                    <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;<label style="font-size:0.65em;">Replicar Datos en el Siguiente Equipo</label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_equipo">Agregar</button>
+                                </div>
+                                <br>
+                                <div >
+                                    <table class="table" id="listado_equipos" hidden style="font-size:0.80em;">
+                                        <tr>
+                                            <th>TIPO DE EQUIPO</th>
+                                            <th>TIPO DE SERVICIO</th>
+                                            <th>DESCRIPCIÓN DEL SERVICIO</th>
+                                            <th></th>
+                                        </tr>
+                                        
                                     </table>
                                 </div>
-                                <div class="col-1"></div>
-                                <div class="col-5"></div>
-                                <!-- </div> -->
-                            </div>
-                            <br>
-                            <div style="text-align: right;">
-                                <input id="btn_replicar" type="checkbox">&nbsp;&nbsp;<label style="font-size:0.65em;">Replicar Datos en el Siguiente Equipo</label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_equipo">Agregar</button>
-                            </div>
-                            <br>
-                            <div >
-                                <table class="table" id="listado_equipos" hidden style="font-size:0.80em;">
-                                    <tr>
-                                        <th>TIPO DE EQUIPO</th>
-                                        <th>TIPO DE SERVICIO</th>
-                                        <th>DESCRIPCION DEL SERVICIO</th>
-                                        <th></th>
-                                    </tr>
-                                    
-                                </table>
-                            </div>
 
 
-                            
+                                
 
 
 
-                            <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-                                <div class="btn-group" role="group" aria-label="First group">
-                                    <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar2">Regresar</button>
+                                <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                                    <div class="btn-group" role="group" aria-label="First group">
+                                        <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar2">Regresar</button>
+                                    </div>
+                                    <div style="text-align:center;" hidden id="div_btn_registrar">
+                                        <button class="btn btn-primary" style="font-size:0.80em;" id="btn_registrar">Registrar Solicitud</button>
+                                    </div>
                                 </div>
-                                <div style="text-align:center;" hidden id="div_btn_registrar">
-                                    <button class="btn btn-primary" style="font-size:0.80em;" id="btn_registrar">Registrar Solicitud</button>
-                                </div>
+                                
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -264,8 +296,10 @@
     var eliminar_especifico = 0;
 
     var vCentro_Trabajo = '';
+
     // console.log(arreglo_serv);
 
+    $('#encabezado_layout').append('Registro de solicitud de servicio');
 
 
     $("#vCentro_Trabajo").keyup(function(){
@@ -308,10 +342,11 @@
             data: {'vCentro_Trabajo' : vCentro_Trabajo}
            }).always(function(r) {
                 if (r.exito == false) {
+                    tab2 = 0;
                     Swal.fire({
-                        position: 'bottom-right',
+                        // position: 'bottom-right',
                         icon: 'warning',
-                        title: 'No existe la Clave de Centro de Trabajo que esta Ingresando..',
+                        html: '<p style="font-size:1rem !important;">No existe la Clave de Centro de Trabajo que esta Ingresando..</p>',
                         showConfirmButton: false,
                         customClass: 'msj_aviso',
                         timer: 2000
@@ -341,11 +376,11 @@
                         html+= '<div class="col">';
                             html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL DEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO DEL C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                         html+= '<div>';
                     html+= '</div>';
@@ -353,11 +388,11 @@
                         html2+= '<div class="col">';
                             html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL DEL C.T.&nbsp;: '+r.data[0]['nivel']+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO DEL C.T.&nbsp;: '+r.data[0]['municipio']+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                         html2+= '<div>';
                     html2+= '</div>';
@@ -384,8 +419,10 @@
 
     if($("#btn_siguiente1").is(":disabled")){
         $('#btn_siguiente1').click(function(){
-            $("#tab2").attr('class', 'nav-link');
+            
+            $("#tab2").attr('class', 'nav-link colorTabPrincipal');
             $("#tab2").tab('show');
+            $("#tab1").attr('class', 'nav-link colorTabSecondary');
         });
     }
 
@@ -402,12 +439,28 @@
     });
 
     $('#btn_regresar1').click(function(){
+        $("#tab1").attr('class', 'nav-link colorTabPrincipal');
         $("#tab1").tab('show');
+        $("#tab2").attr('class', 'nav-link colorTabSecondary');
     });
 
     $('#btn_regresar2').click(function(){
         $("#tab2").tab('show');
     });
+
+    $('#tab1').click(function(){
+        $("#tab1").attr('class', 'nav-link colorTabPrincipal');
+        $("#tab1").tab('show');
+        $("#tab2").attr('class', 'nav-link colorTabSecondary');
+    });
+    // if($("#tab2").is(":disabled")){
+    $('#tab2').click(function(){
+        $("#tab2").attr('class', 'nav-link colorTabPrincipal');
+        $("#tab2").tab('show');
+        $("#tab1").attr('class', 'nav-link colorTabSecondary');
+    });  
+    // }
+    
     
 
     $('#btn_siguiente2').click(function(){
@@ -430,9 +483,9 @@
 
             if (caract.test(vCorreo_Solicitante) == false){
                 Swal.fire({
-                position: 'bottom-right',
+                // position: 'bottom-right',
                 icon: 'warning',
-                title: 'Favor de Ingresar un Correo Electronico Correcto.',
+                html: '<p style="font-size:1rem !important;">Favor de Ingresar un Correo Electrónico Correcto.</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -444,9 +497,9 @@
         }
         else{
             Swal.fire({
-                position: 'bottom-right',
+                // position: 'bottom-right',
                 icon: 'warning',
-                title: 'Favor de Llenar todos los Campos de la Solicitud de Servicio',
+                html: '<p style="font-size:1rem !important;">Favor de Llenar todos los Campos de la Solicitud de Servicio</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -476,9 +529,9 @@
                         if (arreglo_servicios[i]['vTipo_servicio'] == tipo_servicio) {
                             console.log('es el miso servicio');
                             Swal.fire({
-                                position: 'bottom-right',
+                                // position: 'bottom-right',
                                 icon: 'warning',
-                                title: 'El tipo de Servicio Seleccionado ya se Agrego Anteriormente..',
+                                html: '<p style="font-size:1rem !important;">El tipo de Servicio Seleccionado ya se Agrego Anteriormente..</p>',
                                 showConfirmButton: false,
                                 customClass: 'msj_aviso',
                                 timer: 2000
@@ -515,9 +568,9 @@
             }
             else{
                 Swal.fire({
-                    position: 'bottom-right',
+                    // position: 'bottom-right',
                     icon: 'warning',
-                    title: 'Favor de Seleccionar un Tipo de Servicio.',
+                    html: '<p style="font-size:1rem !important;">Favor de Seleccionar un Tipo de Servicio.</p>',
                     showConfirmButton: false,
                     customClass: 'msj_aviso',
                     timer: 2000
@@ -526,9 +579,9 @@
         }
         else{
             Swal.fire({
-                position: 'bottom-right',
+                // position: 'bottom-right',
                 icon: 'warning',
-                title: 'Favor de Seleccionar un Tipo de Equipo.',
+                html: '<p style="font-size:1rem !important;">Favor de Seleccionar un Tipo de Equipo.</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -622,9 +675,9 @@
         }
         else{
             Swal.fire({
-                position: 'bottom-right',
+                // position: 'bottom-right',
                 icon: 'warning',
-                title: 'Favor de Llenar los Campos del Equipo',
+                html: '<p style="font-size:1rem !important;">Favor de Llenar los Campos del Equipo</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -690,9 +743,9 @@
                 // $('#vTelefono_Solicitante').val().length;
             if ($('#vTelefono_Solicitante').val().length != 10) {
                 Swal.fire({
-                    position: 'bottom-right',
+                    // position: 'bottom-right',
                     icon: 'warning',
-                    title: 'Favor de Agregar un Telefono de 10 Digitos',
+                    html: '<p style="font-size:1rem !important;">Favor de agregar un teléfono de 10 digitos.</p>',
                     showConfirmButton: false,
                     customClass: 'msj_aviso',
                     timer: 2000
@@ -706,17 +759,40 @@
 
                 // console.log(arreglo_inf);
                 Swal.fire({
-                    title: 'Esta seguro de Registrar la Solicitud?',
+                    html: '<p style="font-size:1rem !important;">¿Está seguro de registrar la solicitud?</p>',
                     icon: 'warning',
                     showCancelButton: true,
                     customClass: 'msj_solicitud',
                     confirmButtonColor: '#b50915',
                     cancelButtonColor: '#d33',
-                    cancelButtonText: 'No',
-                    confirmButtonText: 'Si',
+                    cancelButtonText: 'Cancelar',
+                    width: 600,
+                    // height: 600,
+                    // reverseButtons: true,
+                    confirmButtonText: 'Aceptar',
                     allowOutsideClick: false
                     }).then((result) => {
                     if (result.isConfirmed) {
+
+                        Swal.fire({
+                            // position: 'bottom-right',
+                            // icon: 'warning',
+                            // width: 600,
+                            html: '<div class="fa-3x" style="height: 180px;">'+
+                                        // '<div class="fa-3x">'+
+                                    '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                    '<p></p>'+
+                                    '<p>Espere por favor</p>'+
+                                        
+                                    '</div>',
+                                    // '</div>',
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+                            customClass: 'msj_aviso'
+                            // timer: 2000
+                        })
+
+                        
                         $("#btn_registrar2").prop('disabled',true);
                         $.ajax({
                             url: '/ventanilla/formulario_registro/',
@@ -725,30 +801,35 @@
                             }).always(function(r) {
                                 console.log(r);
                                 Swal.fire({
-                                    title: 'Registrado',
+                                    // title: 'Registrado',
+                                    html:'<p style="font-size:1rem !important;">Se ha registrado con exito la solicitud con el folio: <strong>'+r.data+'</strong>.</p>'+
+                                            '<p style="font-size:1rem !important;">Nos pondremos en contacto al teléfono proporcionado para seguimiento.</p>',
                                     // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                                    text: 'Se ha Registrado con Exito la Solicitud #'+r.data+'',
                                     customClass: 'msj_solicitud',
                                     icon: 'success',
+                                    width: 600,
                                     confirmButtonColor: '#b50915',
-                                    allowOutsideClick: false
+                                    allowOutsideClick: false,
+                                    confirmButtonText: 'Aceptar',
                                 }).then((result) => {
                                 if (result.isConfirmed) {
                                     // alert('Se redireccciona al index');
-                                    // window.location.href = "indexVentanilla";
+                                    window.location.href = "indexVentanilla";
                                 }
                             })
                         });
                     }
+
+
                 })
             }
 
         }
         else{
             Swal.fire({
-                position: 'bottom-right',
+                // position: 'bottom-right',
                 icon: 'warning',
-                title: 'Favor de Llenar todos los Datos del Reporte..',
+                html: '<p style="font-size:1rem !important;">Favor de Llenar todos los Datos del Reporte..</p>',
                 showConfirmButton: false,
                 customClass: 'msj_aviso',
                 timer: 2000
@@ -761,6 +842,10 @@
 
         
         
+    });
+
+    $('#div_btn_regresar').click(function(){
+        window.location.href = "indexVentanilla";
     });
 
 </script>
