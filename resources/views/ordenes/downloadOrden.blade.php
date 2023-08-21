@@ -202,54 +202,57 @@
             </td>
           </tr>
         </table>
+
         <table> <!--//////////////////////////////////////////////////////////////////////-->
+          @if ($ordenServiciosObject->jequipos!=null && $ordenServiciosObject->jequipos !='')
           <tr>
             <th>EQUIPOS ATENDIDOS</th>
           </tr>
-          @foreach(json_decode($ordenServiciosObject->jequipos) as $val )
-            <tr>
-              <td>
-                <table>
-                  <tr>
-                    <td class="sinbordetable" style="width:2%;"><span>1</span></td>
-                    <td class="sinbordetable" style="width:32%;">
-                      <table style="width:100%;">
-                        <tr class="sinbordetable">
-                          <td class="sinbordetable"><span>Equipo:</span><span>{{$val->tipo_equipo}}</span></td>
-                          <td class="sinbordetable"><span>Etiqueta:</span><span>{{$val->etiqueta}}</span></td>
-                        </tr>
-                        <tr class="sinbordetable">
-                          <td class="sinbordetable"><span>Núm de Serie:</span><span>-</span></td>
-                          <td class="sinbordetable"><span>Marca:</span><span> - </span></td>
-                        </tr>
-                        <tr class="sinbordetable">
-                          <td class="sinbordetable"><span>Ubicación:</span><span>{{$val->ubicacion}}</span></td>
-                          <td class="sinbordetable"><span>Modelo:</span><span> - </span></td>
-                        </tr>
-                      </table> 
-                    </td>
-                    <td class="sinbordetable" style="width:32%;">
-                      <span>Servicios:</span>
-                      @foreach($val->tareas as $val2)
-                        <span>{{$val2->servicio}}</span>
-                      @endforeach <br>
-                      
-                      <span>Tareas:</span>
-                      @foreach($val->tareas as $val3)
-                        <span>{{$val3->tarea}}</span> 
-                      @endforeach
-                    </td>
-                    <td class="sinbordetable" style="width:33%;">
-                      <span>Descripción del Problema:</span> 
-                        <span>{{$val->desc_problema}}</span> 
-                      <br>
-                      <span>Diagnóstico / Solución:</span><span> - </span>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          @endforeach
+            @foreach(json_decode($ordenServiciosObject->jequipos) as $val )
+              <tr>
+                <td>
+                  <table>
+                    <tr>
+                      <!-- <td class="sinbordetable" style="width:2%;"><span>1</span></td> -->
+                      <td class="sinbordetable" style="width:32%;">
+                        <table style="width:100%;">
+                          <tr class="sinbordetable">
+                            <td class="sinbordetable"><span>Equipo:</span><span>{{$val->tipo_equipo}}</span></td>
+                            <td class="sinbordetable"><span>Etiqueta:</span><span>{{$val->etiqueta}}</span></td>
+                          </tr>
+                          <tr class="sinbordetable">
+                            <td class="sinbordetable"><span>Núm de Serie:</span><span>-</span></td>
+                            <td class="sinbordetable"><span>Marca:</span><span> - </span></td>
+                          </tr>
+                          <tr class="sinbordetable">
+                            <td class="sinbordetable"><span>Ubicación:</span><span>{{$val->ubicacion}}</span></td>
+                            <td class="sinbordetable"><span>Modelo:</span><span> - </span></td>
+                          </tr>
+                        </table> 
+                      </td>
+                      <td class="sinbordetable" style="width:32%;">
+                        <span>Servicios:</span>
+                        @foreach($val->tareas as $val2)
+                          <span>{{$val2->servicio}}</span>
+                        @endforeach <br>
+                        
+                        <span>Tareas:</span>
+                        @foreach($val->tareas as $val3)
+                          <span>{{$val3->tarea}}</span> 
+                        @endforeach
+                      </td>
+                      <td class="sinbordetable" style="width:33%;">
+                        <span>Descripción del Problema:</span> 
+                          <span>{{$val->desc_problema}}</span> 
+                        <br>
+                        <span>Diagnóstico / Solución:</span><span> - </span>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            @endforeach
+          @endif
           <!-- <tr>
             <td>
               <table>

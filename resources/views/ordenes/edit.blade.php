@@ -816,7 +816,19 @@
                         </div>
                         <br>
                     </div>
-
+                    <div class="row">
+                        <div class="col-12">
+                        <br><br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="text-align:right;">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
+                        </div>
+                    </div>
+                </form>
+                <form id="formCerrarEquipo" name="formCerrarEquipo" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-4" style="text-align:center;  background-color:#ab0033;">
                             <span style="color:white;">CIERRE DE EQUIPO</span>
@@ -828,9 +840,10 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
+                                <input type="hidden" id="hdIdEquipoMC" name="hdIdEquipoMC" class="form-control">
+                                <input type="hidden" id="hdIdSolServMC" name="hdIdSolServMC" class="form-control">
                                 <br>
                                 <label for="txtDiagnosticoM">Diagnóstico</label>
-                                <!-- <input type="text" id="txtDiagnosticoM" name="txtDiagnosticoM" class="form-control"> -->
                                 <textarea class="form-control" id="txtDiagnosticoM" name="txtDiagnosticoM" rows="3" placeholder="Capture el diagnóstico detectado en el equipo revisado."></textarea>
                             </div>
                         </div>
@@ -839,7 +852,6 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="txtSolucionM">Solución</label>
-                                <!-- <input type="text" id="txtSolucionM" name="txtSolucionM" class="form-control"> -->
                                 <textarea class="form-control" id="txtSolucionM" name="txtSolucionM" rows="3" placeholder="Capture la solución/reparación llevada a cabo en el equipo."></textarea>
                             </div>
                         </div>
@@ -861,9 +873,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12" style="text-align:rigth;">
+                    <div class="col-12" style="text-align:right;">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
+                        <button type="button" class="btn colorBtnPrincipal" onclick="fnCerrarEquipo()" id="btnCerrarEquipo">Cerrar Equipo</button>
                     </div>
                 </div>
             </div>
@@ -876,7 +888,6 @@
     </div>
 </div>
 <!-- FIN MODAL EDITAR EQUIPO-->
-
 @endsection
 
 @section('page-scripts')
@@ -1115,6 +1126,7 @@
                     estatus_equipo : 1, 
                     nuevo : 1, 
                     aTarea : arrTareas, ///arreglo tareas
+                    fecha_cierre : '',
                     // aServicio : arrServicios /// arreglo servicios
                 });
                 console.log(arrEquipos,'-----fff');
@@ -1563,11 +1575,13 @@
                 tablaEquipo2+='                  </button>';
                 tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
                 if(arrEquipos[j].nuevo!=1){ //si es diferente a 1 viene de bd y muestra opcion de editar equipo
-                    tablaEquipo2+='                          <li>';
-                    tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
-                    tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
-                    tablaEquipo2+='                              </a>';
-                    tablaEquipo2+='                          </li>';
+                    if(arrEquipos[j].fecha_cierre==null){
+                        tablaEquipo2+='                          <li>';
+                        tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
+                        tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
+                        tablaEquipo2+='                              </a>';
+                        tablaEquipo2+='                          </li>';
+                    }
                 }
                 tablaEquipo2+='                          <li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoA('+j+')" class="dropdown-item"> '; 
@@ -1836,6 +1850,7 @@
                                 estatus_equipo : 1, 
                                 nuevo : 0, 
                                 aTarea : data[0][i].jstareas, ///arreglo tareas
+                                fecha_cierre : data[0][i].fecha_cierre,
                             // aServicio : arrServicios /// arreglo servicios
                             })
                         }
@@ -2332,6 +2347,9 @@
         htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
+        if(arrEquipos[numArr].fecha_cierre!=null){
+            htmlSel+='<label>Estatus:</label><label id="lblDescProblema">Atendido</label>';
+        }
         htmlSel+='</div>';
         htmlSel+='</div>';
         htmlSel+='<br>';
@@ -2516,6 +2534,10 @@
         $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
         // $("#txtDetalleEquipoM").val(); ws
         $("#txtUbicacionM").val(arrEquipos[j].ubicacionEquipo);
+
+        ///////Inputs de Cierre Equipo
+        $("#hdIdEquipoMC").val(arrEquipos[j].id_equipo_serv_solic);
+        $("#hdIdSolServMC").val( $("#txtIdSolic").val() );
 
         //  var TareasAux = JSON.parse(arrEquipos[j].aTarea); /// este funcionaba al 03/08/2023
         var TareasAux = [];
@@ -2789,16 +2811,108 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             success: function(data) {
                 console.log(data);
+                console.log(data[0]['updtareasequipo']);
                 var vequip = JSON.parse(data[0].updtareasequipo);
 
                 if(data[0]['updtareasequipo']!=''){ 
-                    msjeAlerta2('','Se actualizo correctamente el Equipo ','success',txtIdSolic) ////este no se
+                    Swal.fire({
+                        title: '',
+                        html: 'El equipo ha sido actualizado con éxito',
+                        icon: 'success',
+                        showCancelButton: false,
+                        confirmButtonColor: '#ab0033',
+                        // cancelButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar',
+                        // cancelButtonText: 'Aceptar',
+                        width: 600,
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+
+                        }else{
+                            
+                        }
+                    });
                 }else{ 
-                    msjeAlerta('No se pudo actualizar el Equipo ', '','error')
+                    msjeAlerta('', 'No se pudo actualizar el equipo','error')
                 }
                 
             }
         });
+    }
+
+    function fnCerrarEquipo(){
+        var claveCCT= $("#txtClaveCCT").val();
+        let urlEditar = '{{ route("cerrarEquipo") }}'; 
+        var idSolic_serv= $("#txtIdSolic").val();
+        var archivoCierreEquipo = $("#archivoCierreEquipo").val();
+        var diagnostico = $("#txtDiagnosticoM").val();
+        var solucion = $("#txtSolucionM").val(); 
+
+        var form = $('#formCerrarEquipo')[0];
+        var data2 = new FormData(form);
+
+        if(archivoCierreEquipo!='' && archivoCierreEquipo!=null){
+            var extension=archivoCierreEquipo.substr(-3);
+            if(extension!='jpg' && extension!='png' ){
+                msjeAlerta('','Favor de seleccionar un archivo tipo jpg, png','error');
+            }
+        }
+        var band=0;
+        if(diagnostico==''){
+            msjeAlerta('','Favor de ingresar el diagnóstico','error');
+            band=1;
+        }else{
+            band=0;
+        }
+
+        if(solucion==''){
+            msjeAlerta('','Favor de ingresar la solución','error');
+            band=1
+        }else{
+            band=0;
+        }
+
+        if(band==0){
+
+            $.ajax({
+                url: urlEditar,
+                type: 'POST',
+                data:data2,
+                dataType: 'json', 
+                processData: false,
+                contentType: false,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(data) {
+                    console.log(data);
+
+                    if(data[0]['inscerrarequipo']!=''){ 
+                        // msjeAlerta2('','El equipo ha sido registrado como ATENDIDO','success',txtIdSolic) ////este no se
+                        Swal.fire({
+                            title: '',
+                            html: 'El equipo ha sido registrado como ATENDIDO',
+                            icon: 'success',
+                            showCancelButton: false,
+                            confirmButtonColor: '#ab0033',
+                            // cancelButtonColor: '#d33',
+                            confirmButtonText: 'Aceptar',
+                            // cancelButtonText: 'Aceptar',
+                            width: 600,
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+
+                            }else{
+                                
+                            }
+                        });
+                    }else{ 
+                        msjeAlerta('', 'No se pudo cerrar el Equipo','error')
+                    }
+                    
+                }
+            });
+        }else{
+            msjeAlerta('', 'Debe ingresar los campos diagnóstico y solución','error')
+        }
     }
 
 </script>

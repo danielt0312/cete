@@ -608,40 +608,19 @@ class OrdenesController extends Controller
     }
 
     public function updEquipo(Request $request){
-        dd($request);
+        //  dd($request);
         $vid_usuario=Auth()->user()->id;
         $vidSolicServ=$request->hdIdOrdenCierra;
-
+        
         $tareasEquipo=$request->arrTareasEdit;
         $tareasEquipoElim=$request->arrTareasEditElim;
         
         $etiqueta=$request->txtEtiquetaM;
+        $desc_problema=$request->txtDescripcionSoporteM;
+        $ubicacion=$request->txtUbicacionM;
 
-        //Archivo Cierre Equipo
-        $file2 = $_FILES["archivoCierreEquipo"];
-        
-        if($request->hasfile('archivoCierreEquipo')){ 
-
-            $file=$request->file("archivoCierreEquipo");
-            // dd($file[0]);
-            $ext=substr($file[0]->getClientOriginalName(), -3);
-            
-            if($ext === "pdf" ){
-                $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
-                
-                $ruta = public_path("cierreEquipo/".$nombre);
-            
-                copy($file[0], $ruta);
-            }
-        }else{
-            dd('no hay archivo');
-        }
-        
-        $ruta_archivo=$ruta;
-        $nombre_archivo=$nombre;
-
-        $updTareasEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.updTareasEquipo(".$request->hdIdSolServM.",".$request->hdIdEquipoM.",".$request->hdIdTipoEquipo.",'".$etiqueta."','".$evidencia."',".$vid_usuario.",'".$tareasEquipo."','".$tareasEquipoElim."')");
-        return response()->json($updTareasEquipo);
+        $updTareasEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.updTareasEquipo(".$request->hdIdSolServM.",".$request->hdIdEquipoM.",".$request->hdIdTipoEquipo.",'".$etiqueta."','".$desc_problema."','".$ubicacion."',".$vid_usuario.",'".$tareasEquipo."','".$tareasEquipoElim."')");
+        return response()->json($updTareasEquipo); 
     }
 
     public function getArchivoCierre($idSolicServ){
@@ -681,5 +660,42 @@ class OrdenesController extends Controller
         return array(
             "exito" => true
         );
+    }
+
+    public function updCerrarEquipo(Request $request){
+       // dd($request);
+        $vid_usuario=Auth()->user()->id;
+        $vidSolicServ=$request->hdIdSolServMC; 
+        $diagnostico=$request->txtDiagnosticoM;
+        $solucion=$request->txtSolucionM;
+        $id_equipo_serv=$request->hdIdEquipoMC;
+        
+        //Archivo Cierre Equipo
+        $file2 = $_FILES["archivoCierreEquipo"];
+        
+        if($request->hasfile('archivoCierreEquipo')){ 
+
+            $file=$request->file("archivoCierreEquipo");
+             
+            $ext=substr($file->getClientOriginalName(), -3);
+            
+            if($ext === "jpg" || $ext === "png" ){
+                $nombre = uniqid() .'_'. $vidSolicServ.'_'.$id_equipo_serv.'.'.$ext;
+                
+                $ruta = public_path("cierreEquipo/".$nombre);
+            
+                copy($file, $ruta);
+            }
+            $ruta_archivo=$ruta;
+            $nombre_archivo=$nombre;
+            $base_archivo='';
+        }else{
+            $ruta_archivo='';
+            $nombre_archivo='';
+            $base_archivo='';
+        }
+
+        $insCierreEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.insCierreEquipo(".$request->hdIdEquipoMC.",".$vid_usuario.",'".$diagnostico."','".$solucion."','".$nombre_archivo."','".$ruta_archivo."','".$base_archivo."')");
+        return response()->json($insCierreEquipo);
     }
 }

@@ -169,7 +169,7 @@
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MODO DE <br> CAPTACION</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TIEMPO <br> DE APERTURA</th>
                 <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ESTATUS</th> -->
-                <th class="text-secondary opacity-7"></th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ACCIONES</th>
               </thead>
               <tbody >
 
