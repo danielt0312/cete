@@ -975,7 +975,7 @@
 
         
         $.ajax({
-            url: '/solicitudes/buscar_folio/',
+            url: '/ventanilla/buscar_folio/',
             type: 'GET',
             data: {'id' : id, 'bandera_orden' : bandera_orden}
             }).always(function(r) {

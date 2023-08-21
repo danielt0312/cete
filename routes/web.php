@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store')->name('guardarOrden');
 
         Route::get('/editarOrden/{id}', 'App\Http\Controllers\OrdenesController@edit')->name('editarOrden');
-        Route::post('/actualizarOrden', 'App\Http\Controllers\OrdenesController@update')->name('actualizarOrden');
+        Route::post('/actualizarOrden', 'App\Http\Controllers\OrdenesController@update')->name('actualizarOrden'); 
 
         //catalogos 
         // Route::get('/consTarea/{idserv}','App\Http\Controllers\OrdenesController@getTareas')->name('consTarea');
@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
         //Cerrar Orden
         Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
         Route::post('/cerrarOrden', 'App\Http\Controllers\OrdenesController@updCerrar')->name('cerrarOrden');
+        Route::get('/verArchivoCierre/{id}', 'App\Http\Controllers\OrdenesController@getArchivoCierre')->name('verArchivoCierre');
 
         Route::get('/cargarTecAux/{id}', 'App\Http\Controllers\OrdenesController@cargarTecnicosAux')->name('cargarTecAux');
 
@@ -75,9 +76,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/consEquipos/{idSolic}','App\Http\Controllers\OrdenesController@getEquiposSol')->name('consEquipos');
         Route::get('/historialEquipo/{etiqueta}','App\Http\Controllers\OrdenesController@getHistorialEquipo')->name('historialEquipo');
         Route::get('/mostDetalleEquipo/{id}','App\Http\Controllers\OrdenesController@getMostDetalleEquipo')->name('mostDetalleEquipo');
+        Route::post('/actualizarEquipo', 'App\Http\Controllers\OrdenesController@updEquipo')->name('actualizarEquipo'); //31/07/2023
+        Route::get('/verArchivoEquipo/{id}', 'App\Http\Controllers\OrdenesController@getArchivoEquipo')->name('verArchivoEquipo');
+        Route::post('/cerrarEquipo', 'App\Http\Controllers\OrdenesController@updCerrarEquipo')->name('cerrarEquipo'); //20/08/2023
 
         //Tecnicos
         Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');
+
+        //Correo
+        Route::post('/enviarCorreo', 'App\Http\Controllers\OrdenesController@sendCorreo')->name('enviarCorreo');
 
     }); 
 
@@ -103,6 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
 }); 
     
 Route::group(['prefix' => 'ventanilla'], function(){
+    Route::get('/buscar_folio', 'App\Http\Controllers\VentanillaController@buscar_folio')->name('buscar_folio');
     Route::get('/indexVentanilla', 'App\Http\Controllers\VentanillaController@index')->name('indexVentanilla');
     Route::get('/indexMail', 'App\Http\Controllers\VentanillaController@index_mail')->name('indexMail');
     Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');

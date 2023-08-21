@@ -14,6 +14,8 @@ class SolicitudesController extends Controller
 {
 
     public function index(Request $request){
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
         // $receivers = Receiver::pluck('email');
         // Mail::to($receivers)->send(new EmergencyCallReceived());
         // dd('hola');
@@ -108,7 +110,9 @@ class SolicitudesController extends Controller
         // $datatable->setData($data);
         // dd($datatable);
         // return $datatable;
-        return view('solicitudes.index');
+        return view('solicitudes.index', compact(
+            'getUsername'
+        ) );
     }
 
     public function selects_equipo_servicio(Request $request){
