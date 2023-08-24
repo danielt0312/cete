@@ -47,7 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('/mostrarOrdenes', 'App\Http\Controllers\OrdenesController@show')->name('showOrdenes');
         Route::get('/filtrarOrdenes', 'App\Http\Controllers\OrdenesController@filtrar')->name('filtrarOrdenes');
 
-        Route::get('/crearOrden', 'App\Http\Controllers\OrdenesController@create')->name('crearOrden');
+        Route::get('/crearOrden', 'App\Http\Controllers\OrdenesController@create')->name('crearOrden');//->middleware('permission:193-menu-nueva-orden');
         Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store')->name('guardarOrden');
 
         Route::get('/editarOrden/{id}', 'App\Http\Controllers\OrdenesController@edit')->name('editarOrden');
@@ -114,7 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
 }); 
     
 Route::group(['prefix' => 'ventanilla'], function(){
-    Route::get('/buscar_folio', 'App\Http\Controllers\VentanillaController@buscar_folio')->name('buscar_folio');
+    Route::get('/buscar_folio_ventanilla', 'App\Http\Controllers\VentanillaController@buscar_folio_ventanilla')->name('buscar_folio_ventanilla');
     Route::get('/indexVentanilla', 'App\Http\Controllers\VentanillaController@index')->name('indexVentanilla');
     Route::get('/indexMail', 'App\Http\Controllers\VentanillaController@index_mail')->name('indexMail');
     Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');
@@ -134,7 +134,7 @@ Route::group(['prefix' => 'ventanilla'], function(){
     // Route::get('/formulario_index')->name('formulario_index');
     // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
     // Route::get('/sendEmail','App\Http\Controllers\MailController@sendEmail')->name('sendEmail');
-}); 
+});
 
 Route::group(['prefix' => 'app_cas'], function(){
     Route::get('/list_ordenes_servicio', function(Request $request){

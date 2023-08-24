@@ -1,6 +1,6 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
-<!-- @php setPermissionsTeamId(3); @endphp -->
+@php setPermissionsTeamId(3); @endphp
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -76,12 +76,14 @@
                                         </div>
                                         
                                         <div class="col-8"> <!--col-6-->
+                                            @can('194-btn-get-buscar-cct')
                                             <button class="btn btn-secondary" type="button" id="btnBuscar"  onclick="fnBuscarCCT()">Buscar</button>
+                                            @endcan 
                                             &nbsp;&nbsp;&nbsp;<span  id="divHistorial"> 
                                             </span>
                                             &nbsp;&nbsp;
                                             <span  id="divUbicacion">
-                                            </span> 
+                                            </span>
                                         </div>
                                         
                                         <!-- <div class="col-2" id="divHistorial"> -->
@@ -226,10 +228,12 @@
 
                                         <div class="col-4 justify-content-md-start">
                                             <div class="form-check">
+                                            @can('197-chk-es-director')
                                                 <input class="form-check-input" type="checkbox" value="" id="checkSolicitante" name="checkSolicitante">
                                                 <label style="font-weight: normal;" for="checkSolicitante">
                                                 Active la casilla en caso que el solicitante corresponda al Director del C.T
                                                 </label>
+                                            @endcan
                                             </div>
                                         </div>
 
@@ -294,7 +298,7 @@
                                         </div>
                                         <div class="col-6 divEtiqueta">
                                             <div class="form-group">
-                                                <label for="txtMarca">DETALLE EQUIPO</label>
+                                                <label for="txtDetEquipo">DETALLE EQUIPO</label>
                                                 <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
                                                 <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
                                                 <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
@@ -377,11 +381,13 @@
                                         </div>
 
                                         <div class="col-1" style="padding-bottom:5px;"> 
-                                        <div class="form-group">
-                                            <br>
-                                        <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
-                                         </div>
-                                         </div>
+                                            <div class="form-group">
+                                                <br>
+                                                @can('198-btn-add-tareas')
+                                                <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                                                @endcan
+                                            </div>
+                                        </div>
 
                                     </div>
                                     
@@ -417,7 +423,9 @@
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                                            @can('199-btn-add-equipo')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
+                                            @endcan
                                         </div>
                                     </div>
                                     <div class="row">
@@ -438,7 +446,7 @@
                                     </div>
                                     <div class="row">
                                         <br>
-                                        <div class="col-12" id="divTablaEquipos">
+                                        <div class="col-12 scrollHorizontal" id="divTablaEquipos">
                                             <table class="table">
                                                 <thead class="text-align:center;">
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
@@ -464,7 +472,9 @@
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>     
                                             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="fnGuardar()"> Guardar</button>     -->
+                                            @can('203-btn-ins-orden')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnGuardar" onclick="msjeAlertConfirm()"> Guardar</button>    
+                                            @endcan
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Equipos-->
@@ -808,6 +818,15 @@
         // $("#btnSiguiente").hide()
         // $("#btnSiguiente").prop('disabled', true);
         // $("#divCantidad").hide()
+        $("#btnAgregarTarea").prop('disabled',true);
+        $("#btnAgregarEquipo").hide();
+
+        $("#txtCentroTrabajo").on("keypress", function () {
+            input=$(this);
+            setTimeout(function () {
+            input.val(input.val().toUpperCase());
+            },50);
+        });
 
         $("#btnSiguiente").click(function(){
             $("#tab2").attr('class', 'nav-link');
@@ -944,6 +963,7 @@
         var i=0;
         // var arrEquipos = [];
         $("#btnAgregarEquipo").click(function(){
+
              var bandCheck='';
             // $("#checkReplicar").click(function() {  
                 if($("#checkReplicar").is(':checked')) {  
@@ -1006,6 +1026,7 @@
                 console.log(arrEquipos);
                 //  arrTareas=[];
                 drawRowEquipo();
+                
                 i=i+1;
                 console.log(bandCheck+'---34');
                 if(bandCheck==0){
@@ -1085,6 +1106,9 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
+
+            $("#selTipoEquipo").prop('disabled',true);
+    
             vtipEqu= $("#selTipoEquipo").val();
 
             vTarea = $("#selTarea").val();
@@ -1097,7 +1121,7 @@
             if(vtipEqu !=0){
                 if(vTipoServicio !=0){
                     if(vTarea != 0){
-                    
+                        $("#btnAgregarTarea").prop('disabled',false);
                         var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                         if(index == -1){
@@ -1183,13 +1207,28 @@
             
         });
 
+        $('#selTarea').on('change', function() {
+            var vSelTarea=  $('#selTarea').val();
+            if(vSelTarea==0){
+                $("#btnAgregarTarea").prop('disabled',true);
+            }else{
+                $("#btnAgregarTarea").prop('disabled',false);
+            }
+        });
+
+        
+
         $("#txtEtiquetaServicio").keyup(function(){
             var vEtiqueta = $("#txtEtiquetaServicio").val();
             if(vEtiqueta!=''){
-                $("#txtMarca").val("DELL");
-                $("#txtModelo").val("12345");
-                $("#txtSerie").val("02325652");
-                $("#txtDetEquipo").val('Marca:DELL - MODELO:12345 - NÚMERO DE SERIE:02325652');
+                // $("#txtMarca").val("DELL");
+                // $("#txtModelo").val("12345");
+                // $("#txtSerie").val("02325652");
+                $("#txtMarca").val("S/D");
+                $("#txtModelo").val("S/D");
+                $("#txtSerie").val("S/D");
+                // $("#txtDetEquipo").val('Marca:DELL - MODELO:12345 - NÚMERO DE SERIE:02325652'); /// info del es
+                $("#txtDetEquipo").val('Marca:S/D - MODELO:S/D - NÚMERO DE SERIE:S/D');
             }
         });
 
@@ -1262,24 +1301,24 @@
                 // tablaEquipo2+='                                  <i class="fas fa-download"></i> Ver Servicios/Tareas';
                 // tablaEquipo2+='                              </a>';
                 // tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          @can("200-opt-get-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoA('+j+')" class="dropdown-item"> '; 
                 // class="dropdown-item" data-bs-toggle="modal" data-bs-target="#visualizarDetalleEquipoModal">';
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Visualizar';
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          </li>@endcan';
+                tablaEquipo2+='                           @can("201-opt-get-historial-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verHistorialEquipo('+j+')" class="dropdown-item"> ';
                 // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
                 tablaEquipo2+='                                  <i class="fas fa-book"></i> Historial'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          </li>@endcan';
+                tablaEquipo2+='                           @can("202-opt-get-detalle-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
                 // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          </li>@endcan';
                 tablaEquipo2+='                      <li>';
                 tablaEquipo2+='                          <a  ';
                 // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
@@ -1293,6 +1332,11 @@
                 tablaEquipo2+='</tr>';
             }
         });
+
+        $("#selTipoEquipo").prop('disabled',false);
+        $("#btnAgregarTarea").prop('disabled',true);
+        $("#btnAgregarEquipo").hide();
+        $("#divListaTarea").hide();
 
         $("#tbEquipos").empty();
         $("#tbEquipos").html(tablaEquipo2);
@@ -1318,6 +1362,13 @@
                 arrTareas.splice( item, 1 );
                 // console.log(arrTareas);
                 $("#liT_"+item).remove();
+                if (arrTareas==''){
+                    $("#selTipoEquipo").prop('disabled',false);
+                    $("#selTipoEquipo").val("0").attr("selected",true);
+                    $("#selTipoServicio").val("0").attr("selected",true);
+                }else{
+                    $("#selTipoEquipo").prop('disabled',true);
+                }
                 drawRowTarea();
             }   else{
                 arrTareas = [];
@@ -1370,6 +1421,9 @@
 
         listaTarea2+='</tbody>';
         listaTarea2+='</table>';
+
+        $("#btnAgregarEquipo").show();
+        $("#divListaTarea").show();
 
         if(listaTarea2!=''){
             $("#divListaTarea").addClass('scrollVerticalTareas');
@@ -1452,13 +1506,18 @@
             showCancelButton: true,
             confirmButtonColor: '#b50915',
             cancelButtonColor: '#d33',
-            confirmButtonText: '<i class="fas fa-download"></i>Descargar orden',
+            confirmButtonText: '<i class="fas fa-download"></i>&nbsp;Descargar orden',
             cancelButtonText: 'Aceptar',
             width: 600,
+            allowOutsideClick: false,
             }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = urlEditar;
+                // window.location.href = urlEditar;
                 // download-pdf
+
+                // window.open(urlEditar, '_blank'); // este es el bueno para descargar
+                var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+                window.location.href = '{{ route("listadoOrdenes") }}';
             }else{
                 window.location.href = '{{ route("listadoOrdenes") }}';
             }
@@ -1482,6 +1541,17 @@
             width: 600,
             }).then((result) => {
             if (result.isConfirmed) {
+                Swal.fire({
+                    html: '<div class="fa-3x">'+
+                            '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                            '<p></p>'+
+                            '<p>Espere por favor</p>'+
+                                
+                            '</div>',
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+
                 fnGuardar();
             }
         });
@@ -1564,8 +1634,8 @@
                             // $("#btnHistorialCCT").show();
                             // $("#btnUbicacionCCT").show();
                             
-                            var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Historial</button>';
-                            var divU='<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>';
+                            var divH='@can("195-btn-get-historial-cct")<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Historial</button>@endcan';
+                            var divU='@can("196-btn-get-ubicacion-cct")<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>@endcan';
                             $("#divHistorial").html(divH);
                             $("#divUbicacion").html(divU);
 
@@ -1756,7 +1826,7 @@
                   
                 // if(data[0]['inssolicservicio']!=''){ 
                  if(data[0]['inssolicservicioprueba2']!=''){ 
-                     msjeAlerta2('','Se ha registrado con éxito la orden de servicio con el folio: <span style="font-weight:bolder;">'+vequip.vpfolio+'.</span> <br>Favor de agendar cita para la visita de soporte y contactar al usuario.','success',vequip.vpid_solic_serv)
+                     msjeAlerta2('','<span>Se ha registrado con éxito la orden de servicio con el folio: <strong>'+vequip.vpfolio+'.</strong> <br>Favor de agendar cita para la visita de soporte y contactar al usuario.</span>','success',vequip.vpid_solic_serv)
 
                     
                     $.ajax({
@@ -1778,7 +1848,7 @@
                         }
                     });
                 }else{ 
-                    msjeAlerta('No se pudo realizar el registro de la Orden de Servicio ', '','error')
+                    msjeAlerta('', 'No se pudo realizar el registro de la Orden de Servicio','error')
                 }
                 
             }
@@ -1895,32 +1965,32 @@
         var numeroSerie='';
         var ubicacion='';
 
-        if(arrEquipos[numArr].etiquetaServicio==''){
-            etiquetaServicio='-';
+        if(arrEquipos[numArr].etiquetaServicio=='' || arrEquipos[numArr].etiquetaServicio==null){ 
+            etiquetaServicio='S/D';
         }else{
             etiquetaServicio=arrEquipos[numArr].etiquetaServicio;
         }
 
         if(arrEquipos[numArr].marca==''){
-            marca='-';
+            marca='S/D';
         }else{
             marca=arrEquipos[numArr].marca;
         }
 
         if(arrEquipos[numArr].modelo==''){
-            modelo='-';
+            modelo='S/D';
         }else{
             modelo=arrEquipos[numArr].modelo;
         }
 
         if(arrEquipos[numArr].numeroSerie==''){
-            numeroSerie='-';
+            numeroSerie='S/D';
         }else{
             numeroSerie=arrEquipos[numArr].numeroSerie;
         }
 
-        if(arrEquipos[numArr].ubicacionEquipo==''){
-            ubicacion='-';
+        if(arrEquipos[numArr].ubicacionEquipo=='' || arrEquipos[numArr].ubicacionEquipo==null){
+            ubicacion='S/D';
         }else{
             ubicacion=arrEquipos[numArr].ubicacionEquipo;
         }
@@ -1940,13 +2010,13 @@
 
         htmlSel+='<div class="row">';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].etiquetaServicio+'</label>';
+        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+etiquetaServicio+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+','+modelo+','+numeroSerie+'</label>';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 

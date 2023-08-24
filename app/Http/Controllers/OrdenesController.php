@@ -13,9 +13,15 @@ use Illuminate\Support\Facades\Mail;
 // use App\Http\Controllers\Mail; 
 use App\Mail\MailSendO;
 use DateTime;
+use Illuminate\Support\Facades\Cache;
 
 class OrdenesController extends Controller
 {
+
+    function __construct(){
+        Cache::flush();
+        setPermissionsTeamId(3);
+    }
 
     public function index(){
         $catCoordinaciones =  DB::connection('pgsql')->select("select * from cas_cete.getCatCoordinaciones()");
@@ -39,13 +45,21 @@ class OrdenesController extends Controller
     public function create(){
         // return view('ordenes.create');
 
-        // $data =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
-        // return view('ordenes.create')->with("catTipoOrden", $data);
+        // if ($user->hasRole('Super Administrador' )) {
+        //     dd('super');
+        // } else{
+        //     dd('no admin');
+        // }
 
-        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
+        $roles = Auth()->user()->roles;
+        foreach ($roles as $rol) {
+            $idRol= $rol->id; 
+        }
+
+        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden(".$idRol.")");
         // $catTipoServicio =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoServicio()");]
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
-        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
+        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden(".$idRol.")"); 
         
         $vid_usuario=Auth()->user()->id;
         $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
@@ -372,10 +386,16 @@ class OrdenesController extends Controller
         $pdf = new Dompdf($options);
 
         $path = base_path('public/images/logo/logoTam2022.png');
+        // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
+        // $path = asset('images/logo/logoTam2022.png');
+        //  return $path;
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
         $path_footer = base_path('public/images/logo/ceteNI.png');
+        // $path_footer = asset('images/logo/logoTam2022.png');
+        // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
+        // $path_footer = asset('images/logo/ceteNI.png');
         $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
         $data_footer = file_get_contents($path_footer);
         $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
@@ -415,7 +435,7 @@ class OrdenesController extends Controller
 
     public function updCerrar(Request $request){
         // dd($request, $_FILES["archivoCierre"]);
-        //  dd($request);
+        //   dd($request);
         
         $vusuario=Auth()->user()->id;
 
@@ -544,8 +564,9 @@ class OrdenesController extends Controller
             $fecha_inicio=$request->fecha_inicio_prog;
             $fecha_fin=$request->fecha_fin_prog;
 
-            // $date1 = new DateTime($fecha_inicio);
-            // $fechaInicio = strval(date_format($date1, 'Y/m/d H:i:s'));
+            //  $date1 = new DateTime($fecha_inicio2);
+            //  $fechaInicio2 = strval(date_format($date1, 'Y/m/d H:i:s'));
+            $fecha_inicio = str_replace("T"," ",$fecha_inicio);
 
             $folio=$request->folioModTec;
             $solicitante=$request->solicitanteModTec;
@@ -575,7 +596,7 @@ class OrdenesController extends Controller
                  'body1' => $msje_correo,
                 // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
                 // 'body3' => '',
-                'body2' => 'ha sido asignada a nuestros técnicos de soporte especializados, quientes estarán presentes en su Centro de Trabajo  el dia __________ para brindar la asistencia.',
+                'body2' => 'ha sido asignada a nuestros técnicos de soporte especializados, quienes estarán presentes en su Centro de Trabajo  el dia '.$fecha_inicio.' para brindar la asistencia.',
                 // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
                 'body3' => 'Le recomendamos mantener el número de folio de su orden para que pueda dar seguimiento a su progreso.',
                 'body4' => '',
@@ -648,7 +669,7 @@ class OrdenesController extends Controller
              'body1' => 'Se ha generado una orden de servicio con el folio número:  ',
             'body2' => ' para atender su solicitud, la cual se encuentra',
             'body3' => ' para ser atendida por un técnico de soporte.',
-            'body4' => 'Conserve este folio para continuar con el seguimiento de su orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado',
+            'body4' => 'Conserve este folio para continuar con el seguimiento de su orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado.',
 
             'firma1' => 'Atentamente.',
             'firma2' => 'Centro Estatal de Tecnología Educativa',

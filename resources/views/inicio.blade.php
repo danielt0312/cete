@@ -100,7 +100,7 @@
   
   <div class="row mt-4">
         <div class="d-flex justify-content-between ">
-            <h1 class="mb-2 colorTitle">Registros</h1>
+            <!-- <h1 class="mb-2 colorTitle">Registros</h1> -->
         </div>
     </div>
   
@@ -108,7 +108,7 @@
     <div class="col-lg-12 mb-lg-0 mb-4">
       <div class="card ">
         
-        <div class="card-header pb- p-3">
+        <!-- <div class="card-header pb- p-3">
           <div class="d-flex justify-content-between">
             <h6 class="mb-2">Dibujos a Evaluar</h6>
           </div>
@@ -123,7 +123,6 @@
 
         <div class="mb-2 p-3">
         
-          <!-- <button type="button" class="btn colorBtnPrincipal" id="btnFiltros">Filtros</button> -->
           <div class="row">
           <div class="col-6 text-start">
           <div class="form-group align-middle">
@@ -201,44 +200,17 @@
               </div>
             </div>
             <div class="col-2">
-              <!-- <div class="form-group align-middle">
-                <button type="button" class="btn colorBtnPrincipal" id="btnFiltrar">Filtrar</button>
-              </div> -->
             </div>
-            
-          <!-- </div> -->
-          <!-- <div class="row text-end">
-            <div class="col-12">
-            <div class="form-group align-middle">
-                <button type="button" class="btn btn-secondary" id="btnFiltrar">Excel</button>
-              </div>
-            </div>
-          </div> -->
         </div>
         
         <div class="table-responsive">
-          
-          <!-- <div id="divPrueba" class="display:none;">
-          <table id="tablaPrueba" class="table table-respnsive">
-            <thead><th>FOLIO</th><th>CURP</th><th>MUNICIPIO</th><th>ESCUELA</th><th>NOMBRE PERSONAJE</th>
-            </thead>
-            <tbody id="tbPrueba">
-            </tbody>
-          </table>
-          </div> -->
             
             <table id="tablaPrueba2" class="table table-respnsive">
               <thead>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">FOLIO</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CURP/NOMBRE</th><!--///////-->
-                <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CURP</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NOMBRE</th> -->
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MUNICIPIO/REGIÓN</th><!--///////-->
-                <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MUNICIPIO</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">REGIÓN</th> -->
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CCT/ESCUELA</th><!--///////-->
-                <!-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CCT</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ESCUELA</th> -->
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CURP/NOMBRE</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">MUNICIPIO/REGIÓN</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CCT/ESCUELA</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NOMBRE DIBUJO</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">PUNTAJE</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ESTATUS</th>
@@ -250,7 +222,7 @@
             </table>
           <br><br>
           <div id="ttt" ><meta charset="utf-8"></div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
-<!-- @php setPermissionsTeamId(3); @endphp -->
+@php setPermissionsTeamId(3); @endphp
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -57,12 +57,16 @@
                                 <div class="tab-pane fade show active" id="tabCCT">
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro">
+                                            <label>FOLIO DE ORDEN:</label>
+                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>ESTATUS:</label>
+                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>CENTRO DE TRABAJO:</label>
-                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
-                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NIVEL DEL C.T.:</label>
-                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>MUNICIPIO DEL C.T.:</label> 
                                             <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
                                         </div>
@@ -170,12 +174,16 @@
                                 <div class="tab-pane fade" id="tabReporte">
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro2">
+                                            <label>FOLIO DE ORDEN:</label>
+                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>ESTATUS:</label>
+                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>CENTRO DE TRABAJO:</label>
-                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
-                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NIVEL DEL C.T.:</label>
-                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>MUNICIPIO DEL C.T.:</label> 
                                             <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
                                         </div>
@@ -234,6 +242,7 @@
 
                                         <div class="col-12 justify-content-md-start">
                                             <div class="form-check">
+                                            @can('171-chk-edit-es-director')
                                                 @if (isset($ordenServiciosDetalle->es_director) && $ordenServiciosDetalle->es_director==true)
                                                     <input class="form-check-input" type="checkbox" checked="true" value="" id="checkSolicitante">
                                                 @else
@@ -242,6 +251,7 @@
                                                 <label class="form-check-label" for="checkSolicitante">
                                                 Active la casilla en caso que el solicitante corresponda al Director del C.T
                                                 </label>
+                                            @endcan
                                             </div>
                                         </div>
 
@@ -262,12 +272,16 @@
                                 <div class="tab-pane fade" id="tabEquipos">
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro">
+                                            <label>FOLIO DE ORDEN:</label>
+                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>ESTATUS:</label>
+                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>CENTRO DE TRABAJO:</label>
-                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
-                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nombrect }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NIVEL DEL C.T.:</label>
-                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label>{{ $ordenServiciosDetalle->nivel }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>MUNICIPIO DEL C.T.:</label> 
                                             <label>{{ $ordenServiciosDetalle->municipio }}</label><br><br>
                                         </div>
@@ -386,7 +400,9 @@
                                             <div class="col-1" style="padding-bottom:5px;"> 
                                                 <div class="form-group">
                                                     <br>
+                                                    @can('172-btn-edit-agregar-tareas')
                                                     <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                                                    @endcan
                                                 </div>
                                              </div>
                                         </div>
@@ -418,16 +434,20 @@
 
                                     <div class="row">
                                         <div class="col-9 d-md-flex justify-content-md-start">
+                                            @can('173-chk-edit-replicar-equipo')
                                             <div class="form-check replicar" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Mantener descripción del problema y lista de tareas para el siguiente equipo.
                                                 </label>
                                             </div>
+                                            @endcan
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
+                                            @can('176-btn-edit-agregar-equipo')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
+                                            @endcan
                                         </div>
                                     </div>
 
@@ -449,8 +469,8 @@
                                     </div>
                                     
                                     <div class="row">
-                                        <div class="col-12" id="divTablaEquipos">
-                                            <table class="table">
+                                        <div class="col-12 scrollHorizontal" id="divTablaEquipos">
+                                            <table class="table" id="tablaEquipos">
                                                 <thead class="text-align:center;">
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
@@ -474,7 +494,9 @@
                                         
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>
+                                            @can('185-edit-actualizar-orden')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="msjeAlertConfirm()"> Actualizar</button>
+                                            @endcan
                                         </div> 
                                     </div>
                                 </div> <!--Fin tab Equipos-->
@@ -592,8 +614,9 @@
       </div> -->
             <div class="modal-body" >
                 <div class="row">
-                    <div class="col-12">
-                        <br>
+                    <div class="col-12 d-md-flex justify-content-md-end" style="font-color:#ab0033;">
+                    <span style="color:#ab0033;">FOLIO DE ORDEN: {{ $ordenServiciosDetalle->folio }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ESTATUS: {{ $ordenServiciosDetalle->desc_estatus_orden }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
                 <div class="row">
@@ -641,8 +664,9 @@
         </div> -->
             <div class="modal-body overflow-scroll">
                 <div class="row">
-                    <div class="col-12">
-                        <br>
+                    <div class="col-12 d-md-flex justify-content-md-end" style="font-color:#ab0033;">
+                    <span style="color:#ab0033;">FOLIO DE ORDEN: {{ $ordenServiciosDetalle->folio }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ESTATUS: {{ $ordenServiciosDetalle->desc_estatus_orden }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </div>
                 </div>
                 <div class="row">
@@ -699,11 +723,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> -->
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-12">
+                <div class="row"> 
+                    <div class="col-12 d-md-flex justify-content-md-end">
+                        <span style="color:#ab0033;">FOLIO DE ORDEN: {{ $ordenServiciosDetalle->folio }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ESTATUS: {{ $ordenServiciosDetalle->desc_estatus_orden }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <br>
                     </div>
                 </div>
+                <div class="row"> 
+                    <div class="col-12 d-md-flex justify-content-md-end">
+                        @can('181-div-edit-agregar-evidencia-equipo')
+                        <div class="form-check replicar" id="checkVerCerrar">
+                            <input class="form-check-input" type="checkbox" value="" id="checkCerrar" name="checkCerrar">
+                            <label class="form-check-label" for="checkCerrar">
+                                Desea cerrar el Equipo
+                            </label>
+                        </div>
+                        @endcan
+                    </div>
+                </div>
+                <div id="divEditEqui">
                 <div class="row">
                     <div class="col-4" style="text-align:center;  background-color:#ab0033;">
                         <span style="color:white;">EDITAR EQUIPO</span>
@@ -711,179 +750,200 @@
                     <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
                 </div>
-                <form id="formEditarEquipo" name="formEditarEquipo" enctype="multipart/form-data">
+                <div class="row">
                     <div class="col-12">
-                        <div class="form-group">
-                        <!--<label for="estatus_id">Usuario Cancela</label>
-                        <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
-                            <input type="hidden" id="hdIdEquipoM" name="hdIdEquipoM" class="form-control">
-                            <input type="hidden" id="hdIdSolServM" name="hdIdSolServM" class="form-control">
-                            <input type="hidden" id="hdIdTipoEquipo" name="hdIdTipoEquipo" class="form-control">
-                            <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
-                        </div>
+                        <br> 
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="txtDescripcionSoporteM">DESCRIPCIÓN DEL PROBLEMA</label>
-                                <textarea class="form-control" id="txtDescripcionSoporteM" name="txtDescripcionSoporteM" rows="3"></textarea>
+                </div>
+                <!-- <div class="row">
+                    <div class="col-12 d-md-flex justify-content-md-end">
+                        <div class="form-check replicar" id="checkVerCerrar">
+                            <input class="form-check-input" type="checkbox" value="" id="checkCerrar" name="checkCerrar">
+                            <label class="form-check-label" for="checkCerrar">
+                                Desea cerrar el Equipo
+                            </label>
                         </div>
-                    </div>
+                    </div> 
+                </div>-->
+                    <form id="formEditarEquipo" name="formEditarEquipo" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                <!--<label for="estatus_id">Usuario Cancela</label>
+                                <input type="text" id="txtUsuarioCancela" name="txtUsuarioCancela" class="form-control" value="ATENCION DE USUARIOS">-->
+                                    <input type="hidden" id="hdIdEquipoM" name="hdIdEquipoM" class="form-control">
+                                    <input type="hidden" id="hdIdSolServM" name="hdIdSolServM" class="form-control">
+                                    <input type="hidden" id="hdIdTipoEquipo" name="hdIdTipoEquipo" class="form-control">
+                                    <!-- <input type="hidden" id="hdIdEstatusCierra" name="hdIdEstatusCierra" class="form-control">  -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="txtDescripcionSoporteM">DESCRIPCIÓN DEL PROBLEMA</label>
+                                    <textarea class="form-control" id="txtDescripcionSoporteM" name="txtDescripcionSoporteM" rows="3"></textarea>
+                            </div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txtEtiquetaM">ETIQUETA</label>
+                                    <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txtDetalleEquipoM">DETALLE EQUIPO</label>
+                                    <input type="text" id="txtDetalleEquipoM" name="txtDetalleEquipoM" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="txtUbicacionM">UBICACIÓN</label>
+                                    <input type="text" id="txtUbicacionM" name="txtUbicacionM" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- <div class="col-4">
                                 <label for="txtEtiquetaM">ETIQUETA</label>
                                 <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="txtDetalleEquipoM">DETALLE EQUIPO</label>
-                                <input type="text" id="txtDetalleEquipoM" name="txtDetalleEquipoM" class="form-control" disabled>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="form-group">
-                                <label for="txtUbicacionM">UBICACIÓN</label>
-                                <input type="text" id="txtUbicacionM" name="txtUbicacionM" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <!-- <div class="col-4">
-                            <label for="txtEtiquetaM">ETIQUETA</label>
-                            <input type="text" id="txtEtiquetaM" name="txtEtiquetaM" class="form-control">
-                        </div> -->
-                        <div class="col-4">
-                            <div class="form-group">
-                                    <label for="selTipoServicioM">SERVICIO</label>
-                                <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
-                                    <option value="0" selected>Seleccionar</option>
-                                </select> -->
-
-                                <div class="input-group">
-                                    <select class="form-select" id="selTipoServicioM" name="selTipoServicioM" aria-label="Example select with button addon" onchange="cargaTarea()">
-                                        <option value="0" selected>Seleccionar</option>
-                                        
-                                    </select>
-                                    <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
-                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
-                                </div>
-                            </div>
-                            <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicioM">
-                                <!-- <span>LISTADO DE SERVICIOS</span> -->
-                                <ul id="ulServicioM">
-                                    
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group">
-                                <label for="selTareaM">TAREA</label>
-                                <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
-                                    <option value="0" selected>Seleccionar</option>
-                                </select> -->
-                                <div class="input-group">
-                                    <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
-                                        <option value="0" selected>Seleccionar</option>
-                                    </select>
-                                    <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
-                                </div>
-                            </div>
-                            <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
-                                <span>LISTADO DE TAREAS</span>
-                                <ul id="ulTarea">
-                                    
-                                </ul>
                             </div> -->
-                        </div>
-                        <div class="col-1" style="padding-bottom:5px;">
-                            <div class="form-group">
-                                <br>
-                                <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                            <div class="col-4">
+                                <div class="form-group">
+                                        <label for="selTipoServicioM">SERVICIO</label>
+                                    <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
+                                        <option value="0" selected>Seleccionar</option>
+                                    </select> -->
+
+                                    <div class="input-group">
+                                        <select class="form-select" id="selTipoServicioM" name="selTipoServicioM" aria-label="Example select with button addon" onchange="cargaTarea()">
+                                            <option value="0" selected>Seleccionar</option>
+                                            
+                                        </select>
+                                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarServicio">Añadir</button> -->
+                                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarServicio"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                    </div>
+                                </div>
+                                <div class="form-group col-12" style="font-size:0.75rem;" id="divListaServicioM">
+                                    <!-- <span>LISTADO DE SERVICIOS</span> -->
+                                    <ul id="ulServicioM">
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="selTareaM">TAREA</label>
+                                    <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
+                                        <option value="0" selected>Seleccionar</option>
+                                    </select> -->
+                                    <div class="input-group">
+                                        <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
+                                            <option value="0" selected>Seleccionar</option>
+                                        </select>
+                                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
+                                    <span>LISTADO DE TAREAS</span>
+                                    <ul id="ulTarea">
+                                        
+                                    </ul>
+                                </div> -->
+                            </div>
+                            <div class="col-1" style="padding-bottom:5px;">
+                                <div class="form-group">
+                                    <br>
+                                    @can('180-btn-edit-agregar-tarea-equipo')
+                                    <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
+                                    @endcan
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-12 scrollVerticalEdiE" id="divEquiposReal">
-                            <span id="tituloTareasM"></span>
-                            <ul id="ulTareaM" style="font-size:0.75rem;">
+                        <div class="row">
+                            <div class="col-12 scrollVerticalEdiE" id="divEquiposReal">
+                                <span id="tituloTareasM"></span>
+                                <ul id="ulTareaM" style="font-size:0.75rem;">
+                                    
+                                </ul>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                            <br><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="text-align:right;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                @can('182-btn-upd-equipo')
+                                <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
+                                @endcan
+                            </div>
+                        </div>
+                    </form>
+                </div> 
+            </div> 
+            @can('181-div-edit-agregar-evidencia-equipo')
+            <div id="divCerrarEquipo">
+                    <form id="formCerrarEquipo" name="formCerrarEquipo" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                <span style="color:white;">CIERRE DE EQUIPO</span>
+                            </div>
+                            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="hidden" id="hdIdEquipoMC" name="hdIdEquipoMC" class="form-control">
+                                    <input type="hidden" id="hdIdSolServMC" name="hdIdSolServMC" class="form-control">
+                                    <br>
+                                    <label for="txtDiagnosticoM">Diagnóstico</label>
+                                    <textarea class="form-control" id="txtDiagnosticoM" name="txtDiagnosticoM" rows="3" placeholder="Capture el diagnóstico detectado en el equipo revisado."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="txtSolucionM">Solución</label>
+                                    <textarea class="form-control" id="txtSolucionM" name="txtSolucionM" rows="3" placeholder="Capture la solución/reparación llevada a cabo en el equipo."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <br>
+                                    <label for="archivoCierreEquipo">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
+                                    <input class="form-control" type="file" id="archivoCierreEquipo" name="archivoCierreEquipo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
                                 
-                            </ul>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                        <br><br>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12" style="text-align:right;">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
-                        </div>
-                    </div>
-                </form>
-                <form id="formCerrarEquipo" name="formCerrarEquipo" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                            <span style="color:white;">CIERRE DE EQUIPO</span>
-                        </div>
-                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <input type="hidden" id="hdIdEquipoMC" name="hdIdEquipoMC" class="form-control">
-                                <input type="hidden" id="hdIdSolServMC" name="hdIdSolServMC" class="form-control">
-                                <br>
-                                <label for="txtDiagnosticoM">Diagnóstico</label>
-                                <textarea class="form-control" id="txtDiagnosticoM" name="txtDiagnosticoM" rows="3" placeholder="Capture el diagnóstico detectado en el equipo revisado."></textarea>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="txtSolucionM">Solución</label>
-                                <textarea class="form-control" id="txtSolucionM" name="txtSolucionM" rows="3" placeholder="Capture la solución/reparación llevada a cabo en el equipo."></textarea>
+                        <div class="row">
+                            <div class="col-12" style="text-align:right;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn colorBtnPrincipal" onclick="fnCerrarEquipo()" id="btnCerrarEquipo">Cerrar Equipo</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <br>
-                                <label for="archivoCierreEquipo">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
-                                <input class="form-control" type="file" id="archivoCierreEquipo" name="archivoCierreEquipo">
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-                <div class="row">
-                    <div class="col-12">
-                        
-                    </div>
+                    </form>
                 </div>
-                <div class="row">
-                    <div class="col-12" style="text-align:right;">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn colorBtnPrincipal" onclick="fnCerrarEquipo()" id="btnCerrarEquipo">Cerrar Equipo</button>
-                    </div>
-                </div>
+                @endcan
             </div>
-
-            <!-- <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn colorBtnPrincipal" onclick="fnActualizarEquipo()" id="btnActualizarEquipo">Actualizar</button>
-            </div> -->
         </div>
     </div>
 </div>
@@ -935,6 +995,19 @@
         // $("#divCantidad").hide()
 
         fnConsEquipos();
+
+        $('#checkCerrar').click(function(){
+            if ($(this).is(':checked') ) {
+                $("#divEditEqui").hide();
+                $("#divCerrarEquipo").show();
+            } else {
+                $("#divCerrarEquipo").hide();
+                $("#divEditEqui").show();
+            }
+        });
+
+        $("#btnAgregarTarea").prop('disabled',true);
+        $("#btnAgregarEquipo").hide();
 
         $("#btnSiguiente").click(function(){
             $("#tab2").attr('class', 'nav-link');
@@ -1209,6 +1282,8 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
+            $("#selTipoEquipo").prop('disabled',true);
+
             vtipEqu= $("#selTipoEquipo").val();
 
             vTarea = $("#selTarea").val();
@@ -1307,13 +1382,26 @@
             
         });
 
+        $('#selTarea').on('change', function() {
+            var vSelTarea=  $('#selTarea').val();
+            if(vSelTarea==0){
+                $("#btnAgregarTarea").prop('disabled',true);
+            }else{
+                $("#btnAgregarTarea").prop('disabled',false);
+            }
+        });
+
         $("#txtEtiquetaServicio").keyup(function(){
             var vEtiqueta = $("#txtEtiquetaServicio").val();
             if(vEtiqueta!=''){
-                $("#txtMarca").val("DELL");
-                $("#txtModelo").val("12345");
-                $("#txtSerie").val("02325652");
-                $("#txtDetEquipo").val('Marca:DELL - MODELO:12345 - NÚMERO DE SERIE:02325652');
+                // $("#txtMarca").val("DELL");
+                // $("#txtModelo").val("12345");
+                // $("#txtSerie").val("02325652");
+                $("#txtMarca").val("S/D");
+                $("#txtModelo").val("S/D");
+                $("#txtSerie").val("S/D");
+                // $("#txtDetEquipo").val('Marca:DELL - MODELO:12345 - NÚMERO DE SERIE:02325652');////ws
+                $("#txtDetEquipo").val('Marca:S/D - MODELO:S/D - NÚMERO DE SERIE:S/D');
             }
         });
 
@@ -1522,7 +1610,14 @@
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
                 tablaEquipo2+='<tr id="tr_'+j+'">';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
-                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo'];
+                if(arrEquipos[j].nuevo!=1){ //si es diferente a 1 viene de bd y muestra opcion de editar equipo
+                    if(arrEquipos[j].fecha_cierre!=null){
+                        tablaEquipo2+='<br><strong>Atendido</strong></td>';
+                    }
+                }else{
+                    tablaEquipo2+='</td>';
+                }
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['descripcionSoporte']+'</td>';
 
                 var aTarea = [];
@@ -1576,28 +1671,28 @@
                 tablaEquipo2+='                  <ul class="dropdown-menu" aria-labelledby="opciones1">';
                 if(arrEquipos[j].nuevo!=1){ //si es diferente a 1 viene de bd y muestra opcion de editar equipo
                     if(arrEquipos[j].fecha_cierre==null){
-                        tablaEquipo2+='                          <li>';
+                        tablaEquipo2+='                          @can("178-opt-edit-equipo")<li>';
                         tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
                         tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
                         tablaEquipo2+='                              </a>';
-                        tablaEquipo2+='                          </li>';
+                        tablaEquipo2+='                          </li>@endcan';
                     }
                 }
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          @can("183-opt-edit-get-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoA('+j+')" class="dropdown-item"> '; 
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Visualizar';
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          </li>@endcan';
+                tablaEquipo2+='                          @can("175-opt-edit-get-historial-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verHistorialEquipo('+j+')" class="dropdown-item"> ';
                 tablaEquipo2+='                                  <i class="fas fa-book"></i> Historial'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
-                tablaEquipo2+='                          <li>';
+                tablaEquipo2+='                          </li>@endcan';
+                tablaEquipo2+='                          @can("184-opt-edit-get-detalle-equipo")<li>';
                 tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>';
+                tablaEquipo2+='                          </li>@endcan';
                 tablaEquipo2+='                      <li>';
                 tablaEquipo2+='                          <a  ';
                 tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item" >';
@@ -1609,6 +1704,11 @@
                 tablaEquipo2+='</tr>';
             }
         });
+
+        $("#selTipoEquipo").prop('disabled',false);
+        $("#btnAgregarTarea").prop('disabled',true);
+        $("#btnAgregarEquipo").hide();
+        $("#divListaTarea").hide();
 
         $("#tbEquipos").empty();
         $("#tbEquipos").html(tablaEquipo2);
@@ -1672,6 +1772,9 @@
 
         listaTarea2+='</tbody>';
         listaTarea2+='</table>';
+
+        $("#btnAgregarEquipo").show();
+        $("#divListaTarea").show();
 
         if(listaTarea2!=''){
             $("#divListaTarea").addClass('scrollVerticalTareas');
@@ -1775,13 +1878,14 @@
             showCancelButton: true,
             confirmButtonColor: '#b50915',
             cancelButtonColor: '#d33',
-            confirmButtonText: '<i class="fas fa-download"></i>Descargar orden',
+            confirmButtonText: '<i class="fas fa-download"></i>&nbsp;Descargar orden',
             cancelButtonText: 'Aceptar',
             width: 600,
+            allowOutsideClick: false,
             }).then((result) => {
             if (result.isConfirmed) {
-                // window.location.href = urlEditar;
-                window.open(urlEditar, '_blank');
+                // window.open(urlEditar, '_blank');
+                var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank'); 
                 window.location.href = '{{ route("listadoOrdenes") }}';
                 // download-pdf
             }else{
@@ -1807,6 +1911,17 @@
             width: 600,
             }).then((result) => {
             if (result.isConfirmed) {
+                Swal.fire({
+                    html: '<div class="fa-3x">'+
+                            '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                            '<p></p>'+
+                            '<p>Espere por favor</p>'+
+                                
+                            '</div>',
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                });
+
                 fnGuardar();
             }
         });
@@ -2179,9 +2294,9 @@
                 console.log(vequip+'-------------');
                 console.log(data[0]['updsolicservicio']+'-------------');
                 if(data[0]['updsolicservicio']!=''){ 
-                    msjeAlerta2('','Se ha editado con éxito la orden de servicio con el folio: <span style="font-weight:bolder;">'+folio+'</span>','success',idSolicServ)
+                    msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
                 }else{ 
-                    msjeAlerta('No se pudo realizar el registro de la orden de servicio ', '','error')
+                    msjeAlerta('', 'No se pudo realizar el registro de la orden de servicio','error')
                 }
                 
             }
@@ -2284,32 +2399,32 @@
         var numeroSerie='';
         var ubicacion='';
 
-        if(arrEquipos[numArr].etiquetaServicio==''){
-            etiquetaServicio='-';
+        if(arrEquipos[numArr].etiquetaServicio=='' || arrEquipos[numArr].etiquetaServicio==null){ 
+            etiquetaServicio='S/D';
         }else{
             etiquetaServicio=arrEquipos[numArr].etiquetaServicio;
         }
 
         if(arrEquipos[numArr].marca==''){
-            marca='-';
+            marca='S/D';
         }else{
             marca=arrEquipos[numArr].marca;
         }
 
         if(arrEquipos[numArr].modelo==''){
-            modelo='-';
+            modelo='S/D';
         }else{
             modelo=arrEquipos[numArr].modelo;
         }
 
         if(arrEquipos[numArr].numeroSerie==''){
-            numeroSerie='-';
+            numeroSerie='S/D';
         }else{
             numeroSerie=arrEquipos[numArr].numeroSerie;
         }
 
-        if(arrEquipos[numArr].ubicacionEquipo==''){
-            ubicacion='-';
+        if(arrEquipos[numArr].ubicacionEquipo=='' || arrEquipos[numArr].ubicacionEquipo==null){
+            ubicacion='S/D';
         }else{
             ubicacion=arrEquipos[numArr].ubicacionEquipo;
         }
@@ -2327,15 +2442,15 @@
         htmlSel+='</div>';
         htmlSel+='</div>';
 
-        htmlSel+='<div class="row">';
+        htmlSel+='<div class="row">'; 
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].etiquetaServicio+'</label>';
+        htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+etiquetaServicio+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+','+modelo+','+numeroSerie+'</label>';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 
@@ -2520,6 +2635,9 @@
         // console.log(j);
         $("#detalleEquipoModal").modal("show");
         // console.log(arrEquipos[j].aTarea);
+        $("#divCerrarEquipo").hide();
+        $("#divEditEqui").show();
+
         arrTareasEdit = [];
         cargaServicio(arrEquipos[j].id_tipo_equipo);
         $("#hdIdTipoEquipo").val(arrEquipos[j].id_tipo_equipo);
@@ -2827,7 +2945,8 @@
                         width: 600,
                         }).then((result) => {
                         if (result.isConfirmed) {
-
+                            $("#detalleEquipoModal").modal("hide");
+                            // arrEquipos=[];
                         }else{
                             
                         }
@@ -2889,7 +3008,7 @@
                         // msjeAlerta2('','El equipo ha sido registrado como ATENDIDO','success',txtIdSolic) ////este no se
                         Swal.fire({
                             title: '',
-                            html: 'El equipo ha sido registrado como ATENDIDO',
+                            html: '<span>El equipo ha sido registrado como ATENDIDO</span>',
                             icon: 'success',
                             showCancelButton: false,
                             confirmButtonColor: '#ab0033',
@@ -2899,7 +3018,8 @@
                             width: 600,
                             }).then((result) => {
                             if (result.isConfirmed) {
-
+                                $("#detalleEquipoModal").modal("hide");
+                                // arrEquipos=[];
                             }else{
                                 
                             }

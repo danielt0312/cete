@@ -128,6 +128,13 @@
     margin: 20px auto 0 auto;
   }
 
+  .scrollHorizontal{
+    overflow-x: scroll;
+    overflow-y: scroll;
+    height: 20em;
+    width: 100%;
+  }
+
   .btnEliminar{
     background-color: transparent !important;
     order: none !important;

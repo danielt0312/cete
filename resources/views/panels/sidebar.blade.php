@@ -10,10 +10,11 @@
             <span class="nav-link-text ms-1 text-white">Inicio</span>
           </a>
         </li>
-        
+        @can('168-menu-registros-ordenes')
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Ordenes</h6>
         </li>
+        
         <li class="nav-item">
           <a class="nav-link " href="{{ route ('listadoOrdenes') }}"> 
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -22,6 +23,8 @@
             <span class="nav-link-text ms-1 text-white">Registros</span>
           </a>
         </li>
+        @endcan
+        @can('193-menu-nueva-orden')
         <li class="nav-item">
           <a class="nav-link " href="{{ route ('crearOrden') }}">
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
@@ -30,8 +33,9 @@
             <span class="nav-link-text ms-1 text-white">Nueva Orden</span>
           </a>
         </li>
+        @endcan
 
-
+        @can('204-ver-registros-solicitudes')
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Solicitudes</h6>
         </li>
@@ -43,6 +47,7 @@
             <span class="nav-link-text ms-1 text-white">Registros</span>
           </a>
         </li>
+        @endcan
 
         <!-- <li class="nav-item mt-3"> 
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Multiorden</h6>

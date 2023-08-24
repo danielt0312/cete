@@ -1,11 +1,24 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
+@php setPermissionsTeamId(3); @endphp
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @section('content')
 <style>
-  .table-responsive
-  {-sm|-md|-lg|-xl|-xxl
+  .table-responsive{
+    -sm|-md|-lg|-xl|-xxl
+  }
+
+  .select2-selection__rendered {
+    font-size: 0.875rem !important;
+  }
+
+  .select2-search__field {
+    font-size: 0.875rem !important;
+  }
+
+  .select2-selection__choice{
+    font-size: 0.875rem !important;
   }
 
 </style>
@@ -28,18 +41,19 @@
         </div>
 
         <div class="mb-2 p-3">
-        
           <!-- <button type="button" class="btn colorBtnPrincipal" id="btnFiltros">Filtros</button> -->
           <div class="row">
             <div class="col-6 text-start">
               <div class="form-group align-middle">
                 <!-- <button type="button" class="btn colorBtnPrincipal" id="btnFiltros">Filtrar</button> -->
                 <div class="dropdown btn-group dropend" >
+                  @can('169-btn-filt-registro')
                   <button class="btn colorBtnPrincipal btnFiltros"
                       data-bs-toggle="dropdown" id="btnFiltros"
                         aria-haspopup="true" aria-expanded="false" >
                       <i class="fa fa-filter"></i> Filtrar
                   </button>
+                  @endcan
                   <ul class="dropdown-menu" aria-labelledby="btnFiltros1" style="padding:0.75em;">
                     <li style="margin:auto;">
                       <div class="form-group"> 
@@ -193,9 +207,9 @@
       </div>-->
       <div class="modal-body"> 
         <div class="row">
-            <div class="col-12">
-                <br>
-            </div>
+          <div class="col-12" style="text-align:right;">
+              <span id="EtiquetaInfoOrdenTec" style="color:#ab0033;"></span>
+          </div>
         </div>
         <div class="row">
             <div class="col-4" style="text-align:center;  background-color:#ab0033;">
@@ -209,104 +223,127 @@
                 <br>
             </div>
         </div>
-      <form id="formTecnicos" name="formTecnicos" enctype="multipart/form-data">
-        <div class="col-12">
-            <div class="form-group">
-                <label for="selTecnicoEncargado">TÉCNICO ENCARGADO</label>
-                <!-- <select class="select2 form-control" multiple="multiple" data-mdb-filter="true" data-max-options="1" id="selTecnicoEncargado" name="selTecnicoEncargado" data-placeholder="Selecciona uno o varios técnicos"> -->
-                <select class="form-select" id="selTecnicoEncargado" name="selTecnicoEncargado" >
-                  
-                </select>
-                <input type="hidden" name="idSolModTec" id="idSolModTec" value="">
-                <input type="hidden" name="folioModTec" id="folioModTec" value="">
-                <input type="hidden" name="folioSolModTec" id="folioSolModTec" value="">
-                <input type="hidden" name="correoModTec" id="correoModTec" value="">
-                <input type="hidden" name="nombrecctModTec" id="nombrecctModTec" value="">
-                <input type="hidden" name="solicitanteModTec" id="solicitanteModTec" value="">
+        <form id="formTecnicos" name="formTecnicos" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-12">
+                <div class="form-group"> 
+                    <label>Seleccione el Técnico encargado de la orden de servicio, así como los técnicos auxiliares. A continuación, presione clic en el botón Agregar.</label>
+                </div>
             </div>
-            <!-- </div> -->
-        </div>
-        <div class="col-12">
-            <div class="form-group">
-                <label for="selTecnicosAuxiliares">TÉCNICOS AUXILIARES</label>
-                <select disabled class="select2 form-control" multiple="multiple" data-mdb-filter="true" id="selTecnicosAuxiliares" name="selTecnicosAuxiliares" data-placeholder="Selecciona uno o varios técnicos">
-                  <!-- <option value="1" >Jose Sulaiman</option>
-                  <option value="2" >Luis Perez</option>
-                  <option value="3" >Gohan</option> -->
-                </select>
-            </div>
-            <!-- </div> -->
-        </div>
-        <div class="col-12" style="text-align:right;">
-          <div class="form-group">
-              <button type="button" class="btn colorBtnPrincipal" disabled id="btnAsignarTecnico" onclick="fnAgregarTecnicos()">Agregar</button>
-              <br>
           </div>
-        </div>
-        <div class="col-12">
-            <div class="" id="divTecnicos">
-                <table id="tablaTecnicos" class="table">
-                    <thead>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NÚMERO</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TIPO DE TÉCNICO</th>
-                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ELIMINAR</th>
-                    </thead>
-                    <tbody id="tbTecnicos">
+          <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="selTecnicoEncargado">TÉCNICO ENCARGADO</label>
+                    <!-- <select class="select2 form-control" multiple="multiple" data-mdb-filter="true" data-max-options="1" id="selTecnicoEncargado" name="selTecnicoEncargado" data-placeholder="Selecciona uno o varios técnicos"> -->
+                    <select class="form-select" id="selTecnicoEncargado" name="selTecnicoEncargado" >
+                      
+                    </select>
+                    <input type="hidden" name="idSolModTec" id="idSolModTec" value="">
+                    <input type="hidden" name="folioModTec" id="folioModTec" value="">
+                    <input type="hidden" name="folioSolModTec" id="folioSolModTec" value="">
+                    <input type="hidden" name="correoModTec" id="correoModTec" value="">
+                    <input type="hidden" name="nombrecctModTec" id="nombrecctModTec" value="">
+                    <input type="hidden" name="solicitanteModTec" id="solicitanteModTec" value="">
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="selTecnicosAuxiliares">TÉCNICOS AUXILIARES</label>
+                    <select disabled class="select2 form-control" style="font-size: 0.875rem !important;" multiple="multiple" data-mdb-filter="true" id="selTecnicosAuxiliares" name="selTecnicosAuxiliares" data-placeholder="Seleccionar técnico(s) auxiliar(es)">
+                    </select>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-12" style="text-align:right;">
+              <div class="form-group">
+                  <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal" id="btnCancelTec">Cancelar</button>
+                  <button type="button" class="btn colorBtnPrincipal" disabled id="btnAsignarTecnico" onclick="fnAgregarTecnicos()">Agregar</button>
+                  <br>
+              </div>
+            </div>
+          </div>
+          <div class="row detalleTecnicos">
+            <div class="col-12">
+              <label style="font-color:#ab0033 !important;">Listado de técnicos:</label> <br>
+                <div class="" id="divTecnicos">
+                    <table id="tablaTecnicos" class="table">
+                        <thead>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NÚMERO</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TÉCNICO</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TIPO DE TÉCNICO</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ELIMINAR</th>
+                        </thead>
+                        <tbody id="tbTecnicos">
 
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                    <br>
+                </div>
+            </div>
+          </div>
+          <div class="row detalleTecnicos">
+            <div class="col-12">
+                
+            </div>
+          </div>
+          <div class="row detalleTecnicos">
+            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                <span style="color:white;">Seleccionar fecha de visita</span>
+            </div>
+            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+            </div>
+          </div>
+          <div class="row detalleTecnicos">
+            <div class="col-12">
                 <br>
             </div>
-        </div>
-        <div class="row">
-          <div class="col-5">
-              <div class="form-group">
-                  <label for="selTecnicosAuxiliares">Fecha de programación para inicio de orden:</label>
-              </div>
-              <!-- </div> -->
           </div>
-          <div class="col-3">
-              <div class="form-group">
-                <input type="datetime-local" name="fecha_inicio_prog" id="fecha_inicio_prog">
-              </div>
-              <!-- </div> -->
+          <div class="row detalleTecnicos">
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Seleccione la fecha de visita en que será programado el inicio y término de la orden de servicio. La fecha de inicio será notificado al usuario por correo electrónico.</label>
+                </div>
+            </div>
           </div>
-          <!-- <div class="col-4">
-              <div class="form-group">
-                <input type="time">
-              </div>
-          </div> -->
-        </div>
-        <br>
-        <br>
-        <div class="row">
-           <div class="col-5">
-              <div class="form-group">
-                  <label for="selTecnicosAuxiliares">Fecha de programación para cierre de orden:</label>
-              </div>
+          <div class="row detalleTecnicos">
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="selTecnicosAuxiliares">Fecha de programación para inicio de orden:</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                  <input type="datetime-local" name="fecha_inicio_prog" id="fecha_inicio_prog">
+                </div>
+            </div>
           </div>
-          <div class="col-3">
-              <div class="form-group">
-                <!-- <input type="date"> -->
-                <input type="datetime-local" name="fecha_fin_prog" id="fecha_fin_prog">
-              </div>
+          <br>
+          <br>
+          <div class="row detalleTecnicos">
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="selTecnicosAuxiliares">Fecha de programación para cierre de orden:</label>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                  <input type="datetime-local" name="fecha_fin_prog" id="fecha_fin_prog">
+                </div>
+            </div>
           </div>
-          <!--<div class="col-4">
-              <div class="form-group">
-                 <input type="time">
-              </div>
-          </div> -->
-        </div>
         </form>
-        <div class="row">
+        <div class="row detalleTecnicos">
             <div class="col-12" >
             </div>
         </div>
-        <div class="row">
+        <div class="row detalleTecnicos">
             <div class="col-12" style="text-align:right;" >
               <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal" onclick="fnCancelarModTecnicos()">Cancelar</button>
-              <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTec" onclick="fnAsignarTecnicos()">Asignar</button>
+              <button type="button" class="btn colorBtnPrincipal" id="btnAsignarTec" onclick="fnAsignarTecnicos()">Asignar Técnico(s)</button>
             </div>
         </div>
       </div>
@@ -329,9 +366,9 @@
       </div> -->
       <div class="modal-body">
         <div class="row">
-            <div class="col-12">
-                <br>
-            </div>
+          <div class="col-12" style="text-align:right;">
+              <span id="EtiquetaInfoOrdenCan" style="color:#ab0033;>"></span>
+          </div>
         </div>
         <div class="row">
             <div class="col-8" style="text-align:center;  background-color:#ab0033;">
@@ -387,7 +424,9 @@
         <div class="row">
             <div class="col-12" style="text-align:right;" >
               <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal">Cancelar</button>
+              @can("btn-ins-cancelar")
               <button type="button" class="btn colorBtnPrincipal" onclick="fnGuardarCancelacion()" id="btnGuardarCancelacion">Aceptar</button>
+              @endcan
             </div>
         </div>
       </div>
@@ -410,10 +449,9 @@
       </div> -->
       <div class="modal-body">
         <div class="row">
-            <div class="col-12" style="text-align:right;">
-                <!-- <span id="spclavecct" style="color:#ab0033;>"></span> -->
-                <br>
-            </div>
+        <div class="col-12" style="text-align:right;">
+              <span id="EtiquetaInfoOrdenCerr" style="color:#ab0033;>"></span>
+          </div>
         </div>
 
         <div class="row">
@@ -939,6 +977,8 @@
             { data: null, render:function(data){
                 if(data.tiempo_apertura>1){
                   return '<span class="text-xs">'+data.tiempo_apertura+' DÍAS</span>';
+                }if(data.tiempo_apertura==0){
+                  return '<span class="text-xs">'+data.tiempo_apertura+' DÍAS</span>';
                 }else{
                   return '<span class="text-xs">'+data.tiempo_apertura+' DÍA</span>';
                 }
@@ -967,14 +1007,15 @@
               var correoSol="'"+data.correo_solicitante+"'";
               var nombrecctSol="'"+data.nombrecct+"'";
               var solicitanteSol="'"+data.nombre_solicitante+"'"; 
+              var desc_estatus="'"+data.desc_estatus_orden+"'"; 
 
                 if(data.desc_estatus_orden=='Cancelada' ){
                   estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                           '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                          '<li>'+ 
+                          '@can("188-opt-imprimir-registro")<li>'+ 
                           '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
-                          '</li>'+
+                          '</li>@endcan'+
                           '<li>';
                     return estatuss;
                 }else{
@@ -983,18 +1024,18 @@
                     estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                           '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                          '<li>'+
-                          '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden...</a>'+
-                          '</li>'+
-                          '<li>'+
-                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
-                          '</li>'+ 
-                          '<li>'+
+                          '@can("170-opt-edit-registro")<li>'+
+                          '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
+                          '</li>@endcan'+
+                          '@can("opt-ins-tecnicos")<li>'+
+                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos</a>'+
+                          '</li>@endcan'+ 
+                          '@can("188-opt-imprimir-registro")<li>'+
                           '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
-                          '</li>'+
-                          '<li>'+
-                          '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
-                          '</li>'+
+                          '</li>@endcan'+
+                          '@can("opt-cancelar-registro")<li>'+
+                          '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
+                          '</li>@endcan'+
                           '</ul>'+
                           '</div>';
                     return estatuss;
@@ -1003,18 +1044,18 @@
                    estatuss+= '<div class="dropdown btn-group dropstart">'+
                          '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                          '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                         '<li>'+
-                         '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden...</a>'+
-                         '</li>'+
-                         '<li>'+
-                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
-                          '</li>'+
-                         '<li>'+
+                         '@can("170-opt-edit-registro")<li>'+
+                         '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
+                         '</li>@endcan'+
+                         '@can("187-opt-iniciar-registro")<li>'+
+                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
+                          '</li>@endcan'+
+                         '@can("188-opt-imprimir-registro")<li>'+
                          '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
-                         '</li>'+
-                         '<li>'+
-                         '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
-                         '</li>'+
+                         '</li>@endcan'+
+                         '@can("opt-cancelar-registro")<li>'+
+                         '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
+                         '</li>@endcan'+
                          '</ul>'+
                          '</div>';
                    return estatuss;
@@ -1023,10 +1064,10 @@
                    estatuss+= '<div class="dropdown btn-group dropstart">'+
                          '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                          '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                         '<li>'+
+                         '@can("188-opt-imprimir-registro")<li>'+
                         //  '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                          '<a onclick="imprimirPDFOrdenGuardado('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
-                         '</li>'+
+                         '</li>@endcan'+
                          '</ul>'+
                          '</div>';
                    return estatuss;
@@ -1034,30 +1075,30 @@
                     estatuss+= '<div class="dropdown btn-group dropstart">'+
                           '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                           '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                          '<li>'+
-                          '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden...</a>'+
-                          '</li>';
+                          '@can("170-opt-edit-registro")<li>'+
+                          '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
+                          '</li>@endcan';
                           if(data.desc_estatus_orden!='Trabajando' ){
-                            estatuss+='<li>'+
-                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos...</a>'+
-                          '</li>';
+                            estatuss+='@can("opt-ins-tecnicos")<li>'+
+                          '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos</a>'+
+                          '</li>@endcan';
                           }
                           
                           if(data.desc_estatus_orden!='Trabajando' ){
-                            estatuss+='<li>'+
-                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
-                          '</li>';
+                            estatuss+='@can("187-opt-iniciar-registro")<li>'+
+                          '<a onclick="updEstatusOrden('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item" > <i class="fas fa-play"></i> Iniciar Orden</a>'+
+                          '</li>@endcan';
                           }
-                          estatuss+='<li>'+
+                          estatuss+='@can("188-opt-imprimir-registro")<li>'+
                           '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
-                          '</li>'+
-                          '<li>'+
-                          '<a onclick="fnCerrarOrden('+data.id_orden+',4,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cerrarOrdenModal" > <i class="fas fa-check"></i> Cerrar Orden...</a>'+
-                          '</li>';
+                          '</li>@endcan'+
+                          '@can("189-opt-cerrar-registro")<li>'+
+                          '<a onclick="fnCerrarOrden('+data.id_orden+',4,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cerrarOrdenModal" > <i class="fas fa-check"></i> Cerrar Orden</a>'+
+                          '</li>@endcan';
                     if(data.desc_estatus_orden=='En espera' || data.desc_estatus_orden=='Trabajando'){
-                      estatuss+='<li>'+
-                            '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden...</a>'+
-                            '</li>';
+                      estatuss+='@can("opt-cancelar-registro")<li>'+
+                            '<a onclick="cancelarOrden('+data.id_orden+',5,'+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#cancelOrdenModal"> <i class="	fas fa-times"></i> Cancelar Orden</a>'+
+                            '</li>@endcan';
                     }
                     estatuss+='</ul>'+
                             '</div>';
@@ -1098,11 +1139,11 @@
       });
   }
 
-  function updEstatusOrden(vidSolicServ, folio, folioSol, correo, nombrecct, solicitante){
+  function updEstatusOrden(vidSolicServ, folio, folioSol, correo, nombrecct, solicitante, desc_estatus){
 
     Swal.fire({
             title: '',
-            text: '¿Está seguro que desea iniciar la orden de servicio?',
+            html: '<spann>¿Está seguro que desea iniciar la orden de servicio?</spann>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ab0033',
@@ -1111,6 +1152,17 @@
             cancelButtonText: 'Cancelar',
             }).then((result) => {
             if (result.isConfirmed) {
+              Swal.fire({
+                  html: '<div class="fa-3x">'+
+                          '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                          '<p></p>'+
+                          '<p>Espere por favor</p>'+
+                              
+                          '</div>',
+                  allowOutsideClick: false,
+                  showConfirmButton: false
+              });
+
               $.ajax({
                   url: "{{ route('updEstatusI') }}",
                   data:{idSolicServ : vidSolicServ, folio : folio, folioSol : folioSol, correo : correo, nombrecct : nombrecct, solicitante : solicitante},
@@ -1119,10 +1171,10 @@
                   dataType: 'json', 
                   success: function(data) {
                     if(data[0]['insiniciasolicitud']==false){
-                      msjeAlertaPrincipal('','Se ha iniciado con éxito la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado.','success')
+                      msjeAlertaPrincipal('','<span>Se ha iniciado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
                       load();
                     }else{
-                      msjeAlertaPrincipal('No se pudo iniciar la orden','','error')
+                      msjeAlertaPrincipal('','No se pudo iniciar la orden','error')
                     }
                   }
               });
@@ -1154,9 +1206,8 @@
     let urlEditar = '{{ route("download-pdf", ":id") }}';
     urlEditar = urlEditar.replace(':id', idOrden);
  
-	  // location.href = urlEditar; // para que vaya a la url a descargar directo el pdf
-    var win = window.open(urlEditar, '_blank'); /// para abrir una nueva pestaña y que se muestre el pdf
- 
+    // var win = window.open(urlEditar, '_blank'); /// para abrir una nueva pestaña y que se muestre el pdf // este es el bueno para descargar
+    var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
     
     // $.ajax({
     //     url: urlEditar,
@@ -1224,6 +1275,7 @@
         confirmButtonText: 'Aceptar',
         // cancelButtonText: 'Aceptar',
         width: 600,
+        allowOutsideClick: false,
         }).then((result) => {
         if (result.isConfirmed) {
 
@@ -1252,7 +1304,7 @@
       })
   }
 
-  function cancelarOrden(idSolicServ,idEstatusOrden, folio, folioSol, correo, nombrecct, solicitante){
+  function cancelarOrden(idSolicServ,idEstatusOrden, folio, folioSol, correo, nombrecct, solicitante, desc_estatus){
     $("#hdIdSolicServ").val("");
     $("#selMotivoCancela").val('');
     $("#txtComentarios").val('');
@@ -1270,6 +1322,14 @@
     $("#hdCorreo").val(correo);
     $("#hdNombrecct").val(nombrecct);
     $("#hdSolicitante").val(solicitante);
+    
+    var EtiquetaInfoOrdenCan='';
+    EtiquetaInfoOrdenCan+='FOLIO DE ORDEN: ';
+    EtiquetaInfoOrdenCan+=''+folio+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    EtiquetaInfoOrdenCan+='ESTATUS: '; 
+    EtiquetaInfoOrdenCan+=''+desc_estatus+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    $("#EtiquetaInfoOrdenCan").html(EtiquetaInfoOrdenCan);
+
   }
  
   function fnCierreOrden(){
@@ -1302,6 +1362,18 @@
             cancelButtonText: 'Cancelar',
             }).then((result) => {
             if (result.isConfirmed) {
+
+              Swal.fire({
+                  html: '<div class="fa-3x">'+
+                          '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                          '<p></p>'+
+                          '<p>Espere por favor</p>'+
+                              
+                          '</div>',
+                  allowOutsideClick: false,
+                  showConfirmButton: false
+              });
+
               $.ajax({
                   url: "{{ route('cerrarOrden') }}",
                   data: data2,
@@ -1313,11 +1385,11 @@
                   success: function(data) {
                     // console.log(data);
                     if(data[0]['inscierrasolicitud']==0){
-                      msjeAlertaPrincipal('','Se ha finalizado con éxito la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado','success')
+                      msjeAlertaPrincipal('','<span>Se ha finalizado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
                       $("#cerrarOrdenModal").modal("hide");
                       load();
                     }else{
-                      msjeAlertaPrincipal('No se cerró la orden','','error')
+                      msjeAlertaPrincipal('','No se cerró la orden','error')
                     }
                   }
               });
@@ -1358,6 +1430,17 @@
             cancelButtonText: 'Cancelar',
             }).then((result) => {
             if (result.isConfirmed) {
+              Swal.fire({
+                  html: '<div class="fa-3x">'+
+                          '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                          '<p></p>'+
+                          '<p>Espere por favor</p>'+
+                              
+                          '</div>',
+                  allowOutsideClick: false,
+                  showConfirmButton: false
+              });
+
               $.ajax({
                   url: "{{ route('updEstatusO') }}",
                   data:{idSolicServ : hdIdSolicServ, id_motivo_canc : vId_motivo_canc, comentarios:vComentarios, id_usuario:vId_usuario, desc_rol_usr:vDesc_rol_usr, hdFolioSol : hdFolioSol, hdCorreo : hdCorreo, hdNombrecct : hdNombrecct, hdSolicitante : hdSolicitante,},
@@ -1366,11 +1449,11 @@
                   dataType: 'json', 
                   success: function(data) {
                     if(data[0]['inscancelasolicitud']==false){
-                      msjeAlertaPrincipal('','Se ha cancelado con éxito la orden de servicio con el folio: '+hdFolio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado','success')
+                      msjeAlertaPrincipal('','<span>Se ha cancelado con éxito la orden de servicio con el folio: <strong>'+hdFolio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
                       load();
                       $("#cancelOrdenModal").modal("hide");
                     }else{
-                      msjeAlertaPrincipal('No se cancelo','','error')
+                      msjeAlertaPrincipal('','No se cancelo','error')
                     }
                     $("#cancelOrdenModal").modal("hide");
                     
@@ -1388,11 +1471,20 @@
   //       return new Date(dt.getTime() + minutes*60000);
   //   }
 
-  function verTecnicos(idOrden, folio, folioSol, correo,nombrecct,solicitante){
+  function verTecnicos(idOrden, folio, folioSol, correo,nombrecct,solicitante,desc_estatus){
     $("#idSolModTec").val('');
     $("#folioModTec").val('');
     $("#folioSolModTec").val('');
     $("#correoModTec").val('');
+
+    $("#btnCancelTec").show();
+    $(".detalleTecnicos").hide();
+    $("#selTecnicoEncargado").val("0").attr("selected",true);
+    $("#selTecnicosAuxiliares option:selected").prop("selected", false);
+    $("#selTecnicosAuxiliares option").remove();
+    $("#selTecnicosAuxiliares").prop("disabled",true);
+    $("#btnAsignarTecnico").prop("disabled",true);
+
     $("#asignarTecnicosModal").modal("show");
     $("#idSolModTec").val(idOrden);
     $("#folioModTec").val(folio);
@@ -1400,6 +1492,13 @@
     $("#correoModTec").val(correo);
     $("#nombrecctModTec").val(nombrecct);
     $("#solicitanteModTec").val(solicitante); 
+    
+    var EtiquetaInfoOrdenTec='';
+    EtiquetaInfoOrdenTec+='FOLIO DE ORDEN: ';
+    EtiquetaInfoOrdenTec+=''+folio+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    EtiquetaInfoOrdenTec+='ESTATUS: '; 
+    EtiquetaInfoOrdenTec+=''+desc_estatus+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    $("#EtiquetaInfoOrdenTec").html(EtiquetaInfoOrdenTec);
 
     // $("#fecha_inicio_prog").val('');
     var now = new Date();
@@ -1417,14 +1516,22 @@
   
  
   function fnAgregarTecnicos(){
-    // console.log('asignar tecnico');
-    vEncargado=parseInt($("#selTecnicoEncargado").val());
-    vEncargadoNombre=$("#selTecnicoEncargado option:selected").text(); 
     
-    // console.log(vEncargadoNombre);
-    tecnicosAuxiliaresArray.unshift({id_tecnico:vEncargado, nombre_tecnico:vEncargadoNombre, es_responsable:1});
-    // console.log(tecnicosAuxiliaresArray);
-    drawRowTecnico();
+    if($("#selTecnicoEncargado").val()!=0){
+       // console.log('asignar tecnico');
+      vEncargado=parseInt($("#selTecnicoEncargado").val());
+      vEncargadoNombre=$("#selTecnicoEncargado option:selected").text(); 
+      
+      // console.log(vEncargadoNombre);
+      tecnicosAuxiliaresArray.unshift({id_tecnico:vEncargado, nombre_tecnico:vEncargadoNombre, es_responsable:1});
+      // console.log(tecnicosAuxiliaresArray);
+      drawRowTecnico();
+      $("#btnCancelTec").hide();
+      $(".detalleTecnicos").show();
+    }else{
+      msjeAlertaSecundario('Debe seleccionar un Técnico Encargado','','error');
+    }
+   
    
   }
 
@@ -1439,7 +1546,18 @@
     // console.log(data2);
     // console.log(tecnicosAuxiliaresArray[0].es_responsable);
     if(tecnicosAuxiliaresArray != ''){
-      console.log('no esta vacio');
+      // console.log('no esta vacio');
+      Swal.fire({
+          html: '<div class="fa-3x">'+
+                  '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                  '<p></p>'+
+                  '<p>Espere por favor</p>'+
+                      
+                  '</div>',
+          allowOutsideClick: false,
+          showConfirmButton: false
+      });
+
       if(tecnicosAuxiliaresArray[0].es_responsable==1){
         $.ajax({
             url: "{{ route('asignarTecnico') }}",
@@ -1452,20 +1570,20 @@
             success: function(data) {
               // console.log('regreso tecnicos de asignar');
               if(data[0]['fninstecnicos']==1){
-                msjeAlertaPrincipal('','Se han asignado correctamente los Técnicos de Soporte a la orden de servicio con el folio: '+folio+'. Se ha notificado al usuario mediante el correo electrónico proporcionado.','success')
+                msjeAlertaPrincipal('','<span>Se han asignado correctamente los Técnicos de Soporte a la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
                 load();
                 $("#asignarTecnicosModal").modal("hide");
               }else{
-                msjeAlertaPrincipal('Técnicos no se asignados','','error')
+                msjeAlertaPrincipal('','Técnicos no se asignaron','error')
                 $("#asignarTecnicosModal").modal("hide");
               }
             }
         });
       }else{
-        msjeAlertaSecundario('Tiene que seleccionar un Técnico Encargado','','error')
+        msjeAlertaSecundario('Tiene que seleccionar un Técnico Encargado','','error');
       }
     }else{
-        msjeAlertaSecundario('','Tiene que seleccionar un Técnico Encargado','error')
+        msjeAlertaSecundario('','Tiene que seleccionar un Técnico Encargado','error');
     }
 
   }
@@ -1492,6 +1610,14 @@
       if ( item !== -1 ) {
         tecnicosAuxiliaresArray.splice( item, 1 );
         $("#tr_"+item).remove();
+        if(tecnicosAuxiliaresArray==''){
+          $(".detalleTecnicos").hide();
+          $("#selTecnicoEncargado").val("0").attr("selected",true);
+          $("#selTecnicosAuxiliares option:selected").prop("selected", false);
+          $("#selTecnicosAuxiliares option").remove();
+          $("#selTecnicosAuxiliares").prop("disabled",true);
+          $("#btnAsignarTecnico").prop("disabled",true);
+        }
         drawRowTecnico();
       } else{
         tecnicosAuxiliaresArray = [];
@@ -1517,7 +1643,7 @@
     window.location = urlEditar;
   }
 
-  function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante){
+  function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante, desc_estatus){
 
     $("#hdIdOrdenCierra").val("");
     $("#hdIdEstatusCierra").val("");
@@ -1537,6 +1663,13 @@
     $("#correoCierre").val(correo); 
     $("#nombrecctCierre").val(nombrecct); 
     $("#solicitanteCierre").val(solicitante); 
+
+    var EtiquetaInfoOrdenCerr='';
+    EtiquetaInfoOrdenCerr+='FOLIO DE ORDEN: ';
+    EtiquetaInfoOrdenCerr+=''+folio+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    EtiquetaInfoOrdenCerr+='ESTATUS: '; 
+    EtiquetaInfoOrdenCerr+=''+desc_estatus+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    $("#EtiquetaInfoOrdenCerr").html(EtiquetaInfoOrdenCerr);
 
     let urlEditar = '{{ route("verDetalleOrden", ":id") }}';
     urlEditar = urlEditar.replace(':id', idOrden);
@@ -1565,7 +1698,7 @@
         $("#lblNivel").text(data[0].nivel);
         //Datos Reporte-------------------------------------------------------------------------
         $("#lblTipoOrden").text(data[0].desc_tipo_orden);
-        $("#lblAreaAtiende").text(data[0].domicilio);
+        $("#lblAreaAtiende").text(data[0].area_atiende);
         $("#lblSolicitante").text(data[0].solicitante);
         $("#lblSolicitanteTel").text(data[0].telef_solicitante);
         $("#lblSolicitanteCorr").text(data[0].correo_solic);
@@ -1610,13 +1743,13 @@
           for (var i = 0; i < vequip.length; i++) {
 
             if(vequip[i].ubicacion=='' || vequip[i].ubicacion==null){
-              vubicacion='-';
+              vubicacion='S/D';
             }else{
               vubicacion=vequip[i].ubicacion;
             }
 
             if(vequip[i].solucion=='' || vequip[i].solucion==null){
-              vsolucion='-';
+              vsolucion='S/D';
             }else{
               vsolucion=vequip[i].solucion;
             }
@@ -1642,13 +1775,17 @@
               // cadenaServicios += vtareas[j].servicio+ ', '; // checar que si es el mismo servicio que solo lo ponga una vez
             } 
 
+            var vMarcaa='S/D';
+            var vModeloo='S/D';
+            var vNumSeriee='S/D';
+
             // console.log(vequip[i].id_equipo_tarea);
             htmlSel+='<table style="border:1px solid; width:100%;">';
             htmlSel+='<tr style="border:1px solid; background-color:#8392ab;">';
             htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+vequip[i].tipo_equipo+'</label></td>';
-            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+vequip[i].id_equipo_tarea+'</label></td>';
-            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+vequip[i].id_equipo_tarea+'</label></td>';
-            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+vequip[i].id_equipo_tarea+'</label></td>';
+            htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+vMarcaa+'</label></td>';
+            htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+vModeloo+'</label></td>';
+            htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+vNumSeriee+'</label></td>';
             htmlSel+='</tr>';
             htmlSel+='<tr>';
             htmlSel+='<td colspan="4">';
@@ -1699,6 +1836,7 @@
     $("#mostrarDibujo").hide();
     $("#revisarDibujo").hide();
     $("#visualizarNoSeleccionado").hide();
+    $(".detalleTecnicos").hide();
 
     $('#tablaListado').DataTable({
       "language": {
@@ -1969,38 +2107,8 @@
     
     vEncargado=0;
     $("#selTecnicoEncargado").change(function() {  
-      // $("#selTecnicosAuxiliares").prop('disabled', false);
+      vEncargado=$("#selTecnicoEncargado").val();
       
-      // if($("#selTecnicoEncargado").val()!=0){
-        
-      //   $("#selTecnicosAuxiliares").prop('disabled', false);
-        vEncargado=$("#selTecnicoEncargado").val();
-      //   $("#selTecnicosAuxiliares option").prop('disabled', false);
-      //   $("#selTecnicosAuxiliares option[value="+vEncargado+"]").prop('disabled', true);
-        
-      //   console.log(vEncargado);
-      // }else{
-      //   vEncargado=0;
-      //   $("#selTecnicosAuxiliares").val("0");
-      //   // $("#selTecnicosAuxiliares option[value="+vEncargado+"]").prop('disabled', false);
-      //   $("#selTecnicosAuxiliares option[value=0]").attr("selected",true);
-      //   $("#selTecnicosAuxiliares").prop('disabled', true);
-      // }
-      
-      // if(vEncargado==''){
-      //   var tecnicoEncargado = []; 
-      //   var tecnicosEnc = document.getElementById("selTecnicoEncargado");
-      //   outer: for (var i = 0; i < tecnicosEnc.options.length; i++) {
-      //       if(tecnicosEnc.options[i].selected == true){
-      //         vEncargado=tecnicosEnc.options[i].value;
-      //         $("#selTecnicosAuxiliares").prop('disabled', false);
-      //         break outer;
-      //       }
-      //   }
-      //   console.log(vEncargado);
-      // }else{
-      //   msjeAlertaSecundario('','No puede seleccionar mas de un Técnico Encargado','error');
-      // }
       if( vEncargado != 0 ){
         let urlEditar = '{{ route("cargarTecAux", ":id") }}';
         urlEditar = urlEditar.replace(':id', vEncargado);
@@ -2011,7 +2119,7 @@
           dataType: 'json', // added data type
           success: function(data) {
               // console.log(data);
-              var htmlSel='<option value="0">Seleccionar</option>';
+              var htmlSel='<option value="0">Seleccionar técnico(s) auxiliar(es)</option>';
               // for (var i = 0; i < data[0].length; i++) {
               //     htmlSel+='<option value="'+data[0][i].id_tecnico+'" data-tec="'+data[0][i].nombre_tecnico+'">'+data[0][i].nombre_tecnico+'</option>'; 
               // }
@@ -2043,10 +2151,7 @@
         // console.log($("#selTecnicoEncargado").val());
         if(vTecnicoEnc==0 || vTecnicoEnc=='' || vTecnicoEnc==null){
           msjeAlertaSecundario('','Favor de seleccionar el Técnico Encargado','error');
-          // $("#selTecnicosAuxiliares").val();
-          //  $("#selTecnicosAuxiliares option[value='']").attr("selected",true);
-          // document.getElementById("selTecnicosAuxiliares").value = null;
-          // $("#btnAsignarTecnico").prop('disabled', true);
+
         }else{
             var vTecnicoAux=$("#selTecnicosAuxiliares").val();
             // var tecnicosAuxiliaresArray = []; 
@@ -2058,9 +2163,6 @@
                   tecnicosAuxiliaresArray.push({id_tecnico:parseInt(tecnicosAux.options[i].value), nombre_tecnico:tecnicosAux.options[i].text, es_responsable:0});
                 }
             }
-            // $("#btnAsignarTecnico").prop('disabled', false);
-
-            // console.log(tecnicosAuxiliaresArray);
         }
     });  
 
