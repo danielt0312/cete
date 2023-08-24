@@ -1027,7 +1027,7 @@
                           '@can("170-opt-edit-registro")<li>'+
                           '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
                           '</li>@endcan'+
-                          '@can("opt-ins-tecnicos")<li>'+
+                          '@can("186-opt-ins-tecnicos")<li>'+
                           '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos</a>'+
                           '</li>@endcan'+ 
                           '@can("188-opt-imprimir-registro")<li>'+
@@ -1079,7 +1079,7 @@
                           '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
                           '</li>@endcan';
                           if(data.desc_estatus_orden!='Trabajando' ){
-                            estatuss+='@can("opt-ins-tecnicos")<li>'+
+                            estatuss+='@can("186-opt-ins-tecnicos")<li>'+ 
                           '<a onclick="verTecnicos('+data.id_orden+','+fol+','+folSol+','+correoSol+','+nombrecctSol+','+solicitanteSol+','+desc_estatus+')" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#asignarTecnicosModal"> <i class="fas fa-user-plus"></i> Asignar Técnicos</a>'+
                           '</li>@endcan';
                           }

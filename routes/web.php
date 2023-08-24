@@ -93,7 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
     }); 
 
     Route::group(['prefix' => 'solicitudes'], function(){
-        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros');
+        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros')->middleware('permission:204-ver-registros-solicitudes');
         Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
         Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
         Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::get('/formulario_registro', 'App\Http\Controllers\VentanillaController@formulario_registro')->name('formulario_registro');
         // Route::get('/formulario_index')->name('formulario_index');
         // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
-    });
+    }); 
 }); 
     
 Route::group(['prefix' => 'ventanilla'], function(){
@@ -155,3 +155,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/clear_cache', function () {
+    $clear[0] = \Artisan::call('cache:clear');
+    $clear[1] = \Artisan::call('route:clear');
+    $clear[2] = \Artisan::call('optimize:clear');
+    $clear[3] = \Artisan::call('config:cache');
+    $clear[4] = \Artisan::call('view:clear');
+    $clear[5] = \Artisan::call('clear-compiled');
+    $clear[6] = \Artisan::call('config:clear');
+    dd($clear);
+});

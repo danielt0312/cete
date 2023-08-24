@@ -21,10 +21,10 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <!-- <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-              </div> -->
-              <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px">
+              <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
         </div>
@@ -43,10 +43,10 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <!-- <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-                <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
-              </div> -->
-              <img src="{{asset('images/icon/icono2.png') }}" width="50px" height="50px">
+              <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                <i class="ni ni-single-02 text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono2.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
         </div>
@@ -65,10 +65,10 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <!-- <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
-                <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"></i>
-              </div> -->
-              <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px">
+              <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
+                <i class="ni ni-settings text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
         </div>
@@ -87,10 +87,10 @@
               </div>
             </div>
             <div class="col-4 text-end">
-              <!-- <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
-              </div> -->
-              <img src="{{asset('images/icon/icono4.png') }}" width="50px" height="50px">
+              <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono4.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
         </div>

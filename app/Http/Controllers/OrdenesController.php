@@ -134,9 +134,14 @@ class OrdenesController extends Controller
         // dd($ordenServicios[0]);
         $ordenServiciosDetalle=$ordenServicios[0];
 
-        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
+        $roles = Auth()->user()->roles;
+        foreach ($roles as $rol) {
+            $idRol= $rol->id; 
+        }
+
+        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden(".$idRol.")");
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
-        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
+        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden(".$idRol.")"); 
         $vid_usuario=Auth()->user()->id;
         $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
