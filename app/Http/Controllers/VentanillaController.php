@@ -11,6 +11,8 @@ use App\Mail\MailSend2;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\DataTables;
 use Session;
+Use Exception;
+use Illuminate\Database\QueryException;
 
 class VentanillaController extends Controller
 {
@@ -31,11 +33,11 @@ class VentanillaController extends Controller
     public function consulta_folio(Request $request){
         $vFolio = $request->vFolio;
         // dd($vFolio);
-        $data=[];
-        $data =  DB::select("select * from cas_cete.fn_solicitud_folio('".$vFolio."')");
+        $fn_solicitud_folio=[];
+        $fn_solicitud_folio =  DB::select("select * from cas_cete.fn_solicitud_folio('".$vFolio."')");
         // dd($data);
 
-        if ($data == null) {
+        if ($fn_solicitud_folio == null) {
             return array(
                 "exito" => false
                 // "data" => $data
@@ -44,23 +46,21 @@ class VentanillaController extends Controller
         else{
             return array(
                 "exito" => true,
-                "data" => $data
+                "data" => $fn_solicitud_folio
             );
         }
-        
-
         
     }
 
     public function consulta_folio_correo(Request $request){
         $vCorreo = $request->vCorreo;
         // dd($vCorreo);
-        $data=[];
-        $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreo."')");
+        $fn_solicitud_correo=[];
+        $fn_solicitud_correo =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreo."')");
         // dd($data);
         if ($request->ajax()) {
             // $data = User::latest()->get();
-            return Datatables::of($data)
+            return Datatables::of($fn_solicitud_correo)
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 // dd($row->folio_solicitud);
@@ -86,7 +86,7 @@ class VentanillaController extends Controller
 
         return array(
             // "exito" => false,
-            "data" => $data
+            "data" => $fn_solicitud_correo
         );
     }
 
@@ -94,11 +94,11 @@ class VentanillaController extends Controller
         $vFolio = $request->vFolio;
         // dd($vCorreo);
         $data=[];
-        $data =  DB::select("select * from cas_cete.fn_solicitud_folio('".$vFolio."')");
+        $fn_solicitud_folio =  DB::select("select * from cas_cete.fn_solicitud_folio('".$vFolio."')");
         // dd($data);
         if ($request->ajax()) {
             // $data = User::latest()->get();
-            return Datatables::of($data)
+            return Datatables::of($fn_solicitud_folio)
             ->addIndexColumn()
             ->addColumn('action', function($row){
                 // dd($row->folio_solicitud);
@@ -124,11 +124,9 @@ class VentanillaController extends Controller
 
         return array(
             // "exito" => false,
-            "data" => $data
+            "data" => $fn_solicitud_folio
         );
     }
-
-    
 
     public function sendEmail(Request $request){
         $vCorreoVerifica = $request->vCorreoVerifica;
@@ -152,10 +150,10 @@ class VentanillaController extends Controller
     public function sendEmail2(Request $request){
         $vCorreoVerifica = $request->vCorreoVerifica;
 
-        $data=[];
-        $data =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreoVerifica."')");
+        $fn_solicitud_correo=[];
+        $fn_solicitud_correo =  DB::select("select * from cas_cete.fn_solicitud_correo('".$vCorreoVerifica."')");
         // dd($data);
-        if ($data == null) {
+        if ($fn_solicitud_correo == null) {
             return array(
                 "exito" => false
                 // "data" => $data
@@ -200,26 +198,15 @@ class VentanillaController extends Controller
 
     public function formulario_index(Request $request){
 
-        // $correo_verifica = $request->correo_verifica;
-
-        // $data=[];
-        // // $data['correo_verifica'] = $request->correo_verifica;
-        // $data['data_serv'] =  DB::select("select * from public.fn_consulta_servicios()");
-        // // $data['data_mun'] =  DB::select("select * from public.fn_consulta_municipios()");
-        // $data['data_equipo'] =  DB::select("select * from public.fn_consulta_equipos()");
-        // $data['data_tipo_servicios'] =  DB::select("select * from public.fn_consulta_tipo_servicios()");
-        
-        
-        // dd($data);
         return view('ventanilla.formulario_index');//->with($data);
     }
 
     public function formulario_consulta(Request $request){
         // dd($request);
         // $prueba = "1234";
-        $data =  DB::select("select * from cas_cete.getcatcentrotrabajo('".$request->vCentro_Trabajo."')");
+        $fn_getcatcentrotrabajo =  DB::select("select * from cas_cete.getcatcentrotrabajo('".$request->vCentro_Trabajo."')");
         // dd($data);
-        if($data == null){
+        if($fn_getcatcentrotrabajo == null){
             return array(
                 "exito" => false,
             );
@@ -227,16 +214,15 @@ class VentanillaController extends Controller
         else{
             return array(
                 "exito" => true,
-                "data" => $data
+                "data" => $fn_getcatcentrotrabajo
             );
         }
     }
 
     public function formulario_registro(Request $request){
 
-        $data4 = DB::select("select * from cas_cete.fngenerafolio2(1,0)");
-        $pfolio_config  =  $data4[0]->fngenerafolio2;
-        $dato='';
+        $fn_fngenerafolio2 = DB::select("select * from cas_cete.fngenerafolio2(1,0)");
+        $pfolio_config  =  $fn_fngenerafolio2[0]->fngenerafolio2;
         // dd($request['arreglo_inf'][0]['vCorreo_Solicitante']);
 
         // dd($request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['clavecct']);
@@ -251,7 +237,8 @@ class VentanillaController extends Controller
         $pDescripcion_reporte = $request['arreglo_inf'][0]['vDescripcion_Reporte'];
         $pCoord_x = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['latitud'];
         $pCoord_y = $request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['longitud'];
-        $data =  DB::select("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.",'".$pfolio_config."')");
+
+        $fn_insert_solicitud =  DB::select("select * from cas_cete.fn_insert_solicitud(".$pId_cct.",'".$pClave_ct."','".$pSolicitante."','".$pTelefono_solicitante."','".$pCorreo_solicitante."',".$pDirector.",'".$pDescripcion_reporte."','".$pCoord_x."','".$pCoord_y."',".$pId_coordinacion.",'".$pfolio_config."')");
         // dd($request['arreglo_inf'][0]['arreglo_centrotrabajo'][0]['nombrect']);
 
         // $id_retorno = $data[0]->fn_insert_solicitud;
@@ -292,15 +279,15 @@ class VentanillaController extends Controller
     public function index_formulario_solicitud(Request $request){
         $vCorreoVerifica = $request->vCorreoVerifica;
 
-        $data_correo = DB::select("select * from insumos.cat_base_correos cbc where cbc.correo = '$vCorreoVerifica'");
-
-        if ($data_correo == '' || $data_correo == null) {
+        $fn_correo_verifica = DB::select("select * from fn_correo_verifica('".$vCorreoVerifica."')");
+        // dd($fn_correo_verifica);
+        if ($fn_correo_verifica == '' || $fn_correo_verifica == null) {
             return array(
                 "exito" => false
             );
         }
         else{
-            $vNombreCorreo = $data_correo[0]->nombre.' '.$data_correo[0]->apellidos;
+            $vNombreCorreo = $fn_correo_verifica[0]->nombre.' '.$fn_correo_verifica[0]->apellidos;
             Session::put('vCorreoVerifica', $vCorreoVerifica);
             Session::put('vNombreCorreo', $vNombreCorreo);
             return array(
@@ -310,7 +297,8 @@ class VentanillaController extends Controller
 
 
     }
-    public function buscar_folio(Request $request){
+    
+    public function buscar_folio_ventanilla(Request $request){
         // dd($request);
         // $data=[];
         // $data2=[];
@@ -319,182 +307,131 @@ class VentanillaController extends Controller
             // $data= '';
             // $data2= '';
             if ($request->bandera_orden == 0) {
-                $data =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
-                // dd($data);
-                $data3 = DB::select("select ess.id_solic_serv , ess.desc_problema ,ed.id as id_equipo_detalle, cte.tipo_equipo ,
-                        cs.servicio , ct.tarea 
-                        from cas_cete.equipos_serv_solic ess, cas_cete.equipos_detalle ed, cas_cete.cat_equipos_tareas cet,
-                        cas_cete.cat_servicios_tareas cst , cas_cete.cat_tipos_equipo cte,
-                        cas_cete.cat_servicios cs , cas_cete.cat_tareas ct  
-                        where ess.id = ed.id_equipos_serv 
-                        and ed.id_equipo_tarea = cet.id 
-                        and cet.id_tipo_equipo = cte.id 
-                        and cet.id_serv_tarea = cst.id 
-                        and cst.id_servicio = cs.id 
-                        and cst.id_tarea = ct.id 
-                        and ess.id_solic_serv = '".$request->id."' 
-                        and ess.activo = true
-                        and ed.activo = true");
+                $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
+                // dd($fn_solicitud);
+                // dd($data[0]->id_estatus);
+                if ($fn_solicitud[0]->id_estatus_orden!='' || $fn_solicitud[0]->id_estatus_orden!=null) {
+                    $id_estatus = $fn_solicitud[0]->id_estatus_orden;
+                }
+                else{
+                    $id_estatus = $fn_solicitud[0]->id_estatus;
+                }
+                // dd($id_estatus);
+                $fn_detalle_equipos = DB::select("select * from cas_cete.fn_detalle_equipos('".$request->id."')");
                     // dd($data3);
                 
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1");
+                $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
 
-                if ($data[0]->id_estatus != 1 && $data[0]->id_estatus != 6 && $data[0]->id_estatus != 7) {
+                if ($id_estatus != 1 && $id_estatus != 6 && $id_estatus != 7) {
                     
+                    $fn_inf_orden = DB::select("select * from fn_inf_orden('".$request->id."')");
                     
-                    $data2 = DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 2
-                                order by sst.fecha desc
-                                limit 1"); 
-
-                    $data4 = DB::select("
-                                select atss.id, atss.id_solic_serv, to2.es_responsable ,concat(cp.nombre, ' ', cp.apellido_1, ' ',cp.apellido_2) as nombre_completo  from 
-                                cas_cete.asigna_tecnico_solic_serv atss, 
-                                cas_cete.tecnicos_orden to2, 
-                                seguridad_sistemas.users u, 
-                                personas.cat_personas cp  
-                                where 
-                                atss.id = to2.id_asignacion 
-                                and to2.id_usuario = u.id 
-                                and u.id_persona = cp.id
-                                and atss.id_solic_serv = '".$request->id."'");
+                    $fn_inf_tecnicos = DB::select("select * from fn_inf_tecnicos('".$request->id."')");
                     
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1"); 
+                    // $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
 
                     // dd($data4);
                     return array(
-                        "exito" => false,
-                        "data" => $data,
-                        "folio_orden" => $data2[0]->folio,
-                        "estatus" => $data2[0]->estatus,
-                        "estatus_solicitud" => $data8[0]->estatus,
-                        "datos_orden" => $data3,
-                        "tecnicos_auxiliares" =>$data4
+                        "exito" => true,
+                        "data" => $fn_solicitud,
+                        "folio_orden" => $fn_inf_orden[0]->folio,
+                        "estatus" => $fn_inf_orden[0]->estatus,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "datos_equipos" => $fn_detalle_equipos,
+                        "tecnicos_auxiliares" =>$fn_inf_tecnicos,
+                        "id_estatus"=>$id_estatus
                     );
                 }
 
-                if ($data[0]->id_estatus == 6) {
+                if ($id_estatus == 6) {
 
 
                     // dd($request->id.' entro');
-                    $data5 = DB::select("
-                        select rsd.comentario , cmrs.motivo  
-                        from cas_cete.rechaza_solic_det rsd, cas_cete.cat_motivos_rechazo_solic cmrs
-                        where rsd.id_motivo_rechazo = cmrs.id 
-                        and rsd.id_solic_serv = $request->id");
-                    // $data2 = DB::select("
-                    //     select rc.folio, ce2.estatus  
-                    //     from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                    //     cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                    //     where rc.id = sst.id_reg_captacion 
-                    //     and sst.id_capta_estatus = ce.id
-                    //     and ce.id_estatus = ce2.id 
-                    //     and rc.id_solic_serv = '".$request->id."' 
-                    //     and rc.id_modo_capta = 2
-                    //     order by sst.fecha desc
-                    //     limit 1");
+                    $fn_detalle_rechazada = DB::select("select * from fn_detalle_rechazada('".$request->id."')");
 
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1");
+                    // $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
 
                     return array(
-                        "exito" => false,
-                        "data" => $data,
-                        "estatus_solicitud" => $data8[0]->estatus,
-                        // "folio_orden" => $data2[0]->folio,
-                        // "estatus" => $data2[0]->estatus,
-                        // "datos_orden" => $data3,
-                        "motivo_rechazo" =>$data5
+                        "exito" => true,
+                        "data" => $fn_solicitud,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "motivo_rechazo" =>$fn_detalle_rechazada,
+                        "id_estatus"=>$id_estatus
                     );
                 }
-                // dd('entro');
-                // dd($data);
-                // dd($data[0]->folio);
+
+                if ($id_estatus == 7) {
+
+                    
+                    $fn_inf_orden = DB::select("select * from fn_inf_orden('".$request->id."')");
+
+                    // $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
+
+                    $fn_detalle_cancelada = DB::select("select * from fn_detalle_cancelada('".$request->id."')");
+                                
+                    
+                    // dd($fn_detalle_cancelada);
+                    return array(
+                        "exito" => true,
+                        "data" => $fn_solicitud,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "folio_orden" => $fn_inf_orden[0]->folio,
+                        "estatus" => $fn_inf_orden[0]->estatus,
+                        // "datos_equipos" => $fn_detalle_equipos,
+                        "motivo_cancelada" =>$fn_detalle_cancelada,
+                        "id_estatus"=>$id_estatus
+                    );
+                }
                 
                 return array(
                     "exito" => false,
-                    "data" => $data,
-                    "estatus" => $data[0]->estatus,
-                    "datos_orden" => $data3,
-                    "estatus_solicitud" => $data8[0]->estatus
+                    "data" => $fn_solicitud,
+                    "estatus" => $fn_solicitud[0]->estatus,
+                    "datos_equipos" => $fn_detalle_equipos,
+                    "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                    "id_estatus"=>$id_estatus
                         // "folio_orden" => $data2
                 );
             }
-            if ($request->bandera_orden == 1) {
-                $arrEquipos = [];
-                $data =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
+            // if ($request->bandera_orden == 1) {
+            //     $arrEquipos = [];
+            //     $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
 
-                $data2 =  DB::select("select * from cas_cete.fn_solicitud_equipos('".$data[0]->id."')");
-                // dd($data[0]->id);
-                $data3 = DB::select("select ess.id, ess.id_solic_serv, ess.id_tipo_equipo, cte.tipo_equipo, ess.id_usuario_agrega, 
-                ess.fecha_agrega, ess.activo, ess.desc_problema, ess.etiqueta, ess.ubicacion, ess.diagnostico, ess.solucion,
-                (
-                    Select array_to_json(array_agg(row_to_json(t)))  From
-                    (Select ff.id, ff.id_equipos_serv, ff.id_equipo_tarea, 
-                     te.id as id_tipo_equipo, te.tipo_equipo, cs.id as id_servicio, cs.servicio,  ct.id as id_tarea, ct.tarea,
-                     ff.id_usuario_agrega, ff.fecha_agrega, ff.activo
-                     From cas_cete.equipos_detalle ff
-                     inner join cas_cete.cat_equipos_tareas eqt on ff.id_equipo_tarea=eqt.id
-                     inner join cas_cete.cat_servicios_tareas st on eqt.id_serv_tarea=st.id
-                     inner join cas_cete.cat_tipos_equipo te on eqt.id_tipo_equipo=te.id
-                     inner join cas_cete.cat_servicios cs on st.id_servicio=cs.id
-                     inner join cas_cete.cat_tareas ct on st.id_tarea=ct.id
-                     where ff.id_equipos_serv=ess.id
-                     and ff.activo = true) t
-                ) tareas
-                from cas_cete.equipos_serv_solic ess 
-                -- 		inner join cas_cete.equipos_detalle edd on ess.id=edd.id_equipos_serv
-                -- 		inner join cas_cete.cat_equipos_tareas cet on edd.id_equipo_tarea=cet.id
-                inner join cas_cete.cat_tipos_equipo cte on ess.id_tipo_equipo=cte.id
-                where ess.id_solic_serv='".$data[0]->id."'
-                and ess.activo = true
-                order by ess.id asc");
-                // dd($data3);
-                // response ()->json($data3)
-                return array(
-                    "exito" => false,
-                    "data" => $data,
-                    "data2" => $data2,
-                    "data3" => response ()->json($data3)
-                    // "data2" => $data2
-                );
-            }
+            //     $fn_solicitud_equipos =  DB::select("select * from cas_cete.fn_solicitud_equipos('".$data[0]->id."')");
+            //     // dd($data[0]->id);
+            //     $data3 = DB::select("select ess.id, ess.id_solic_serv, ess.id_tipo_equipo, cte.tipo_equipo, ess.id_usuario_agrega, 
+            //     ess.fecha_agrega, ess.activo, ess.desc_problema, ess.etiqueta, ess.ubicacion, ess.diagnostico, ess.solucion,
+            //     (
+            //         Select array_to_json(array_agg(row_to_json(t)))  From
+            //         (Select ff.id, ff.id_equipos_serv, ff.id_equipo_tarea, 
+            //          te.id as id_tipo_equipo, te.tipo_equipo, cs.id as id_servicio, cs.servicio,  ct.id as id_tarea, ct.tarea,
+            //          ff.id_usuario_agrega, ff.fecha_agrega, ff.activo
+            //          From cas_cete.equipos_detalle ff
+            //          inner join cas_cete.cat_equipos_tareas eqt on ff.id_equipo_tarea=eqt.id
+            //          inner join cas_cete.cat_servicios_tareas st on eqt.id_serv_tarea=st.id
+            //          inner join cas_cete.cat_tipos_equipo te on eqt.id_tipo_equipo=te.id
+            //          inner join cas_cete.cat_servicios cs on st.id_servicio=cs.id
+            //          inner join cas_cete.cat_tareas ct on st.id_tarea=ct.id
+            //          where ff.id_equipos_serv=ess.id
+            //          and ff.activo = true) t
+            //     ) tareas
+            //     from cas_cete.equipos_serv_solic ess 
+            //     -- 		inner join cas_cete.equipos_detalle edd on ess.id=edd.id_equipos_serv
+            //     -- 		inner join cas_cete.cat_equipos_tareas cet on edd.id_equipo_tarea=cet.id
+            //     inner join cas_cete.cat_tipos_equipo cte on ess.id_tipo_equipo=cte.id
+            //     where ess.id_solic_serv='".$data[0]->id."'
+            //     and ess.activo = true
+            //     order by ess.id asc");
+            //     // dd($data3);
+            //     // response ()->json($data3)
+            //     return array(
+            //         "exito" => false,
+            //         "data" => $fn_solicitud,
+            //         "data2" => $fn_solicitud_equipos,
+            //         "data3" => response ()->json($data3)
+            //         // "data2" => $data2
+            //     );
+            // }
         }
 
 

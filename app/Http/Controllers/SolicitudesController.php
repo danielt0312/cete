@@ -10,12 +10,24 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MailSend3;
 use App\Mail\MailSend4;
+use Illuminate\Support\Facades\Cache;
+
 class SolicitudesController extends Controller
 {
 
+    function __construct()
+    {   
+        Cache::flush();
+        setPermissionsTeamId(3);
+    }
+
     public function index(Request $request){
         $vid_usuario=Auth()->user()->id;
+        // dd(Auth()->user()->can('204-ver-registros-solicitudes'));
         $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
+        // dd(Auth()->user());
+        // dd(auth()->user()->can('204-ver-registros-solicitudes'));
+        // dd(auth()->user()->hasPermissionTo('204-ver-registros-solicitudes'));
         // $receivers = Receiver::pluck('email');
         // Mail::to($receivers)->send(new EmergencyCallReceived());
         // dd('hola');
@@ -28,78 +40,86 @@ class SolicitudesController extends Controller
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
                         // dd($row->folio_solicitud);
-                        if ($row->id_estatus == 6) {
-                            $acciones = '
-                            <div class="dropdown btn-group dro pstart">
-                                <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
-                                    <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fa fa-eye"></i>
-                                            Ver Detalles Solicitud
-                                        </a>
-                                        <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fas fa-download"></i>
-                                            Imprimir Solicitud
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>';
-                        }
-                        else if ($row->id_estatus == 2) {
-                            $acciones = '
-                            <div class="dropdown btn-group dropstart">
-                                <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
-                                    <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fa fa-eye"></i>
-                                            Ver Detalles Solicitud
-                                        </a>
-                                        <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fas fa-download"></i>
-                                            Imprimir Solicitud
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>';
+                        if (auth()->user()->can('204-ver-registros-solicitudes') == true || auth()->user()->can('205-ver-detalle-solic') == true
+                        || auth()->user()->can('206-rechazar-solic') == true || auth()->user()->can('207-editar-solic') == true
+                        || auth()->user()->can('208-aprobar-solic') == true || auth()->user()->can('209-imprimir-solic') == true) {
+                            if ($row->id_estatus == 6) {
+                                $acciones = '
+                                <div class="dropdown btn-group dro pstart">
+                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fa fa-eye"></i>
+                                                Ver Detalles Solicitud
+                                            </a>
+                                            <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fas fa-download"></i>
+                                                Imprimir Solicitud
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>';
+                            }
+                            else if ($row->id_estatus == 2) {
+                                $acciones = '
+                                <div class="dropdown btn-group dropstart">
+                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fa fa-eye"></i>
+                                                Ver Detalles Solicitud
+                                            </a>
+                                            <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fas fa-download"></i>
+                                                Imprimir Solicitud
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>';
+                            }
+                            else{
+                                $acciones = '
+                                <div class="dropdown btn-group dropstart">
+                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                                        <i class="fa fa-ellipsis-v text-xs"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fa fa-eye"></i>
+                                                Ver Detalles Solicitud
+                                            </a>
+                                            <a onclick="fnActualizarSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fas fa-edit"></i>
+                                                Editar Solicitud
+                                            </a>
+                                            <a onclick="fnAprobarSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fa fa-check"></i>
+                                                Aprobar Solicitud
+                                            </a>
+                                            <a onclick="fnRechazarSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="	fas fa-times"></i>
+                                                Rechazar Solicitud
+                                            </a>
+                                            <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
+                                            <i class="fas fa-download"></i>
+                                                Imprimir Solicitud
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>';
+                            }
                         }
                         else{
-                            $acciones = '
-                            <div class="dropdown btn-group dropstart">
-                                <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
-                                    <i class="fa fa-ellipsis-v text-xs"></i>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a onclick="fnMostrarInfo('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fa fa-eye"></i>
-                                            Ver Detalles Solicitud
-                                        </a>
-                                        <a onclick="fnActualizarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fas fa-edit"></i>
-                                            Editar Solicitud
-                                        </a>
-                                        <a onclick="fnAprobarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fa fa-check"></i>
-                                            Aprobar Solicitud
-                                        </a>
-                                        <a onclick="fnRechazarSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="	fas fa-times"></i>
-                                            Rechazar Solicitud
-                                        </a>
-                                        <a onclick="fnImprimirSolicitud('.$row->id.')" class="dropdown-item"> 
-                                        <i class="fas fa-download"></i>
-                                            Imprimir Solicitud
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>';
+                            $acciones = '';
                         }
+
                         
                         return $acciones;
                     })
@@ -173,140 +193,83 @@ class SolicitudesController extends Controller
             // $data= '';
             // $data2= '';
             if ($request->bandera_orden == 0) {
-                $data =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
+                $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud('".$request->id."')");
                 // dd($data);
-                $data3 = DB::select("select ess.id_solic_serv , ess.desc_problema ,ed.id as id_equipo_detalle, cte.tipo_equipo ,
-                        cs.servicio , ct.tarea 
-                        from cas_cete.equipos_serv_solic ess, cas_cete.equipos_detalle ed, cas_cete.cat_equipos_tareas cet,
-                        cas_cete.cat_servicios_tareas cst , cas_cete.cat_tipos_equipo cte,
-                        cas_cete.cat_servicios cs , cas_cete.cat_tareas ct  
-                        where ess.id = ed.id_equipos_serv 
-                        and ed.id_equipo_tarea = cet.id 
-                        and cet.id_tipo_equipo = cte.id 
-                        and cet.id_serv_tarea = cst.id 
-                        and cst.id_servicio = cs.id 
-                        and cst.id_tarea = ct.id 
-                        and ess.id_solic_serv = '".$request->id."' 
-                        and ess.activo = true
-                        and ed.activo = true");
+                if ($fn_solicitud[0]->id_estatus_orden!='' || $fn_solicitud[0]->id_estatus_orden!=null) {
+                    $id_estatus = $fn_solicitud[0]->id_estatus_orden;
+                }
+                else{
+                    $id_estatus = $fn_solicitud[0]->id_estatus;
+                }
+                $fn_detalle_equipos = DB::select("select * from cas_cete.fn_detalle_equipos('".$request->id."')");
                     // dd($data3);
                 
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1");
+                $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
 
-                if ($data[0]->id_estatus != 1 && $data[0]->id_estatus != 6 && $data[0]->id_estatus != 7) {
+                if ($id_estatus != 1 && $id_estatus != 6 && $id_estatus != 7) {
                     
                     
-                    $data2 = DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 2
-                                order by sst.fecha desc
-                                limit 1"); 
+                    $fn_inf_orden = DB::select("select * from fn_inf_orden('".$request->id."')");
 
-                    $data4 = DB::select("
-                                select atss.id, atss.id_solic_serv, to2.es_responsable ,concat(cp.nombre, ' ', cp.apellido_1, ' ',cp.apellido_2) as nombre_completo  from 
-                                cas_cete.asigna_tecnico_solic_serv atss, 
-                                cas_cete.tecnicos_orden to2, 
-                                seguridad_sistemas.users u, 
-                                personas.cat_personas cp  
-                                where 
-                                atss.id = to2.id_asignacion 
-                                and to2.id_usuario = u.id 
-                                and u.id_persona = cp.id
-                                and atss.id_solic_serv = '".$request->id."'");
+                    $fn_inf_tecnicos = DB::select("select * from fn_inf_tecnicos('".$request->id."')");
                     
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1"); 
 
                     // dd($data4);
                     return array(
                         "exito" => false,
-                        "data" => $data,
-                        "folio_orden" => $data2[0]->folio,
-                        "estatus" => $data2[0]->estatus,
-                        "estatus_solicitud" => $data8[0]->estatus,
-                        "datos_orden" => $data3,
-                        "tecnicos_auxiliares" =>$data4
+                        "data" => $fn_solicitud,
+                        "folio_orden" => $fn_inf_orden[0]->folio,
+                        "estatus" => $fn_inf_orden[0]->estatus,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "datos_orden" => $fn_detalle_equipos,
+                        "tecnicos_auxiliares" =>$fn_inf_tecnicos,
+                        "id_estatus"=>$id_estatus
                     );
                 }
 
-                if ($data[0]->id_estatus == 6) {
+                if ($id_estatus == 6) {
 
-
-                    // dd($request->id.' entro');
-                    $data5 = DB::select("
-                        select rsd.comentario , cmrs.motivo  
-                        from cas_cete.rechaza_solic_det rsd, cas_cete.cat_motivos_rechazo_solic cmrs
-                        where rsd.id_motivo_rechazo = cmrs.id 
-                        and rsd.id_solic_serv = $request->id");
-                    // $data2 = DB::select("
-                    //     select rc.folio, ce2.estatus  
-                    //     from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                    //     cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                    //     where rc.id = sst.id_reg_captacion 
-                    //     and sst.id_capta_estatus = ce.id
-                    //     and ce.id_estatus = ce2.id 
-                    //     and rc.id_solic_serv = '".$request->id."' 
-                    //     and rc.id_modo_capta = 2
-                    //     order by sst.fecha desc
-                    //     limit 1");
-
-                    $data8= DB::select("
-                                select rc.folio, ce2.estatus  
-                                from cas_cete.registro_captacion rc, cas_cete.solic_serv_track sst,
-                                cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2 
-                                where rc.id = sst.id_reg_captacion 
-                                and sst.id_capta_estatus = ce.id
-                                and ce.id_estatus = ce2.id 
-                                and rc.id_solic_serv = '".$request->id."' 
-                                and rc.id_modo_capta = 1
-                                order by sst.fecha desc
-                                limit 1");
+                    $fn_detalle_rechazada = DB::select("select * from fn_detalle_rechazada('".$request->id."')");
 
                     return array(
                         "exito" => false,
-                        "data" => $data,
-                        "estatus_solicitud" => $data8[0]->estatus,
-                        // "folio_orden" => $data2[0]->folio,
-                        // "estatus" => $data2[0]->estatus,
-                        // "datos_orden" => $data3,
-                        "motivo_rechazo" =>$data5
+                        "data" => $fn_solicitud,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "motivo_rechazo" =>$fn_detalle_rechazada,
+                        "id_estatus"=>$id_estatus
                     );
                 }
-                // dd('entro');
-                // dd($data);
-                // dd($data[0]->folio);
+
+                if ($id_estatus == 7) {
+
+                    
+                    $fn_inf_orden = DB::select("select * from fn_inf_orden('".$request->id."')");
+
+                    // $fn_inf_solicitud = DB::select("select * from fn_inf_solicitud('".$request->id."')");
+
+                    $fn_detalle_cancelada = DB::select("select * from fn_detalle_cancelada('".$request->id."')");
+                                
+                    
+                    // dd($fn_detalle_cancelada);
+                    return array(
+                        "exito" => true,
+                        "data" => $fn_solicitud,
+                        "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "folio_orden" => $fn_inf_orden[0]->folio,
+                        "estatus" => $fn_inf_orden[0]->estatus,
+                        // "datos_equipos" => $fn_detalle_equipos,
+                        "motivo_cancelada" =>$fn_detalle_cancelada,
+                        "id_estatus"=>$id_estatus
+                    );
+                }
                 
                 return array(
                     "exito" => false,
-                    "data" => $data,
-                    "estatus" => $data[0]->estatus,
-                    "datos_orden" => $data3,
-                    "estatus_solicitud" => $data8[0]->estatus
+                    "data" => $fn_solicitud,
+                    "estatus" => $fn_solicitud[0]->estatus,
+                    "datos_orden" => $fn_detalle_equipos,
+                    "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                    "id_estatus"=>$id_estatus
                         // "folio_orden" => $data2
                 );
             }

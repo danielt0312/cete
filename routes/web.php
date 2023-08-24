@@ -89,7 +89,7 @@ Route::group(['middleware' => 'auth'], function () {
     }); 
 
     Route::group(['prefix' => 'solicitudes'], function(){
-        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros');
+        Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros')->middleware('permission:204-ver-registros-solicitudes');
         Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
         Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
         Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
 }); 
     
 Route::group(['prefix' => 'ventanilla'], function(){
-    Route::get('/buscar_folio', 'App\Http\Controllers\VentanillaController@buscar_folio')->name('buscar_folio');
+    Route::get('/buscar_folio_ventanilla', 'App\Http\Controllers\VentanillaController@buscar_folio_ventanilla')->name('buscar_folio_ventanilla');
     Route::get('/indexVentanilla', 'App\Http\Controllers\VentanillaController@index')->name('indexVentanilla');
     Route::get('/indexMail', 'App\Http\Controllers\VentanillaController@index_mail')->name('indexMail');
     Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');

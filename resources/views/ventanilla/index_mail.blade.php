@@ -106,7 +106,7 @@ $('#encabezado_layout').append('');
 
         html+='<div class="input-group mb-3">'
             html+='<span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope" aria-hidden="true"></i></span>'
-            html+='<input type="text" class="form-control" id="vCorreoVerifica" placeholder="Escriba su correo aqui" aria-label="Username" aria-describedby="basic-addon1">'
+            html+='<input type="text" class="form-control" maxlength="150" id="vCorreoVerifica" placeholder="Escriba su correo aqui" aria-label="Username" aria-describedby="basic-addon1">'
         html+='</div>';
 
         // html+='<center>';
@@ -148,7 +148,7 @@ $('#encabezado_layout').append('');
         else{
             $("#btn_enviar").prop('disabled', true);
             $.ajax({
-                url: '/ventanilla/sendEmail/',
+                url: '{{route("sendEmail")}}',
                 type: 'GET',
                 data: {'vCorreoVerifica' : vCorreoVerifica}
             }).always(function(r) {
@@ -247,7 +247,7 @@ $('#encabezado_layout').append('');
         }
         else{
             $.ajax({
-                url: '/ventanilla/index_formulario_solicitud/',
+                url: '{{route("index_formulario_solicitud")}}',
                 type: 'GET',
                 data: {'vCorreoVerifica' : vCorreoVerifica}
             }).always(function(r) {  
