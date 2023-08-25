@@ -14,6 +14,8 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable,HasRoles;
     // use HasApiTokens, HasFactory, Notifiable,HasRoles;
     protected $connection = "seguridad";
+
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *

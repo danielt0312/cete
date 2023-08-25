@@ -312,6 +312,18 @@
                             <div id="modal_solicitud_inf6"></div>
                         </div>
                   </div>
+                  <div id="div_inf_cancelada" hidden>
+                        <div class="row">
+                            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                <label  style="color:white;">DATOS DE LA SOLICITUD CANCELADA</label>
+                            </div>
+                            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div id="modal_solicitud_inf7"></div>
+                        </div>
+                  </div>
                   <div id="div_inf_orden" hidden >
                     <!-- <div style="text-align:center;  background-color:#ab0033;"> -->
                         <div class="row" id="label_orden">
@@ -454,9 +466,9 @@
                 // position: 'bottom-right',
                 // icon: 'warning',
                 // width: 600,
-                html: '<div class="fa-3x" style="height: 180px;">'+
+                html: '<div class="fa-3x">'+
                             // '<div class="fa-3x">'+
-                        '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                        '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
                         '<p></p>'+
                         '<p>Espere por favor</p>'+
                             
@@ -468,7 +480,7 @@
                 // timer: 2000
             })           
             $.ajax({
-                url: '/ventanilla/sendEmail2/',
+                url: '{{route("sendEmail2")}}',
                 type: 'GET',
                 data: {'vCorreoVerifica' : vCorreo}
             }).always(function(r) {
@@ -569,7 +581,7 @@
                         ajax: {
                         type: 'GET',
                         headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-                        url: "/ventanilla/consulta_folio_correo/",
+                        url: '{{route("consulta_folio_correo")}}',
                         data: {'vCorreo' : vCorreo}
                         },
                         columns: [
@@ -797,7 +809,7 @@
                             ajax: {
                             type: 'GET',
                             headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-                            url: "/ventanilla/consulta_folio_solicitud/",
+                            url: '{{route("consulta_folio_solicitud")}}',
                             data: {'vFolio' : vFolio}
                             },
                             columns: [
@@ -956,12 +968,16 @@
         html6='';
         html7='';
         html8='';
+        html9='';
         $('#div_inf_orden').prop('hidden',true);
         $('#div_inf_rechazada').prop('hidden',true);
+        $('#div_inf_cancelada').prop('hidden',true);
+        
         $('#modal_solicitud_inf').html(html1);
         $('#modal_solicitud_inf2').html(html2);
         $('#modal_solicitud_inf5').html(html3);
         $('#modal_solicitud_inf6').html(html8);
+        $('#modal_solicitud_inf7').html(html9);
         // $('#modal_solicitud_inf5').append(html3);
         // $('#modal_solicitud_inf4').html(html4);
         $('#tbody_orden_equipos').html(html4);
@@ -975,12 +991,12 @@
 
         
         $.ajax({
-            url: '/ventanilla/buscar_folio/',
+            url: '{{route("buscar_folio_ventanilla")}}',
             type: 'GET',
             data: {'id' : id, 'bandera_orden' : bandera_orden}
             }).always(function(r) {
                 console.log(r);
-                if (r.data[0]['id_estatus'] == 6) {
+                if (r.id_estatus == 6) {
                     $('#div_inf_rechazada').prop('hidden',false);
 
                     console.log('entro la rechazada');
@@ -1074,7 +1090,114 @@
                     $('#modal_solicitud_inf5').append(html3);
                     $('#modal_solicitud_inf6').append(html8);
                 }
+                else if(r.id_estatus == 7){
+                    $('#div_inf_cancelada').prop('hidden',false);
+
+                    console.log('entro la cancelada');
+                    html5+='No. de Solicitud: '+r.data[0]['folio']+'';
+                    if (r.folio_orden!= null) {
+                        html6+='Estatus Orden: '+r.estatus+'';
+                        html7+='No. de Orden : '+r.folio_orden+'';
+                    }
+                    else{
+                        html6+='Estatus Solicitud: '+r.estatus+'';
+                    }
+                    html1+='<div class="row">';
+                    html1+='<div class="col-5">';
+                        html1+='<label>Nombre del C.T. : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['nombrect']+'</span>';
+                    html1+='</div>';
+                    html1+='<div class="col-4">';
+                        html1+='<label>Clave del C.T. : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['clave_ct']+'</span>';
+                    html1+='</div>';
+                    html1+='<div class="col-3">';
+                        html1+='<label>Municipio : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['municipio']+'</span>';
+                    html1+='</div>';
+                    html1+='</div>';
+                    html1+='<div class="row">';
+                    html1+='<div class="col-5">';
+                        html1+='<label>Nombre del Director : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['director']+'</span>';
+                    html1+='</div>';
+                    html1+='<div class="col-4">';
+                        html1+='<label>Fecha de la Solicitud : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['fecha_captacion']+'</span>';
+                    html1+='</div>';
+                    html1+='<div class="col-2">';
+                        html1+='<label>Estatus Solicitud : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['estatus']+'</span>';
+                    html1+='</div>';
+                    html1+='</div>';
+                    html1+='<div class="row">';
+                    html1+='<div class="col-5">';
+                        html1+='<label>Dirección : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['domicilio']+'</span>';
+                    html1+='</div>';
+                    html1+='<div class="col-3">';
+                        html1+='<label>Turno : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['desc_turno']+'</span>';
+                    html1+='</div>';
+                    html1+='</div>';
+                    html1+='<div class="row">';
+                    html1+='<div class="col-5">';
+                        html1+='<label>Nivel Educativo : &nbsp;</label>';
+                        html1+='<span>'+r.data[0]['subnivel']+'</span>';
+                    html1+='</div>';
+                    html1+='</div>';
+
+                    html2+='<div class="row">';
+                    html2+='<div class="col-5">';
+                        html2+='<label>Nombre : &nbsp;</label>';
+                        html2+='<span>'+r.data[0]['solicitante']+'</span>';
+                    html2+='</div>';
+                    html2+='<div class="col-5">';
+                        html2+='<label>Teléfono : &nbsp;</label>';
+                        html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
+                    html2+='</div>';
+                    html2+='</div>';
+                    html2+='<div class="row">';
+                    html2+='<div class="col-12">';
+                        html2+='<label>Correo Electrónico : &nbsp;</label>';
+                        html2+='<span>'+r.data[0]['correo_solic']+'</span>';
+                    html2+='</div>';
+                    html2+='</div>';
+                    html2+='<div class="row">';
+                    html2+='<div class="col-6">';
+                        html2+='<label>Descripción del Reporte : &nbsp;</label>';
+                        html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
+                    html2+='</div>';
+                    html2+='</div>';
+
+                    html8+='<div class="row">';
+                    html8+='<div class="col-5">';
+                        html8+='<label>Motivo : &nbsp;</label>';
+                        html8+='<span>'+r.motivo_cancelada[0]['motivo']+'</span>';
+                    html8+='</div>';
+                    html8+='<div class="col-5">';
+                        html8+='<label>Comentarios : &nbsp;</label>';
+                        if (r.motivo_cancelada[0]['comentarios'] == null || r.motivo_cancelada[0]['comentarios'] == '') {
+                            html8+='<span>No tiene comentarios</span>';
+                        }
+                        else{
+                            html8+='<span>'+r.motivo_cancelada[0]['comentarios']+'</span>';
+                        }
+                        
+                    html8+='</div>';
+                    html8+='</div>';
+                    $('#tbody_orden_equipos').append(html4);
+                    $('#span_solicitud').append(html5);
+                    $('#span_estatus').append(html6);
+                    $('#span_orden').append(html7);
+                    
+                    $('#modal_solicitud_inf').append(html1);
+                    $('#modal_solicitud_inf2').append(html2);
+                    $('#modal_solicitud_inf5').append(html3);
+                    $('#modal_solicitud_inf7').append(html8);
+                }
                 else{
+                    console.log('entro la otra');
                     html5+='No. de Solicitud: '+r.data[0]['folio']+'';
                     
                     if (r.folio_orden!= null) {
@@ -1154,8 +1277,8 @@
                         html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
                     html2+='</div>';
                     html2+='</div>';
-                    if (r.datos_orden != '' && r.datos_orden != undefined) {
-                        console.log(r.datos_orden);
+                    if (r.datos_equipos != '' && r.datos_equipos != undefined) {
+                        console.log(r.datos_equipos);
                         $('#div_inf_orden').prop('hidden',false);
                         if (r.tecnicos_auxiliares !='' && r.tecnicos_auxiliares != undefined) {
                             $('#label_orden').prop('hidden', false);
@@ -1195,33 +1318,33 @@
                         var tipo_equipo = '';
                         var servicio = '';
                         // var tarea = '';
-                        for (let i = 0; i < r.datos_orden.length; i++) {
+                        for (let i = 0; i < r.datos_equipos.length; i++) {
                             html4+='<tr>';
-                            if (id_equipo_detalle+r.datos_orden[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
+                            if (id_equipo_detalle+r.datos_equipos[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
                             html4+='<td></td>';
                             }
                             else{
-                            html4+='<td>- '+r.datos_orden[i]['tipo_equipo']+'</td>';
+                            html4+='<td>- '+r.datos_equipos[i]['tipo_equipo']+'</td>';
                             }
-                            if (r.datos_orden[i]['desc_problema'] == desc_problema) {
+                            if (r.datos_equipos[i]['desc_problema'] == desc_problema) {
                             html4+='<td></td>';
                             }
                             else{
-                            html4+='<td>- '+r.datos_orden[i]['desc_problema']+'</td>';
+                            html4+='<td style="white-space: pre-line; word-break: break-word;">- '+r.datos_equipos[i]['desc_problema']+'</td>';
                             }
-                            if (r.datos_orden[i]['servicio'] == servicio) {
+                            if (r.datos_equipos[i]['servicio'] == servicio) {
                             html4+='<td></td>';
                             }
                             else{
-                            html4+='<td>- '+r.datos_orden[i]['servicio']+'</td>';
+                            html4+='<td>- '+r.datos_equipos[i]['servicio']+'</td>';
                             }
-                            html4+='<td>- '+r.datos_orden[i]['tarea']+'</td>';
+                            html4+='<td>- '+r.datos_equipos[i]['tarea']+'</td>';
                             html4+='</tr>'; 
 
-                            id_equipo_detalle = r.datos_orden[i]['id_equipo_detalle'];
-                            desc_problema = r.datos_orden[i]['desc_problema'];
-                            tipo_equipo = r.datos_orden[i]['tipo_equipo'];
-                            servicio = r.datos_orden[i]['servicio'];
+                            id_equipo_detalle = r.datos_equipos[i]['id_equipo_detalle'];
+                            desc_problema = r.datos_equipos[i]['desc_problema'];
+                            tipo_equipo = r.datos_equipos[i]['tipo_equipo'];
+                            servicio = r.datos_equipos[i]['servicio'];
                         }              
                     }
 

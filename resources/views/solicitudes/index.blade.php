@@ -1,5 +1,6 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
+
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <style>
 .tableFixHead          { overflow: auto; height: 100px; }
@@ -149,6 +150,18 @@
                       <div id="modal_solicitud_inf6">
                       </div>
                     </div>
+                  </div>
+                  <div id="div_inf_cancelada" hidden>
+                        <div class="row">
+                            <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                <label  style="color:white;">DATOS DE LA SOLICITUD CANCELADA</label>
+                            </div>
+                            <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div id="modal_solicitud_inf7"></div>
+                        </div>
                   </div>
                   <br>
                   <div id="div_inf_orden" hidden>
@@ -417,6 +430,8 @@ var arrEliminarEquipos = [];
 var arrContadorTabla = [];
 var arrReplicar = [];
 
+  
+
   $(function () {
     $('#exampleModal').modal({backdrop: 'static', keyboard: false})
     // var dias = 2;
@@ -449,7 +464,7 @@ var arrReplicar = [];
         ajax: {
         type: 'GET',
         headers: {'X-CSRF-TOKEN':$("meta[name='csrf-token']").attr('content')},
-        url: "/solicitudes/solicitudes_registros/"
+        url: '{{route("solicitudes_registros")}}'
         },
         columns: [
             { data: null, render:function(data){
@@ -535,9 +550,10 @@ var arrReplicar = [];
                     },
         ]
     });
+    
 
     $.ajax({
-        url: '/solicitudes/selects_equipo_servicio/',
+        url: '{{route("selects_equipo_servicio")}}',
         type: 'GET'
         // data: {'arreglo_inf' : arreglo_inf}
         }).always(function(r) {
@@ -559,6 +575,7 @@ var arrReplicar = [];
     $('#div_añadir_equipo').prop('hidden',true);
     $('#div_inf_orden').prop('hidden',true);
     $('#div_inf_rechazada').prop('hidden',true);
+    $('#div_inf_cancelada').prop('hidden',true);
     // $('#btn_replicar').prop('hidden',true);
     // $('#btnAgregarEquipo').prop('hidden',true);
     console.log('entro al detalle');
@@ -576,11 +593,13 @@ var arrReplicar = [];
     html6='';
     html7='';
     html8='';
+    html9='';
 
     $('#modal_solicitud_inf').html(html1);
     $('#modal_solicitud_inf2').html(html2);
     $('#modal_solicitud_inf5').html(html3);
     $('#modal_solicitud_inf6').html(html8);
+    $('#modal_solicitud_inf7').html(html9);
     $('#tbody_orden_equipos').html(html4);
     $('#span_solicitud').html(html5);
     $('#span_estatus').html(html6);
@@ -594,12 +613,12 @@ var arrReplicar = [];
 
     
     $.ajax({
-        url: '/solicitudes/buscar_folio/',
+        url: '{{route("buscar_folio")}}',
         type: 'GET',
         data: {'id' : id, 'bandera_orden' : bandera_orden}
         }).always(function(r) {
           console.log(r);
-          if (r.data[0]['id_estatus'] == 6) {
+          if (r.id_estatus == 6) {
             $('#div_inf_rechazada').prop('hidden',false);
 
             console.log('entro la rechazada');
@@ -692,6 +711,112 @@ var arrReplicar = [];
             $('#modal_solicitud_inf2').append(html2);
             $('#modal_solicitud_inf5').append(html3);
             $('#modal_solicitud_inf6').append(html8);
+          }
+          else if(r.id_estatus == 7){
+            $('#div_inf_cancelada').prop('hidden',false);
+
+            console.log('entro la cancelada');
+            html5+='No. de Solicitud: '+r.data[0]['folio']+'';
+            if (r.folio_orden!= null) {
+                html6+='Estatus Orden: '+r.estatus+'';
+                html7+='No. de Orden : '+r.folio_orden+'';
+            }
+            else{
+                html6+='Estatus Solicitud: '+r.estatus+'';
+            }
+            html1+='<div class="row">';
+            html1+='<div class="col-5">';
+                html1+='<label>Nombre del C.T. : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['nombrect']+'</span>';
+            html1+='</div>';
+            html1+='<div class="col-4">';
+                html1+='<label>Clave del C.T. : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['clave_ct']+'</span>';
+            html1+='</div>';
+            html1+='<div class="col-3">';
+                html1+='<label>Municipio : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['municipio']+'</span>';
+            html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+            html1+='<div class="col-5">';
+                html1+='<label>Nombre del Director : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['director']+'</span>';
+            html1+='</div>';
+            html1+='<div class="col-4">';
+                html1+='<label>Fecha de la Solicitud : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['fecha_captacion']+'</span>';
+            html1+='</div>';
+            html1+='<div class="col-2">';
+                html1+='<label>Estatus Solicitud : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['estatus']+'</span>';
+            html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+            html1+='<div class="col-5">';
+                html1+='<label>Dirección : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['domicilio']+'</span>';
+            html1+='</div>';
+            html1+='<div class="col-3">';
+                html1+='<label>Turno : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['desc_turno']+'</span>';
+            html1+='</div>';
+            html1+='</div>';
+            html1+='<div class="row">';
+            html1+='<div class="col-5">';
+                html1+='<label>Nivel Educativo : &nbsp;</label>';
+                html1+='<span>'+r.data[0]['subnivel']+'</span>';
+            html1+='</div>';
+            html1+='</div>';
+
+            html2+='<div class="row">';
+            html2+='<div class="col-5">';
+                html2+='<label>Nombre : &nbsp;</label>';
+                html2+='<span>'+r.data[0]['solicitante']+'</span>';
+            html2+='</div>';
+            html2+='<div class="col-5">';
+                html2+='<label>Teléfono : &nbsp;</label>';
+                html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
+            html2+='</div>';
+            html2+='</div>';
+            html2+='<div class="row">';
+            html2+='<div class="col-12">';
+                html2+='<label>Correo Electrónico : &nbsp;</label>';
+                html2+='<span>'+r.data[0]['correo_solic']+'</span>';
+            html2+='</div>';
+            html2+='</div>';
+            html2+='<div class="row">';
+            html2+='<div class="col-6">';
+                html2+='<label>Descripción del Reporte : &nbsp;</label>';
+                html2+='<span>'+r.data[0]['descrip_reporte']+'</span>';
+            html2+='</div>';
+            html2+='</div>';
+
+            html8+='<div class="row">';
+            html8+='<div class="col-5">';
+                html8+='<label>Motivo : &nbsp;</label>';
+                html8+='<span>'+r.motivo_cancelada[0]['motivo']+'</span>';
+            html8+='</div>';
+            html8+='<div class="col-5">';
+                html8+='<label>Comentarios : &nbsp;</label>';
+                if (r.motivo_cancelada[0]['comentarios'] == null || r.motivo_cancelada[0]['comentarios'] == '') {
+                    html8+='<span>No tiene comentarios</span>';
+                }
+                else{
+                    html8+='<span>'+r.motivo_cancelada[0]['comentarios']+'</span>';
+                }
+                
+            html8+='</div>';
+            html8+='</div>';
+            $('#tbody_orden_equipos').append(html4);
+            $('#span_solicitud').append(html5);
+            $('#span_estatus').append(html6);
+            $('#span_orden').append(html7);
+            
+            $('#modal_solicitud_inf').append(html1);
+            $('#modal_solicitud_inf2').append(html2);
+            $('#modal_solicitud_inf5').append(html3);
+            $('#modal_solicitud_inf7').append(html8);
           }
           else{
             html5+='No. de Solicitud: '+r.data[0]['folio']+'';
@@ -828,7 +953,7 @@ var arrReplicar = [];
                   html4+='<td></td>';
                 }
                 else{
-                  html4+='<td>- '+r.datos_orden[i]['desc_problema']+'</td>';
+                  html4+='<td style="white-space: pre-line; word-break: break-word;">- '+r.datos_orden[i]['desc_problema']+'</td>';
                 }
                 if (r.datos_orden[i]['servicio'] == servicio) {
                   html4+='<td></td>';
@@ -972,7 +1097,7 @@ var arrReplicar = [];
 
     
     $.ajax({
-        url: '/solicitudes/buscar_folio/',
+        url: '{{route("buscar_folio")}}',
         type: 'GET',
         dataType: 'json',
         data: {'id' : id, 'bandera_orden' : bandera_orden}
@@ -1090,11 +1215,11 @@ var arrReplicar = [];
           html2+='<div class="row">';
             html2+='<div class="col-4">';
               html2+='<label>Nombre : &nbsp;</label>';
-                html2+='<input class="form-control" type="text" id="editar_nombre_solicitante" value="'+r.data[0]['solicitante']+'">';
+                html2+='<input class="form-control" type="text" id="editar_nombre_solicitante" maxlength="100" value="'+r.data[0]['solicitante']+'">';
             html2+='</div>';
             html2+='<div class="col-4">';
               html2+='<label>Teléfono : &nbsp;</label>';
-                html2+='<input class="form-control" type="number" id="editar_telefono_solicitante" value="'+r.data[0]['telef_solicitante']+'">';
+                html2+='<input class="form-control" type="text" maxlength="10" id="editar_telefono_solicitante" value="'+r.data[0]['telef_solicitante']+'">';
                 // html2+='<span>'+r.data[0]['telef_solicitante']+'</span>';
             html2+='</div>';
             html2+='<div class="col-4">';
@@ -1115,7 +1240,7 @@ var arrReplicar = [];
           html2+='<div class="row">';
             html2+='<div class="col-12">';
               html2+='<label>Descripción del Reporte : &nbsp;</label>';
-                html2+='<textarea style="height: 127px;" class="form-control" id="editar_descripcion_solicitante">'+r.data[0]['descrip_reporte']+'</textarea class="form-control">';
+                html2+='<textarea style="height: 127px;" class="form-control" maxlength="450" id="editar_descripcion_solicitante">'+r.data[0]['descrip_reporte']+'</textarea class="form-control">';
             html2+='</div>';
           html2+='</div>';
           html2+='<br>'
@@ -1171,12 +1296,18 @@ var arrReplicar = [];
           $('#titulo_equipos').prop('hidden', false);
           $('#modal_solicitud_inf3').prop('hidden', false);
 
+          $('#editar_telefono_solicitante').keypress(function (e) {    
+            var charCode = (e.which) ? e.which : event.keyCode    
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+              return false;                        
+          }); 
+
           $("#id_tipo_equipo").change(function(){
             // console.log($('#id_tipo_equipo').val());
             
             var pId_equipo = $('#id_tipo_equipo').val();
             $.ajax({
-                url: '/solicitudes/select_servicio',
+                url: '{{route("select_servicio")}}',
                 type: 'GET',
                 data: {'pId_equipo' : pId_equipo}
               }).always(function(r) {
@@ -1212,7 +1343,7 @@ var arrReplicar = [];
                 bandera_servicio = 0;
                 var pId_servicio = $('#id_tipo_servicio').val();
                 $.ajax({
-                    url: '/solicitudes/select_tarea',
+                    url: '{{route("select_tarea")}}',
                     type: 'GET',
                     data: {'pId_equipo' : pId_equipo,'pId_servicio' : pId_servicio}
                   }).always(function(r) {
@@ -1827,8 +1958,25 @@ var arrReplicar = [];
                     })
                   }
                   else{
+                    Swal.fire({
+                        // position: 'bottom-right',
+                        // icon: 'warning',
+                        // width: 600,
+                        html: '<div class="fa-3x" >'+
+                                    // '<div class="fa-3x">'+
+                                '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                '<p></p>'+
+                                '<p>Espere por favor</p>'+
+                                    
+                                '</div>',
+                                // '</div>',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        customClass: 'msj_aviso'
+                        // timer: 2000
+                      }) 
                     $.ajax({
-                    url: '/solicitudes/actualizar_solicitud/',
+                    url: '{{route("actualizar_solicitud")}}',
                     type: 'GET',
                     data: {
                       // 'folio_solicitud_global' : folio_solicitud_global,
@@ -1841,6 +1989,7 @@ var arrReplicar = [];
                       // 'bandera_guardar' : bandera_guardar
                     }
                     }).always(function(r) {
+                      
                       Swal.fire({
                             // title: 'Editado',
                             html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
@@ -1897,7 +2046,7 @@ var arrReplicar = [];
                   }
                   else{
                     $.ajax({
-                    url: '/solicitudes/actualizar_solicitud/',
+                    url: '{{route("actualizar_solicitud")}}',
                     type: 'GET',
                     data: {
                       // 'folio_solicitud_global' : folio_solicitud_global,
@@ -1910,23 +2059,7 @@ var arrReplicar = [];
                       // 'bandera_guardar' : bandera_guardar
                     }
                     }).always(function(r) {
-                      Swal.fire({
-                        // position: 'bottom-right',
-                        // icon: 'warning',
-                        // width: 600,
-                        html: '<div class="fa-3x" style="height: 180px;">'+
-                                    // '<div class="fa-3x">'+
-                                '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
-                                '<p></p>'+
-                                '<p>Espere por favor</p>'+
-                                    
-                                '</div>',
-                                // '</div>',
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        customClass: 'msj_aviso'
-                        // timer: 2000
-                      })  
+                      
                       Swal.fire({
                             // title: 'Editado',
                             html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
@@ -2128,7 +2261,7 @@ var arrReplicar = [];
           // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
             tablaEquipo2+='<tr id="tr_'+j+'">';
               tablaEquipo2+='<td>- '+arrEquipos[j]['desc_tipo_equipo']+'</td>';
-              tablaEquipo2+='<td>- '+arrEquipos[j]['descripcionSoporte']+'</td>';
+              tablaEquipo2+='<td style="white-space: pre-line; word-break: break-word;">- '+arrEquipos[j]['descripcionSoporte']+'</td>';
               var desc_problema_vJson = '';
               var desc_problema_vJson2 = '';
               if (arrEquipos[j]['vJson'] == 1) {
@@ -2247,7 +2380,7 @@ var arrReplicar = [];
             tablaEquipo2+='<tr id="tr_'+j+'">';
 
               tablaEquipo2+='<td>- '+arrEquipos[j]['desc_tipo_equipo']+'</td>';
-              tablaEquipo2+='<td>- '+arrEquipos[j]['descripcionSoporte']+'</td>';
+              tablaEquipo2+='<td style="white-space: pre-line; word-break: break-word;">- '+arrEquipos[j]['descripcionSoporte']+'</td>';
               var desc_problema_vJson = '';
               var desc_problema_vJson2 = '';
               if (arrEquipos[j]['vJson'] == 1) {
@@ -2354,9 +2487,9 @@ var arrReplicar = [];
             // position: 'bottom-right',
             // icon: 'warning',
             width: 300,
-            html: '<div class="fa-3x" style="height: 180px;">'+
+            html: '<div class="fa-3x" >'+
                         // '<div class="fa-3x">'+
-                    '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                    '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
                     '<p></p>'+
                     '<p>Espere por favor</p>'+
                         
@@ -2368,7 +2501,7 @@ var arrReplicar = [];
             // timer: 2000
         })  
         $.ajax({
-          url: '/solicitudes/aprobar_solicitud/',
+          url: '{{route("aprobar_solicitud")}}',
           type: 'GET',
           data: {'id_solicitud' : id_solicitud}
         }).always(function(r) {
@@ -2420,7 +2553,7 @@ var arrReplicar = [];
     var select_rechazar = '';
     var myArrayOfThings=[];
     $.ajax({
-      url: '/solicitudes/select_rechaza_solicitud/',
+      url: '{{route("select_rechaza_solicitud")}}',
       type: 'GET'
       // data: {'vCentro_Trabajo' : vCentro_Trabajo}
       }).always(function(r) {
@@ -2504,9 +2637,9 @@ var arrReplicar = [];
                 // position: 'bottom-right',
                 // icon: 'warning',
                 width: 300,
-                html: '<div class="fa-3x" style="height: 180px;">'+
+                html: '<div class="fa-3x" >'+
                             // '<div class="fa-3x">'+
-                        '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                        '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
                         '<p></p>'+
                         '<p>Espere por favor</p>'+
                             
@@ -2520,7 +2653,7 @@ var arrReplicar = [];
             // console.log(select_rechazar);
             // console.log(comentario_rechazar);
           $.ajax({
-            url: '/solicitudes/rechazar_solicitud/',
+            url: '{{route("rechazar_solicitud")}}',
             type: 'GET',
             data: {
               'comentario_rechazar' : comentario_rechazar,

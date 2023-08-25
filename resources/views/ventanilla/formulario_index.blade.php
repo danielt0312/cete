@@ -73,7 +73,7 @@
                                     <br>
                                     <label style="font-size:0.75em;">CENTRO DE TRABAJO</label>
                                     <div class="col-3">
-                                        <input type="text" class="form-control" id="vCentro_Trabajo">
+                                        <input type="text" class="form-control" maxlength="20" id="vCentro_Trabajo">
                                         <!-- <button disabled id="btn_consultar" class="btn btn-secondary">Consultar</button> -->
                                         <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
                                     </div>
@@ -153,11 +153,11 @@
                                     <!-- <br> -->
                                     <div class="col-4">
                                         <label style="font-size:0.75em;">NOMBRE DEL SOLICITANTE</label>
-                                        <input type="text" class="form-control" id="vNombre_Solicitante" value="{{ session('vNombreCorreo') }}">
+                                        <input type="text" maxlength="100" class="form-control" id="vNombre_Solicitante" value="{{ session('vNombreCorreo') }}">
                                     </div>
                                     <div class="col-4">
                                         <label style="font-size:0.75em;">TELEFONO DEL SOLICITANTE</label>
-                                        <input type="number" class="form-control" id="vTelefono_Solicitante">
+                                        <input type="text" maxlength="10" class="form-control" id="vTelefono_Solicitante">
                                     </div>
                                     <div class="col-4">
                                         <label style="font-size:0.75em;">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
@@ -184,7 +184,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <label style="font-size:0.75em;">DESCRIPCIÓN DEL REPORTE</label>
-                                        <textarea class="form-control" id="vDescripcion_Reporte" rows="3"></textarea>
+                                        <textarea class="form-control" maxlength="450" id="vDescripcion_Reporte" rows="3"></textarea>
 
                                     </div>
                                 </div>
@@ -305,6 +305,7 @@
     $("#vCentro_Trabajo").keyup(function(){
         if($('#vCentro_Trabajo').val().length > 0){
             $('#btn_consultar').prop('disabled', false);
+            this.value = this.value.toUpperCase();
             $('#div_btn_siguiente').prop('hidden', false);
         }
         else{
@@ -315,6 +316,13 @@
 
         }
     });
+
+
+    $('#vTelefono_Solicitante').keypress(function (e) {    
+        var charCode = (e.which) ? e.which : event.keyCode    
+        if (String.fromCharCode(charCode).match(/[^0-9]/g))    
+            return false;                        
+    }); 
 
     $("#vNombre_Solicitante").keyup(function(){
         var txt = $(this).val();
@@ -337,7 +345,7 @@
         //     })
         // }
         $.ajax({
-            url: '/ventanilla/formulario_consulta/',
+            url: '{{route("formulario_consulta")}}',
             type: 'GET',
             data: {'vCentro_Trabajo' : vCentro_Trabajo}
            }).always(function(r) {
@@ -465,15 +473,10 @@
 
     $('#btn_siguiente2').click(function(){
 
-        
-
         var vNombre_Solicitante = $('#vNombre_Solicitante').val();
         var vTelefono_Solicitante = $('#vTelefono_Solicitante').val();
         var vCorreo_Solicitante = $('#vCorreo_Solicitante').val();
         var vDescripcion_Reporte = $('#vDescripcion_Reporte').val();
-
-
-       
 
 
         if(vNombre_Solicitante !='' && vTelefono_Solicitante !='' && vCorreo_Solicitante != '' && vDescripcion_Reporte != ''){
@@ -778,9 +781,9 @@
                             // position: 'bottom-right',
                             // icon: 'warning',
                             // width: 600,
-                            html: '<div class="fa-3x" style="height: 180px;">'+
+                            html: '<div class="fa-3x" >'+
                                         // '<div class="fa-3x">'+
-                                    '<span class="input-group" style="padding-left: 35%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                    '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
                                     '<p></p>'+
                                     '<p>Espere por favor</p>'+
                                         
@@ -795,7 +798,7 @@
                         
                         $("#btn_registrar2").prop('disabled',true);
                         $.ajax({
-                            url: '/ventanilla/formulario_registro/',
+                            url: '{{route("formulario_registro")}}',
                             type: 'GET',
                             data: {'arreglo_inf' : arreglo_inf}
                             }).always(function(r) {
