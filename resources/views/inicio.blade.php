@@ -23,7 +23,7 @@
             <div class="col-4 text-end">
               <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
                 <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
-              </div>
+              </div> 
               <!-- <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
