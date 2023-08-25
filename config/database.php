@@ -122,19 +122,11 @@ return [
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
-<<<<<<< HEAD
-            'host' => '172.21.88.224',//'192.168.161.48',
-            'port' => '5432',
-            'database' => 'sistemas_cete_test',
-            'username' => 'dev_ayda_it',
-            'password' => 'm23.jeai#05',
-=======
             'host' => '172.21.88.224',
             'port' => '5432',
             'database' => 'sistemas_cete_test',
             'username' => 'dev_jcarlos_it',
             'password' => 'g38.ismx/&m5',
->>>>>>> casCete-JC-07-07-23
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

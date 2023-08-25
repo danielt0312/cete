@@ -43,7 +43,6 @@
 
         <!-- {{ auth()->user()->getAllPermissions()[0]; }} -->
         
-        @can('204-ver-registros-solicitudes')
         <li class="nav-item">
           <a class="nav-link " href="{{ route ('solicitudes_registros') }}"> 
             <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
