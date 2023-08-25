@@ -166,7 +166,9 @@ class OrdenesController extends Controller
 
         if($request->checkDirector == true){
             $nombreSoliictante = $request->nombreSol; // quitar comillas dobles "nombre"
-            $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+            // $nombreSoliictante = preg_replace('([^A-Za-z0-9])', '', $nombreSoliictante);
+            $nombreSoliictante = str_replace('"', '', $nombreSoliictante);
+            $nombreSoliictante = trim($nombreSoliictante);
         }else{
             $nombreSoliictante = $request->txtNombreSolicitante;
         }
