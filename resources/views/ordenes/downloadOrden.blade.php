@@ -103,7 +103,7 @@
             /* Alto de las celdas */
             height: 16px !important;
             font-size: 12px;
-            text-transform: capitalize;
+            /* text-transform: capitalize; */
         }
 
         .sinbordetable{
@@ -113,7 +113,7 @@
             /* Alto de las celdas */
             height: 16px !important;
             font-size: 12px;
-            text-transform: capitalize;
+            /* text-transform: capitalize; */
         }
 
         table .firmas{
@@ -218,34 +218,48 @@
                         <table style="width:100%;">
                           <tr class="sinbordetable">
                             <td class="sinbordetable"><span>Equipo:</span><span>{{$val->tipo_equipo}}</span></td>
-                            <td class="sinbordetable"><span>Etiqueta:</span><span>{{$val->etiqueta}}</span></td>
+                            <td class="sinbordetable"><span>Etiqueta:</span><span>@if($val->etiqueta!=''){{$val->etiqueta}}@else S/D @endif</span></td>
                           </tr>
                           <tr class="sinbordetable">
-                            <td class="sinbordetable"><span>Núm de Serie:</span><span>-</span></td>
-                            <td class="sinbordetable"><span>Marca:</span><span> - </span></td>
+                            <td class="sinbordetable"><span>Núm de Serie:</span><span> S/D </span></td>
+                            <td class="sinbordetable"><span>Marca:</span><span> S/D </span></td>
                           </tr>
                           <tr class="sinbordetable">
-                            <td class="sinbordetable"><span>Ubicación:</span><span>{{$val->ubicacion}}</span></td>
-                            <td class="sinbordetable"><span>Modelo:</span><span> - </span></td>
+                            <td class="sinbordetable"><span>Ubicación:</span><span>@if($val->ubicacion!=''){{$val->ubicacion}}@else S/D @endif</span></td>
+                            <td class="sinbordetable"><span>Modelo:</span><span> S/D </span></td>
                           </tr>
                         </table> 
                       </td>
                       <td class="sinbordetable" style="width:32%;">
                         <span>Servicios:</span>
                         @foreach($val->tareas as $val2)
-                          <span>{{$val2->servicio}}</span>
+                          <span>{{$val2->servicio}}, </span>
                         @endforeach <br>
                         
                         <span>Tareas:</span>
                         @foreach($val->tareas as $val3)
-                          <span>{{$val3->tarea}}</span> 
+                          <span>{{$val3->tarea}}, </span> 
                         @endforeach
                       </td>
                       <td class="sinbordetable" style="width:33%;">
                         <span>Descripción del Problema:</span> 
                           <span>{{$val->desc_problema}}</span> 
                         <br>
-                        <span>Diagnóstico / Solución:</span><span> - </span>
+                        <span>Diagnóstico / Solución:</span>
+                        <span> 
+                          @if($val->diagnostico!='') 
+                            {{$val->diagnostico}} /
+                          @else 
+                            S/D 
+                          @endif
+                        </span> 
+                        <span> 
+                          @if($val->solucion!='') 
+                            {{$val->solucion}}
+                          @else 
+                            S/D 
+                          @endif
+                        </span>
                       </td>
                     </tr>
                   </table>

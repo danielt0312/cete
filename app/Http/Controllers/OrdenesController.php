@@ -77,21 +77,6 @@ class OrdenesController extends Controller
         //dd($request);
         // dd($request->arrEquipos);  //"[object Object]"
         $equipos=$request->arrEquipos;
-        //  var_dump($equipos);
-        //  dd('murio');
-        //dd($request->txtNombreSolicitante);
-        // dd($request->checkDirector);
-        $arr = json_decode($equipos);
-        //  var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
-        //   var_dump($arr);
-        //   dd('murio');
-
-        $arrTarea=$arr[0]->aTarea;
-        // var_dump($arrTarea);
-
-        // foreach ($arrTarea as $p) {
-        //     echo $p->idTarea;
-        // }
 
         $nombreSoliictante='';  /// SI ES DIRECTOR O NO QUE TOME NOMBRE EN SOLICITANTE O NO
 
@@ -104,6 +89,12 @@ class OrdenesController extends Controller
             $nombreSoliictante = $request->txtNombreSolicitante;
         }
 
+        $roles = Auth()->user()->roles;
+        foreach ($roles as $rol) {
+            $idRol= $rol->id; 
+            $nameRol= $rol->name;
+        }
+
         //SI FUNCIONAA  SP
         //$insSolicServicio =  DB::select("CALL cas_cete.spinsertsolicservicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',2,1,13,".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
         $vidModoCaptacion=2;
@@ -111,11 +102,12 @@ class OrdenesController extends Controller
         //FUNCIONinssolicservicioPrueba2
         // $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicio(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$request->txtNombreSolicitante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
         $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicioPrueba2(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$nombreSoliictante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."')");
+        // $insSolicServicio =  DB::connection('pgsql')->select("select * from  cas_cete.InsSolicServicioPrueba2(".$request->txtIdCCT.",'".$request->txtClaveCCT."','".$nombreSoliictante."','".$request->txtTelefonoSolicitante."','".$request->txtCorreoSolicitante."','".$request->checkDirector."','".$request->txtDescripcionReporte."',".$vidModoCaptacion.",".$request->selTipoOrden.",".$vid_usuario.",".$request->selDepAtiende.",".$request->txtLongitud.",".$request->txtLatitud.",'".$equipos."','".$nameRol."')");
     
-        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden()");
+        $catTipoOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoOrden(".$idRol.")");
         // $catTipoServicio =  DB::connection('pgsql')->select("select * from cas_cete.getCatTipoServicio()");]
         $catTipoEquipo =  DB::connection('pgsql')->select("select * from cas_cete.getCatTiposEquipo()");
-        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden()"); 
+        $catAreasAtiendeOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatAreasAtiendeOrden(".$idRol.")"); 
 
         $result1 =$insSolicServicio[0]->inssolicservicioprueba2;
         $result2 = json_decode($result1);
@@ -171,14 +163,14 @@ class OrdenesController extends Controller
             $nombreSoliictante = trim($nombreSoliictante);
         }else{
             $nombreSoliictante = $request->txtNombreSolicitante;
-        }
+        } 
 
         $vidModoCaptacion=2;
         $vid_usuario=Auth()->user()->id;
-        $arr = json_decode($equipos);
+        // //$arr = json_decode($equipos);
         // var_dump($arr[0]->id_tipo_equipo,$arr[0]->desc_tipo_equipo);
 
-        $arrTarea=$arr[0]->aTarea;
+        //// $arrTarea=$arr[0]->aTarea; 
         // var_dump($arrTarea);
 
         // foreach ($arrTarea as $p) {
@@ -220,7 +212,22 @@ class OrdenesController extends Controller
         // $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes()");
         $vModoCaptacion=2;
         //  getTOrdenes2 
-        $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes2(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."',".$vModoCaptacion.")");
+
+        $vid_usuario=Auth()->user()->id;
+
+        $roles = Auth()->user()->roles;
+        foreach ($roles as $rol) {
+            $nameRol= $rol->name; 
+        }
+
+        if($nameRol=="Técnico CETE" || $nameRol=="Técnico Coordinaciones" || $nameRol=="Técnico Laboratorista" ||
+        $nameRol=="Técnico Torre LP"){
+            $ordenes = DB::connection('pgsql')->select("select * from cas_cete.gettordenes2tecnicos(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."',".$vModoCaptacion.",".$vid_usuario.")");
+        }else{
+            $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes2(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."',".$vModoCaptacion.")");
+        }
+
+        // $ordenes = DB::connection('pgsql')->select("select * from cas_cete.getTOrdenes2(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."',".$vModoCaptacion.")");
         // dd($ordenes);
         $tenicosAuxD = DB::select("select * from cas_cete.getCatTecnicosAuxiliares(0,1)");
         $tenicosAux=$tenicosAuxD[0];
@@ -316,7 +323,9 @@ class OrdenesController extends Controller
                 'firma1' => 'Atentamente.',
                 'firma2' => 'Centro Estatal de Tecnología Educativa',
                 'band_ventanilla' => $band_ventanilla,
-                'ventanilla' => $msje_ventanilla
+                'ventanilla' => $msje_ventanilla,
+                'fecha_hora_asignacion' =>''
+                
             ];
 
             Mail::to("$correo")->send(new MailSendO($details));
@@ -370,7 +379,8 @@ class OrdenesController extends Controller
                 'firma1' => 'Atentamente.',
                 'firma2' => 'Centro Estatal de Tecnología Educativa',
                 'band_ventanilla' => $band_ventanilla,
-                'ventanilla' => $msje_ventanilla
+                'ventanilla' => $msje_ventanilla,
+                'fecha_hora_asignacion' =>''
             ];
 
             Mail::to("$correo")->send(new MailSendO($details));
@@ -392,17 +402,17 @@ class OrdenesController extends Controller
         $options->set('isHtml5ParserEnabled', TRUE);
         $pdf = new Dompdf($options);
 
-        $path = base_path('public/images/logo/logoTam2022.png');
+        // $path = base_path('public/images/logo/logoTam2022.png');
         // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
-        // $path = asset('images/logo/logoTam2022.png');
+        $path = asset('images/logo/logoTam2022.png');
         //  return $path;
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
-        $path_footer = base_path('public/images/logo/ceteNI.png');
+        // $path_footer = base_path('public/images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
         // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
-        // $path_footer = asset('images/logo/ceteNI.png');
+        $path_footer = asset('images/logo/ceteNI.png');
         $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
         $data_footer = file_get_contents($path_footer);
         $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
@@ -512,7 +522,8 @@ class OrdenesController extends Controller
                 'firma1' => 'Atentamente.',
                 'firma2' => 'Centro Estatal de Tecnología Educativa',
                 'band_ventanilla' => $band_ventanilla,
-                'ventanilla' => $msje_ventanilla
+                'ventanilla' => $msje_ventanilla,
+                'fecha_hora_asignacion' =>''
             ];
 
             Mail::to("$correo")->send(new MailSendO($details));
@@ -528,13 +539,12 @@ class OrdenesController extends Controller
 
         $equiposSol =  DB::connection('pgsql')->select("select * from cas_cete.getEquiposSolic('".$idSolic."')");
 
-        // $equiposSol =  DB::select("select * from cas_cete.pruebatabla()"); prueba de regresar un json
-
         return response()->json([$equiposSol]);
     }
 
     public function insTecnico(Request $request){
-            // dd($request->All());
+        //  dd($request->All());
+        $fecha_inicio=$request->fecha_inicio_prog;
         
         $arrTec=$request->tecnicosAuxiliaresArray;
         $arrTec2 = json_decode($arrTec);
@@ -545,7 +555,7 @@ class OrdenesController extends Controller
         //dd($varddd[0], " - ", $varddd[1]); 
         // $exito = DB::select("CALL cas_cete.spInsertTecnicos(".$request->idSolModTec.",1,'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",true)");
         $exito = DB::connection('pgsql')->select("select * from cas_cete.fnInsTecnicos(".$request->idSolModTec.",".$vusuario.",'".$request->fecha_inicio_prog."','".$request->fecha_fin_prog."',".$request->selTecnicoEncargado.",'".$request->tecnicosAuxiliaresArray."')");
-
+        // dd($exito);
         // return response()->json($exito);
         
         if($exito != null || $exito != ''){
@@ -571,9 +581,11 @@ class OrdenesController extends Controller
             $fecha_inicio=$request->fecha_inicio_prog;
             $fecha_fin=$request->fecha_fin_prog;
 
-            //  $date1 = new DateTime($fecha_inicio2);
-            //  $fechaInicio2 = strval(date_format($date1, 'Y/m/d H:i:s'));
             $fecha_inicio = str_replace("T"," ",$fecha_inicio);
+            $fecha_inicio2 = explode(" ",$fecha_inicio);
+            $fecha_inicio3 = explode("-",$fecha_inicio2[0]);
+            $fecha_inicio4 = $fecha_inicio3[2].'-'.$fecha_inicio3[1].'-'.$fecha_inicio3[0];
+            $fecha_inicio_final=$fecha_inicio4.' '.$fecha_inicio2[1];
 
             $folio=$request->folioModTec;
             $solicitante=$request->solicitanteModTec;
@@ -600,18 +612,19 @@ class OrdenesController extends Controller
                 'folio' => $folio2.' ',
                 'estatus' => '',
                 
-                 'body1' => $msje_correo,
+                 'body1' => $msje_correo, 
                 // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
                 // 'body3' => '',
-                'body2' => 'ha sido asignada a nuestros técnicos de soporte especializados, quienes estarán presentes en su Centro de Trabajo  el dia '.$fecha_inicio.' para brindar la asistencia.',
+                'body2' => 'ha sido asignada a nuestros técnicos de soporte especializados, quienes estarán presentes en su Centro de Trabajo  el dia ',
                 // 'body2' => 'Técnico encargado: '.$nomTecEncargado. ', técnicos auxiliares: '.$nomTecAux,
-                'body3' => 'Le recomendamos mantener el número de folio de su orden para que pueda dar seguimiento a su progreso.',
-                'body4' => '',
+                'body3' => ' para brindar la asistencia.',
+                'body4' => 'Le recomendamos mantener el número de folio de su orden para que pueda dar seguimiento a su progreso.',
 
                 'firma1' => 'Atentamente.',
                 'firma2' => 'Centro Estatal de Tecnología Educativa',
                 'band_ventanilla' => $band_ventanilla,
-                'ventanilla' => $msje_ventanilla
+                'ventanilla' => $msje_ventanilla,
+                'fecha_hora_asignacion' => $fecha_inicio_final
             ];
 
             Mail::to("$correo")->send(new MailSendO($details));
@@ -681,7 +694,8 @@ class OrdenesController extends Controller
             'firma1' => 'Atentamente.',
             'firma2' => 'Centro Estatal de Tecnología Educativa',
             'band_ventanilla' => $band_ventanilla,
-            'ventanilla' => $msje_ventanilla
+            'ventanilla' => $msje_ventanilla,
+            'fecha_hora_asignacion' =>''
         ];
     
         Mail::to("$correo")->send(new MailSendO($details));
@@ -725,5 +739,21 @@ class OrdenesController extends Controller
 
         $insCierreEquipo =  DB::connection('pgsql')->select("select * from  cas_cete.insCierreEquipo(".$request->hdIdEquipoMC.",".$vid_usuario.",'".$diagnostico."','".$solucion."','".$nombre_archivo."','".$ruta_archivo."','".$base_archivo."')");
         return response()->json($insCierreEquipo);
+    }
+
+    public function getTecnicos($idSolic){
+
+        $tecnicosSol =  DB::connection('pgsql')->select("select * from cas_cete.getTecnicos('".$idSolic."')");
+
+        return response()->json($tecnicosSol);
+    }
+
+    public function updTecnicos(Request $request){
+        dd($request->All());
+
+        $vid_usuario=Auth()->user()->id;
+        $updTecnicos =  DB::connection('pgsql')->select("select * from cas_cete.updTecnicos('".$idSolic."')");
+
+        return response()->json($updTecnicos);
     }
 }

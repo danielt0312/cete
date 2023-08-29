@@ -12,7 +12,7 @@
         </li>
         @can('168-menu-registros-ordenes')
         <li class="nav-item mt-3">
-          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Ordenes</h6>
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6 text-white">Órdenes</h6>
         </li>
         
         <li class="nav-item">

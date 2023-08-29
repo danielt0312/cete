@@ -134,7 +134,7 @@
                                             <!-- <label id="gradoEscolar" class="SinNegrita">{{-- $registro->grado_alumno --}}</label> -->
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <div class="form-group">
                                             <label for="txtCoordinacion">COORDINACIÓN A LA QUE PERTENECE</label>
                                             <input type="text" id="txtCoordinacion" name="txtCoordinacion" class="form-control" value="" readonly >
@@ -157,7 +157,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="form-group">
                                             <label for="txtNivelEducativo">NIVEL EDUCATIVO</label>
                                             <input type="text" id="txtNivelEducativo" name="txtNivelEducativo" class="form-control" value="" readonly >
@@ -820,6 +820,8 @@
         // $("#divCantidad").hide()
         $("#btnAgregarTarea").prop('disabled',true);
         $("#btnAgregarEquipo").hide();
+        $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
+        $("#selTarea").prop('disabled',true); ///////28_08_2023
 
         $("#txtCentroTrabajo").on("keypress", function () {
             input=$(this);
@@ -855,7 +857,7 @@
             }
 
             if(vNombreSolicitante==''){
-                msjeAlerta('', 'Debe ingresar elnombre del solicitante', 'error');
+                msjeAlerta('', 'Debe ingresar el nombre del solicitante', 'error');
             }
 
             if(vTelefonoSolicitante==''){
@@ -904,6 +906,68 @@
         $("#btnAnterior3").click(function(){
             $("#tab2").attr('class', 'nav-link');
             $("#tab2").tab('show');
+        });
+
+        $("#tab3").click(function(){
+            var vId_TipoOrden= $("#selTipoOrden").val();
+            var vTipoOrden= $('select[id="selTipoOrden"] option:selected').text();
+
+            var vId_DepAtiende= $("#selDepAtiende").val();
+            var vDepAtiende= $('select[id="selDepAtiende"] option:selected').text();
+
+            var vNombreSolicitante= $("#txtNombreSolicitante").val();
+            var vTelefonoSolicitante= $("#txtTelefonoSolicitante").val();
+            var vCorreoSolicitante= $("#txtCorreoSolicitante").val();
+            var vDescripcionReporte= $("#txtDescripcionReporte").val();
+
+            if(vId_TipoOrden==0){
+                msjeAlerta('', 'Debe seleccionar el tipo de orden', 'error');
+            }
+            
+            if(vId_DepAtiende==0){
+                msjeAlerta('', 'Debe seleccionar la dependencia que atiende', 'error');
+            }
+
+            if(vNombreSolicitante==''){
+                msjeAlerta('', 'Debe ingresar el nombre del solicitante', 'error');
+            }
+
+            if(vTelefonoSolicitante==''){
+                // msjeAlerta('', 'Debe ingresar el teléfono del solicitante', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
+            }
+
+            if(vTelefonoSolicitante.length<10){
+                // msjeAlerta('', 'Debe ingresar 10 números en teléfono', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
+            }
+
+            if(vCorreoSolicitante==''){
+                msjeAlerta('', 'Debe ingresar el correo del solicitante', 'error');
+            }else{
+                var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+                var bandC=0;
+                if (! regex.test($('#txtCorreoSolicitante').val().trim())) {
+                    // alert('Correo validado');
+                    msjeAlerta('', 'El correo no es valido', 'error');
+                    bandC=1;
+                } else{
+                    bandC=0;
+                }
+            }
+
+            if(vDescripcionReporte==''){
+                msjeAlerta('', 'Debe ingresar la descripción del reporte', 'error');
+            }
+
+            if(vId_TipoOrden!=0 && vId_DepAtiende!=0 && vNombreSolicitante!='' && vTelefonoSolicitante!=''&& vCorreoSolicitante!=''&& bandC==0 
+            && vDescripcionReporte!='' && vTelefonoSolicitante.length==10 ){
+                $("#tab3").attr('class', 'nav-link');
+                $("#tab3").tab('show');
+            }else{
+                $("#tab2").attr('class', 'nav-link');
+                $("#tab2").tab('show');
+            }
         });
 
         $("#checkReplicar").change(function() {  
@@ -1052,6 +1116,10 @@
             $("#txtCantidadEquipos").val(1);
             $("#tituloTareas").text('');
             $("#selTipoServicio").val("0").attr("selected",true);
+            $("#txtEtiquetaServicio").prop('disabled',false);
+            $("#checkVer").show();
+            $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
+            $("#selTarea").prop('disabled',true); ///////28_08_2023
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
             //     arrTareas=[];
@@ -1172,6 +1240,7 @@
                     }
 
                     $("#selTipoServicio").html(htmlSel);
+                    $("#selTipoServicio").prop('disabled',false); ///////28_08_2023
                 }
             });
             
@@ -1202,6 +1271,7 @@
                     }
 
                     $("#selTarea").html(htmlSel);
+                    $("#selTarea").prop('disabled',false); ///////28_08_2023
                 }
             });
             
@@ -1366,6 +1436,7 @@
                     $("#selTipoEquipo").prop('disabled',false);
                     $("#selTipoEquipo").val("0").attr("selected",true);
                     $("#selTipoServicio").val("0").attr("selected",true);
+                    $("#divListaTarea").hide();
                 }else{
                     $("#selTipoEquipo").prop('disabled',true);
                 }
@@ -1405,7 +1476,7 @@
                 listaTarea2+='<tr>';
                 if(aux==arrTareas[j]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
                     listaTarea2+='<td>&nbsp;</td>';
-                    aux='';
+                    // aux='';
                 }else{
                     aux=arrTareas[j]['desc_Servicio'];
                     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
@@ -1515,8 +1586,8 @@
                 // window.location.href = urlEditar;
                 // download-pdf
 
-                // window.open(urlEditar, '_blank'); // este es el bueno para descargar
-                var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+                window.open(urlEditar, '_blank'); // este es el bueno para descargar
+                // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
                 window.location.href = '{{ route("listadoOrdenes") }}';
             }else{
                 window.location.href = '{{ route("listadoOrdenes") }}';
@@ -1972,19 +2043,19 @@
         }
 
         if(arrEquipos[numArr].marca==''){
-            marca='S/D';
+            marca='Marca: S/D';
         }else{
             marca=arrEquipos[numArr].marca;
         }
 
         if(arrEquipos[numArr].modelo==''){
-            modelo='S/D';
+            modelo='Modelo: S/D';
         }else{
             modelo=arrEquipos[numArr].modelo;
         }
 
         if(arrEquipos[numArr].numeroSerie==''){
-            numeroSerie='S/D';
+            numeroSerie='Número de Serie: S/D';
         }else{
             numeroSerie=arrEquipos[numArr].numeroSerie;
         }

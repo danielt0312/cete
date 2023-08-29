@@ -14,16 +14,24 @@
     <hr color="#ab0033!important;">
     <p>
         {{ $details ['body1'] }} <b>{{ $details ['folio'] }}</b> {{ $details ['body2'] }} <b>{{ $details ['estatus'] }}</b> 
-        
+
         @if ($details ['estatus']!='')
+            {{ $details ['body3'] }}
+        @endif
+
+        @if ($details ['fecha_hora_asignacion']!='')
+            <b>{{ $details ['fecha_hora_asignacion'] }}</b>
+        @endif
+
+        @if ($details ['fecha_hora_asignacion']!='')
             {{ $details ['body3'] }}
         @endif
     </p>
 
-    @if ($details ['estatus']=='')
+    @if ($details ['estatus']=='' && $details ['fecha_hora_asignacion']=='')
     <p>{{ $details ['body3'] }}</p>
     @endif
-
+    
     <p>{{ $details ['body4'] }}</p>
     
     <center><b><p>{{ $details ['firma1'] }}<br>{{ $details ['firma2'] }}<br></p></b></center>

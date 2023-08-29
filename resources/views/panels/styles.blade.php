@@ -188,4 +188,8 @@
 
   .colorBtnCancelar:focus { outline: none; } 
 
+  div.dataTables_wrapper div.dataTables_length select {
+    width: 6em !important;
+  }
+
 </style>

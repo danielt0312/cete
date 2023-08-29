@@ -33,6 +33,20 @@
                     <div class="d-flex align-items-center">
                         <!-- <p class="mb-0">Datos generales</p> -->
                         <!-- <p><h6 class="modal-title">Datos generales</h6></p> -->
+                        {{--auth()->user()->roles[0]['name']--}}
+                        @can('177-tab-edit-equipos')
+                        <?php
+                            $rol=auth()->user()->roles[0]['name'];
+                            $nombre=explode(' ', $rol);
+
+                            if ($nombre[0]=='Técnico'){
+                            $valor=1;
+                            }else{
+                            $valor=0;
+                            }
+                        ?>
+                        <input type="hidden" id="rolTec" name="rolTec" value="<?php echo $valor; ?>">
+                        @endcan
                         <div class="col-12">
                             <ul class="nav nav-pills nav-justified" id="tabs">
                                 <li class="nav-item">
@@ -57,10 +71,14 @@
                                 <div class="tab-pane fade show active" id="tabCCT">
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro">
-                                            <label>FOLIO DE ORDEN:</label>
-                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label>ESTATUS:</label>
-                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label style="color:#ab0033 !important">FOLIO DE ORDEN:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label style="color:#ab0033 !important">ESTATUS:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" id="datosGenCentro">
                                             <label>CENTRO DE TRABAJO:</label>
                                             <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
@@ -129,7 +147,7 @@
                                             <!-- <label id="gradoEscolar" class="SinNegrita">{{-- $registro->grado_alumno --}}</label> -->
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-4">
                                             <div class="form-group">
                                             <label for="txtCoordinacion">COORDINACIÓN A LA QUE PERTENECE</label>
                                             <input type="text" id="txtCoordinacion" name="txtCoordinacion" class="form-control" value="{{ $ordenServiciosDetalle->coordinacion }}" readonly >
@@ -152,7 +170,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="form-group">
                                             <label for="txtNivelEducativo">NIVEL EDUCATIVO</label>
                                             <input type="text" id="txtNivelEducativo" name="txtNivelEducativo" class="form-control" value="{{ $ordenServiciosDetalle->nivel }}" readonly >
@@ -172,12 +190,16 @@
                                 </div>  <!--final del tab cct-->
 
                                 <div class="tab-pane fade" id="tabReporte">
+                                <div class="row">
+                                        <div class="col-12" id="datosGenCentro2">
+                                            <label style="color:#ab0033 !important">FOLIO DE ORDEN:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label style="color:#ab0033 !important">ESTATUS:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro2">
-                                            <label>FOLIO DE ORDEN:</label>
-                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label>ESTATUS:</label>
-                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>CENTRO DE TRABAJO:</label>
                                             <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
@@ -270,12 +292,16 @@
                                 </div> <!--Fin tab Reporte-->
                                 
                                 <div class="tab-pane fade" id="tabEquipos">
+                                <div class="row">
+                                        <div class="col-12" id="datosGenCentro">
+                                            <label style="color:#ab0033 !important">FOLIO DE ORDEN:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label style="color:#ab0033 !important">ESTATUS:</label>
+                                            <label style="color:#ab0033 !important">{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-12" id="datosGenCentro">
-                                            <label>FOLIO DE ORDEN:</label>
-                                            <label>{{ $ordenServiciosDetalle->folio }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <label>ESTATUS:</label>
-                                            <label>{{ $ordenServiciosDetalle->desc_estatus_orden }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>CENTRO DE TRABAJO:</label>
                                             <label>{{ $ordenServiciosDetalle->clave_ct }}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <label>NOMBRE DEL C.T:</label>
@@ -980,6 +1006,7 @@
     let arrTareasEdit = [];
     let arrEquiposElim = [];
     let arrTareasEditElim = [];
+    var arrEquiposAux = [];
     // var equipo_servicio = {
     //             nom_equipo: '',
     //             num_inventario: '',
@@ -993,8 +1020,26 @@
         // $("#btnSiguiente").hide()
         // $("#btnSiguiente").prop('disabled', true);
         // $("#divCantidad").hide()
+        var rolTec=$("#rolTec").val();
+        if(rolTec==1){
+            // $("#selTipoOrden").prop('disabled',true);
+            // $("#selDepAtiende").prop('disabled',true);
+            // $("#txtNombreSolicitante").prop('disabled',true);
+            // $("#txtTelefonoSolicitante").prop('disabled',true);
+            // $("#txtCorreoSolicitante").prop('disabled',true);
+            // $("#txtDescripcionReporte").prop('disabled',true);
+        }else{
+            // $("#selTipoOrden").prop('disabled',false);
+            // $("#selDepAtiende").prop('disabled',false);
+            // $("#txtNombreSolicitante").prop('disabled',false);
+            // $("#txtTelefonoSolicitante").prop('disabled',false);
+            // $("#txtCorreoSolicitante").prop('disabled',false);
+            // $("#txtDescripcionReporte").prop('disabled',false);
+        }
 
         fnConsEquipos();
+        $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
+        $("#selTarea").prop('disabled',true); ///////28_08_2023
 
         $('#checkCerrar').click(function(){
             if ($(this).is(':checked') ) {
@@ -1082,7 +1127,69 @@
 
         $("#btnAnterior3").click(function(){
             $("#tab2").attr('class', 'nav-link');
-            $("#tab2").tab('show');
+            $("#tab2").tab('show'); 
+        });
+
+        $("#tab3").click(function(){
+            var vId_TipoOrden= $("#selTipoOrden").val();
+            var vTipoOrden= $('select[id="selTipoOrden"] option:selected').text();
+
+            var vId_DepAtiende= $("#selDepAtiende").val();
+            var vDepAtiende= $('select[id="selDepAtiende"] option:selected').text();
+
+            var vNombreSolicitante= $("#txtNombreSolicitante").val();
+            var vTelefonoSolicitante= $("#txtTelefonoSolicitante").val();
+            var vCorreoSolicitante= $("#txtCorreoSolicitante").val();
+            var vDescripcionReporte= $("#txtDescripcionReporte").val();
+
+            if(vId_TipoOrden==0){
+                msjeAlerta('', 'Debe seleccionar el tipo de orden', 'error');
+            }
+            
+            if(vId_DepAtiende==0){
+                msjeAlerta('', 'Debe seleccionar la dependencia que atiende', 'error');
+            }
+
+            if(vNombreSolicitante==''){
+                msjeAlerta('', 'Debe ingresar el nombre del solicitante', 'error');
+            }
+
+            if(vTelefonoSolicitante==''){
+                // msjeAlerta('', 'Debe ingresar el teléfono del solicitante', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
+            }
+
+            if(vTelefonoSolicitante.length<10){
+                // msjeAlerta('', 'Debe ingresar 10 números en teléfono', 'error');
+                msjeAlerta('', 'Favor de ingresar un número de teléfono válido', 'error');
+            }
+
+            if(vCorreoSolicitante==''){
+                msjeAlerta('', 'Debe ingresar el correo del solicitante', 'error');
+            }else{
+                var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
+                var bandC=0;
+                if (! regex.test($('#txtCorreoSolicitante').val().trim())) {
+                    // alert('Correo validado');
+                    msjeAlerta('', 'El correo no es valido', 'error');
+                    bandC=1;
+                } else{
+                    bandC=0;
+                }
+            }
+
+            if(vDescripcionReporte==''){
+                msjeAlerta('', 'Debe ingresar la descripción del reporte', 'error');
+            }
+
+            if(vId_TipoOrden!=0 && vId_DepAtiende!=0 && vNombreSolicitante!='' && vTelefonoSolicitante!=''&& vCorreoSolicitante!=''&& bandC==0 
+            && vDescripcionReporte!='' && vTelefonoSolicitante.length==10 ){
+                $("#tab3").attr('class', 'nav-link');
+                $("#tab3").tab('show');
+            }else{
+                $("#tab2").attr('class', 'nav-link');
+                $("#tab2").tab('show');
+            }
         });
 
         $("#checkReplicar").change(function() {  
@@ -1199,7 +1306,7 @@
                     estatus_equipo : 1, 
                     nuevo : 1, 
                     aTarea : arrTareas, ///arreglo tareas
-                    fecha_cierre : '',
+                    fecha_cierre : null,
                     // aServicio : arrServicios /// arreglo servicios
                 });
                 console.log(arrEquipos,'-----fff');
@@ -1227,6 +1334,10 @@
             $("#txtCantidadEquipos").val(1);
             $("#tituloTareas").text('');
             $("#selTipoServicio").val("0").attr("selected",true);
+            $("#txtEtiquetaServicio").prop('disabled',false);
+            $("#checkVer").show();
+            $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
+            $("#selTarea").prop('disabled',true); ///////28_08_2023
             // $("#divRowListadoTareas").hide();
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
@@ -1347,6 +1458,7 @@
                     }
 
                     $("#selTipoServicio").html(htmlSel);
+                    $("#selTipoServicio").prop('disabled',false); ///////28_08_2023
                 }
             });
             
@@ -1377,6 +1489,7 @@
                     }
 
                     $("#selTarea").html(htmlSel);
+                    $("#selTarea").prop('disabled',false); ///////28_08_2023
                 }
             });
             
@@ -1627,7 +1740,7 @@
                 }else{ // 0 es igual a que biene de BD
                     aTarea = JSON.parse(arrEquipos[j]['aTarea']);
                 }
-
+                console.log(aTarea);
                 // var vtare='';
                 // if( typeof(aTarea[j]['tarea']) != "undefined" && aTarea[j]['tarea'] !== null){
                 //     vtare=aTarea[j]['tarea'];
@@ -1693,12 +1806,14 @@
                 tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
                 tablaEquipo2+='                          </li>@endcan';
-                tablaEquipo2+='                      <li>';
-                tablaEquipo2+='                          <a  ';
-                tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item" >';
-                tablaEquipo2+='                              <i class="fas fa-trash"></i> Eliminar';
-                tablaEquipo2+='                          </a>';
-                tablaEquipo2+='                      </li>';
+                if(arrEquipos[j].fecha_cierre==null){ 
+                    tablaEquipo2+='                      <li>';
+                    tablaEquipo2+='                          <a  ';
+                    tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item" >';
+                    tablaEquipo2+='                              <i class="fas fa-trash"></i> Eliminar';
+                    tablaEquipo2+='                          </a>';
+                    tablaEquipo2+='                      </li>';
+                }
                 tablaEquipo2+='                  </ul>';
                 tablaEquipo2+='              </div></td>';
                 tablaEquipo2+='</tr>';
@@ -1757,7 +1872,7 @@
                 listaTarea2+='<tr>';
                 if(aux==arrTareas[j]['desc_Servicio']){ 
                     listaTarea2+='<td>&nbsp;</td>';
-                    aux='';
+                    // aux='';
                 }else{
                     aux=arrTareas[j]['desc_Servicio'];
                     listaTarea2+='<td>'+arrTareas[j]['desc_Servicio']+'&nbsp;</td>';
@@ -1884,8 +1999,8 @@
             allowOutsideClick: false,
             }).then((result) => {
             if (result.isConfirmed) {
-                // window.open(urlEditar, '_blank');
-                var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank'); 
+                window.open(urlEditar, '_blank');
+                // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank'); 
                 window.location.href = '{{ route("listadoOrdenes") }}';
                 // download-pdf
             }else{
@@ -1940,9 +2055,7 @@
 
                 //  console.log(data[0][0].arrequipos);   //data[0][i].id_tarea
                 //  var coche = JSON.parse(data[0][0].arrequipos);
-
                 // console.log(coche);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
-                
                     // console.log(data[0].length); 
                 if(data[0] !='' || data[0] !=null || data[0].length!=0){
                     
@@ -1970,112 +2083,38 @@
                             })
                         }
                     });
-                     console.log(arrEquipos);
-                    // arrEquipos.push({
-                    //     con : i,
-                    //     id_tipo_equipo : vId_TipoEquipo, 
-                    //     desc_tipo_equipo : vTipoEquipo, 
-                    //     etiquetaServicio : etiquetaServicio,
-                    //     marca : marca,
-                    //     modelo : modelo, 
-                    //     numeroSerie : numeroSerie,
-                    //     descripcionSoporte : descripcionSoporte,
-                    //     ubicacionEquipo : ubicacionEquipo,
-                    //     cantidad : vCantidad,
-                    //     estatus_equipo : 1, 
-                    //     nuevo : 0, 
-                    //     aTarea : arrTareas, ///arreglo tareas
-                    //     // aServicio : arrServicios /// arreglo servicios
-                    // })
+                      ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+
+                    if(arrEquiposAux !='' || arrEquiposAux !=null || arrEquiposAux.length!=0){
+
+                        $.each(arrEquiposAux, function(j, val){
+                            if (!jQuery.isEmptyObject(arrEquiposAux[j])) {
+                                // console.log(data[0][i]);
+                                if(arrEquiposAux[j].nuevo==1){
+                                    arrEquipos.push({
+                                    con : j,
+                                        id_equipo_serv_solic : arrEquiposAux[j].id_equipo_serv_solic,
+                                        id_tipo_equipo : arrEquiposAux[j].id_tipo_equipo, 
+                                        desc_tipo_equipo : arrEquiposAux[j].desc_tipo_equipo, 
+                                        etiquetaServicio : arrEquiposAux[j].etiquetaServicio,
+                                        marca : '',
+                                        modelo : '', 
+                                        numeroSerie : '',
+                                        descripcionSoporte : arrEquiposAux[j].descripcionSoporte,
+                                        ubicacionEquipo : arrEquiposAux[j].ubicacionEquipo,
+                                        cantidad : 1,
+                                        estatus_equipo : 1, 
+                                        nuevo : 1, 
+                                        aTarea : arrEquiposAux[j].aTarea, ///arreglo tareas
+                                        fecha_cierre : null,
+                                    });
+                                }
+                            }
+                        });
+                    }
                     drawRowEquipo();
-                //     if(data[0].length>1){
-                //         var html='';
-                //         var i=0;
-                //         data[0].forEach(element => {
-                //             i=i+1;
-                //             arrEscuelaTurno.push(element);
-                //             html+='<option value="'+i+'" selected>'+element['turno']+'</option>';
-                //             //  console.log(element['turno']);
-                                
-                //         });
-                //         // console.log(arrEscuelaTurno);
-                //         $("#selTurno").html(html);
-                //         $("#centroTrabajoModal").modal("show");
-                //     }else if(data[0].length==1){
-                //         $("#txtIdCCT").val(data[0][0].id);
-                //         $("#txtNombreCCT").val(data[0][0].nombrect);
-                //         $("#txtClaveCCT").val(data[0][0].clavecct);
-                //         $("#txtMunicipioCCT").val(data[0][0].municipio)
-                //         $("#txtDirectorCCT").val(data[0][0].director);
-                //         $("#txtDireccionCCT").val(data[0][0].domicilio);
-                //         $("#txtCoordinacion").val(data[0][0].coordinacion);
-                //         $("#txtTelefono").val(data[0][0].telefono);
-                //         $("#txtTurno").val(data[0][0].turno);
-                //         $("#txtNivelEducativo").val(data[0][0].nivel);
-                //         $("#txtLatitud").val(data[0][0].latitud);
-                //         $("#txtLongitud").val(data[0][0].longitud);
-
-                //         $("#btnSiguiente").prop('disabled', false);
-                //         // $("#btnHistorialCCT").show();
-                //         // $("#btnUbicacionCCT").show();
-                        
-                //         var divH='<button class="btn btn-secondary" type="button" id="btnHistorialCCT"  onclick="fnHistorial()">Ver Historial</button>';
-                //         var divU='<button class="btn btn-secondary" type="button" id="btnUbicacionCCT"  onclick="fnMapa()">Ubicación</button>';
-                //         $("#divHistorial").html(divH);
-                //         $("#divUbicacion").html(divU);
-
-                //         if(data[1] !='' || data[1] !=null ){
-                //             // $("#divHistorial").html(divH);
-                //             var htmlHist='<table class="table"><thead><th>FOLIO</th><th>Fecha</th><th>Detalles</th></thead><tbody>';
-                //             var j=0;
-                //             $.each(data[1], function(j, val){
-                //                 if (!jQuery.isEmptyObject(data[1])) {
-                //                     htmlHist+='<tr><td>'+data[1][j].folio+'</td><td>'+data[1][j].fecha_orden+'</td>';
-                //                     htmlHist+='<td><div class="dropdown btn-group dropstart">';
-                //                     htmlHist+='<button class="btn btn-link text-secondary mb-0 "';
-                //                     htmlHist+='data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >';
-                //                     htmlHist+='<i class="fa fa-ellipsis-v text-xs"></i></button>';
-                //                     htmlHist+='<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                //                     htmlHist+='<li>';
-                //                     htmlHist+='<a onclick="fnVerOrdenCentro('+data[1][j].id_orden+')"> ';
-                //                     htmlHist+='<i class="fas fa-download"></i> Ver Orden...';
-                //                     htmlHist+='</a>';
-                //                     htmlHist+='</li>';
-                //                     htmlHist+='</ul>';
-                //                     htmlHist+='</div></td></tr>';
-                //                     //  console.log(element['turno']);
-                //                     j=j+1;
-                //                 }
-                //             });
-
-
-                //             htmlHist+='</tbody></table>';
-                //             // console.log(arrEscuelaTurno);
-                            
-                //             $("#hist").html(htmlHist);
-                //         }else{
-                //             $("#hist").html('<span>No hay historial de este centro de trabajo</span>');
-                //         }
-                //     }else{
-                //         msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
-                //         $("#btnSiguiente").prop('disabled', true);
-
-                //         $("#divHistorial").html('');
-                //         $("#divUbicacion").html('');
-                //         $("#hist").html('');
-
-                //         fnLimpiar();
-                //         }
                 }else{
-                //     msjeAlerta('', 'No existe el Centro de Trabajo '+claveCCT, 'error')
-                //     $("#btnSiguiente").prop('disabled', true);
 
-                //     $("#divHistorial").html('');
-                //     $("#divUbicacion").html('');
-                //     $("#hist").html('');
-
-                //     fnLimpiar();
-                    
                 }
             }
         });
@@ -2280,27 +2319,32 @@
         data2.append('checkDirector', JSON.stringify(checkDirector));
         data2.append('nombreSol', JSON.stringify(nombreSol)); 
 
-        $.ajax({
-            url: urlEditar,
-            type: 'POST',
-            data:data2,
-            dataType: 'json', 
-            processData: false,
-            contentType: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function(data) {
+        // console.log(arrEquipos.length);
+        // if (arrEquipos.length != 0){
+            $.ajax({
+                url: urlEditar,
+                type: 'POST',
+                data:data2,
+                dataType: 'json', 
+                processData: false,
+                contentType: false,
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function(data) {
 
-                var vequip = JSON.parse(data[0].updsolicservicio);
-                console.log(vequip+'-------------');
-                console.log(data[0]['updsolicservicio']+'-------------');
-                if(data[0]['updsolicservicio']!=''){ 
-                    msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
-                }else{ 
-                    msjeAlerta('', 'No se pudo realizar el registro de la orden de servicio','error')
+                    var vequip = JSON.parse(data[0].updsolicservicio);
+                    console.log(vequip+'-------------');
+                    console.log(data[0]['updsolicservicio']+'-------------');
+                    if(data[0]['updsolicservicio']!=''){ 
+                        msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
+                    }else{ 
+                        msjeAlerta('', 'No se pudo realizar el registro de la orden de servicio','error')
+                    }
+                    
                 }
-                
-            }
-        });
+            }); 
+        // }else{
+        //     msjeAlerta('', 'No se puede actualizar si no tiene ','error')
+        // }
     }
 
     function fnLimpiar(){
@@ -2406,19 +2450,19 @@
         }
 
         if(arrEquipos[numArr].marca==''){
-            marca='S/D';
+            marca='Marca: S/D';
         }else{
             marca=arrEquipos[numArr].marca;
         }
 
         if(arrEquipos[numArr].modelo==''){
-            modelo='S/D';
+            modelo='Modelo: S/D';
         }else{
             modelo=arrEquipos[numArr].modelo;
         }
 
         if(arrEquipos[numArr].numeroSerie==''){
-            numeroSerie='S/D';
+            numeroSerie='Número de Serie: S/D';
         }else{
             numeroSerie=arrEquipos[numArr].numeroSerie;
         }
@@ -2650,7 +2694,7 @@
 
         $("#txtDescripcionSoporteM").val(arrEquipos[j].descripcionSoporte);
         $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
-        // $("#txtDetalleEquipoM").val(); ws
+        $("#txtDetalleEquipoM").val('Marca:S/D, Modelo:S/D, Número de Serie: S/D '); ///ws
         $("#txtUbicacionM").val(arrEquipos[j].ubicacionEquipo);
 
         ///////Inputs de Cierre Equipo
@@ -2816,7 +2860,7 @@
                 listaTarea2+='<tr>';
                 if(aux==arrTareasEdit[j]['servicio']){ 
                     listaTarea2+='<td>&nbsp;</td>';
-                    aux='';
+                    // aux='';
                 }else{
                     aux=arrTareasEdit[j]['servicio'];
                     listaTarea2+='<td>'+arrTareasEdit[j]['servicio']+'&nbsp;</td>';
@@ -3008,7 +3052,7 @@
                         // msjeAlerta2('','El equipo ha sido registrado como ATENDIDO','success',txtIdSolic) ////este no se
                         Swal.fire({
                             title: '',
-                            html: '<span>El equipo ha sido registrado como ATENDIDO</span>',
+                            html: '<span>El equipo ha sido registrado como <strong>ATENDIDO</strong> en la orden de servicio.</span>',
                             icon: 'success',
                             showCancelButton: false,
                             confirmButtonColor: '#ab0033',
@@ -3019,7 +3063,16 @@
                             }).then((result) => {
                             if (result.isConfirmed) {
                                 $("#detalleEquipoModal").modal("hide");
-                                // arrEquipos=[];
+                                // arrEquiposAux=arrEquipos
+                                for (var i = 0; i < arrEquipos.length; i++) {
+                                    arrEquiposAux.push(arrEquipos[i]);
+
+                                } 
+                                console.log(arrEquiposAux+'-------4');
+                                arrEquipos=[];
+                                fnConsEquipos();
+                                console.log(arrEquipos+'-------1');
+                                console.log(arrEquiposAux+'-------2');
                             }else{
                                 
                             }
