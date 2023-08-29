@@ -168,6 +168,22 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'insumos' => [
+            'driver' => 'pgsql',
+            'url' => env('DATABASE_URL'),
+            // 'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => '172.21.88.224',
+            'port' => '5432',
+            'database' => 'sistemas_cete_test',
+            'username' => 'dev_jcarlos_it',
+            'password' => 'g38.ismx/&m5',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'insumos',
+            'sslmode' => 'prefer',
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DATABASE_URL'),

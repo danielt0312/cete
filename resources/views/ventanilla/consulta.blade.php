@@ -414,13 +414,7 @@
         $('#datatable_solicitudes2').prop('hidden',true);
         $('#btn_enviar').prop('disabled',false);
         
-        // $('#vFolio').val('');
-        
-        // if (bandera == 1) {
-            // $('#tabla_folio').prop('hidden',false);
-        // }
-        
-        // $('#tabla_folio').html();
+       
         
         
     });
@@ -953,6 +947,11 @@
 
     });
 
+    $("#vFolio").keyup(function(){
+        var txt = $(this).val();
+        $(this).val(txt.replace(/^(.)|\s(.)/g, function($1){ return $1.toUpperCase( ); }));
+    });
+
     $('#btn_regresar').click(function(){
         window.location.href = "indexVentanilla";
     });
@@ -1320,24 +1319,24 @@
                         // var tarea = '';
                         for (let i = 0; i < r.datos_equipos.length; i++) {
                             html4+='<tr>';
-                            if (id_equipo_detalle+r.datos_equipos[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
-                            html4+='<td></td>';
-                            }
-                            else{
+                            // if (id_equipo_detalle+r.datos_equipos[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
+                            // html4+='<td></td>';
+                            // }
+                            // else{
                             html4+='<td>- '+r.datos_equipos[i]['tipo_equipo']+'</td>';
-                            }
-                            if (r.datos_equipos[i]['desc_problema'] == desc_problema) {
-                            html4+='<td></td>';
-                            }
-                            else{
+                            // }
+                            // if (r.datos_equipos[i]['desc_problema'] == desc_problema) {
+                            // html4+='<td></td>';
+                            // }
+                            // else{
                             html4+='<td style="white-space: pre-line; word-break: break-word;">- '+r.datos_equipos[i]['desc_problema']+'</td>';
-                            }
-                            if (r.datos_equipos[i]['servicio'] == servicio) {
-                            html4+='<td></td>';
-                            }
-                            else{
+                            // }
+                            // if (r.datos_equipos[i]['servicio'] == servicio) {
+                            // html4+='<td></td>';
+                            // }
+                            // else{
                             html4+='<td>- '+r.datos_equipos[i]['servicio']+'</td>';
-                            }
+                            // }
                             html4+='<td>- '+r.datos_equipos[i]['tarea']+'</td>';
                             html4+='</tr>'; 
 

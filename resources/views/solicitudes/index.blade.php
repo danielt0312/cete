@@ -28,6 +28,8 @@
   /* border: 1px solid #000; */
   background-color: #FFF;
 }
+
+.highlight { background-color: red; }
 </style>
 @section('content')
 
@@ -46,7 +48,7 @@
 
         <div class="card-header pb- p-3">
           <div class="d-flex justify-content-between">
-            <h6 class="mb-2">Solicitudes</h6>
+            <!-- <h6 class="mb-2">Solicitudes</h6> -->
           </div>
         </div>
 
@@ -428,7 +430,8 @@ var cond_show_edit = 0;
 var bandera_dibujo = 0;
 var arrEliminarEquipos = [];
 var arrContadorTabla = [];
-var arrReplicar = [];
+// var arrReplicar = [];
+var banderareplica = 0;
 
   
 
@@ -436,26 +439,6 @@ var arrReplicar = [];
     $('#exampleModal').modal({backdrop: 'static', keyboard: false})
     // var dias = 2;
     var table = $('#tabla_solicitudes').DataTable({
-      // dom: 'Bfrtip',
-        // rowReorder: {
-        //     selector: 'td:nth-child(2)'
-        // },
-        // buttons: [
-        //     {
-        //         extend: 'excelHtml5',
-        //         text: '<button class="btn btn-primary">Excel</button>',
-        //         exportOptions: {
-        //           columns: [ 0, 1, 2, 3 ]
-        //         }
-        //     },
-        //     {
-        //         extend: 'pdfHtml5',
-        //         text: '<button class="btn btn-primary">PDF</button>',
-        //         exportOptions: {
-        //             columns: [ 0, 1, 2, 3 ]
-        //         }
-        //     }
-        // ],
         order: [4, 'desc'],
         responsive: true,
         processing: true,
@@ -467,7 +450,7 @@ var arrReplicar = [];
         url: '{{route("solicitudes_registros")}}'
         },
         columns: [
-            { data: null, render:function(data){
+            { data: null,className: "text-center", render:function(data){
                 if (data.folio != data.folio_orden) {
                   return '<h6 class="mb-0 text-sm">'+data.folio+'</h6><p class="text-xs text-secondary mb-0">'+data.folio_orden+'</p>';
                   
@@ -500,27 +483,6 @@ var arrReplicar = [];
               }
               }
             },
-            // {data: 'fecha_apertura', name: 'fecha_apertura', className: "text-center"},
-            
-            // {data: 'desc_estatus_solicitud', name: 'desc_estatus_solicitud'},
-            // { data: null, render:function(data){
-            //     if(data.estatus>1){
-            //       if (data.estatus == 'RECHAZADA') {
-            //         return '<span style ="padding: 7px;  border-radius: 4px; background-color: #ff1a1a; color: white; text-align : center;">'+data.estatus+'</span>';
-            //       }
-            //       else if (data.estatus == 'APROBADA') {
-            //           return '<span style ="background-color: gray; padding: 7px;  border-radius: 4px; color: white; text-align : center;">'+data.estatus+'</span>';
-            //       }
-            //     }else{
-            //       if (data.estatus == 'RECHAZADA') {
-            //         return '<span style ="padding: 7px;  border-radius: 4px; background-color: #ff1a1a; color: white; text-align : center;">'+data.estatus+'</span>';
-            //       }
-            //       else if (data.estatus == 'APROBADA') {
-            //           return '<span style ="background-color: gray; padding: 7px;  border-radius: 4px; color: white; text-align : center;">'+data.estatus+'</span>';
-            //       }                
-            //     }
-            //   }
-            // },
             {data: 'action', name: 'action', orderable: false, searchable: false, className: "text-center"},
         ],
         "language": {
@@ -543,14 +505,19 @@ var arrReplicar = [];
           }
         },
         columnDefs: [
-                    {
-                        // "targets": [ hideColumn ],
-                        "visible": false,
-                        "searchable": true
-                    },
+          {
+              // "targets": [ hideColumn ],
+              "visible": false,
+              "searchable": true
+          },
         ]
     });
-    
+
+    $('#tabla_solicitudes tbody').on('click', 'tr', function () {
+      // console.log(table.row( this ).data());
+      $("#tabla_solicitudes tbody tr").css("background-color", "#FFFFFF");
+      $(this).css("background-color", "#E8E8E6");
+    });
 
     $.ajax({
         url: '{{route("selects_equipo_servicio")}}',
@@ -942,25 +909,25 @@ var arrReplicar = [];
               console.log(r.datos_orden);
               for (let i = 0; i < r.datos_orden.length; i++) {
                 html4+='<tr>';
-                console.log(id_equipo_detalle+'_'+r.datos_orden[i]['tipo_equipo']);
-                if (id_equipo_detalle+r.datos_orden[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
-                  html4+='<td></td>';
-                }
-                else{
+                // console.log(id_equipo_detalle+'_'+r.datos_orden[i]['tipo_equipo']);
+                // if (id_equipo_detalle+r.datos_orden[i]['tipo_equipo'] == id_equipo_detalle+tipo_equipo) {
+                //   html4+='<td></td>';
+                // }
+                // else{
                   html4+='<td>- '+r.datos_orden[i]['tipo_equipo']+'</td>';
-                }
-                if (r.datos_orden[i]['desc_problema'] == desc_problema) {
-                  html4+='<td></td>';
-                }
-                else{
+                // }
+                // if (r.datos_orden[i]['desc_problema'] == desc_problema) {
+                //   html4+='<td></td>';
+                // }
+                // else{
                   html4+='<td style="white-space: pre-line; word-break: break-word;">- '+r.datos_orden[i]['desc_problema']+'</td>';
-                }
-                if (r.datos_orden[i]['servicio'] == servicio) {
-                  html4+='<td></td>';
-                }
-                else{
+                // }
+                // if (r.datos_orden[i]['servicio'] == servicio) {
+                //   html4+='<td></td>';
+                // }
+                // else{
                   html4+='<td>- '+r.datos_orden[i]['servicio']+'</td>';
-                }
+                // }
                 html4+='<td>- '+r.datos_orden[i]['tarea']+'</td>';
                 html4+='</tr>'; 
                 id_equipo_detalle = r.datos_orden[i]['id_equipo_detalle'];
@@ -1559,25 +1526,42 @@ var arrReplicar = [];
                     $("#label_datos_ct").prop('hidden',false);
                     $("#divTablaEquipos").show();
 
-                    arrEquipos.push({
-                      con : i,
-                      id_tipo_equipo : vId_TipoEquipo, 
-                      desc_tipo_equipo : vTipoEquipo, 
-                      etiquetaServicio : etiquetaServicio,
-                      marca : marca,
-                      modelo : modelo, 
-                      numeroSerie : numeroSerie,
-                      descripcionSoporte : descripcionSoporte,
-                      ubicacionEquipo : ubicacionEquipo,
-                      cantidad : vCantidad,
-                      estatus_equipo : 1, 
-                      nuevo : 1, 
-                      prueba : arrTareas,
-                      aTarea : arrTareas, ///arreglo tareas
-                      vJson : 0
-                    });
+                      arrEquipos.push({
+                        con : i,
+                        id_tipo_equipo : vId_TipoEquipo, 
+                        desc_tipo_equipo : vTipoEquipo, 
+                        etiquetaServicio : etiquetaServicio,
+                        marca : marca,
+                        modelo : modelo, 
+                        numeroSerie : numeroSerie,
+                        descripcionSoporte : descripcionSoporte,
+                        ubicacionEquipo : ubicacionEquipo,
+                        cantidad : vCantidad,
+                        estatus_equipo : 1, 
+                        nuevo : 1, 
+                        aTarea : arrTareas, ///arreglo tareas
+                        vJson : 0
+                      });
+                    console.log(arrEquipos);
 
-                      console.log(arrEquipos);
+                    // arrEquipos.push({
+                    //   con : i,
+                    //   id_tipo_equipo : vId_TipoEquipo, 
+                    //   desc_tipo_equipo : vTipoEquipo, 
+                    //   etiquetaServicio : etiquetaServicio,
+                    //   marca : marca,
+                    //   modelo : modelo, 
+                    //   numeroSerie : numeroSerie,
+                    //   descripcionSoporte : descripcionSoporte,
+                    //   ubicacionEquipo : ubicacionEquipo,
+                    //   cantidad : vCantidad,
+                    //   estatus_equipo : 1, 
+                    //   nuevo : 1, 
+                    //   aTarea : arrTareas, ///arreglo tareas
+                    //   vJson : 0
+                    // });
+
+                      // console.log(arrEquipos);
                       
                       //  arrTareas=[];
                       drawRowEquipo();
@@ -1590,17 +1574,23 @@ var arrReplicar = [];
                       // }8341194720
                       // console.log(arrContadorTabla);
                       if (bandCheck==1) {
+                        // arrTareas = new Array();
+                        // banderareplica = 1;
+                        // var arrReplicar = new Array();
                         // arrReplicar=[];
                         var last_element = arrEquipos[arrEquipos.length - 1];
+                        // arrReplicar = last_element['aTarea'];
                         // console.log(last_element['aTarea']);
                         // console.log(last_element);
-                        arrReplicar = last_element['aTarea'];
+                        // console.log(arrReplicar);
+                        
                         $('#divListaTarea').prop('hidden',false);
                         $("#span_listado_tareas").prop('hidden', false);
                         $('#selTarea').prop('disabled',false);
                         $('#selTipoServicio').prop('disabled',false);
                       }
                       else{
+                        banderareplica
                         $("#divListaTarea").prop('hidden',true);
                         $("#span_listado_tareas").prop('hidden', true);
                         $('#selTarea').prop('disabled',true);
@@ -1655,6 +1645,7 @@ var arrReplicar = [];
               var g=0;
               var vTarea = 0;
               var vTareaText = '';
+              
               $("#btnAgregarTarea").click(function(){
                   // if(arrTareas.length==0){
                   //     g=0;
@@ -1668,11 +1659,13 @@ var arrReplicar = [];
                   vTipoServicio = $("#selTipoServicio").val();
                   vTipoServicioText = $('select[id="selTipoServicio"] option:selected').text();
 
+                  
 
                   if(vTarea != 0){
                       var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                       if(index == -1){
+                          
                           arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText,
                              idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
 
@@ -2059,7 +2052,23 @@ var arrReplicar = [];
                       // 'bandera_guardar' : bandera_guardar
                     }
                     }).always(function(r) {
-                      
+                      Swal.fire({
+                          // position: 'bottom-right',
+                          // icon: 'warning',
+                          width: 300,
+                          html: '<div class="fa-3x" >'+
+                                      // '<div class="fa-3x">'+
+                                  '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
+                                  '<p></p>'+
+                                  '<p>Espere por favor</p>'+
+                                      
+                                  '</div>',
+                                  // '</div>',
+                          allowOutsideClick: false,
+                          showConfirmButton: false,
+                          customClass: 'msj_aviso'
+                          // timer: 2000
+                      }) 
                       Swal.fire({
                             // title: 'Editado',
                             html:'<p>Se ha actualizado con éxito la solicitud con el folio: <strong>'+folio_solicitud_global+'</strong></p>'+
@@ -2271,12 +2280,12 @@ var arrReplicar = [];
                 $.each(jsonTareas, function(j2, val){
                   if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
                     // console.log(jsonTareas[j2]['id']);
-                    if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
-                      tablaEquipo2+='';
-                    }
-                    else{
+                    // if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
+                    //   tablaEquipo2+='';
+                    // }
+                    // else{
                       tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
-                    }
+                    // }
                       // tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
                     desc_problema_vJson = jsonTareas[j2]['servicio'];
                   }
@@ -2295,12 +2304,12 @@ var arrReplicar = [];
                 // console.log('entrooooo');
                 tablaEquipo2+='<td>';
                 for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
-                  if (desc_problema_vJson2 == arrEquipos[j]['aTarea'][i]['desc_Servicio']) {
-                    tablaEquipo2+='';
-                  }
-                  else{
+                  // if (desc_problema_vJson2 == arrEquipos[j]['aTarea'][i]['desc_Servicio']) {
+                  //   tablaEquipo2+='';
+                  // }
+                  // else{
                     tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
-                  }
+                  // }
                   // tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
                   desc_problema_vJson2 = arrEquipos[j]['aTarea'][i]['desc_Servicio'];
                 }
@@ -2390,12 +2399,12 @@ var arrReplicar = [];
                 $.each(jsonTareas, function(j2, val){
                   if (!jQuery.isEmptyObject(jsonTareas[j2])) { 
                     // console.log(jsonTareas[j2]['id']);
-                    if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
-                      tablaEquipo2+='';
-                    }
-                    else{
+                    // if (jsonTareas[j2]['servicio'] == desc_problema_vJson) {
+                    //   tablaEquipo2+='';
+                    // }
+                    // else{
                       tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
-                    }
+                    // }
                       // tablaEquipo2+='- '+jsonTareas[j2]['servicio']+'<br>';
                       desc_problema_vJson = jsonTareas[j2]['servicio'];
                   }
@@ -2528,11 +2537,11 @@ var arrReplicar = [];
             }
             else if(r.respuesta == false){
               Swal.fire({
-                title: 'Aprobar Solicitud',
+                // title: 'Aprobar Solicitud',
                 // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                text: 'Vuelva a Intentarlo',
+                html: '<p>Favor de agregar equipos a la solicitud de servicio.</p>',
                 customClass: 'msj_solicitud',
-                icon: 'error',
+                icon: 'warning',
                 confirmButtonColor: '#b50915',
                 allowOutsideClick: false
               }).then((result) => {
@@ -2705,8 +2714,16 @@ var arrReplicar = [];
 
   }
 
-  function fnImprimirSolicitud(folio_solicitud){
-    window.print();
+  function fnImprimirSolicitud(id_solicitud){
+    
+ 
+      let urlEditar = '{{ route("downloadPdf_solicitud", ":id") }}';
+      urlEditar = urlEditar.replace(':id', id_solicitud);
+ 
+      // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+      var win = window.open(urlEditar, '_blank');
+     /// para abrir una nueva pestaña y que se muestre el pdf // este es el bueno para descargar
+
   }
 
   $('#btn_cerrar').click(function(){
