@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MailSend3;
 use App\Mail\MailSend4;
 use Illuminate\Support\Facades\Cache;
+use Dompdf\Options;
+use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class SolicitudesController extends Controller
 {
@@ -22,8 +25,6 @@ class SolicitudesController extends Controller
     }
 
     public function index(Request $request){
-        $vid_usuario=Auth()->user()->id;
-        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
         // $receivers = Receiver::pluck('email');
         // Mail::to($receivers)->send(new EmergencyCallReceived());
         // dd('hola');
@@ -38,10 +39,13 @@ class SolicitudesController extends Controller
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
+                        $roles = Auth()->user()->roles;
+                        foreach ($roles as $rol) {
+                            $idRol= $rol->id; 
+                        }
                         // dd($row->folio_solicitud);
-                        if (auth()->user()->can('204-ver-registros-solicitudes') == true || auth()->user()->can('205-ver-detalle-solic') == true
-                        || auth()->user()->can('206-rechazar-solic') == true || auth()->user()->can('207-editar-solic') == true
-                        || auth()->user()->can('208-aprobar-solic') == true || auth()->user()->can('209-imprimir-solic') == true) {
+                        if ($idRol == 16 || $idRol == 17 || $idRol == 18 || $idRol == 19 || $idRol == 20 || $idRol == 21 || 
+                        $idRol == 22 || $idRol == 23 || $idRol == 24 || $idRol == 25 || $idRol == 28) {
                             if ($row->id_estatus == 6) {
                                 $acciones = '
                                 <div class="dropdown btn-group dro pstart">
@@ -390,75 +394,94 @@ class SolicitudesController extends Controller
 
     public function aprobar_solicitud(Request $request){
         // dd($request->id_solicitud);
+
+        
         $id_solicitud = $request->id_solicitud;
-        $data_correo = DB::select("select ss.solicitante , ccdt.nombrect, ss.correo_solic,(select rc2.folio  from  cas_cete.registro_captacion rc2,
-        cas_cete.solic_serv_track sst2, cas_cete.captacion_estatus ce2, cas_cete.cat_estatus ce22 
-        where rc2.id = sst2.id_reg_captacion
-        and sst2.id_capta_estatus = ce2.id
-        and ce2.id_estatus = ce22.id  
-        and rc2.id_solic_serv = ss.id
-        and rc2.id_modo_capta = 1
-        order by sst2.fecha desc 
-        limit 1) as folio_solicitud  from cas_cete.solic_servicios ss,
-        insumos.cat_centros_de_trabajo ccdt 
-        where ss.id = ".$id_solicitud."
-        and ccdt.id = ss.id_cct ");
-        // dd($data_correo[0]->correo_solic);
-        $pCorreo_solicitante = $data_correo[0]->correo_solic;
-        $vNombre_solicitante = $data_correo[0]->solicitante;
-        $vNombrect = $data_correo[0]->nombrect;
-        $vFolio = $data_correo[0]->folio_solicitud;
-        // $comentario_rechazar = $request->comentario_rechazar;
-        // $data =  DB::select("select * from cas_cete.fn_solicitud('".$id_solicitud."')");
 
-        // $folio_solicitud = $data[0]->folio;
-        // dd($folio_solicitud);
-        
-
-        $data = DB::select("select * from cas_cete.fn_aprobar_solicitud(".$id_solicitud.")");
-        // dd($data);
-
-        $data2 = DB::select("select rc.folio  from cas_cete.registro_captacion rc 
-        where rc.id_modo_capta = 1 
-        and rc.id_solic_serv = ".$id_solicitud."");
-
-        $details = [
-            'tittle' => 'Estimado usuario: '.$vNombre_solicitante.' - '.$vNombrect.'',
-            // 'tittle' => 'Estimado usuario: '.$pSolicitante.' - '.$pNombrect.'',
-            
-            'body1' => 'Se ha aprobado tu solicitud con el numero de folio:',
-            'body1.1' => ' '.$vFolio.' ',
-            'body1.2' => ' .Se ha creado una orden',
-            'body1.3' => ' En Espera',
-            'body1.4' => ' de ser asignada con el personal técnico especializado.',
-            // 'body1' => 'Se ha aprobado tu solicitud con el numero de folio: '.$pfolio_config.'. 
-            // Se ha creado una orden en espera de ser asignada con el personal tecnico especializado.',
-            
-            'body2' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
-
-            // 'body3' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
-
-            'body4' => 'Atentamente.',
-            'body5' => 'Centro Estatal de Tecnología Educativa',
-            'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
-             <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
-
-        ];
-        
-
-        if($data != ''){
-            Mail::to("$pCorreo_solicitante")->send(new MailSend4($details));
-            return array(
-                "respuesta" => true,
-                "folio" => $data[0]->fn_aprobar_solicitud,
-                "folio_solicitud" =>$data2[0]->folio
-            );
-        }
-        else{
+        $validacion_equipos = DB::select("select * from cas_cete.solic_servicios ss, cas_cete.equipos_serv_solic ess  
+        where ss.id = ess.id_solic_serv 
+        and ss.id = ".$id_solicitud."");
+        // dd($validacion_equipos);
+        if ($validacion_equipos ==  null) {
+            // dd('entro1');
             return array(
                 "respuesta" => false
             );
         }
+        else{
+
+            // dd('entro2');
+            $data_correo = DB::select("select ss.solicitante , ccdt.nombrect, ss.correo_solic,(select rc2.folio  from  cas_cete.registro_captacion rc2,
+            cas_cete.solic_serv_track sst2, cas_cete.captacion_estatus ce2, cas_cete.cat_estatus ce22 
+            where rc2.id = sst2.id_reg_captacion
+            and sst2.id_capta_estatus = ce2.id
+            and ce2.id_estatus = ce22.id  
+            and rc2.id_solic_serv = ss.id
+            and rc2.id_modo_capta = 1
+            order by sst2.fecha desc 
+            limit 1) as folio_solicitud  from cas_cete.solic_servicios ss,
+            insumos.cat_centros_de_trabajo ccdt 
+            where ss.id = ".$id_solicitud."
+            and ccdt.id = ss.id_cct ");
+            // dd($data_correo[0]->correo_solic);
+            $pCorreo_solicitante = $data_correo[0]->correo_solic;
+            $vNombre_solicitante = $data_correo[0]->solicitante;
+            $vNombrect = $data_correo[0]->nombrect;
+            $vFolio = $data_correo[0]->folio_solicitud;
+            // $comentario_rechazar = $request->comentario_rechazar;
+            // $data =  DB::select("select * from cas_cete.fn_solicitud('".$id_solicitud."')");
+
+            // $folio_solicitud = $data[0]->folio;
+            // dd($folio_solicitud);
+            
+
+            $data = DB::select("select * from cas_cete.fn_aprobar_solicitud(".$id_solicitud.")");
+            // dd($data);
+
+            $data2 = DB::select("select rc.folio  from cas_cete.registro_captacion rc 
+            where rc.id_modo_capta = 1 
+            and rc.id_solic_serv = ".$id_solicitud."");
+
+            $details = [
+                'tittle' => 'Estimado usuario: '.$vNombre_solicitante.' - '.$vNombrect.'',
+                // 'tittle' => 'Estimado usuario: '.$pSolicitante.' - '.$pNombrect.'',
+                
+                'body1' => 'Se ha aprobado tu solicitud con el numero de folio:',
+                'body1.1' => ' '.$vFolio.' ',
+                'body1.2' => ' .Se ha creado una orden',
+                'body1.3' => ' En Espera',
+                'body1.4' => ' de ser asignada con el personal técnico especializado.',
+                // 'body1' => 'Se ha aprobado tu solicitud con el numero de folio: '.$pfolio_config.'. 
+                // Se ha creado una orden en espera de ser asignada con el personal tecnico especializado.',
+                
+                'body2' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
+
+                // 'body3' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
+
+                'body4' => 'Atentamente.',
+                'body5' => 'Centro Estatal de Tecnología Educativa',
+                'body6' => 'De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
+                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>'
+
+            ];
+            
+
+            if($data != ''){
+                Mail::to("$pCorreo_solicitante")->send(new MailSend4($details));
+                return array(
+                    "respuesta" => true,
+                    "folio" => $data[0]->fn_aprobar_solicitud,
+                    "folio_solicitud" =>$data2[0]->folio
+                );
+            }
+            else{
+                return array(
+                    "respuesta" => false
+                );
+            }
+        }
+
+        
         
     }
 
@@ -517,6 +540,58 @@ class SolicitudesController extends Controller
             "data" =>$data
         );
         // dd($data['tipo_rechazo']);
+    }
+
+    public function downloadPdf_solicitud($id){
+
+        // dd($request->id);
+        
+
+        $id_solicitud = $id;
+        $bandera = 0;
+        $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud('".$id_solicitud."')");
+        $fn_inf_orden = DB::select("select * from cas_cete.fn_inf_orden('".$id_solicitud."')");
+        
+        // dd($Datos_solicitud);
+        // dd($ordenServicios[0]);
+        $fn_solicitud=$fn_solicitud[0];
+        if ($fn_inf_orden != null) {
+            $fn_inf_orden=$fn_inf_orden[0];
+        }
+
+        // dd($fn_inf_orden);
+      
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $pdf = new Dompdf($options);
+
+        $path = base_path('public/images/logo/logoTam2022.png');
+        // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
+        // $path = asset('images/logo/logoTam2022.png');
+        //  return $path;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
+        $path_footer = base_path('public/images/logo/ceteNI.png');
+        // $path_footer = asset('images/logo/logoTam2022.png');
+        // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
+        // $path_footer = asset('images/logo/ceteNI.png');
+        $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
+        $data_footer = file_get_contents($path_footer);
+        $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
+
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $fecha = date('Y-m-d');
+
+        //   view()->share('servicios::ordenes_servicio/downloadOrden',$Datos_solicitudObject, $equipos, $tecnicos_aux);
+        //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['Datos_solicitudObject' => $Datos_solicitudObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
+        
+        view()->share('solicitudes/downloadSolicitud',$fn_solicitud,$fn_inf_orden);
+        $pdf = PDF::loadView('solicitudes/downloadSolicitud', ['fn_solicitud' => $fn_solicitud], ['fn_inf_orden' => $fn_inf_orden])->setPaper('a4', 'landscape');
+        // dd('hola');
+        //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf'); // para que vaya a la url a descargar directo el pdf
+        return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
     }
 
     public function store(){

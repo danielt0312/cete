@@ -43,7 +43,7 @@
             el cual debe encontrarse vigente y en uso en un periodo no mayor a 2 meses.
         </p>
         <center>
-        <strong style="font-size:15px; color:#414040!important;">Ingrese su correo electronico institucional</strong>
+        <strong style="font-size:15px; color:#414040!important;">Ingrese su correo electrónico institucional</strong>
         <br><br>
         </center>
 

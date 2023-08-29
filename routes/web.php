@@ -104,6 +104,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/select_tarea', 'App\Http\Controllers\SolicitudesController@select_tarea')->name('select_tarea');
         Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
         Route::get('/select_rechaza_solicitud', 'App\Http\Controllers\SolicitudesController@select_rechaza_solicitud')->name('select_rechaza_solicitud');
+        Route::get('/downloadPdf_solicitud/{id}', 'App\Http\Controllers\SolicitudesController@downloadPdf_solicitud')->name('downloadPdf_solicitud');
         // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');
         // Route::get('/formulario_index', 'App\Http\Controllers\VentanillaController@formulario_index')->name('formulario_index');
         // Route::get('/formulario_consulta', 'App\Http\Controllers\VentanillaController@formulario_consulta')->name('formulario_consulta');
@@ -118,6 +119,8 @@ Route::group(['prefix' => 'ventanilla'], function(){
     Route::get('/indexVentanilla', 'App\Http\Controllers\VentanillaController@index')->name('indexVentanilla');
     Route::get('/indexMail', 'App\Http\Controllers\VentanillaController@index_mail')->name('indexMail');
     Route::get('/consulta', 'App\Http\Controllers\VentanillaController@consulta')->name('consulta');
+    Route::get('/pruebaJC', 'App\Http\Controllers\VentanillaController@pruebaJC')->name('pruebaJC');
+    Route::get('/pruebaJC2', 'App\Http\Controllers\VentanillaController@pruebaJC2')->name('pruebaJC2');
     Route::get('/consulta_folio', 'App\Http\Controllers\VentanillaController@consulta_folio')->name('consulta_folio');
     Route::get('/consulta_folio_correo', 'App\Http\Controllers\VentanillaController@consulta_folio_correo')->name('consulta_folio_correo');
     Route::get('/consulta_folio_solicitud', 'App\Http\Controllers\VentanillaController@consulta_folio_solicitud')->name('consulta_folio_solicitud');
