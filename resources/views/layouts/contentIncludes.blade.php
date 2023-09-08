@@ -186,10 +186,10 @@
     }
   </script> -->
   <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script async defer src="{{ asset('js/buttons.js') }}"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.4') }}"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script src="{{ asset('js/jquery1.7.1_jquery.min.js') }}" type="text/javascript"></script> 
   <script src="{{ asset('js/scripts/components-modal.js') }}"></script> 
   <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
   <script src="{{ asset('js/sweetalert2@11.js') }}"></script>

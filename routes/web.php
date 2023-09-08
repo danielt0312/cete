@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         //info Centro Trabajo
         Route::get('/consCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getCCT')->name('consCCT');
+        Route::get('/consclaveCCT','App\Http\Controllers\OrdenesController@getclaveCCT')->name('consclaveCCT');
         // Route::get('/consOrdenesCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getOrdenesCCT')->name('consOrdenesCCT');
 
         //Actualizar Estatus Orden

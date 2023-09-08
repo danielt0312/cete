@@ -26,6 +26,18 @@ class InicioController extends Controller
         $total_aten=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('AT')");
         $total_atendidas=$total_aten[0]; 
 
+        $total_espSol=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('SE')");
+        $total_enesperaSol=$total_espSol[0]; 
+
+        $total_aprob=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('SA')");
+        $total_aprobadasSol=$total_aprob[0]; 
+
+        $total_rech=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('SR')");
+        $total_rechazadas=$total_rech[0]; 
+
+        $total_canSol=DB::connection('pgsql')->select("select * from cas_cete.getCountOrdenes('SC')");
+        $total_canceladasSol=$total_canSol[0]; 
+
         $vid_usuario=Auth()->user()->id;
         $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
        
@@ -35,7 +47,12 @@ class InicioController extends Controller
             'total_asignadas',
             'total_trabajando',
             'total_atendidas',
-            'getUsername'
+            'getUsername',
+            'total_enesperaSol',
+            'total_aprobadasSol',
+            'total_rechazadas',
+            'total_canceladasSol'
+
         ) );
         // return view('inicio');
     }

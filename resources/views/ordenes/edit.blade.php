@@ -246,6 +246,7 @@
                                             <div class="form-group">
                                                 <label for="txtNombreSolicitante">NOMBRE DEL SOLICITANTE</label>
                                                 <input type="text" id="txtNombreSolicitante" name="txtNombreSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->solicitante }}" >
+                                                <input type="hidden" id="hdNombreSolicitante" name="hdNombreSolicitante" class="form-control" value="{{ $ordenServiciosDetalle->solicitante }}" >
                                             </div>
                                         </div>
                                         <div class="col-4">
@@ -364,7 +365,7 @@
                                             <div class="col-1" id="divCantidad">
                                                 <div class="form-group">
                                                     <label for="txtCantidadEquipos">CANTIDAD</label>
-                                                    <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" readonly >
+                                                    <input type="number" id="txtCantidadEquipos" min="1" onkeydown="fnNumero()" name="txtCantidadEquipos" class="form-control" value="1" >
                                                 </div>
                                             </div>
                                             <div class="col-3">
@@ -459,7 +460,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-9 d-md-flex justify-content-md-start">
+                                        <!-- <div class="col-9 d-md-flex justify-content-md-start">
                                             @can('173-chk-edit-replicar-equipo')
                                             <div class="form-check replicar" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
@@ -468,6 +469,8 @@
                                                 </label>
                                             </div>
                                             @endcan
+                                        </div> -->
+                                        <div class="col-9 d-md-flex justify-content-md-start">
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
@@ -498,6 +501,7 @@
                                         <div class="col-12 scrollHorizontal" id="divTablaEquipos">
                                             <table class="table" id="tablaEquipos">
                                                 <thead class="text-align:center;">
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
@@ -952,8 +956,29 @@
                                     <br>
                                     <label for="archivoCierreEquipo">Agregar evidencia (Anexe fotografía del equipo reparado).</label>
                                     <input class="form-control" type="file" id="archivoCierreEquipo" name="archivoCierreEquipo">
+                                    <br>
                                 </div>
                             </div>
+                            <!-- <div class="col-6">
+                                <div class="form-group">
+                                    <div class="form-check replicar d-md-flex justify-content-md-end">
+                                        <input class="form-check-input" type="checkbox" value="" id="checkEs_funcionalMC" name="checkEs_funcionalMC">
+                                        <label style="font-weight: normal;" for="checkEs_funcionalMC">
+                                            ¿Es funcional?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-12 d-md-flex justify-content-md-start">
+                                <div class="form-check replicar">
+                                    <input class="form-check-input" type="checkbox" value="" id="checkEs_funcionalMC" name="checkEs_funcionalMC">
+                                    <label class="form-check-label" for="checkEs_funcionalMC">
+                                        ¿El equipo es funcional? 
+                                    </label>
+                                </div>
+                            </div> 
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -1044,6 +1069,12 @@
         $('#checkCerrar').click(function(){
             if ($(this).is(':checked') ) {
                 $("#divEditEqui").hide();
+                // $("#hdIdEquipoMC").val("");
+                // $("#hdIdSolServMC").val("");
+                $("#txtDiagnosticoM").val("");
+                $("#txtSolucionM").val("");
+                $("#archivoCierreEquipo").val("");
+                $("#checkEs_funcionalMC").prop("checked", false);
                 $("#divCerrarEquipo").show();
             } else {
                 $("#divCerrarEquipo").hide();
@@ -1068,6 +1099,7 @@
             var vDepAtiende= $('select[id="selDepAtiende"] option:selected').text();
 
             var vNombreSolicitante= $("#txtNombreSolicitante").val();
+            var vhdNombreSolicitante= $("#hdNombreSolicitante").val();
             var vTelefonoSolicitante= $("#txtTelefonoSolicitante").val();
             var vCorreoSolicitante= $("#txtCorreoSolicitante").val();
             var vDescripcionReporte= $("#txtDescripcionReporte").val();
@@ -1138,6 +1170,7 @@
             var vDepAtiende= $('select[id="selDepAtiende"] option:selected').text();
 
             var vNombreSolicitante= $("#txtNombreSolicitante").val();
+            var vhdNombreSolicitante= $("#hdNombreSolicitante").val();
             var vTelefonoSolicitante= $("#txtTelefonoSolicitante").val();
             var vCorreoSolicitante= $("#txtCorreoSolicitante").val();
             var vDescripcionReporte= $("#txtDescripcionReporte").val();
@@ -1220,7 +1253,8 @@
                  $("#txtNombreSolicitante").val(vDirector);
                  $("#txtNombreSolicitante").prop('disabled', true);
             } else {  
-                 $("#txtNombreSolicitante").val('');
+                var vhdNombreSolicitante= $("#hdNombreSolicitante").val();
+                 $("#txtNombreSolicitante").val(vhdNombreSolicitante);
                  $("#txtNombreSolicitante").prop('disabled', false);
             }  
         });  
@@ -1576,39 +1610,38 @@
                         console.log(arrTareasEdit);
                         // console.log($.inArray(vTipoServicio, arrTareasEdit.id_servicio) );
                         // var indice = arrTareasEdit.indexOf(vTareaTextM);
-                        console.log(Validar_Array(vTareaM, vTipoServicio, arrTareasEdit));
-                        if(arrTareasEdit.includes(vTareaTextM)){
-                            console.log('ya existe');
-                        }else{
-                            var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
-                        // console.log(index);
-                        if(index == -1){
-                            arrTareasEdit.push(
-                                {   //cont:g, 
-                                    // idTarea:vTareaM, 
-                                    // desc_Tarea:vTareaTextM, 
-                                    // idServicio:vTipoServicio, 
-                                    // desc_Servicio:vTipoServicioText
-                                    id_equipo_detalle: 0,
-                                    id_equipo_tarea: 0,
-                                    id_equipos_serv: 0,
-                                    id_usuario_agrega: '',
-                                    fecha_agrega: '',
-                                    id_tipo_equipo: vtipEqu,
-                                    tipo_equipo: '',
-                                    id_servicio: vTipoServicio,
-                                    servicio: vTipoServicioText,
-                                    id_tarea: vTareaM,
-                                    tarea: vTareaTextM,
-                                    activo: false
-                                });
-                            drawRowTareaEdit();
-                            // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareasEdit});
-                            gM=gM+1;
-                        }else{
+                        // console.log(Validar_Array(vTareaM, vTipoServicio, arrTareasEdit));
+                        var bancde=Validar_Array(vTareaM, vTipoServicio, arrTareasEdit); ///Validar si existe ya Tarea
+                        // if(arrTareasEdit.includes(vTareaTextM)){
+                        if(bancde==true){ ///Validar si existe ya Tarea
                             $("#selTareaM").val("0").attr("selected",true);
                             msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
-                        }
+                        }else{
+                            var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
+                            // console.log(index);
+                            if(index == -1){
+                                arrTareasEdit.push(
+                                    {   
+                                        id_equipo_detalle: 0,
+                                        id_equipo_tarea: 0,
+                                        id_equipos_serv: 0,
+                                        id_usuario_agrega: '',
+                                        fecha_agrega: '',
+                                        id_tipo_equipo: vtipEqu,
+                                        tipo_equipo: '',
+                                        id_servicio: vTipoServicio,
+                                        servicio: vTipoServicioText,
+                                        id_tarea: vTareaM,
+                                        tarea: vTareaTextM,
+                                        activo: false
+                                    });
+                                drawRowTareaEdit();
+                                // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareasEdit});
+                                gM=gM+1;
+                            }else{
+                                $("#selTareaM").val("0").attr("selected",true);
+                                msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
+                            }
                         }
                         // var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
                         // // console.log(index);
@@ -1658,7 +1691,7 @@
     function Validar_Array(valor, valor2, arr) {
         var b=false;
         for (var i = 0; i < arr.length; i++) {
-            if(valor==arr[i].id_tarea && valor2==id_servicio){
+            if(valor==arr[i].id_tarea && valor2==arr[i].id_servicio){
                 b = true;
                 break;
             }
@@ -1722,8 +1755,10 @@
         
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
                 tablaEquipo2+='<tr id="tr_'+j+'">';
-                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
-                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo'];
+                var conta=j+1;
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+conta+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+arrEquipos[j]['cantidad']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+arrEquipos[j]['desc_tipo_equipo'];
                 if(arrEquipos[j].nuevo!=1){ //si es diferente a 1 viene de bd y muestra opcion de editar equipo
                     if(arrEquipos[j].fecha_cierre!=null){
                         tablaEquipo2+='<br><strong>Atendido</strong></td>';
@@ -1747,17 +1782,32 @@
                 // }else{
                 //     vtare=aTarea[j]['desc_Tarea'];
                 // }
-
+                var aux1='';
+                var aux2='';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
                 for (var i = 0; i < aTarea.length; i++) {
                     var vserv='';
-                    if( typeof(aTarea[i]['servicio']) != "undefined" && aTarea[i]['servicio'] !== null){  
-                        vserv=aTarea[i]['servicio'];
+                    if( typeof(aTarea[i]['servicio']) != "undefined" && aTarea[i]['servicio'] !== null){ 
+                        if(aux1==aTarea[i]['servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                            vserv='&nbsp;';
+                            // aux='';
+                        }else{
+                            aux1=aTarea[i]['servicio']; 
+                            vserv=aTarea[i]['servicio'];
+                        }
+                        // vserv=aTarea[i]['servicio'];
                     }else{
-                        vserv=aTarea[i]['desc_Servicio'];
+                        if(aux2==aTarea[i]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                            vserv='&nbsp;';
+                            // aux='';
+                        }else{
+                            aux2=aTarea[i]['desc_Servicio'];
+                            vserv=aTarea[i]['desc_Servicio'];
+                        }
+                        // vserv=aTarea[i]['desc_Servicio'];
                     }
                     // tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
-                    tablaEquipo2+='- '+vserv+'<br>';
+                    tablaEquipo2+=''+vserv+'<br>';
                 }
                 tablaEquipo2+='</td>';
 
@@ -1775,7 +1825,7 @@
                 tablaEquipo2+='</td>';
 
                 // tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+vDatos+'</td>';
-                tablaEquipo2+='<td><div class="dropdown btn-group dropstart">';
+                tablaEquipo2+='<td style="text-align:center"><div class="dropdown btn-group dropstart">';
                 tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
                 tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
                 tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
@@ -1801,11 +1851,11 @@
                 tablaEquipo2+='                                  <i class="fas fa-book"></i> Historial'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
                 tablaEquipo2+='                          </li>@endcan';
-                tablaEquipo2+='                          @can("184-opt-edit-get-detalle-equipo")<li>';
-                tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
-                tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
-                tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>@endcan';
+                // tablaEquipo2+='                          @can("184-opt-edit-get-detalle-equipo")<li>';
+                // tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
+                // tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
+                // tablaEquipo2+='                              </a>';
+                // tablaEquipo2+='                          </li>@endcan';
                 if(arrEquipos[j].fecha_cierre==null){ 
                     tablaEquipo2+='                      <li>';
                     tablaEquipo2+='                          <a  ';
@@ -1961,27 +2011,6 @@
     }
 
     function msjeAlerta2(titulo, contenido, icono, id_solic_serv){
-        // // console.log(id_solic_serv);
-        // let urlEditar = '{{ route("download-pdf", ":id") }}';
-        // urlEditar = urlEditar.replace(':id', id_solic_serv);
-        // // console.log(urlEditar);
-        // Swal.fire({
-        //     title: titulo,
-        //     text: contenido,
-        //     icon: icono,
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'DESCARGAR ORDEN',
-        //     cancelButtonText: 'ACEPTAR',
-        //     }).then((result) => {
-        //     if (result.isConfirmed) {
-        //         window.location.href = urlEditar;
-        //         // download-pdf
-        //     }else{
-        //         window.location.href = '{{ route("listadoOrdenes") }}';
-        //     }
-        // });
 
         let urlEditar = '{{ route("download-pdf", ":id") }}';
         urlEditar = urlEditar.replace(':id', id_solic_serv);
@@ -2309,7 +2338,9 @@
             nombreSol=$("#txtDirectorCCT").val();
         } else {  
             checkDirector= false;
-            nombreSol='';
+            var vhdNombreSolicitante =$("#txtNombreSolicitante").val();
+            nombreSol=vhdNombreSolicitante;
+            nombreSol=$("#txtNombreSolicitante").val();
         }  
         var form = $('#formOrden')[0];
          // FormData object 
@@ -2360,19 +2391,6 @@
     function fnVerOrdenCentro(idOrden){
         console.log(idOrden);
     }
-
-    // function fnValidarCorreo(){
-    //     var regex = /[\w-\.]{2,}@([\w-]{2,}\.)*([\w-]{2,}\.)[\w-]{2,4}/;
-
-    //     if (! regex.test($('#email').val().trim())) {
-    //         // alert('Correo validado');
-    //         msjeAlerta('', 'El correo no es valido', 'error')
-
-    //     } 
-    //     // else {
-    //     //     msjeAlerta('', 'El correo no es valido', 'error')
-    //     // }
-    // }
 
     function verServicioEquipo(i){
         var html='';
@@ -2518,113 +2536,83 @@
         htmlSel+='</div>';
         htmlSel+='</div>';
 
-        // htmlSel+='<table style="border:1px solid; width:100%;">';
-        //     htmlSel+='<tr style="border:1px solid;">'; //background-color:#8392ab;
-        //     // htmlSel+='<td><label>Equipo:</label><label class="SinNegrita" id="lblEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-        //     // htmlSel+='<td><label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-        //     htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEtiqueta">'+etiquetaServicio+'</label></td>';
-        //     htmlSel+='<td><label>Marca:</label><label class="SinNegrita" id="lblMarca">'+marca+'</label></td>';
-        //     htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+modelo+'</label></td>';
-        //     htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+numeroSerie+'</label></td>';
-        //     htmlSel+='<td colspan="2"></td>';
-        //     htmlSel+='</tr>';
 
-        //     htmlSel+='<tr>';
-        //     htmlSel+='<td colspan="2">';
-        //     htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label></td>';
-        //     htmlSel+='<td colspan="2">';
-        //     htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblCantidad">'+arrEquipos[numArr].cantidad+'</label></td>';
-        //     htmlSel+='<td colspan="2">';
-        //     htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label>';
-        //     htmlSel+='</td>';
-        //     htmlSel+='</tr>';
+        // var html='';
+        htmlSel+='<table class="table">';
+        htmlSel+='<thead>';
+        htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
+        htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
+        htmlSel+='</thead>';
+        htmlSel+='<tbody>';
 
-        //     htmlSel+='<tr>';
-        //     htmlSel+='<td colspan="6">';
-        //     htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
-        //     htmlSel+='</td>';
-        //     htmlSel+='</tr>';
+        var aTarea = [];
 
-        //     htmlSel+='<tr>';
-        //     htmlSel+='<td colspan="6"><label>Listado de Servicios/Tareas:</label></td>';
-        //     htmlSel+='</tr>';
-
-        //     htmlSel+='<tr>';
-        //     htmlSel+='<td colspan="6" style="text-align:center;">';
-
-                // var html='';
-                htmlSel+='<table class="table">';
-                htmlSel+='<thead>';
-                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
-                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
-                htmlSel+='</thead>';
-                htmlSel+='<tbody>';
-
-                var aTarea = [];
-
-                if(arrEquipos[numArr].nuevo==1){  //1 es igual equipo agregado nuevo
-                     aTarea=arrEquipos[numArr]['aTarea'];
-                     
-                }else{ // 0 es igual a que biene de BD
-                    aTarea = JSON.parse(arrEquipos[numArr]['aTarea']);
-                    // console.log(aTarea)
-                }
-                // console.log(aTarea)
-                // var aTarea = JSON.parse(arrEquipos[numArr]['aTarea']);
-                // var aTarea=arrEquipos[numArr]['aTarea'];
-                var aux='';
-                $.each(aTarea, function(j, val){
-                    if (!jQuery.isEmptyObject(aTarea[j])) {
-                        var vserv='';
-                        var vtare='';
-                        if( typeof(aTarea[j]['servicio']) != "undefined" && aTarea[j]['servicio'] !== null){  
-                            vserv=aTarea[j]['servicio'];
-                        }else{
-                            vserv=aTarea[j]['desc_Servicio'];
-                        }
-
-                        if( typeof(aTarea[j]['tarea']) != "undefined" && aTarea[j]['tarea'] !== null){
-                            vtare=aTarea[j]['tarea'];
-                        }else{
-                            vtare=aTarea[j]['desc_Tarea'];
-                        }
-
-                        htmlSel+='<tr>';
-                        if(aux==aTarea[j]['servicio']){ 
-                            htmlSel+='<td >&nbsp;</td>';
-                            aux='';
-                        }else{
-                            aux=aTarea[j]['servicio'];
-                            htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
-                        }
-                        // htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
-                        htmlSel+='<td class="text-xs text-secondary mb-0"> - '+vtare+'</td>';
-                        htmlSel+='<tr>';
-                    }
-                });
-
-                htmlSel+='</tbody>';
-                htmlSel+='</table>';
-
-            htmlSel+='</td>';
-            htmlSel+='</tr>';
-
-            htmlSel+='</table>';
-            htmlSel+='<br>';
-
-            // htmlSel+='<tr>';
-            // htmlSel+='<td colspan="4">';
-            // htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblTipoEquipo">'+arrEquipos[numArr].desc_tipo_equipo+'</label><br>';
-            // htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].descripcionSoporte+'</label><br>';
-            // htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+arrEquipos[numArr].ubicacionEquipo+'</label><br>';
-            // htmlSel+='<label>Servicio(s):</label><label class="SinNegrita" id="lblServicios">'+arrEquipos[numArr].servicio+'</label><br>';
-            // htmlSel+='<label>Tarea(s):</label><label class="SinNegrita" id="lblTareas">'+arrEquipos[numArr].tarea+'</label><br>';
-            // htmlSel+='</td>';
-            // htmlSel+='</tr>';
-            // htmlSel+='</table>';
-            // htmlSel+='<br>';
+        if(arrEquipos[numArr].nuevo==1){  //1 es igual equipo agregado nuevo
+                aTarea=arrEquipos[numArr]['aTarea'];
+                
+        }else{ // 0 es igual a que biene de BD
+            aTarea = JSON.parse(arrEquipos[numArr]['aTarea']);
+            // console.log(aTarea)
+        }
         
-            $("#divDetalleEquipoM").html(htmlSel);
+        var aux='';
+        var aux1='';
+        var aux2='';
+        $.each(aTarea, function(j, val){
+            if (!jQuery.isEmptyObject(aTarea[j])) {
+                var vserv='';
+                var vtare='';
+                if( typeof(aTarea[j]['servicio']) != "undefined" && aTarea[j]['servicio'] !== null){  
+                    if(aux1==aTarea[j]['servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                        vserv='&nbsp;';
+                        // aux='';
+                    }else{
+                        aux1=aTarea[j]['servicio']; 
+                        vserv=aTarea[j]['servicio'];
+                    }
+                        // vserv=aTarea[i]['servicio'];
+                    // vserv=aTarea[j]['servicio'];
+                }else{
+                    if(aux2==aTarea[j]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                        vserv='&nbsp;';
+                        // aux='';
+                    }else{
+                        aux2=aTarea[j]['desc_Servicio']; 
+                        vserv=aTarea[j]['desc_Servicio'];
+                    }
+                    // vserv=aTarea[j]['desc_Servicio'];
+                }
+
+                if( typeof(aTarea[j]['tarea']) != "undefined" && aTarea[j]['tarea'] !== null){
+                    vtare=aTarea[j]['tarea'];
+                }else{
+                    vtare=aTarea[j]['desc_Tarea'];
+                }
+
+                // htmlSel+='<tr>';
+                // if(aux==aTarea[j]['servicio']){ 
+                //     htmlSel+='<td >&nbsp;</td>';
+                //     aux='';
+                // }else{
+                //     aux=aTarea[j]['servicio'];
+                //     htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                // }
+                htmlSel+='<td class="text-xs text-secondary mb-0">'+vserv+'&nbsp;</td>';
+                htmlSel+='<td class="text-xs text-secondary mb-0"> - '+vtare+'</td>';
+                htmlSel+='<tr>';
+            }
+        });
+
+        htmlSel+='</tbody>';
+        htmlSel+='</table>';
+
+        htmlSel+='</td>';
+        htmlSel+='</tr>';
+
+        htmlSel+='</table>';
+        htmlSel+='<br>';
+    
+        $("#divDetalleEquipoM").html(htmlSel);
 
         $("#visualizarDetalleEquipoModal").modal("show");
     }
@@ -2676,6 +2664,8 @@
     }
 
     function verDetalleEquipo(j){   /////Modal de Editar el Equipoo
+
+        $('#checkCerrar').prop("checked", false); 
         // console.log(j);
         $("#detalleEquipoModal").modal("show");
         // console.log(arrEquipos[j].aTarea);
@@ -2701,19 +2691,10 @@
         $("#hdIdEquipoMC").val(arrEquipos[j].id_equipo_serv_solic);
         $("#hdIdSolServMC").val( $("#txtIdSolic").val() );
 
-        //  var TareasAux = JSON.parse(arrEquipos[j].aTarea); /// este funcionaba al 03/08/2023
         var TareasAux = [];
+        TareasAux = JSON.parse(arrEquipos[j]['aTarea']);
 
-        // if(arrEquipos[j].nuevo==1){  //1 es igual equipo agregado nuevo
-        //     TareasAux=arrEquipos[j]['aTarea'];
-                
-        // }else{ // 0 es igual a que biene de BD
-            TareasAux = JSON.parse(arrEquipos[j]['aTarea']);
-            // console.log(aTarea)
-        // }
-
-        //  var TareasAux = arrEquipos[j].aTarea;
-           console.log(TareasAux);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
+        // console.log(TareasAux);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
 
         $.each(TareasAux, function(i, val){
             if (!jQuery.isEmptyObject(TareasAux)) {
@@ -2759,7 +2740,7 @@
         listaTarea2+='<th>Acciones</th>';
         listaTarea2+='</thead>';
         listaTarea2+='<tbody>';
-        console.log(arrTareasEdit+'-------prueba');
+        // console.log(arrTareasEdit+'-------prueba');
         // var aTarea=arrEquipos[i]['aTarea'];arrTareas[i]
         var aux='';
         $.each(arrTareasEdit, function(j, val){
@@ -2768,7 +2749,7 @@
                 listaTarea2+='<tr>';
                 if(aux==arrTareasEdit[j]['servicio']){ 
                     listaTarea2+='<td>&nbsp;</td>';
-                    aux='';
+                    // aux='';
                 }else{
                     aux=arrTareasEdit[j]['servicio'];
                     listaTarea2+='<td>'+arrTareasEdit[j]['servicio']+'&nbsp;</td>';
@@ -2806,17 +2787,6 @@
                     arrTareasEditElim.push({
                         // con : 0,
                         id_equipo_detalle : arrTareasEdit[item].id_equipo_detalle, 
-                        // id_tipo_equipo : arrEquipos[item].id_tipo_equipo, 
-                        // desc_tipo_equipo : arrEquipos[item].desc_tipo_equipo, 
-                        // etiquetaServicio : arrEquipos[item].etiquetaServicio,
-                        // marca : '',
-                        // modelo : '', 
-                        // numeroSerie : '',
-                        // descripcionSoporte : arrEquipos[item].descripcionSoporte,
-                        // ubicacionEquipo : arrEquipos[item].ubicacionEquipo,
-                        // cantidad : 1,
-                        // estatus_equipo : 1, 
-                        // nuevo : 2, 
                     });
                 }
 
@@ -2990,7 +2960,12 @@
                         }).then((result) => {
                         if (result.isConfirmed) {
                             $("#detalleEquipoModal").modal("hide");
-                            // arrEquipos=[];
+                            for (var i = 0; i < arrEquipos.length; i++) {
+                                arrEquiposAux.push(arrEquipos[i]);
+
+                            } 
+                            arrEquipos=[];
+                            fnConsEquipos();
                         }else{
                             
                         }
@@ -3010,9 +2985,17 @@
         var archivoCierreEquipo = $("#archivoCierreEquipo").val();
         var diagnostico = $("#txtDiagnosticoM").val();
         var solucion = $("#txtSolucionM").val(); 
+        var checkEs_funcional=false;
+
+        if($("#checkEs_funcionalMC").is(':checked')) {  
+            checkEs_funcional= true;
+        } else {  
+            checkEs_funcional= false;
+        }  
 
         var form = $('#formCerrarEquipo')[0];
         var data2 = new FormData(form);
+        data2.append('checkEs_funcional', JSON.stringify(checkEs_funcional));
 
         if(archivoCierreEquipo!='' && archivoCierreEquipo!=null){
             var extension=archivoCierreEquipo.substr(-3);
@@ -3068,11 +3051,8 @@
                                     arrEquiposAux.push(arrEquipos[i]);
 
                                 } 
-                                console.log(arrEquiposAux+'-------4');
                                 arrEquipos=[];
                                 fnConsEquipos();
-                                console.log(arrEquipos+'-------1');
-                                console.log(arrEquiposAux+'-------2');
                             }else{
                                 
                             }

@@ -5,14 +5,14 @@
   CAS
 </title>
 <!--     Fonts and icons     -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+<link href="{{ asset('css/fonts.googleapis.css') }}" rel="stylesheet" />
 <!-- Nucleo Icons -->
 <!-- <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
 <link href="./assets/css/nucleo-svg.css" rel="stylesheet" /> -->
 <link href="{{ asset('css/cssTemplate/nucleo-icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/cssTemplate/nucleo-svg.css') }}" rel="stylesheet" />
 <!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+<script src="{{ asset('js/kit.fontawesome_42d5adcbca.js') }}" crossorigin="anonymous"></script> 
 <!-- <link href="./assets/css/nucleo-svg.css" rel="stylesheet" /> -->
 <link href="{{ asset('css/cssTemplate/nucleo-svg.css') }}" rel="stylesheet" />
 <!-- CSS Files -->
@@ -192,4 +192,11 @@
     width: 6em !important;
   }
 
+  table td {
+    word-wrap: break-word;
+    max-width: 400px;
+  }
+  #tablaPrueba2 td, #tabla_solicitudes td {
+    white-space:inherit;
+  }
 </style>

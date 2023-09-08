@@ -17,6 +17,15 @@
         height: 400px;
         background-color: grey;
     }
+    
+    .fixedHeight {
+        /* color:red; */
+        font-size:10px;
+        max-height: 200px;
+        margin-bottom: 10px;
+        overflow-x: auto;
+        overflow-y: auto;
+    }
 </style>
 
 @section('content')
@@ -71,11 +80,16 @@
                                             </div>
                                         </div> -->
                                         <label for="txtCentroTrabajo">CENTRO DE TRABAJO </label>
-                                        <div class="col-4">
-                                            <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{-- $id --}}" aria-describedby="btnBuscar" >       
+                                        <div class="col-7">
+                                            <!-- <input type="text" id="txtCentroTrabajo" style="text-align:left;" name="txtCentroTrabajo" class="form-control input-group-text" value="{{-- $id --}}" aria-describedby="btnBuscar" >        -->
+                                            <!-- <div class="col-9"> -->
+                                                <div class="ui-widget">
+                                                    <input class="form-control input-group-text" style="text-align:left; text-transform: uppercase;" id="txtCentroTrabajo" name="txtCentroTrabajo" aria-describedby="btnBuscar">
+                                                </div>
+                                            <!-- </div> -->
                                         </div>
                                         
-                                        <div class="col-8"> <!--col-6-->
+                                        <div class="col-5"> <!--col-6-->
                                             @can('194-btn-get-buscar-cct')
                                             <button class="btn btn-secondary" type="button" id="btnBuscar"  onclick="fnBuscarCCT()">Buscar</button>
                                             @endcan 
@@ -413,13 +427,15 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-9 d-md-flex justify-content-md-start">
+                                        <!-- <div class="col-9 d-md-flex justify-content-md-start">
                                             <div class="form-check replicar" id="checkVer">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkReplicar" name="checkReplicar">
                                                 <label class="form-check-label" for="checkReplicar">
                                                     Mantener descripción del problema y lista de tareas para el siguiente equipo.
                                                 </label>
                                             </div>
+                                        </div> -->
+                                        <div class="col-9 d-md-flex justify-content-md-start">
                                         </div>
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
@@ -449,6 +465,7 @@
                                         <div class="col-12 scrollHorizontal" id="divTablaEquipos">
                                             <table class="table">
                                                 <thead class="text-align:center;">
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">#</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
@@ -798,6 +815,10 @@
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
       defer> </script>  -->
       <script src="{{ asset('js/leaflet.js') }}"></script>
+      
+      <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <script>
     let arrTareas = [];
@@ -1302,6 +1323,45 @@
             }
         });
 
+        $("#txtCentroTrabajo").keyup(function(e){
+            var txt1 = $(this).val();
+            // txt.toUpperCase();
+            var txt2 = txt1.toUpperCase();
+            if (e.which >= 46 && e.which <= 90 || e.which >= 96 && e.which <= 105 ){
+                console.log('entro');
+                if (txt2.length > 0) {
+                    $.ajax({
+                    url: '{{route("consclaveCCT")}}',
+                    type: 'GET',
+                    data: {
+                        txt : txt2
+                    }
+                    }).always(function(r) {
+                        array2=[];
+                        console.log(r.arreglo);
+
+                        for (let i = 0; i < r.arreglo.length; i++) {
+                            array2.push(r.arreglo[i]['clavenombremun']);
+                        }
+                        // console.log(array2);
+                        $( "#txtCentroTrabajo" ).autocomplete({
+                            // maxShowItems: 5,
+                            // minLength: 2,
+                            source: array2,
+                        
+                        });
+                        $( "#txtCentroTrabajo" ).autocomplete("widget").addClass("fixedHeight");
+                        // $('#btn_consultar').prop('disabled', false);
+                        // $('#div_btn_siguiente').prop('hidden', false);
+                        // $( "#tags" ).autocomplete("widget").show();
+                    });
+                }
+                else{
+                    // $('#btn_consultar').prop('disabled', true);
+                }
+            }
+        });
+
     });
 
     function removeEquipo( item ) {
@@ -1341,13 +1401,23 @@
         
             // tablaEquipo2+='<tr id="tr_'+j+'"><td>'+arrEquipos[j]['desc_tipo_equipo']+'</td><td><button type="button" btn class="btn btn-secondary" onclick="verServicioEquipo('+j+')">Ver</button></td><td>En Proceso</td>';
                 tablaEquipo2+='<tr id="tr_'+j+'">';
-                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['cantidad']+'</td>';
-                tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
+                var conta=j+1;
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+conta+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+arrEquipos[j]['cantidad']+'</td>';
+                tablaEquipo2+='<td class="text-xs text-secondary mb-0" style="text-align:center">'+arrEquipos[j]['desc_tipo_equipo']+'</td>';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+arrEquipos[j]['descripcionSoporte']+'</td>';
-
+                var aux1='';
                 tablaEquipo2+='<td class="text-xs text-secondary mb-0">';
                 for (var i = 0; i < arrEquipos[j]['aTarea'].length; i++) {
-                    tablaEquipo2+='- '+arrEquipos[j]['aTarea'][i]['desc_Servicio']+'<br>';
+                    var vserv='';
+                    if(aux1==arrEquipos[j]['aTarea'][i]['desc_Servicio']){   /// esto era para que no se repitiera el servicio 09/08/2023
+                        vserv='&nbsp;';
+                        // aux='';
+                    }else{
+                        aux1=arrEquipos[j]['aTarea'][i]['desc_Servicio']; 
+                        vserv=arrEquipos[j]['aTarea'][i]['desc_Servicio'];
+                    }
+                    tablaEquipo2+=''+vserv+'<br>';
                 }
                 tablaEquipo2+='</td>';
 
@@ -1358,7 +1428,7 @@
                 tablaEquipo2+='</td>';
 
                 // tablaEquipo2+='<td class="text-xs text-secondary mb-0">'+vDatos+'</td>';
-                tablaEquipo2+='<td><div class="dropdown btn-group dropstart" style="text-align:center;>';
+                tablaEquipo2+='<td style="text-align:center"><div class="dropdown btn-group dropstart" style="text-align:center;>';
                 tablaEquipo2+='<button class="btn btn-link text-secondary mb-0 "';
                 tablaEquipo2+='                      data-bs-toggle="dropdown" id="opciones"';
                 tablaEquipo2+='                       aria-haspopup="true" aria-expanded="false" >';
@@ -1383,12 +1453,11 @@
                 tablaEquipo2+='                                  <i class="fas fa-book"></i> Historial'; //<!--web Service-->
                 tablaEquipo2+='                              </a>';
                 tablaEquipo2+='                          </li>@endcan';
-                tablaEquipo2+='                           @can("202-opt-get-detalle-equipo")<li>';
-                tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
-                // tablaEquipo2+='                              class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">';
-                tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
-                tablaEquipo2+='                              </a>';
-                tablaEquipo2+='                          </li>@endcan';
+                // tablaEquipo2+='                           @can("202-opt-get-detalle-equipo")<li>';
+                // tablaEquipo2+='                              <a onclick="verDetalleEquipoWS('+j+')" class="dropdown-item"> ';
+                // tablaEquipo2+='                                  <i class="fas fa-eye"></i> Detalle'; //<!--web Service-->
+                // tablaEquipo2+='                              </a>';
+                // tablaEquipo2+='                          </li>@endcan';
                 tablaEquipo2+='                      <li>';
                 tablaEquipo2+='                          <a  ';
                 // tablaEquipo2+='                          onclick="removeEquipo('+j+');" class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#exampleModal">';
@@ -1631,6 +1700,7 @@
     function fnBuscarCCT(){
     
         var claveCCT= $("#txtCentroTrabajo").val();
+        claveCCT= claveCCT.substr(0, 10);
         let urlEditar = '{{ route("consCCT", ":claveCCT") }}';
         urlEditar = urlEditar.replace(':claveCCT', claveCCT);
         arrEscuelaTurno=[];
@@ -1893,31 +1963,30 @@
             success: function(data) {
 
                 // var vequip = JSON.parse(data[0].inssolicservicio);  //V1 Con Equipos solamente sin detalle
-                var vequip = JSON.parse(data[0].inssolicservicioprueba2); //v2 Con Equipos y detalle
+                var vequip = JSON.parse(data[0].inssolicservicio); //v2 Con Equipos y detalle
                   
                 // if(data[0]['inssolicservicio']!=''){ 
-                 if(data[0]['inssolicservicioprueba2']!=''){ 
+                 if(data[0]['inssolicservicio']!=''){ 
                      msjeAlerta2('','<span>Se ha registrado con éxito la orden de servicio con el folio: <strong>'+vequip.vpfolio+'.</strong> <br>Favor de agendar cita para la visita de soporte y contactar al usuario.</span>','success',vequip.vpid_solic_serv)
 
-                    
-                    $.ajax({
-                        url: '{{route('enviarCorreo')}}',
-                        type: 'POST',
-                        data: {
-                            folio: vequip.vpfolio,
-                            correo: vCorreo
-                        },
-                        dataType: 'json', 
-                        processData: false,
-                        contentType: false,
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        success: function(data) {
-                            console.log(data+'---correooo1');
-                            console.log(data.exito+'---correooo2');
+                    // $.ajax({
+                    //     url: '{{route('enviarCorreo')}}',
+                    //     type: 'POST',
+                    //     data: {
+                    //         folio: vequip.vpfolio,
+                    //         correo: vCorreo
+                    //     },
+                    //     dataType: 'json', 
+                    //     processData: false,
+                    //     contentType: false,
+                    //     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                    //     success: function(data) {
+                    //         console.log(data+'---correooo1');
+                    //         console.log(data.exito+'---correooo2');
 
                             
-                        }
-                    });
+                    //     }
+                    // });
                 }else{ 
                     msjeAlerta('', 'No se pudo realizar el registro de la Orden de Servicio','error')
                 }
@@ -2155,7 +2224,7 @@
                         htmlSel+='<tr>';
                         if(aux==aTarea[j]['desc_Servicio']){ 
                             htmlSel+='<td >&nbsp;</td>';
-                            aux='';
+                            // aux='';
                         }else{
                             aux=aTarea[j]['desc_Servicio'];
                             htmlSel+='<td class="text-xs text-secondary mb-0">'+aTarea[j]['desc_Servicio']+'&nbsp;</td>';
