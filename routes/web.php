@@ -69,11 +69,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/updEstatusI','App\Http\Controllers\OrdenesController@updIniciar')->name('updEstatusI'); 
 
         Route::get('download-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadPDF')->name('download-pdf');
+        Route::get('download-pdf-ima/{id}', 'App\Http\Controllers\OrdenesController@downloadPDFima')->name('download-pdf-ima');
+        Route::get('download-cierre-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadCierrePDF')->name('download-cierre-pdf');
 
         //Cerrar Orden
         Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
         Route::post('/cerrarOrden', 'App\Http\Controllers\OrdenesController@updCerrar')->name('cerrarOrden');
         Route::get('/verArchivoCierre/{id}', 'App\Http\Controllers\OrdenesController@getArchivoCierre')->name('verArchivoCierre');
+        Route::get('/verImagenesCierre/{id}', 'App\Http\Controllers\OrdenesController@getArchivosCierreOrden')->name('verImagenesCierre');
 
         Route::get('/cargarTecAux/{id}', 'App\Http\Controllers\OrdenesController@cargarTecnicosAux')->name('cargarTecAux');
 
@@ -84,6 +87,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/actualizarEquipo', 'App\Http\Controllers\OrdenesController@updEquipo')->name('actualizarEquipo'); //31/07/2023
         Route::get('/verArchivoEquipo/{id}', 'App\Http\Controllers\OrdenesController@getArchivoEquipo')->name('verArchivoEquipo');
         Route::post('/cerrarEquipo', 'App\Http\Controllers\OrdenesController@updCerrarEquipo')->name('cerrarEquipo'); //20/08/2023
+        ///PENDIENTEE 
+        Route::get('/verImagenesCierreE/{id}', 'App\Http\Controllers\OrdenesController@getArchivoEquipo')->name('verImagenesCierreE');
 
         //Tecnicos
         Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');
@@ -91,6 +96,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/actualizarTecnicos','App\Http\Controllers\OrdenesController@updTecnicos')->name('actualizarTecnicos'); 
         //Correo
         Route::post('/enviarCorreo', 'App\Http\Controllers\OrdenesController@sendCorreo')->name('enviarCorreo');
+        //ValidaAcceso validaAcceso
+        Route::post('/validaAcceso', 'App\Http\Controllers\OrdenesController@getValidaAcceso')->name('validaAcceso');
+        Route::post('/actualizaAcceso', 'App\Http\Controllers\OrdenesController@updAcceso')->name('actualizaAcceso');
 
     }); 
 
@@ -139,7 +147,7 @@ Route::group(['prefix' => 'ventanilla'], function(){
     // Route::get('/formulario_index')->name('formulario_index');
     // Route::post('/guardarOrden', 'App\Http\Controllers\OrdenesController@store');
     // Route::get('/sendEmail','App\Http\Controllers\MailController@sendEmail')->name('sendEmail');
-}); 
+});  
 
 Route::group(['prefix' => 'app_cas'], function(){
     Route::get('/list_ordenes_servicio', function(Request $request){

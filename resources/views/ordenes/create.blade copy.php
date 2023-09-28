@@ -51,7 +51,7 @@
                                     <a class="nav-link disabled" id="tab2" aria-current="page" data-bs-toggle="tab" href="#tabReporte">Datos del reporte</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">Equipos/Servicios</a>
+                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">Equipos</a>
                                 </li>
                             </ul>
                         </div>
@@ -291,10 +291,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6" style="text-align:center;  background-color:#ab0033;">
-                                            <span style="color:white;">Agregar equipo(s) y servicio(s) a la orden de servicio</span>
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Agregar equipo(s) a la orden de servicio</span>
                                         </div>
-                                        <div class="col-6" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -320,7 +320,7 @@
                                         </div>
                                         <div class="col-6 divEtiqueta">
                                             <div class="form-group">
-                                                <label for="txtDetEquipo">DETALLE</label>
+                                                <label for="txtDetEquipo">DETALLE EQUIPO</label>
                                                 <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
                                                 <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
                                                 <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
@@ -330,7 +330,7 @@
 
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label for="txtUbicacionEquipo">UBICACIÓN</label>
+                                                <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
                                                 <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
                                             </div>
                                         </div>
@@ -346,7 +346,7 @@
 
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label for="selTipoEquipo">TIPO DE EQUIPO/SERVICIO</label>
+                                                <label for="selTipoEquipo">TIPO DE EQUIPO</label>
                                                 <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
                                                     <option value="0" selected>Seleccionar</option>
                                                     @foreach($catTipoEquipo as $tipoEquipo)
@@ -358,7 +358,7 @@
 
                                         <div class="col-4">
                                             <div class="form-group">
-                                                 <label for="selTipoServicio">ÁREA DE SERVICIO</label> 
+                                                 <label for="selTipoServicio">SERVICIO</label>
                                                 <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                     <option value="0" selected>Seleccionar</option>
                                                 </select> -->
@@ -381,16 +381,13 @@
                                         </div>
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <label for="selTarea">TIPO DE TAREA</label>
+                                                <label for="selTarea">TAREA</label>
                                                 <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
                                                     <option value="0" selected>Seleccionar</option>
                                                 </select> -->
                                                 <!-- <div class="input-group"> -->
-                                                    <!--AIDAAA <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
+                                                    <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
                                                         <option value="0" selected>Seleccionar</option>
-                                                    </select> AIDAAA-->
-                                                    <select class="selectpicker" data-width="100%" data-size="4" id="selTarea" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" title="Seleccionar" multiple aria-label="size 3 select example" placeholder>
-
                                                     </select>
                                                     <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
                                                     <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
@@ -458,7 +455,7 @@
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
                                             @can('199-btn-add-equipo')
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo/Servicio</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
                                             @endcan
                                         </div>
                                     </div>
@@ -468,10 +465,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6" style="text-align:center;  background-color:#ab0033;">
-                                            <span style="color:white;">Descripción de equipo(s) y servicio(s) agregados</span>
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Descripción de equipos agregados</span>
                                         </div>
-                                        <div class="col-6" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -487,7 +484,7 @@
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ÁREA DE SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TAREA</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ACCIONES</th>
                                                 </thead>
@@ -714,7 +711,7 @@
                 </div>
                 <div class="row">
                     <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                        <span style="color:white;">Información Equipo(s)/Servicios(s)</span>
+                        <span style="color:white;">Información Equipo(s)</span>
                     </div>
                     <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
@@ -764,7 +761,7 @@
             </div>
             <div class="row">
                 <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                    <span style="color:white;">Historial del Equipo/Servicio</span>
+                    <span style="color:white;">Historial del Equipo</span>
                 </div>
                 <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                 </div>
@@ -835,23 +832,14 @@
       <script src="{{ asset('js/leaflet.js') }}"></script>
       
       <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
-  <!-- <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> -->
-  <script src="{{ asset('js/ui_1.13.2_jquery-ui.js') }}"></script>
-  <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css"> -->
-  <link href="{{ asset('css/ui_1.13.2_themes_base_jquery-ui.css') }}" rel="stylesheet" />
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
-  <!--multicheck JC-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- <link href="{{ asset('css/bootstrap-select_1.14.0-beta2_css_bootstrap-select.min.css') }}" rel="stylesheet" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="{{ asset('js/bootstrap-select_1.14.0-beta2_js_bootstrap-select.min.js') }}" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-  <!--multicheck JC-->
 <script>
     let arrTareas = [];
     let arrServicios = [];
     var arrEquipos = [];
     let arrEscuelaTurno = [];
-    var selected12 = []; //JC
     // var vDirector='';
     // var equipo_servicio = {
     //             nom_equipo: '',
@@ -860,11 +848,6 @@
     //         };
 
     $(document).ready(function () {
-
-        $('.selectpicker').attr('disabled',true); //JC
-        $('.selectpicker').selectpicker('refresh');  //JC
-
-        $("#txtEtiquetaServicio").prop('disabled',true);
         //load();
         // $("#divTablaEquipos").hide()
 
@@ -1172,9 +1155,7 @@
             $("#txtEtiquetaServicio").prop('disabled',false);
             $("#checkVer").show();
             $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
-            // $("#selTarea").prop('disabled',true); ///////28_08_2023
-            $('.selectpicker').attr('disabled',true); //JC
-            $('.selectpicker').selectpicker('refresh');  //JC
+            $("#selTarea").prop('disabled',true); ///////28_08_2023
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
             //     arrTareas=[];
@@ -1229,7 +1210,6 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
-            var banderatarea=0;//JC
 
             $("#selTipoEquipo").prop('disabled',true);
     
@@ -1237,48 +1217,22 @@
 
             vTarea = $("#selTarea").val();
             vTareaText = $('select[id="selTarea"] option:selected').text();
-            
-            var element_prueba='';//JC
-            var element_idServ='';//JC
-            for (let index = 0; index < vTarea.length; index++) {//JC
-                var element_prueba = vTarea[index];//JC
-            }//JC
+
 
             vTipoServicio = $("#selTipoServicio").val();
             vTipoServicioText = $('select[id="selTipoServicio"] option:selected').text();
-            element_idServ = vTipoServicio;
             
-            for (let i = 0; i < arrTareas.length; i++) {//JC
-                // console.log(selected12[i]['id']);
-                // console.log(element_prueba);
-                if (arrTareas[i]['idServicio'] == element_idServ && arrTareas[i]['idTarea'] == element_prueba) {
-                    banderatarea = 1;
-                }
-            }//JC
-
-            if (banderatarea ==1) {//JC
-                msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')//JC
-            }//JC
-
-            
-            // if(vtipEqu !=0){
-            //     if(vTipoServicio !=0){
-                    else if(vTarea != 0){
+            if(vtipEqu !=0){
+                if(vTipoServicio !=0){
+                    if(vTarea != 0){
                         $("#btnAgregarTarea").prop('disabled',false);
                         var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                         if(index == -1){
-                            for (let i = 0; i < selected12.length; i++) {//JC
-                              // selected.push({id:$(this).val(), texto:$(this).text()});
-                              // const element = selected12[i]['id'];
-                              arrTareas.push({cont:g, idTarea:selected12[i]['id'], desc_Tarea:selected12[i]['texto'],
-                                idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
-                            }//JC
-                            // arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+                            arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
                             drawRowTarea();
                             // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
                             g=g+1;
-                            $('.selectpicker').selectpicker('refresh');//JC
                         }else{
                             $("#selTarea").val("0").attr("selected",true);
                             msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')
@@ -1287,23 +1241,16 @@
                         msjeAlerta('', 'Debe seleccionar la Tarea', 'error')
                     }
                     
-            //     }else{
-            //         msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
-            //     }
-            // }else{
-            //     msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
-            // }
+                }else{
+                    msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
+                }
+            }else{
+                msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
+            }
             // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
         $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
-            if(this.value==1){
-                $("#txtEtiquetaServicio").val('');
-                $("#txtEtiquetaServicio").prop('disabled',true);
-                $("#txtDetEquipo").val('');  
-            }else{
-                $("#txtEtiquetaServicio").prop('disabled',false);
-            }
 
             arrTareas=[];
             $("#divListaTarea").removeClass('scrollVerticalTareas');
@@ -1354,53 +1301,26 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     //  console.log(data[0][0]);
-                    // var htmlSel='<option value="0" selected>Seleccionar</option>';
-                    var htmlSel='';
+                    var htmlSel='<option value="0" selected>Seleccionar</option>';
                     for (var i = 0; i < data[0].length; i++) {
                         htmlSel+='<option value="'+data[0][i].id_tarea+'">'+data[0][i].desc_tarea+'</option>'; 
                     }
 
                     $("#selTarea").html(htmlSel);
-                    // $("#selTarea").prop('disabled',false); ///////28_08_2023
-                    $('.selectpicker').attr('disabled',false); //JC
-                    $('.selectpicker').selectpicker('refresh');  //JC
+                    $("#selTarea").prop('disabled',false); ///////28_08_2023
                 }
             });
             
         });
 
-        $('#selTarea').on('changed.bs.select', function (e) {
-            //mio
+        $('#selTarea').on('change', function() {
             var vSelTarea=  $('#selTarea').val();
             if(vSelTarea==0){
                 $("#btnAgregarTarea").prop('disabled',true);
             }else{
                 $("#btnAgregarTarea").prop('disabled',false);
             }
-            //mio
-
-            ///JC
-            var options = $('#selTarea option:selected');
-            var selected = [];
-            
-            $(options).each(function(){
-                selected.push({id:$(this).val(), texto:$(this).text()}); 
-                // or $(this).val() for 'id'
-            });
-            selected12 = selected;
-            // write value to some field, etc
-            console.log(selected);
-            //JC
         });
-
-        // $('#selTarea').on('change', function() {
-        //     var vSelTarea=  $('#selTarea').val();
-        //     if(vSelTarea==0){
-        //         $("#btnAgregarTarea").prop('disabled',true);
-        //     }else{
-        //         $("#btnAgregarTarea").prop('disabled',false);
-        //     }
-        // });
 
         
 
@@ -1460,45 +1380,25 @@
     });
 
     function removeEquipo( item ) {
-        var titulo='';
-        var contenido='<p style="font-size:1rem !important;">¿Está seguro de eliminar el registro?</p>';
-        var icono='warning'; 
-
-        Swal.fire({
-            title: titulo,
-            html: contenido,
-            icon: icono,
-            showCancelButton: true,
-            confirmButtonColor: '#b50915',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-            width: 600,
-            }).then((result) => {
-            if (result.isConfirmed) {
-                if(arrEquipos.includes(item) ==false){ 
-                    if ( item !== -1 ) {
-                        arrEquipos.splice( item, 1 );
-                        $("#tr_"+item).remove();
-                        drawRowEquipo();
-                    }   else{
-                        arrEquipos = []; 
-                        g=0;
-                        tablaEquipo='';
-                        $("#tbEquipos").html('');
-                        $("#tbEquipos").empty();
-                    }
-                }else{
-                    console.log('No existe en el arreglo');
-                    g=0;
-                    tablaEquipo='';
-                    $("#tbEquipos").html('');
-                    $("#tbEquipos").empty();
-                }
-                
+        if(arrEquipos.includes(item) ==false){ 
+            if ( item !== -1 ) {
+                arrEquipos.splice( item, 1 );
+                $("#tr_"+item).remove();
+                drawRowEquipo();
+            }   else{
+                arrEquipos = [];
+                 g=0;
+                 tablaEquipo='';
+                $("#tbEquipos").html('');
+                $("#tbEquipos").empty();
             }
-        });
-        
+        }else{
+            console.log('No existe en el arreglo');
+            g=0;
+            tablaEquipo='';
+            $("#tbEquipos").html('');
+            $("#tbEquipos").empty();
+        }
     }
 
     function drawRowEquipo(){
@@ -1646,7 +1546,7 @@
 
         listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTarea">';
         listaTarea2+='<thead>';
-        listaTarea2+='<th>Área de Servicio</th>';
+        listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
         listaTarea2+='<th>Eliminar</th>';
         listaTarea2+='</thead>';
@@ -1687,7 +1587,7 @@
         }
 
         $("#ulTarea").empty();
-        $("#tituloTareas").text('LISTADO DE ÁREAS DE SERVICIO/TAREAS ');
+        $("#tituloTareas").text('LISTADO DE SERVICIOS/TAREAS ');
         $("#ulTarea").html(listaTarea2);
         $("#selTarea").val("0").attr("selected",true);
     }
@@ -2157,7 +2057,7 @@
 
         html+='<table>';
         html+='<thead>';
-        html+='<th>Área de Servicio</th>';
+        html+='<th>Servicio</th>';
         html+='<th>Tarea</th>';
         html+='</thead>';
         html+='<tbody>';
@@ -2276,10 +2176,10 @@
         htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+etiquetaServicio+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Detalle:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Ubicación:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 
@@ -2288,7 +2188,7 @@
         htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].cantidad+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Tipo de Equipo/Servicio:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
+        htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
         htmlSel+='</div>';
@@ -2296,7 +2196,7 @@
         htmlSel+='<br>';
         htmlSel+='<div class="row">';
         htmlSel+='<div class="col-12">';
-        htmlSel+='<label>Listado de Áreas de Servicio/Tareas</label>';
+        htmlSel+='<label>Listado de Servicios/Tareas</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 
@@ -2335,7 +2235,7 @@
                 // var html='';
                 htmlSel+='<table class="table">';
                 htmlSel+='<thead>';
-                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Área de Servicio</th>';
+                htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
                 htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
                 htmlSel+='</thead>';
                 htmlSel+='<tbody>';

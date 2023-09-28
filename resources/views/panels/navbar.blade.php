@@ -24,12 +24,22 @@
             </a>
             </li>
 
-            <li class="ml-3 nav-item d-flex align-items-center mr-5 pr-5 marginraigt">
-            <a href="javascript:;" class="ml-3 nav-link text-white font-weight-bold px-0">
+            <li class="ml-3 nav-item dropdown d-flex align-items-center mr-5 pr-5 marginraigt">
+            <!-- <a href="javascript:;" class="ml-3 nav-link text-white font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1 ml-3"></i>
-                <span class="d-sm-inline d-none">{{ Auth()->user()->name }}{{ $getUsername[0]->nameuser}} </span>
-                
-            </a>
+                <span class="d-sm-inline d-none">{{-- Auth()->user()->name --}}{{-- $getUsername[0]->nameuser--}} </span>
+            </a> -->
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user me-sm-1 ml-3"></i>{{ $getUsername[0]->nameuser}}
+                </a>
+                <ul class="dropdown-menu navbar-user" aria-labelledby="navbarDropdown">
+                    <li>
+                        <i class="fa fa-user me-sm-1 ml-3 p-2" ></i><span class="text-xs">{{ $getUsername[0]->roluser}}</span>
+                    </li>
+                    <li>
+                        <i class="fa fa-envelope me-sm-1 ml-3 p-2"></i><span class="text-xs">{{ $getUsername[0]->correouser}}</span>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item d-flex align-items-center ml-3 pl-3 ">
             <a href="{{-- route('logout') --}}" onclick="event.preventDefault();

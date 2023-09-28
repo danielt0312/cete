@@ -58,8 +58,8 @@
                         <div class="mx-auto">
                         <!-- <h3>Discover the powerful admin template 🥳</h3> -->
                         <p class="colorText">
-                            Lorem ipsum dolor sit amet. Et fuga mollitia qui tempora incidunt non esse amet.
-                            <br> Aut quia maiores quo quisquam fugiat aut atque autem ad Quis amet est vero voluptate.
+                            <!-- Lorem ipsum dolor sit amet. Et fuga mollitia qui tempora incidunt non esse amet.
+                            <br> Aut quia maiores quo quisquam fugiat aut atque autem ad Quis amet est vero voluptate. -->
                         </p>
                         </div>
                     </div>
@@ -131,7 +131,7 @@
                             <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="remember-me" name="remember-me">
                             <label class="form-check-label" for="remember-me">
-                                Recuerdame
+                                Recuérdame
                             </label>
                             </div>
                         </div>

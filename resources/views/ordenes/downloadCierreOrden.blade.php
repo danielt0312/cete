@@ -16,14 +16,7 @@
           margin-left: 1cm;
           margin-right: 1cm;
           max-height: 100px;
-          margin-bottom: 4cm;
-          /* border: #000 solid 1px; */
-          /* min-height: calc(100vh - 100px - 100px); */
-          /* background-image: url("{{ asset('images/logo/logoTam2022.png') }}");
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-color: transparent;
-          opacity: 0.6; */
+          /* margin-bottom: 4cm; */ /*quite el espacio del footer*/
         }
 
         .waterMark{
@@ -54,18 +47,16 @@
           /* border: #000 solid 1px; */
         }
         
-        footer {
+        /*footer {
           clear: both;
           position: fixed; 
           bottom: .3cm; 
           left: .5cm; 
           right: .5cm;
           height: 3.2cm;
-          /* width: 100%; */
           margin-left: .5cm;
           margin-right: .5cm;
-          /* border: #000 solid 1px; */
-        } 
+        } */
 
         table {
           border-collapse:collapse; 
@@ -126,6 +117,24 @@
           /* text-transform: capitalize; */
         }
 
+        .sinbordetable3{
+          border: 0px solid #000;
+          text-align: center !important;
+          padding: 2px;
+          /* Alto de las celdas */
+          height: 350px !important;
+        }
+
+        .sinbordetable4{ 
+          border: 0px solid #000;
+          text-align: center !important;
+          padding: 0;
+          /* Alto de las celdas */
+          height: 16px !important;
+          /* text-transform: capitalize; */
+        }
+
+
         table .firmas{
           /* padding-top: 100em; */
           padding: 40px 1px 0px 1px;
@@ -150,6 +159,14 @@
         .tableFoot {
           border-collapse:collapse; 
           border: none; 
+        }
+
+        .rotate90 {
+          /* -webkit-transform: rotate(90deg); */
+          /* -moz-transform: rotate(90deg); */
+          /* -o-transform: rotate(90deg); */
+          /* -ms-transform: rotate(90deg); */
+          transform: rotate(90deg);
         }
 
     </style>
@@ -270,7 +287,30 @@
             </td>
           </tr>
         </table>
-
+        <table> <!--//////////////////////////////////////////////////////////////////////-->
+          <tr>
+            <th>EVIDENCIAS DE LA ORDEN</th>
+          </tr>
+          <tr>
+            <td class="">
+              <table class="sinbordetable3" >
+                <tr class="sinbordetable3">
+                  @if(isset($ordenServiciosObject->jarchivos_cierre) && $ordenServiciosObject->jarchivos_cierre !=null)
+                    @foreach(json_decode($ordenServiciosObject->jarchivos_cierre) as $val )
+                      <td class="sinbordetable3">
+                        <!-- <br> -->
+                        <div><img  src="{{asset('cierreOrden/'.$val->nombre_archivo)}}" style="width:300px; heigth:auto;" > 
+                        </div>
+                        <!-- <br> -->
+                      </td> 
+                    @endforeach
+                  @endif
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <br><br>
         <table> <!--//////////////////////////////////////////////////////////////////////-->
           @if ($ordenServiciosObject->jequipos!=null && $ordenServiciosObject->jequipos !='')
           <tr>
@@ -306,6 +346,31 @@
                             <td class="sinbordetable"><span>Ubicación:</span><span>@if($val->ubicacion!=''){{$val->ubicacion}}@else S/D @endif</span></td>
                             <td class="sinbordetable"><span>Modelo:</span><span> S/D </span></td>
                           </tr>
+                          <tr class="sinbordetable">
+                            <td colspan="2" class="sinbordetable">
+                              <span>Descripción del problema:</span>
+                              <span>{{$val->desc_problema}}</span> 
+                            </td>
+                          </tr>
+                          <tr class="sinbordetable">
+                            <td colspan="2" class="sinbordetable">
+                              <span>Diagnóstico / Solución:</span>
+                              <span> 
+                                @if($val->diagnostico!='') 
+                                  {{$val->diagnostico}} /
+                                @else 
+                                  S/D 
+                                @endif
+                              </span> 
+                              <span> 
+                                @if($val->solucion!='') 
+                                  {{$val->solucion}}
+                                @else 
+                                  S/D 
+                                @endif
+                              </span>
+                            </td>
+                          </tr>
                         </table> 
                       </td>
                       <td class="sinbordetable" style="width:32%;">
@@ -333,25 +398,10 @@
                           <span>{{$val3->tarea}}, </span> 
                         @endforeach
                       </td>
-                      <td class="sinbordetable" style="width:33%;">
-                        <span>Descripción del Problema:</span> 
-                          <span>{{$val->desc_problema}}</span> 
-                        <br>
-                        <span>Diagnóstico / Solución:</span>
-                        <span> 
-                          @if($val->diagnostico!='') 
-                            {{$val->diagnostico}} /
-                          @else 
-                            S/D 
-                          @endif
-                        </span> 
-                        <span> 
-                          @if($val->solucion!='') 
-                            {{$val->solucion}}
-                          @else 
-                            S/D 
-                          @endif
-                        </span>
+                      <td class="sinbordetable4" style="width:20%;">
+                        @if(isset($val->nombre_archivo) && $val->nombre_archivo != '')
+                          <img src="{{asset('cierreEquipo/'.$val->nombre_archivo)}}" style="width:80px; heigth:80px;" >
+                        @endif
                       </td>
                     </tr>
                   </table>
@@ -359,7 +409,7 @@
               </tr>
             @endforeach
           @endif
-          <tr>
+          <!-- <tr>
             <td>
               <table style="text-align:center;">
                 <tr class="firmas2">
@@ -376,24 +426,13 @@
                 </tfoot>
               </table>
             </td>
-          </tr>
+          </tr> -->
         </table>
     </div>
     <br>
-      
-</body>
-</div>
-<footer > <!--style="display:flex; "-->
-    {{-- <hr> --}}
-    {{-- class="h-80 w-100 rounded-left"  border: #000 solid 1px; --}}
-    <!-- <div style="width: 100%; text-align: center; font-size: 12px; height: 40px;">
-      <span><small>Por disposiciones de este Centro Estatal de Tecnología Educativa, los equipos que hayan sido traídos para su mantenimiento
-        o reparación, deberán ser recogidos en un plazo no mayor a 10 días hábiles. Agradecemos su colaboración.</small></span>
-    </div> -->
-    <!-- <div style="width: 62%; height: 100px; float: left; " > -->
-    <div class="left" style="width: 100%; height: 100px; " >
-         <!-- <img style="width: 100px; height: 80px; margin-top: 8px;" src="{{ asset('images/logo/ceteNI.png') }}" alt="">  -->
-         <table>
+    <br><br>
+    <div class="left" style="width: 100%; height: 100px; " ><br><br>
+        <table>
           <thead>
             <th><small>Acta responsiva</small></th> 
           </thead>
@@ -425,6 +464,41 @@
           </tbody>
          </table>
     </div>
-</footer>
+</body>
+</div>
+<!-- <footer >
+    <div class="left" style="width: 100%; height: 100px; " >
+        <table>
+          <thead>
+            <th><small>Acta responsiva</small></th> 
+          </thead>
+          <tbody>
+            <tr>
+              <td style="width: 64%;">
+                <span><small>Por medio de la presente, dejo constancia que NO HAGO RESPONSABLE al Centro Estatal de Tenología Educativa:</small></span><br>
+                <span><small>- Si los técnicos al revisar el equipo informático eliminan archivos valiosos para el usuario, se recomienda realizar un respaldo antes de proporcionar el equipo.</small></span><br>
+                <span><small>- Si los técnicos revisan el equipo informático, éste pueda presentar posteriormente un daño en los dispositivos de hardware.</small></span><br>
+                <span><small>- Por el mal funcionamiento que pudieran presentar los accesorios del equipo informático a revisar, como cargadores y periféricos.</small></span>
+              </td>
+              <td style="width: 33%;" class="text-righ tableFoot">
+              <table class="tableFoot">
+                  <tr>
+                    <td class="tableFoot text-right" style="width: 10%;">
+                      <img style="width: 90px; height: 90px;" src="{{ asset('images/QR_ventanilla.png') }}" alt="">
+                    </td>
+                    <td class="tableFoot text-right" style="width: 23%; text-align: right; font-size: 12px; margin-top: 4px;">
+                      <span class="invoice-title"><small>Calzada Gral. Luis Caballero S/N, Antiguo Edificio Escuela Normal Rural de Tamatán,</small><br></span>
+                      <span class="invoice-title"><small>Col. Tamatán, C.P. 87060. Cd. Victoria Tamaulipas.</small><br></span>
+                      <span class="invoice-title"><small>Tel. 834 306 0027, 834 315 9031. <br>Opción 1. Mesa de ayuda.</small><br></span>
+                      <span class="invoice-title"><small>centroestatal.tecnologiaeducativa@set.edu.mx</small><br></span>
+                    </td>
+                  </tr>
+              </table>
+              </td>
+            </tr>
+          </tbody>
+         </table>
+    </div>
+</footer> -->
 
 </html>

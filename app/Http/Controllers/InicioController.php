@@ -52,7 +52,6 @@ class InicioController extends Controller
             'total_aprobadasSol',
             'total_rechazadas',
             'total_canceladasSol'
-
         ) );
         // return view('inicio');
     }

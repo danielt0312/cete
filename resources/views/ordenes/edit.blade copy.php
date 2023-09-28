@@ -50,13 +50,13 @@
                         <div class="col-12">
                             <ul class="nav nav-pills nav-justified" id="tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="tab1" aria-current="page" data-bs-toggle="tab" href="#tabCCT">Datos del Centro de Trabajo</a>
+                                    <a class="nav-link active" id="tab1" aria-current="page" data-bs-toggle="tab" href="#tabCCT">DATOS DEL CENTRO DE TRABAJO</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="tab2" aria-current="page" data-bs-toggle="tab" href="#tabReporte">Datos del reporte</a>
+                                    <a class="nav-link disabled" id="tab2" aria-current="page" data-bs-toggle="tab" href="#tabReporte">DATOS DEL REPORTE</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">Equipos/Servicios</a>
+                                    <a class="nav-link disabled" id="tab3" aria-current="page" data-bs-toggle="tab" href="#tabEquipos">EQUIPOS</a>
                                 </li>
                             </ul>
                         </div>
@@ -180,16 +180,10 @@
                                         <br><br>
                                         <div class="col-12">
                                             <label>Observaciones: En caso de existir algún error en los datos del Centro de Trabajo añadidos, deberá indicar al Centro Educativo realice la actualización de infomación con la Dirección de Planeación de la Secretaría de Educación.</label>
-                                            <br> 
-                                            <br> 
                                         </div>
 
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
-                                            <button type="button" class="btn btn-secondary" id="btnCancelarS1">Salir</button> 
-                                        </div>
-
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
-                                            <!-- <button type="submit" class="btn btn-secondary" id="btnAnterior" >ANTERIOR</button> antes tenia col-12 -->
+                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <!-- <button type="submit" class="btn btn-secondary" id="btnAnterior" >ANTERIOR</button> -->
                                             <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente">Siguiente</button> 
                                         </div>
                                     </div>
@@ -235,7 +229,7 @@
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="selDepAtiende">DEPENDENCIA QUE ATIENDE EL SERVICIO</label>
-                                                <select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende">
+                                                <select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" disabled>
                                                     <option value="0" selected>Seleccionar</option>
                                                     @foreach($catAreasAtiendeOrden as $areasAtiendeOrden)
                                                         @if( $ordenServiciosDetalle->id_coord_atiende == $areasAtiendeOrden->id)
@@ -300,16 +294,10 @@
                                                 <label style="font-weight: normal;" for="checkSeguimiento">
                                                 ¿Desea recibir notificaciones del seguimiento de su orden al correo proporcionado?
                                                 </label>
-                                                <br> 
-                                                <br> 
                                             </div>
                                         </div>
 
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
-                                            <button type="button" class="btn btn-secondary" id="btnCancelarS2">Salir</button> 
-                                        </div>
-
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior2" >Regresar</button>
                                             <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >Siguiente</button>
                                         </div> 
@@ -338,10 +326,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6" style="text-align:center;  background-color:#ab0033;">
-                                            <span style="color:white;">Agregar equipo(s) y servicio(s) a la orden de servicio</span>
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Agregar equipo(s) a la orden de servicio</span>
                                         </div>
-                                        <div class="col-6" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -362,14 +350,14 @@
                                         <div class="row">
                                             <div class="col-3 divEtiqueta">
                                                 <div class="form-group">
-                                                    <label for="txtEtiquetaServicio">ETIQUETA <span class="sinNegrita">(Solo equipos)</span></label>
+                                                    <label for="txtEtiquetaServicio">ETIQUETA DE SERVICIO</label>
                                                     <input type="text" id="txtEtiquetaServicio" name="txtEtiquetaServicio" class="form-control" value="" >
                                                 </div>
                                             </div>
                                             
                                             <div class="col-6 divEtiqueta">
                                                 <div class="form-group">
-                                                    <label for="txtMarca">DETALLE</label>
+                                                    <label for="txtMarca">DETALLE EQUIPO</label>
                                                     <input type="text" id="txtDetEquipo" name="txtDetEquipo" class="form-control" value="" readonly>
                                                     <input type="hidden" id="txtMarca" name="txtMarca" class="form-control" value="" readonly>
                                                     <input type="hidden" id="txtModelo" name="txtModelo" class="form-control" value=""  readonly>
@@ -379,7 +367,7 @@
 
                                             <div class="col-3">
                                                 <div class="form-group">
-                                                    <label for="txtUbicacionEquipo">UBICACIÓN</label>
+                                                    <label for="txtUbicacionEquipo">UBICACIÓN DEL EQUIPO</label>
                                                     <input type="text" id="txtUbicacionEquipo" name="txtUbicacionEquipo" class="form-control" value=""  >
                                                 </div>
                                             </div>
@@ -394,7 +382,7 @@
                                             </div> -->
                                             <div class="col-3">
                                                 <div class="form-group">
-                                                    <label for="selTipoEquipo">TIPO DE EQUIPO/SERVICIO</label>
+                                                    <label for="selTipoEquipo">TIPO DE EQUIPO</label>
                                                     <select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >
                                                         <option value="0" selected>Seleccionar</option>
                                                         @foreach($catTipoEquipo as $tipoEquipo)
@@ -405,7 +393,7 @@
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-group">
-                                                    <label for="selTipoServicio">ÁREA DE SERVICIO</label>
+                                                    <label for="selTipoServicio">SERVICIO</label>
                                                     <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                                         <option value="0" selected>Seleccionar</option>
                                                     </select> -->
@@ -428,13 +416,17 @@
                                             </div>
                                             <div class="col-3">
                                                 <div class="form-group">
-                                                    <label for="selTarea">TIPO DE TAREA</label>
-                                                        <!-- AIDA<select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
+                                                    <label for="selTarea">TAREA</label>
+                                                    <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
+                                                        <option value="0" selected>Seleccionar</option>
+                                                    </select> -->
+                                                    <!-- <div class="input-group"> -->
+                                                        <select class="form-select" id="selTarea" name="selTarea" aria-label="Example select with button addon">
                                                             <option value="0" selected>Seleccionar</option>
-                                                        </select> -->
-                                                        <select class="selectpicker" data-width="100%" data-size="4" id="selTarea" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" title="Seleccionar" multiple aria-label="size 3 select example" placeholder>
-
                                                         </select>
+                                                        <!-- <button class="btn colorBtnPrincipal" type="button" id="btnAgregarTarea">Añadir</button> -->
+                                                        <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTarea"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
+                                                    <!-- </div> -->
                                                 </div>
                                                 
                                                 <!-- <div class="form-group col-12"  style="font-size:0.75rem;" id="divListaTarea">
@@ -501,7 +493,7 @@
 
                                         <div class="col-3 d-grid gap-2 d-md-flex justify-content-md-end">
                                             @can('176-btn-edit-agregar-equipo')
-                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo/Servicio</button>
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnAgregarEquipo" >Agregar Equipo</button>
                                             @endcan
                                         </div>
                                     </div>
@@ -512,10 +504,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-6" style="text-align:center;  background-color:#ab0033;">
-                                            <span style="color:white;">Descripción de equipo(s) y servicio(s) agregados</span>
+                                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                                            <span style="color:white;">Descripción de equipos agregados</span>
                                         </div>
-                                        <div class="col-6" style="text-align:center; border-bottom:3px solid #ab0033;">
+                                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -531,7 +523,7 @@
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CANTIDAD</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">EQUIPO/SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">DESCRIPCIÓN</th>
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ÁREA DE SERVICIO</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">SERVICIO</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">TAREA</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ACCIONES</th>
                                                 </thead>
@@ -547,12 +539,8 @@
                                         
                                         <br>
                                         <br>
-
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
-                                            <button type="button" class="btn btn-secondary" id="btnCancelarS3">Salir</button> 
-                                        </div> 
                                         
-                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>
                                             @can('185-edit-actualizar-orden')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="msjeAlertConfirm()"> Actualizar</button>
@@ -681,7 +669,7 @@
                 </div>
                 <div class="row">
                     <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                        <span style="color:white;">Información Equipo(s)/Servicios(s)</span>
+                        <span style="color:white;">Información Equipo(s)</span>
                     </div>
                     <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
@@ -731,7 +719,7 @@
                 </div>
                 <div class="row">
                     <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                        <span style="color:white;">Historial del Equipo/Servicio</span>
+                        <span style="color:white;">Historial del Equipo</span>
                     </div>
                     <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
@@ -796,7 +784,7 @@
                         <div class="form-check replicar" id="checkVerCerrar">
                             <input class="form-check-input" type="checkbox" value="" id="checkCerrar" name="checkCerrar">
                             <label class="form-check-label" for="checkCerrar">
-                                Desea cerrar el Equipo/Servicio
+                                Desea cerrar el Equipo
                             </label>
                         </div>
                         @endcan
@@ -804,10 +792,10 @@
                 </div>
                 <div id="divEditEqui">
                 <div class="row">
-                    <div class="col-6" style="text-align:center;  background-color:#ab0033;">
-                        <span style="color:white;">Editar Equipo/Servicio</span>
+                    <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                        <span style="color:white;">EDITAR EQUIPO</span>
                     </div>
-                    <div class="col-6" style="text-align:center; border-bottom:3px solid #ab0033;">
+                    <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                     </div>
                 </div>
                 <div class="row">
@@ -855,7 +843,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="form-group">
-                                    <label for="txtDetalleEquipoM">DETALLE</label>
+                                    <label for="txtDetalleEquipoM">DETALLE EQUIPO</label>
                                     <input type="text" id="txtDetalleEquipoM" name="txtDetalleEquipoM" class="form-control" disabled>
                                 </div>
                             </div>
@@ -874,7 +862,7 @@
                             </div> -->
                             <div class="col-4">
                                 <div class="form-group">
-                                        <label for="selTipoServicioM">ÁREA DE SERVICIO</label>
+                                        <label for="selTipoServicioM">SERVICIO</label>
                                     <!--<select class="form-select" aria-label="Default select example" id="selDepAtiende" name="selDepAtiende" >
                                         <option value="0" selected>Seleccionar</option>
                                     </select> -->
@@ -897,16 +885,13 @@
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label for="selTareaM">TIPO DE TAREA</label>
+                                    <label for="selTareaM">TAREA</label>
                                     <!-- <select class="form-select" aria-label="Default select example" id="selTarea" name="selTarea" >
                                         <option value="0" selected>Seleccionar</option>
                                     </select> -->
                                     <div class="input-group">
-                                        <!-- <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
+                                        <select class="form-select" id="selTareaM" name="selTareaM" aria-label="Example select with button addon">
                                             <option value="0" selected>Seleccionar</option>
-                                        </select> -->
-                                        <select class="selectpicker" data-width="100%" data-size="4" id="selTareaM" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" title="Seleccionar" multiple aria-label="size 3 select example" placeholder>
-
                                         </select>
                                         <!-- <button type="button" class="btn colorBtnPrincipal" id="btnAgregarTareaM"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button> -->
                                     </div>
@@ -958,7 +943,7 @@
                     <form id="formCerrarEquipo" name="formCerrarEquipo" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                                <span style="color:white;">Cierre de Equipo/Servicio</span>
+                                <span style="color:white;">CIERRE DE EQUIPO</span>
                             </div>
                             <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
                             </div>
@@ -987,7 +972,7 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <br>
-                                    <label for="archivoCierreEquipo">AGREGAR EVIDENCIA (Anexe fotografía del equipo/servicio reparado).</label>
+                                    <label for="archivoCierreEquipo">AGREGAR EVIDENCIA (Anexe fotografía del equipo reparado).</label>
                                     <input class="form-control" type="file" id="archivoCierreEquipo" name="archivoCierreEquipo">
                                     <br>
                                 </div>
@@ -1008,7 +993,7 @@
                                 <div class="form-check replicar">
                                     <input class="form-check-input" type="checkbox" value="" id="checkEs_funcionalMC" name="checkEs_funcionalMC">
                                     <label class="form-check-label" for="checkEs_funcionalMC">
-                                        Active casilla si el equipo/servicio quedó en funcionamiento 
+                                        ¿El equipo quedó funcional? SI/NO
                                     </label>
                                 </div>
                             </div> 
@@ -1021,7 +1006,7 @@
                         <div class="row">
                             <div class="col-12" style="text-align:right;">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn colorBtnPrincipal" onclick="fnCerrarEquipo()" id="btnCerrarEquipo">Cerrar Equipo/Servicio</button>
+                                <button type="button" class="btn colorBtnPrincipal" onclick="fnCerrarEquipo()" id="btnCerrarEquipo">Cerrar Equipo</button>
                             </div>
                         </div>
                     </form>
@@ -1056,12 +1041,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
       defer> </script> 
 
-  <!--multicheck JC-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <!-- <link href="{{ asset('css/bootstrap-select_1.14.0-beta2_css_bootstrap-select.min.css') }}" rel="stylesheet" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <script src="{{ asset('js/bootstrap-select_1.14.0-beta2_js_bootstrap-select.min.js') }}" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-  <!--multicheck JC-->
 <script>
     let arrTareas = [];
     let arrServicios = [];
@@ -1071,8 +1050,6 @@
     let arrEquiposElim = [];
     let arrTareasEditElim = [];
     var arrEquiposAux = [];
-    var selected12 = []; //JC//edit
-    var selected13 = []; //JC//editTareaEquipo
     // var equipo_servicio = {
     //             nom_equipo: '',
     //             num_inventario: '',
@@ -1080,19 +1057,6 @@
     //         };
 
     $(document).ready(function () {
-
-        $('.selectpicker').attr('disabled',true); //JC
-        $('.selectpicker').selectpicker('refresh');  //JC
-
-        $("#txtEtiquetaServicio").prop('disabled',true);
-        
-        //Para que deje navegar desde las pestañas peticio junta sub Jose Luis (junta Direc)
-        $("#tab1").attr('class', 'nav-link');
-        $("#tab1").tab('show');
-        $("#tab2").attr('class', 'nav-link');
-        $("#tab3").attr('class', 'nav-link');
-        //
-
         //load();
         // $("#divTablaEquipos").hide()
 
@@ -1425,9 +1389,7 @@
             $("#txtEtiquetaServicio").prop('disabled',false);
             $("#checkVer").show();
             $("#selTipoServicio").prop('disabled',true); ///////28_08_2023
-            // $("#selTarea").prop('disabled',true); ///////28_08_2023
-            $('.selectpicker').attr('disabled',true); //JC
-            $('.selectpicker').selectpicker('refresh');  //JC
+            $("#selTarea").prop('disabled',true); ///////28_08_2023
             // $("#divRowListadoTareas").hide();
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
@@ -1483,55 +1445,28 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
-            var banderatarea=0;//JC
-
             $("#selTipoEquipo").prop('disabled',true);
 
             vtipEqu= $("#selTipoEquipo").val();
 
             vTarea = $("#selTarea").val();
             vTareaText = $('select[id="selTarea"] option:selected').text();
-            
-            var element_prueba='';//JC
-            var element_idServ='';//JC
-            for (let index = 0; index < vTarea.length; index++) {//JC
-                var element_prueba = vTarea[index];//JC
-            }//JC
+
 
             vTipoServicio = $("#selTipoServicio").val();
             vTipoServicioText = $('select[id="selTipoServicio"] option:selected').text();
-            element_idServ = vTipoServicio;
-
-            for (let i = 0; i < arrTareas.length; i++) {//JC
-                // console.log(selected12[i]['id']);
-                // console.log(element_prueba);
-                if (arrTareas[i]['idServicio'] == element_idServ && arrTareas[i]['idTarea'] == element_prueba) {
-                    banderatarea = 1;
-                }
-            }//JC
-
-            if (banderatarea ==1) {//JC
-                msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')//JC
-            }//JC
             
-            // if(vtipEqu !=0){
-            //     if(vTipoServicio !=0){
-                    else if(vTarea != 0){
+            if(vtipEqu !=0){
+                if(vTipoServicio !=0){
+                    if(vTarea != 0){
                     
                         var index = arrTareas.findIndex(e => e.idTarea === vTarea);
 
                         if(index == -1){
-                            for (let i = 0; i < selected12.length; i++) {//JC
-                              // selected.push({id:$(this).val(), texto:$(this).text()});
-                              // const element = selected12[i]['id'];
-                              arrTareas.push({cont:g, idTarea:selected12[i]['id'], desc_Tarea:selected12[i]['texto'],
-                                idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
-                            }//JC
-                            // arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
+                            arrTareas.push({cont:g, idTarea:vTarea, desc_Tarea:vTareaText, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText});
                             drawRowTarea();
                             // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareas});
                             g=g+1;
-                            $('.selectpicker').selectpicker('refresh');//JC
                         }else{
                             $("#selTarea").val("0").attr("selected",true);
                             msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')
@@ -1540,23 +1475,17 @@
                         msjeAlerta('', 'Debe seleccionar la Tarea', 'error')
                     }
                     
-                // }else{
-            //         msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
-            //     }
-            // }else{
-            //     msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
-            // }
+                }else{
+                    msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
+                }
+            }else{
+                msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
+            }
             // $("#selTipoServicio").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
         $('#selTipoEquipo').on('change', function() { /// Cargar select Tarea en base a Servicio
-            if(this.value==1){
-                $("#txtEtiquetaServicio").val('');
-                $("#txtEtiquetaServicio").prop('disabled',true);
-                $("#txtDetEquipo").val('');  
-            }else{
-                $("#txtEtiquetaServicio").prop('disabled',false);
-            }
+
             arrTareas=[];
             $("#divListaTarea").removeClass('scrollVerticalTareas');
             $("#tituloTareas").text('');
@@ -1606,16 +1535,13 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
                     //  console.log(data[0][0]);
-                    // var htmlSel='<option value="0" selected>Seleccionar</option>';
-                    var htmlSel='';
+                    var htmlSel='<option value="0" selected>Seleccionar</option>';
                     for (var i = 0; i < data[0].length; i++) {
                         htmlSel+='<option value="'+data[0][i].id_tarea+'">'+data[0][i].desc_tarea+'</option>'; 
                     }
 
                     $("#selTarea").html(htmlSel);
-                    // $("#selTarea").prop('disabled',false); ///////28_08_2023
-                    $('.selectpicker').attr('disabled',false); //JC
-                    $('.selectpicker').selectpicker('refresh');  //JC
+                    $("#selTarea").prop('disabled',false); ///////28_08_2023
                 }
             });
             
@@ -1628,19 +1554,6 @@
             }else{
                 $("#btnAgregarTarea").prop('disabled',false);
             }
-
-            ///JC
-             var options = $('#selTarea option:selected');
-            var selected = [];
-            
-            $(options).each(function(){
-                selected.push({id:$(this).val(), texto:$(this).text()}); 
-                // or $(this).val() for 'id'
-            });
-            selected12 = selected;
-            // write value to some field, etc
-            console.log(selected);
-            //JC
         });
 
         $("#txtEtiquetaServicio").keyup(function(){
@@ -1700,41 +1613,18 @@
             //     listaTarea='';
             //     $("#ulTarea").html('');
             // }
-            var banderatarea=0;//JC
-
             vtipEqu= $("#hdIdTipoEquipo").val();
 
             vTareaM = $("#selTareaM").val();
             vTareaTextM = $('select[id="selTareaM"] option:selected').text();
 
-            var element_prueba='';//JC
-            var element_idServ='';
-            for (let index = 0; index < vTareaM.length; index++) {//JC
-                var element_prueba = vTareaM[index];//JC
-            }//JC
 
             vTipoServicio = $("#selTipoServicioM").val();
             vTipoServicioText = $('select[id="selTipoServicioM"] option:selected').text();
-            element_idServ = vTipoServicio;
-
-            for (let i = 0; i < arrTareasEdit.length; i++) {//JC
-                // console.log(selected12[i]['id']);
-                // console.log(element_prueba);
-                if (arrTareasEdit[i]['idServicio'] == element_idServ && arrTareasEdit[i]['idTarea'] == element_prueba) {
-                    banderatarea = 1;
-                }
-            }//JC
-
-            if (banderatarea ==1) {//JC
-                msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaText, 'error')//JC
-                $('.selectpicker').selectpicker('refresh');  //JC
-                $('.selectpicker').attr('disabled',true); //JC
-                $("#btnAgregarTareaM").prop('disabled',true); ///////28_08_2023
-            }//JC
             
-            // if(vtipEqu !=0){
-            //     if(vTipoServicio !=0){
-                    else if(vTareaM != 0){
+            if(vtipEqu !=0){
+                if(vTipoServicio !=0){
+                    if(vTareaM != 0){
                         console.log(arrTareasEdit);
                         // console.log($.inArray(vTipoServicio, arrTareasEdit.id_servicio) );
                         // var indice = arrTareasEdit.indexOf(vTareaTextM);
@@ -1743,18 +1633,12 @@
                         // if(arrTareasEdit.includes(vTareaTextM)){
                         if(bancde==true){ ///Validar si existe ya Tarea
                             $("#selTareaM").val("0").attr("selected",true);
-                            msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')//Checar
-                            $('.selectpicker').selectpicker('refresh');  //JC
-                            $('.selectpicker').prop('disabled',true); //JC
-                            $("#selTareaM").prop('disabled',true); 
-                            $("#btnAgregarTareaM").prop('disabled',true); ///////28_08_2023
+                            msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
                         }else{
                             var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
                             // console.log(index);
                             if(index == -1){
-
-                                for (let i = 0; i < selected13.length; i++) {//JC
-                                    arrTareasEdit.push(
+                                arrTareasEdit.push(
                                     {   
                                         id_equipo_detalle: 0,
                                         id_equipo_tarea: 0,
@@ -1765,40 +1649,16 @@
                                         tipo_equipo: '',
                                         id_servicio: vTipoServicio,
                                         servicio: vTipoServicioText,
-                                        id_tarea: selected13[i]['id'], 
-                                        tarea: selected13[i]['texto'],
+                                        id_tarea: vTareaM,
+                                        tarea: vTareaTextM,
                                         activo: false
                                     });
-                                }//JC
-                                // arrTareasEdit.push(
-                                //     {   
-                                //         id_equipo_detalle: 0,
-                                //         id_equipo_tarea: 0,
-                                //         id_equipos_serv: 0,
-                                //         id_usuario_agrega: '',
-                                //         fecha_agrega: '',
-                                //         id_tipo_equipo: vtipEqu,
-                                //         tipo_equipo: '',
-                                //         id_servicio: vTipoServicio,
-                                //         servicio: vTipoServicioText,
-                                //         id_tarea: vTareaM,
-                                //         tarea: vTareaTextM,
-                                //         activo: false
-                                //     });
                                 drawRowTareaEdit();
                                 // arrServicios.push({cont:g, idServicio:vTipoServicio, desc_Servicio:vTipoServicioText, aTarea:arrTareasEdit});
                                 gM=gM+1;
-                                // $('.selectpicker').selectpicker('refresh');//JC
-                                $("#selTipoServicio").val("0").attr("selected",true);
-                                // $("#selTarea").prop('disabled',true); ///////28_08_2023
-                                
-                                $('.selectpicker').selectpicker('refresh');  //JC
-                                $('.selectpicker').attr('disabled',true); //JC
-                                $("#btnAgregarTareaM").prop('disabled',true); ///////28_08_2023
                             }else{
                                 $("#selTareaM").val("0").attr("selected",true);
                                 msjeAlerta('', 'Ya fue seleccionada la tarea '+vTareaTextM, 'error')
-                                
                             }
                         }
                         // var index = arrTareasEdit.findIndex(e => e.id_tarea === vTareaM);
@@ -1834,62 +1694,16 @@
                         msjeAlerta('', 'Debe seleccionar la Tarea', 'error')
                     }
                     
-            //     }else{
-            //         msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
-            //     }
-            // }else{
-            //     msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
-            // }
+                }else{
+                    msjeAlerta('', 'Debe seleccionar el Servicio', 'error')
+                }
+            }else{
+                msjeAlerta('', 'Debe seleccionar el Tipo de Equipo', 'error')
+            }
             $("#selTipoServicioM").val("0").attr("selected",true);  //resetear servicio cada que agrega una tarea
         });
 
-        $('#archivoCierreEquipo').change( function() {
-            // console.log(this.files[0].size);
-            if(this.files[0].size > 512000) { // 512000 bytes = 500 Kb
-                $(this).val('');   
-                msjeAlerta('','Favor de seleccionar un archivo jpg, png que no rebase los 500 Kb','error');
-                // $('#errores').html("El archivo supera el límite de peso permitido.");
-            } else { //ok
-                var formato = (this.files[0].name).split('.').pop();
-                // console.log(formato);
-                //alert(formato);
-                if(formato.toLowerCase() != 'jpg' && formato.toLowerCase() != 'png') {
-                    $(this).val('');
-                    msjeAlerta('','Favor de seleccionar un archivo tipo jpg, png','error');
-                } 
-            }
-        });
 
-        $('#btnCancelarS1').click( function() {
-            var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
-        });
-
-        $('#btnCancelarS2').click( function() {
-            var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
-        });
-
-        $('#btnCancelarS3').click( function() {
-            var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
-        });
-    });
-
-    $('#selTareaM').on('changed.bs.select', function (e) {
-        ///JC
-        var options = $('#selTareaM option:selected');
-        var selected = [];
-        
-        $(options).each(function(){
-            selected.push({id:$(this).val(), texto:$(this).text()}); 
-            // or $(this).val() for 'id'
-        });
-        selected13 = selected;
-        // write value to some field, etc
-        console.log(selected);
-        //JC
-        $("#btnAgregarTareaM").prop('disabled',false); ///////28_08_2023
     });
  
     function Validar_Array(valor, valor2, arr) {
@@ -1904,52 +1718,44 @@
     }
 
     function removeEquipo( item ) {
-        var titulo='';
-        var contenido='<p style="font-size:1rem !important;">¿Está seguro de eliminar el registro?</p>';
-        var icono='warning'; 
-
-        Swal.fire({
-            title: titulo,
-            html: contenido,
-            icon: icono,
-            showCancelButton: true,
-            confirmButtonColor: '#b50915',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-            width: 600,
-            }).then((result) => {
-            if (result.isConfirmed) {
-
-                if(arrEquipos.includes(item) ==false){ 
-                    if ( item !== -1 ) {
-                        if (arrEquipos[item].nuevo==0){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
-                            arrEquiposElim.push({
-                                id_equipo_serv_solic : arrEquipos[item].id_equipo_serv_solic, 
-                            });
-                        }
-                        
-                        console.log(arrEquiposElim);
-                        arrEquipos.splice( item, 1 );
-                        $("#tr_"+item).remove();
-                        drawRowEquipo();
-                    }   else{
-                        arrEquipos = [];
-                        g=0;
-                        tablaEquipo='';
-                        $("#tbEquipos").html('');
-                        $("#tbEquipos").empty();
-                    }
-                }else{
-                    console.log('No existe en el arreglo');
-                    g=0;
-                    tablaEquipo='';
-                    $("#tbEquipos").html('');
-                    $("#tbEquipos").empty();
+        if(arrEquipos.includes(item) ==false){ 
+            if ( item !== -1 ) {
+                if (arrEquipos[item].nuevo==0){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
+                    arrEquiposElim.push({
+                        // con : 0,
+                        id_equipo_serv_solic : arrEquipos[item].id_equipo_serv_solic, 
+                        // id_tipo_equipo : arrEquipos[item].id_tipo_equipo, 
+                        // desc_tipo_equipo : arrEquipos[item].desc_tipo_equipo, 
+                        // etiquetaServicio : arrEquipos[item].etiquetaServicio,
+                        // marca : '',
+                        // modelo : '', 
+                        // numeroSerie : '',
+                        // descripcionSoporte : arrEquipos[item].descripcionSoporte,
+                        // ubicacionEquipo : arrEquipos[item].ubicacionEquipo,
+                        // cantidad : 1,
+                        // estatus_equipo : 1, 
+                        // nuevo : 2, 
+                    });
                 }
+                
+                console.log(arrEquiposElim);
+                arrEquipos.splice( item, 1 );
+                $("#tr_"+item).remove();
+                drawRowEquipo();
+            }   else{
+                arrEquipos = [];
+                 g=0;
+                 tablaEquipo='';
+                $("#tbEquipos").html('');
+                $("#tbEquipos").empty();
             }
-        });
-        
+        }else{
+            console.log('No existe en el arreglo');
+            g=0;
+            tablaEquipo='';
+            $("#tbEquipos").html('');
+            $("#tbEquipos").empty();
+        }
     }
 
     function drawRowEquipo(){
@@ -2048,7 +1854,7 @@
                     if(arrEquipos[j].fecha_cierre==null){
                         tablaEquipo2+='                          @can("178-opt-edit-equipo")<li>';
                         tablaEquipo2+='                              <a onclick="verDetalleEquipo('+j+')" class="dropdown-item"> ';
-                        tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo/Servicio';
+                        tablaEquipo2+='                                  <i class="fas fa-edit"></i> Editar Equipo';
                         tablaEquipo2+='                              </a>';
                         tablaEquipo2+='                          </li>@endcan';
                     }
@@ -2120,7 +1926,7 @@
 
         listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTarea">';
         listaTarea2+='<thead>';
-        listaTarea2+='<th>Área de Servicio</th>';
+        listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
         listaTarea2+='<th>Eliminar</th>';
         listaTarea2+='</thead>';
@@ -2160,7 +1966,7 @@
         }
 
         $("#ulTarea").empty();
-        $("#tituloTareas").text('LISTADO DE ÁREAS DE SERVICIO/TAREAS ');
+        $("#tituloTareas").text('LISTADO DE SERVICIOS/TAREAS ');
         $("#ulTarea").html(listaTarea2);
         $("#selTarea").val("0").attr("selected",true);
     }
@@ -2280,8 +2086,6 @@
                 });
 
                 fnGuardar();
-            }else{
-                //fnUpdAcceso(idSolicServ, false);
             }
         });
     }
@@ -2318,7 +2122,7 @@
                                 numeroSerie : '',
                                 descripcionSoporte : data[0][i].desc_problema,
                                 ubicacionEquipo : data[0][i].ubicacion,
-                                cantidad : data[0][i].cantidad,
+                                cantidad : 1,
                                 estatus_equipo : 1, 
                                 nuevo : 0, 
                                 aTarea : data[0][i].jstareas, ///arreglo tareas
@@ -2346,7 +2150,7 @@
                                         numeroSerie : '',
                                         descripcionSoporte : arrEquiposAux[j].descripcionSoporte,
                                         ubicacionEquipo : arrEquiposAux[j].ubicacionEquipo,
-                                        cantidad : arrEquiposAux[j].cantidad,
+                                        cantidad : 1,
                                         estatus_equipo : 1, 
                                         nuevo : 1, 
                                         aTarea : arrEquiposAux[j].aTarea, ///arreglo tareas
@@ -2588,16 +2392,9 @@
                     var vequip = JSON.parse(data[0].updsolicservicio);
                     console.log(vequip+'-------------');
                     console.log(data[0]['updsolicservicio']+'-------------');
-                    if(data[0]['updsolicservicio']!=''){  
-                        if(data[0]['updsolicservicio'].exito==1){ 
-                            fnUpdAcceso(idSolicServ, false);
-                            msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
-                        }else{
-                            fnUpdAcceso(idSolicServ, false);
-                            msjeAlerta2('', 'No se puede actualizar porque ya ha sido Asignada','error')
-                        }
+                    if(data[0]['updsolicservicio']!=''){ 
+                        msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
                     }else{ 
-                        fnUpdAcceso(idSolicServ, false);
                         msjeAlerta('', 'No se pudo realizar el registro de la orden de servicio','error')
                     }
                     
@@ -2627,7 +2424,7 @@
 
         html+='<table>';
         html+='<thead>';
-        html+='<th>Área de Servicio</th>';
+        html+='<th>Servicio</th>';
         html+='<th>Tarea</th>';
         html+='</thead>';
         html+='<tbody>';
@@ -2739,10 +2536,10 @@
         htmlSel+='<label>Etiqueta:</label><label class="SinNegrita" id="lblDescProblema">'+etiquetaServicio+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Detalle:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
+        htmlSel+='<label>Detalle del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+marca+', '+modelo+', '+numeroSerie+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Ubicación:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
+        htmlSel+='<label>Ubicación del Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+ubicacion+'</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 
@@ -2751,7 +2548,7 @@
         htmlSel+='<label>Cantidad:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].cantidad+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
-        htmlSel+='<label>Tipo de Equipo/Servicio:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
+        htmlSel+='<label>Tipo de Equipo:</label><label class="SinNegrita" id="lblDescProblema">'+arrEquipos[numArr].desc_tipo_equipo+'</label>';
         htmlSel+='</div>';
         htmlSel+='<div class="col-4">';
         if(arrEquipos[numArr].fecha_cierre!=null){
@@ -2762,7 +2559,7 @@
         htmlSel+='<br>';
         htmlSel+='<div class="row">';
         htmlSel+='<div class="col-12">';
-        htmlSel+='<label>Listado de Áreas de Servicio/Tareas</label>';
+        htmlSel+='<label>Listado de Servicios/Tareas</label>';
         htmlSel+='</div>';
         htmlSel+='</div>';
 
@@ -2770,7 +2567,7 @@
         // var html='';
         htmlSel+='<table class="table">';
         htmlSel+='<thead>';
-        htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Área de Servicio</th>';
+        htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Servicio</th>';
         htmlSel+='<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tarea</th>';
         htmlSel+='</thead>';
         htmlSel+='<tbody>';
@@ -2913,18 +2710,8 @@
         //  drawRowTareaEdit();
 
         $("#txtDescripcionSoporteM").val(arrEquipos[j].descripcionSoporte);
-
-        if(arrEquipos[j].id_tipo_equipo == 1){
-            $("#txtEtiquetaM").prop('disabled', true);
-            $("#txtDetalleEquipoM").val(); ///ws
-        }else{
-            $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
-            $("#txtDetalleEquipoM").val('Marca:S/D, Modelo:S/D, Número de Serie: S/D '); ///ws
-            $("#txtEtiquetaM").prop('disabled', false);
-        }
-
         $("#txtEtiquetaM").val(arrEquipos[j].etiquetaServicio);
-        // $("#txtDetalleEquipoM").val('Marca:S/D, Modelo:S/D, Número de Serie: S/D '); ///ws
+        $("#txtDetalleEquipoM").val('Marca:S/D, Modelo:S/D, Número de Serie: S/D '); ///ws
         $("#txtUbicacionM").val(arrEquipos[j].ubicacionEquipo);
 
         ///////Inputs de Cierre Equipo
@@ -2975,7 +2762,7 @@
 
         listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTareaM">';
         listaTarea2+='<thead>';
-        listaTarea2+='<th>Área de Servicio</th>';
+        listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
         listaTarea2+='<th>Acciones</th>';
         listaTarea2+='</thead>';
@@ -3012,62 +2799,42 @@
         }
 
         $("#ulTareaM").empty();
-        $("#tituloTareasM").text('LISTADO DE ÁREAS DE SERVICIO/TAREAS ');
+        $("#tituloTareasM").text('LISTADO DE SERVICIOS/TAREAS ');
         $("#ulTareaM").html(listaTarea2);
         $("#selTareaM").val("0").attr("selected",true);
 
     }
 
     function removeTareaEdit( item ) { 
-
-        var titulo='';
-        var contenido='<p style="font-size:1rem !important;">¿Está seguro de eliminar el registro?</p>';
-        var icono='warning'; 
-
-        Swal.fire({
-            title: titulo,
-            html: contenido,
-            icon: icono,
-            showCancelButton: true,
-            confirmButtonColor: '#b50915',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-            width: 600,
-            }).then((result) => {
-            if (result.isConfirmed) {
-
-                if(arrTareasEdit.includes(item) ==false){ 
-                    if ( item !== -1 ) {
-                        if (arrTareasEdit[item].activo==true){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
-                        //    console.log( arrTareasEdit[item].activo);
-                        //    console.log( arrTareasEdit[item].id_equipo_detalle);
-                            arrTareasEditElim.push({
-                                // con : 0,
-                                id_equipo_detalle : arrTareasEdit[item].id_equipo_detalle, 
-                            });
-                        }
-
-                        arrTareasEdit.splice( item, 1 );
-                        //  console.log(arrTareasEditElim[0]['id_equipo_detalle']+'elim');
-                        $("#liTM_"+item).remove();
-                        drawRowTareaEdit();
-                    }   else{
-                        arrTareasEdit = [];
-                        g=0;
-                        listaTarea='';
-                        $("#ulTareaM").html('');
-                        $("#ulTareaM").empty();
-                    }
-                }else{
-                    console.log('No existe en el arreglo');
-                    g=0;
-                    listaTarea='';
-                    $("#ulTareaM").html('');
-                    $("#ulTareaM").empty();
+        if(arrTareasEdit.includes(item) ==false){ 
+            if ( item !== -1 ) {
+                if (arrTareasEdit[item].activo==true){ //Si viene de BD se mete en un arreglo temporal ya que estos se eliminaran de bd
+                //    console.log( arrTareasEdit[item].activo);
+                //    console.log( arrTareasEdit[item].id_equipo_detalle);
+                    arrTareasEditElim.push({
+                        // con : 0,
+                        id_equipo_detalle : arrTareasEdit[item].id_equipo_detalle, 
+                    });
                 }
+
+                arrTareasEdit.splice( item, 1 );
+                //  console.log(arrTareasEditElim[0]['id_equipo_detalle']+'elim');
+                $("#liTM_"+item).remove();
+                drawRowTareaEdit();
+            }   else{
+                arrTareasEdit = [];
+                 g=0;
+                listaTarea='';
+                $("#ulTareaM").html('');
+                $("#ulTareaM").empty();
             }
-        });
+        }else{
+            console.log('No existe en el arreglo');
+            g=0;
+            listaTarea='';
+            $("#ulTareaM").html('');
+            $("#ulTareaM").empty();
+        }
     }
 
     function drawRowTareaEdit(){
@@ -3077,7 +2844,7 @@
 
         listaTarea2+='<table class="table" style="font-size:0.75rem;" id="tbTareaM">';
         listaTarea2+='<thead>';
-        listaTarea2+='<th>Área de Servicio</th>';
+        listaTarea2+='<th>Servicio</th>';
         listaTarea2+='<th>Tarea</th>';
         listaTarea2+='<th></th>';
         listaTarea2+='</thead>';
@@ -3113,7 +2880,7 @@
         }
 
         $("#ulTareaM").empty();
-        $("#tituloTareasM").text('LISTADO DE ÁREAS DE SERVICIO/TAREAS ');
+        $("#tituloTareasM").text('LISTADO DE SERVICIOS/TAREAS ');
         $("#ulTareaM").html(listaTarea2);
         $("#selTareaM").val("0").attr("selected",true);
     }
@@ -3139,15 +2906,12 @@
                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                     success: function(data) {
                         //  console.log(data[0][0]);
-                        // var htmlSel='<option value="0" selected>Seleccionar</option>';
-                        var htmlSel='';
+                        var htmlSel='<option value="0" selected>Seleccionar</option>';
                         for (var i = 0; i < data[0].length; i++) {
                             htmlSel+='<option value="'+data[0][i].id_tarea+'">'+data[0][i].desc_tarea+'</option>'; 
                         }
 
                         $("#selTareaM").html(htmlSel);
-                        $('.selectpicker').attr('disabled',false); //JC
-                        $('.selectpicker').selectpicker('refresh');  //JC
                     }
                 });
             }else{
@@ -3183,7 +2947,6 @@
                 $("#selTipoServicioM").html(htmlSel);
             }
         });
-        $("#btnAgregarTareaM").prop('disabled',true); ///////28_08_2023
     }
 
     function fnActualizarEquipo(){
@@ -3195,7 +2958,7 @@
          
         var data2 = new FormData(form);
         data2.append('arrTareasEdit', JSON.stringify(arrTareasEdit));
-        data2.append('arrTareasEditElim', JSON.stringify(arrTareasEditElim)); 
+        data2.append('arrTareasEditElim', JSON.stringify(arrTareasEditElim));
 
         $.ajax({
             url: urlEditar,
@@ -3213,7 +2976,7 @@
                 if(data[0]['updtareasequipo']!=''){ 
                     Swal.fire({
                         title: '',
-                        html: '<span>El equipo/servicio ha sido actualizado con éxito.</span>',
+                        html: 'El equipo ha sido actualizado con éxito',
                         icon: 'success',
                         showCancelButton: false,
                         confirmButtonColor: '#ab0033',
@@ -3235,7 +2998,7 @@
                         }
                     });
                 }else{ 
-                    msjeAlerta('', 'No se pudo actualizar el equipo/servicio','error')
+                    msjeAlerta('', 'No se pudo actualizar el equipo','error')
                 }
                 
             }
@@ -3299,7 +3062,7 @@
                         // msjeAlerta2('','El equipo ha sido registrado como ATENDIDO','success',txtIdSolic) ////este no se
                         Swal.fire({
                             title: '',
-                            html: '<span>El equipo/servicio ha sido registrado como <strong>ATENDIDO</strong> en la orden de servicio.</span>',
+                            html: '<span>El equipo ha sido registrado como <strong>ATENDIDO</strong> en la orden de servicio.</span>',
                             icon: 'success',
                             showCancelButton: false,
                             confirmButtonColor: '#ab0033',
@@ -3322,7 +3085,7 @@
                             }
                         });
                     }else{ 
-                        msjeAlerta('', 'No se pudo cerrar el equipo/servicio','error')
+                        msjeAlerta('', 'No se pudo cerrar el Equipo','error')
                     }
                     
                 }
@@ -3330,40 +3093,6 @@
         }else{
             msjeAlerta('', 'Debe ingresar los campos diagnóstico y solución','error')
         }
-    }
-
-    function fnValidaAcceso(idSolicServ){
-        var acceso=false;
-
-        $.ajax({
-            url: '{{ route("validaAcceso") }}',
-            data:{idSolicServ : idSolicServ},
-            type: 'POST',
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            dataType: 'json', 
-            success: function(data) {
-            acceso = data.getvalidaaccesoorden;
-            }
-        });
-
-        return acceso;
-    }
-
-    function fnUpdAcceso(idSolicServ, valida){ 
-        var acceso=false;
-
-        $.ajax({ 
-        url: '{{ route("actualizaAcceso") }}',
-            data:{idSolicServ : idSolicServ, valida : valida},
-            type: 'POST',
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            dataType: 'json', 
-            success: function(data) {
-            acceso = data.updAccesoOrden;
-            }
-        });
-
-        return acceso;
     }
 
 </script>

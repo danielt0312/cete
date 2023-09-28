@@ -199,4 +199,8 @@
   #tablaPrueba2 td, #tabla_solicitudes td {
     white-space:inherit;
   }
+
+  .navbar-user{
+    width:17em !important;
+  }
 </style>

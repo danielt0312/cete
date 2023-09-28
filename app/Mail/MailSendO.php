@@ -11,12 +11,12 @@ class MailSendO extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details;
+    public $details, $ruta;
 
-    public function __construct($details)
+    public function __construct($details,$ruta)
     {
-        // dd($details);
         $this->details = $details;
+        $this->ruta = $ruta;
     }
 
     /**
@@ -24,8 +24,13 @@ class MailSendO extends Mailable
      *
      * @return $this
      */
-    public function build()
-    {   //dd($this->details['asunto']);
-        return $this->subject( $this->details['asunto'] )->view('ordenes.correo');
+    public function build() 
+    {   
+        if($this->ruta != ''){
+            return $this->subject( $this->details['asunto'] )->view('ordenes.correo')->attach($this->ruta);
+        }else{
+            return $this->subject( $this->details['asunto'] )->view('ordenes.correo');
+        }
+        
     }
 }

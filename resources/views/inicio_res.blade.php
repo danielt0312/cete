@@ -8,230 +8,195 @@
 <input type="hidden" id="hiddenIdUser" name="hiddenIdUser" class="form-control"  value="{{auth()->id()}}" >
   
   <div class="row">
-    <!-- <h5 style="color:white;">Solicitudes</h5> -->
-    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-      <div class="row">
-        <h5 style="color:white;">Solicitudes</h5>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">En espera</p>
-                    <h5 class="font-weight-bolder">
-                      {{ $total_enesperaSol->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
-                  </div> 
-                  <!-- <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px"> -->
-                </div>
+    <h5 style="color:white;">Solicitudes</h5>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">En espera</p>
+                <h5 class="font-weight-bolder"> <!--h3-->
+                  {{ $total_enespera->getcountordenes }}
+                </h5>
               </div>
             </div>
-          </div>
-
-        </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Aprobadas</p>
-                    <h5 class="font-weight-bolder">
-                    {{ $total_aprobadasSol->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                    <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                  <!-- <img src="{{asset('images/icon/icono2.png') }}" width="50px" height="50px"> -->
-                </div>
-              </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
+              </div> 
+              <!-- <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
-
         </div>
       </div>
-      <br>
-      <!-- //////////////////// -->
-      <div class="row">
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Rechazadas</p>
-                    <h5 class="font-weight-bolder">
-                    {{ $total_rechazadas->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                    <i class="ni ni-fat-remove text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                  <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Canceladas</p>
-                    <h5 class="font-weight-bolder">
-                    {{ $total_canceladasSol->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
-                    <i class="ni ni-basket text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                  <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <!-- ///////////////////////// -->
-
     </div>
-
-    <!-- //////////////////////////// -->
-    <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-      <div class="row">
-        <h5 style="color:white;">Órdenes</h5>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                    <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">En espera</p>
-                    <h5 class="font-weight-bolder"> <!--h3-->
-                      {{ $total_enespera->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-                    <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
-                  </div> 
-                </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Asignadas</p>
+                <h5 class="font-weight-bolder">
+                {{ $total_asignadas->getcountordenes }}
+                </h5>
               </div>
             </div>
-          </div>
-
-        </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Asignadas</p>
-                    <h5 class="font-weight-bolder">
-                    {{ $total_asignadas->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-                    <i class="ni ni-single-02 text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                <i class="ni ni-single-02 text-lg opacity-10" aria-hidden="true"></i>
               </div>
+              <!-- <img src="{{asset('images/icon/icono2.png') }}" width="50px" height="50px"> -->
             </div>
           </div>
-
         </div>
       </div>
-
-      <br>
-      <div class="row">
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Trabajando</p>
-                    <h5 class="font-weight-bolder">
-                    {{ $total_trabajando->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
-                    <i class="ni ni-settings text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                  <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-
-          <div class="card">
-            <div class="card-body p-2">
-              <div class="row">
-                <div class="col-8">
-                  <div class="numbers">
-                  <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
-                    <p class="text-xs xs-0 text-uppercase font-weight-bold">Atendidas</p>
-                    <h5 class="font-weight-bolder">  <!-- tenia h5 -->
-                    {{ $total_atendidas->getcountordenes }}
-                    </h5>
-                  </div>
-                </div>
-                <div class="col-4 text-end">
-                  <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-                    <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
-                  </div>
-                  <!-- <img src="{{asset('images/icon/icono4.png') }}" width="50px" height="50px"> -->
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
     </div>
-    <!-- //////////////////////// -->
-
-
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Trabajando</p>
+                <h5 class="font-weight-bolder">
+                {{ $total_trabajando->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
+                <i class="ni ni-settings text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">ÓRDENES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Atendidas</p>
+                <h5 class="font-weight-bolder">  <!-- tenia h5 -->
+                {{ $total_atendidas->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono4.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><!-- <br> -->
+  <div class="row">
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+                <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">En espera</p>
+                <h5 class="font-weight-bolder">
+                  {{ $total_enesperaSol->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                <i class="ni ni-watch-time text-lg opacity-10" aria-hidden="true"></i>
+              </div> 
+              <!-- <img src="{{asset('images/icon/icono1.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Aprobadas</p>
+                <h5 class="font-weight-bolder">
+                {{ $total_aprobadasSol->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                <i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono2.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Rechazadas</p>
+                <h5 class="font-weight-bolder">
+                {{ $total_rechazadas->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                <i class="ni ni-fat-remove text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="card">
+        <div class="card-body p-3">
+          <div class="row">
+            <div class="col-8">
+              <div class="numbers">
+              <p class="text-sm mb-0 text-uppercase font-weight-bold">SOLICITUDES</p>
+                <p class="text-xs xs-0 text-uppercase font-weight-bold">Canceladas</p>
+                <h5 class="font-weight-bolder">
+                {{ $total_canceladasSol->getcountordenes }}
+                </h5>
+              </div>
+            </div>
+            <div class="col-4 text-end">
+              <div class="icon icon-shape bg-success shadow-success text-center rounded-circle">
+                <i class="ni ni-basket text-lg opacity-10" aria-hidden="true"></i>
+              </div>
+              <!-- <img src="{{asset('images/icon/icono3.png') }}" width="50px" height="50px"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
   </div>
   
   <div class="row mt-4">

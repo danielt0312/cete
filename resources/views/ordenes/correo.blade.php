@@ -34,11 +34,14 @@
     
     <p>{{ $details ['body4'] }}</p>
     
-    <center><b><p>{{ $details ['firma1'] }}<br>{{ $details ['firma2'] }}<br></p></b></center>
+    <center><b><p>{{ $details ['firma1'] }}<br><br>{{ $details ['firma2'] }}<br></p></b></center>
 
     @if ($details ['band_ventanilla']=='1')
         <p>De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-                <a href="cas.ventanillaunica.tamaulipas.gob.mx" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
+        <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
+    @else
+    <p>De igual manera, puede consultar el seguimiento de su orden de servicio a través del sitio:
+        <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
     @endif
 </div>
     <br>
