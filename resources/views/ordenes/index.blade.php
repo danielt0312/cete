@@ -3272,6 +3272,17 @@
 
   }
 
+function Validar_Array(valor, valor2, arr) {
+        var b=false;
+        for (var i = 0; i < arr.length; i++) {
+            if(valor==arr[i].id_tarea && valor2==arr[i].id_servicio){
+                b = true;
+                break;
+            }
+        }
+        return b;
+    }
+
  </script>
 
 @endsection

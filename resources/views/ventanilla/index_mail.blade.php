@@ -12,6 +12,9 @@
         background-color: #bc955c!important;
         color:#FFFFFF !important;
     }
+    .swal2-confirm {
+  font-size: 2em !important;
+}
     
 </style>
 <div style="height: 10%;"></div>
@@ -49,7 +52,7 @@
 
         <div class="row" id="div_mail"></div>
         <p>Si no cuenta con correo electrónico institucional. Favor de realizar una solicitud de generación de
-            cuenta en el sitio: <a target="_blank" href="https://correosset.tamaulipas.gob.mx">https://correosset.tamaulipas.gob.mx</a></p>
+            cuenta en el sitio: <a target="_blank" href="https://correosset.tamaulipas.gob.mx">https://correosset.tamaulipas.gob.mx</a>.</p>
         <button type="button" style="text-align:left;" id="btn_enviar4" class="btn btn-secondary pull-left">Regresar</button>
         <button type="button" style="text-align:right;" id="btn_enviar3" class="btn btn-secondary pull-right">Siguiente</button>
       </div>
@@ -97,7 +100,7 @@
 @section('page-scripts')
 
 <script>
-$('#encabezado_layout').append('');
+    $('#encabezado_layout').append('');
     $(function() {
         var html='';
         var html2='';
@@ -171,7 +174,7 @@ $('#encabezado_layout').append('');
                     html+='</div>';
                 html+='</div>';
                 $("#div_mail").append(html);
-                $('#btn_enviar2').prop('hidden', false);
+                // $('#btn_enviar2').prop('hidden', false);
                 var seconds = 30; //número de segundos a contar
                 function secondPassed() {
 
@@ -199,36 +202,6 @@ $('#encabezado_layout').append('');
         }
     });
 
-    $('#btn_enviar2').click(function(){
-        $("#btn_enviar2").prop('disabled', true);
-        console.log($('#vToken').val());
-        console.log(token);
-        vToken = $('#vToken').val();
-        if (token == vToken) {
-            // correo_verifica
-            window.location.href = "formulario_index";
-            // $.ajax({
-            //     url: '/ventanilla/formulario_index/',
-            //     type: 'GET',
-            //     data: {'correo_verifica' : correo_verifica}
-            //     }).always(function(r) {
-
-            // });
-        }
-        else{
-            Swal.fire({
-                position: 'bottom-right',
-                icon: 'warning',
-                html:'<p style="font-size:1rem !important;">El correo electrónico que ingresaste es inválido. Favor de verificarlo.'+
-                            'En caso de no contar con correo institucional @set.edu.mx ,favor de realizar una solicitud para'+
-                            'generación de cuenta en el sitio: </p>'+
-                            "<a href='https://correosset.tamaulipas.gob.mx' target='_blank'>https://correosset.tamaulipas.gob.mx</a>",
-                showConfirmButton: false,
-                customClass: 'msj_aviso',
-                timer: 2000
-            })
-        }
-    });
     
     $('#btn_enviar3').click(function(){
         // console.log('sdf');
@@ -239,10 +212,16 @@ $('#encabezado_layout').append('');
             Swal.fire({
                 // position: 'bottom-right',
                 icon: 'warning',
-                html: '<p style="font-size:1rem !important;">Favor de Ingresar un Correo Electronico Correcto.</p>',
-                showConfirmButton: false,
+                html:'<p style="font-size:1rem !important;">El correo electrónico que ingresaste es inválido. Favor de verificarlo.'+
+                    ' En caso de no contar con correo electrónico institucional @set.edu.mx, favor de realizar una solicitud para'+
+                    ' generación de cuenta en el sitio: </p>'+
+                    "<a style='font-size:1.5em;' href='https://correosset.tamaulipas.gob.mx' target='_blank'>https://correosset.tamaulipas.gob.mx</a>",
+                showConfirmButton: true,
+                confirmButtonColor: '#b50915',
+                allowOutsideClick: false,
+                confirmButtonText: 'Aceptar',
                 customClass: 'msj_aviso',
-                timer: 2000
+                width: 600,
             })
         }
         else{
@@ -258,13 +237,16 @@ $('#encabezado_layout').append('');
                         // position: 'bottom-right',
                         icon: 'warning',
                         html:'<p style="font-size:1rem !important;">El correo electrónico que ingresaste es inválido. Favor de verificarlo.'+
-                            'En caso de no contar con correo institucional @set.edu.mx ,favor de realizar una solicitud para'+
-                            'generación de cuenta en el sitio: </p>'+
-                            "<a href='https://correosset.tamaulipas.gob.mx' target='_blank'>https://correosset.tamaulipas.gob.mx</a>",
-                        showConfirmButton: false,
+                            ' En caso de no contar con correo electrónico institucional @set.edu.mx, favor de realizar una solicitud para'+
+                            ' generación de cuenta en el sitio: </p>'+
+                            "<a style='font-size:1.5em;' href='https://correosset.tamaulipas.gob.mx' target='_blank'>https://correosset.tamaulipas.gob.mx</a>",
+                        showConfirmButton: true,
+                        confirmButtonColor: '#b50915',
+                        allowOutsideClick: false,
+                        confirmButtonText: 'Aceptar',
                         customClass: 'msj_aviso',
                         width: 600,
-                        timer: 5000
+                        // timer: 5000
                     })
                 }
                 else{
@@ -281,6 +263,12 @@ $('#encabezado_layout').append('');
         window.location.href = "indexVentanilla";
     });
 
+    var cont = 0;
+    // setInterval(('contador()'), 10000);
+    // function contador(){
+    //     cont++;
+    //     console.log(cont);
+    // }
     
 </script>
 @endsection

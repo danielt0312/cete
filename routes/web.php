@@ -110,7 +110,11 @@ Route::group(['middleware' => 'auth'], function () {
     }); 
 
     Route::group(['prefix' => 'solicitudes'], function(){
+        Route::get('/index', 'App\Http\Controllers\SolicitudesController@index2')->name('index_solicitud')->middleware('permission:204-ver-registros-solicitudes');
+        Route::get('/showSolicitudes', 'App\Http\Controllers\SolicitudesController@showSolicitudes')->name('showSolicitudes')->middleware('permission:204-ver-registros-solicitudes');
+        
         Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros')->middleware('permission:204-ver-registros-solicitudes');
+        Route::get('/actualiza_acesso', 'App\Http\Controllers\SolicitudesController@actualiza_acesso')->name('actualiza_acesso');
         Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
         Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
         Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
@@ -119,7 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/selects_equipo_servicio', 'App\Http\Controllers\SolicitudesController@selects_equipo_servicio')->name('selects_equipo_servicio');
         Route::get('/select_servicio', 'App\Http\Controllers\SolicitudesController@select_servicio')->name('select_servicio');
         Route::get('/select_tarea', 'App\Http\Controllers\SolicitudesController@select_tarea')->name('select_tarea');
-        Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
+        // Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
+        Route::post('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
         Route::get('/select_rechaza_solicitud', 'App\Http\Controllers\SolicitudesController@select_rechaza_solicitud')->name('select_rechaza_solicitud');
         Route::get('/downloadPdf_solicitud/{id}', 'App\Http\Controllers\SolicitudesController@downloadPdf_solicitud')->name('downloadPdf_solicitud');
         // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');

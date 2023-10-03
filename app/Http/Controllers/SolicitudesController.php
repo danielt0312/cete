@@ -24,15 +24,84 @@ class SolicitudesController extends Controller
         setPermissionsTeamId(3);
     }
 
+    public function index2(){
+        // dd('hola');
+        $catCoordinaciones =  DB::connection('pgsql')->select("select * from cas_cete.getCatCoordinaciones()");
+        // $catEstatusOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatEstatusOrden()");
+        $catEstatusOrden =  DB::connection('pgsql')->select("select ce2.id, ce2.estatus from cas_cete.captacion_estatus ce, cas_cete.cat_estatus ce2  
+		where ce.id_modo_capta = 1 
+		and ce.id_estatus = ce2.id 
+		and ce2.activo is true");
+        
+        $catMotivoCancela=  DB::connection('pgsql')->select("select * from cas_cete.getCatMotivoCancela()");
+
+        $vid_usuario=Auth()->user()->id;
+        $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
+        // $getUsername=$getUsername[0]->nameuser;
+        // dd ($catEstatusOrden);
+        return view('solicitudes.index', compact(
+            'catCoordinaciones',
+            'catEstatusOrden',
+            'catMotivoCancela',
+            'getUsername'
+        ) );
+        // return view('ordenes.index');
+        
+    }
+    public function showSolicitudes(Request $request){
+
+        $solicitudes =  DB::select("select * from cas_cete.fn_get_listado(".$request->coordinacion_id.",".$request->estatus_id.",'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."')");
+        //  dd($solicitudes);
+        return response()->json([$solicitudes]);
+    }
+
+    public function actualiza_acesso(Request $request){
+
+        $consulta_acceso = DB::select("select ss.crear_acceso from cas_cete.solic_servicios ss where ss.id = ".$request->id_solicitud."");
+        // dd($consulta_acceso[0]->crear_acceso);
+
+        if ($request->bandera_acceso2 == 0) {
+            $bandera_acceso = $consulta_acceso[0]->crear_acceso;
+            if ($bandera_acceso == false) {
+                $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = true where id = ".$request->id_solicitud."");
+                // dd($actualizar_acceso);
+                return array(
+                    "respuesta" => true
+                );
+            }
+            else{
+                return array(
+                    "respuesta" => false
+                );
+            }
+        }
+        else{
+            $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = false where id = ".$request->id_solicitud."");
+            // dd($actualizar_acceso);
+            return array(
+                "respuesta" => true
+            );
+        }
+
+        
+        
+    }
+
     public function index(Request $request){
+        // dd($request);
         // $receivers = Receiver::pluck('email');
         // Mail::to($receivers)->send(new EmergencyCallReceived());
         // dd('hola');
+        $catCoordinaciones =  DB::connection('pgsql')->select("select * from cas_cete.getCatCoordinaciones()");
+        $catEstatusOrden =  DB::connection('pgsql')->select("select * from cas_cete.getCatEstatusOrden()");
+        $catMotivoCancela=  DB::connection('pgsql')->select("select * from cas_cete.getCatMotivoCancela()");
         $vid_usuario=Auth()->user()->id;
         $getUsername=  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
         $data=[];
         $data =  DB::select("select * from cas_cete.fn_listado(1)");
+        // $data =  DB::select("select * from cas_cete.fn_get_listado(0,0,'".$request->fecha_inicio."','".$request->fecha_fin."','".$request->clavecct."')");
+        
         // dd($data);
         if ($request->ajax()) {
             // $data = User::latest()->get();
@@ -134,6 +203,9 @@ class SolicitudesController extends Controller
         // dd($datatable);
         // return $datatable;
         return view('solicitudes.index', compact(
+            'catCoordinaciones',
+            'catEstatusOrden',
+            'catMotivoCancela',
             'getUsername'
         ) );
     }
@@ -221,6 +293,7 @@ class SolicitudesController extends Controller
                     return array(
                         "exito" => false,
                         "data" => $fn_solicitud,
+                        "data_folio_orden" => $fn_inf_orden,
                         "folio_orden" => $fn_inf_orden[0]->folio,
                         "estatus" => $fn_inf_orden[0]->estatus,
                         "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
@@ -258,6 +331,7 @@ class SolicitudesController extends Controller
                         "exito" => true,
                         "data" => $fn_solicitud,
                         "estatus_solicitud" => $fn_inf_solicitud[0]->estatus,
+                        "data_folio_orden" => $fn_inf_orden,
                         "folio_orden" => $fn_inf_orden[0]->folio,
                         "estatus" => $fn_inf_orden[0]->estatus,
                         // "datos_equipos" => $fn_detalle_equipos,
@@ -282,7 +356,7 @@ class SolicitudesController extends Controller
 
                 $data2 =  DB::select("select * from cas_cete.fn_solicitud_equipos('".$data[0]->id."')");
                 // dd($data[0]->id);
-                $data3 = DB::select("select ess.id, ess.id_solic_serv, ess.id_tipo_equipo, cte.tipo_equipo, ess.id_usuario_agrega, 
+                $data3 = DB::select("select ess.id,ess.cantidad, ess.id_solic_serv, ess.id_tipo_equipo, cte.tipo_equipo, ess.id_usuario_agrega, 
                 ess.fecha_agrega, ess.activo, ess.desc_problema, ess.etiqueta, ess.ubicacion, ess.diagnostico, ess.solucion,
                 (
                     Select array_to_json(array_agg(row_to_json(t)))  From
@@ -346,6 +420,7 @@ class SolicitudesController extends Controller
         // $pId_reg_captacion = $data2[0]->id;
         $data = DB::select("select * from cas_cete.fn_rechazar_solicitud(".$pId_solic_ser.",".$select_rechazar." ,'".$comentario_rechazar."',1 ,'Administrador',3 )");
         // dd($data);
+        $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = false where id = ".$pId_solic_ser."");
         $folio_solicitud = $data[0]->fn_rechazar_solicitud;
         $details = [
             // 'tittle' => 'Estimado usuario: ',
@@ -398,11 +473,16 @@ class SolicitudesController extends Controller
         
         $id_solicitud = $request->id_solicitud;
 
+        $seguimiento = DB::select("select seguimiento from cas_cete.solic_servicios where id = ".$id_solicitud."");
+        // dd($seguimiento[0]->seguimiento);
+        
+
         $validacion_equipos = DB::select("select * from cas_cete.solic_servicios ss, cas_cete.equipos_serv_solic ess  
         where ss.id = ess.id_solic_serv 
         and ss.id = ".$id_solicitud."");
         // dd($validacion_equipos);
         if ($validacion_equipos ==  null) {
+            $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = false where id = ".$id_solicitud."");
             // dd('entro1');
             return array(
                 "respuesta" => false
@@ -442,11 +522,14 @@ class SolicitudesController extends Controller
             where rc.id_modo_capta = 1 
             and rc.id_solic_serv = ".$id_solicitud."");
 
+            $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = false where id = ".$id_solicitud."");
+            
+            
             $details = [
                 'tittle' => 'Estimado usuario: '.$vNombre_solicitante.' - '.$vNombrect.'',
                 // 'tittle' => 'Estimado usuario: '.$pSolicitante.' - '.$pNombrect.'',
                 
-                'body1' => 'Se ha aprobado tu solicitud con el numero de folio:',
+                'body1' => 'Se ha aprobado tu solicitud con el folio:',
                 'body1.1' => ' '.$vFolio.' ',
                 'body1.2' => ' .Se ha creado una orden',
                 'body1.3' => ' En Espera',
@@ -454,7 +537,7 @@ class SolicitudesController extends Controller
                 // 'body1' => 'Se ha aprobado tu solicitud con el numero de folio: '.$pfolio_config.'. 
                 // Se ha creado una orden en espera de ser asignada con el personal tecnico especializado.',
                 
-                'body2' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
+                'body2' => 'Te recomendamos mantener el folio de tu solicitud para que puedas dar seguimiento a su progreso.',
 
                 // 'body3' => 'Te recomendamos mantener el numero de folio de tu solicitud para que puedas dar seguimiento a su progreso.',
 
@@ -465,14 +548,27 @@ class SolicitudesController extends Controller
 
             ];
             
-
+            if ($seguimiento[0]->seguimiento == true) {
+                
+            }
             if($data != ''){
-                Mail::to("$pCorreo_solicitante")->send(new MailSend4($details));
-                return array(
-                    "respuesta" => true,
-                    "folio" => $data[0]->fn_aprobar_solicitud,
-                    "folio_solicitud" =>$data2[0]->folio
-                );
+                if ($seguimiento[0]->seguimiento == true) {
+                    Mail::to("$pCorreo_solicitante")->send(new MailSend4($details));
+                    return array(
+                        "respuesta" => true,
+                        "folio" => $data[0]->fn_aprobar_solicitud,
+                        "folio_solicitud" =>$data2[0]->folio
+                    );
+                }
+                else{
+                    return array(
+                        "respuesta" => true,
+                        "folio" => $data[0]->fn_aprobar_solicitud,
+                        "folio_solicitud" =>$data2[0]->folio
+                    );
+                }
+                // Mail::to("$pCorreo_solicitante")->send(new MailSend4($details));
+                
             }
             else{
                 return array(
@@ -490,6 +586,12 @@ class SolicitudesController extends Controller
         // $prueba = json_decode($request['arrEquipos'][0]['aTarea'], true);
 
         // dd($prueba);
+        // foreach ($request['arrEquipos'] as $key => $value) {
+        //     for ($i=1; $i <= $value['cantidad']; $i++) { 
+        //         echo $i.'<br>';
+        //     }
+        // }
+
         // dd($request);
 
         $pfolio_solicitud_global = $request->folio_solicitud_global;
@@ -505,26 +607,37 @@ class SolicitudesController extends Controller
 
         if ($request['arrEliminarEquipos']!='') {
             foreach ($request['arrEliminarEquipos'] as $key => $value) {
-                $data2 =  DB::select("select * from cas_cete.fn_editar_equipos(".$value['id_elimina'].")");
+                $data4 =  DB::select("select * from cas_cete.fn_editar_equipos(".$value['id_elimina'].")");
             }
         }
         if ($request['arrEquipos']!='') {
             foreach ($request['arrEquipos'] as $key => $value) {
             
                 if ($value['vJson'] == 0) {
-                    $data2 =  DB::select("select * from cas_cete.fn_insert_solicitud_equipos(".$pid_solicitud_global.",".$value['id_tipo_equipo'].",'".$value['descripcionSoporte']."', ".$vid_usuario.")");
-                    // dd($data[0]->fn_insert_solicitud_equipos);
-                    foreach ($value['aTarea'] as $key2 => $value2) {
-                        $data3 =  DB::select("select * from cas_cete.fn_insert_solicitud_tareas(".$data2[0]->fn_insert_solicitud_equipos.",".$value['id_tipo_equipo'].",".$value2['idServicio'].",".$value2['idTarea'].",".$vid_usuario.")");
-        
-                    }            
+                    if($value['id_tipo_equipo']==1){
+                        $data2 =  DB::select("select * from cas_cete.fn_insert_solicitud_equipos(".$pid_solicitud_global.",".$value['id_tipo_equipo'].",'".$value['descripcionSoporte']."', ".$vid_usuario.",".$value['cantidad'].")");
+                        foreach ($value['aTarea'] as $key2 => $value2) {
+                            $data3 =  DB::select("select * from cas_cete.fn_insert_solicitud_tareas(".$data2[0]->fn_insert_solicitud_equipos.",".$value['id_tipo_equipo'].",".$value2['idServicio'].",".$value2['idTarea'].",".$vid_usuario.")");
+                        }
+                    }
+                    else{
+                        for ($i=1; $i <= $value['cantidad']; $i++) {
+                            $data2 =  DB::select("select * from cas_cete.fn_insert_solicitud_equipos(".$pid_solicitud_global.",".$value['id_tipo_equipo'].",'".$value['descripcionSoporte']."', ".$vid_usuario.",1)");
+                            // dd($data[0]->fn_insert_solicitud_equipos);
+                            foreach ($value['aTarea'] as $key2 => $value2) {
+                                $data3 =  DB::select("select * from cas_cete.fn_insert_solicitud_tareas(".$data2[0]->fn_insert_solicitud_equipos.",".$value['id_tipo_equipo'].",".$value2['idServicio'].",".$value2['idTarea'].",".$vid_usuario.")");
+                
+                            } 
+                        } 
+                    }
                 }
             }
             // dd('se logro');
-            return array(
-                "exito" => true
-            );        
         }
+        $actualizar_acceso = DB::select("update cas_cete.solic_servicios set crear_acceso = false where id = ".$request->id_solicitud_global."");
+        return array(
+            "exito" => true
+        );  
 
 
 
@@ -566,14 +679,14 @@ class SolicitudesController extends Controller
         $options->set('isHtml5ParserEnabled', TRUE);
         $pdf = new Dompdf($options);
 
-        $path = base_path('public/images/logo/logoTam2022.png');
+        $path = asset('images/logo/logoTam2022.png');
         // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
         // $path = asset('images/logo/logoTam2022.png');
         //  return $path;
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
-        $path_footer = base_path('public/images/logo/ceteNI.png');
+        $path_footer = asset('images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
         // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
         // $path_footer = asset('images/logo/ceteNI.png');
