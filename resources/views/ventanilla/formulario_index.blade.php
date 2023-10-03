@@ -30,6 +30,14 @@
 	transform-origin: 50% 50%;
 	transform: rotate(0) translate(0,0);
 }
+.fixedHeight {
+    /* color:red; */
+    font-size:10px;
+    max-height: 200px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
 @keyframes ro {
 	100% {
 		transform: rotate(-360deg) translate(0,0);
@@ -62,8 +70,8 @@
                                 <div id="hidden_centro_trabajo"></div>
                                 <br>
                                 <br>
-                                <div class="col-6">
-                                    <span style="font-size:0.65em;">1.- INGRESA LA CALVE DE CENTRO DE TRABAJO DEL PLANTEL EDUCATIVO QUE REQUIERE EL SERVICIO</span>
+                                <div class="col-7">
+                                    <span style="font-size:0.90em;">1.- INGRESA LA CLAVE DE CENTRO DE TRABAJO DEL PLANTEL EDUCATIVO QUE REQUIERE EL SERVICIO</span>
 
                                 </div>
                                     
@@ -72,10 +80,13 @@
                                     <!-- <br> -->
                                     <br>
                                     <label style="font-size:0.75em;">CENTRO DE TRABAJO</label>
-                                    <div class="col-3">
+                                    <!-- <div class="col-3">
                                         <input type="text" class="form-control" maxlength="20" id="vCentro_Trabajo">
-                                        <!-- <button disabled id="btn_consultar" class="btn btn-secondary">Consultar</button> -->
-                                        <!-- <span class="input-group-text" id="consultar_cdt">Consultar</i></span> -->
+                                    </div> -->
+                                    <div class="col-9">
+                                        <div class="ui-widget">
+                                            <input class="form-control" style="text-transform: uppercase;" id="tags">
+                                        </div>
                                     </div>
                                     <div class="col-3">
                                         <!-- <input type="text" class="form-control" id="vCentro_Trabajo"> -->
@@ -84,50 +95,51 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <span style="font-size:0.65em;">2.- VALIDA LOS DATOS DEL CENTRO DE TRABAJO</span>
+                                    <span style="font-size:0.90em;">2.- VALIDA LOS DATOS DEL CENTRO DE TRABAJO</span>
+                                    <br>
                                     <br>
                                     <div class="col-6">
-                                        <label style="font-size:0.75em;">NOMBRE</label>
+                                        <label style="font-size:0.90em;">NOMBRE</label>
                                         <input type="text" disabled class="form-control" id="vNombre">
                                     </div>
                                     <div class="col-3">
-                                        <label style="font-size:0.75em;">CLAVE</label>
+                                        <label style="font-size:0.90em;">CLAVE</label>
                                         <input type="text" disabled class="form-control" id="vClave">
                                     </div>
                                     <div class="col-3">
-                                        <label style="font-size:0.75em;">MUNICIPIO DEL C.T.</label>
+                                        <label style="font-size:0.90em;">MUNICIPIO DEL C.T.</label>
                                         <input type="text" disabled class="form-control" id="vMunicipio">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <label style="font-size:0.75em;">DIRECTOR</label>
+                                        <label style="font-size:0.90em;">DIRECTOR</label>
                                         <input type="text" disabled class="form-control" id="vDirector">
                                     </div>
                                     <div class="col-6">
-                                        <label style="font-size:0.75em;">DIRECCION</label>
+                                        <label style="font-size:0.90em;">DIRECCIÓN</label>
                                         <input type="text" disabled class="form-control" id="vDireccion">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3">
-                                        <label style="font-size:0.75em;">TELEFONO DEL CENTRO DE TRABAJO</label>
-                                        <input type="text" disabled class="form-control" id="vTelefono">
-                                    </div>
-                                    <div class="col-3">
-                                        <label style="font-size:0.75em;">TURNO</label>
+                                        <label style="font-size:0.90em;">TURNO</label>
                                         <input type="text" disabled class="form-control" id="vTurno">
                                     </div>
                                     <div class="col-3">
-                                        <label style="font-size:0.75em;">NIVEL EDUCATIVO</label>
+                                        <label style="font-size:0.90em;">NIVEL EDUCATIVO</label>
                                         <input type="text" disabled class="form-control" id="vNivelEducativo">
+                                    </div>
+                                    <div class="col-3" hidden>
+                                        <label style="font-size:0.90em;">TELÉFONO DEL CENTRO DE TRABAJO</label>
+                                        <input type="text" disabled class="form-control" id="vTelefono">
                                     </div>
                                 </div>
                                 <br>
                                 <div class="row">
                                     <!-- <div class="col-3"> -->
                                         <div class="col-6" style="text-align:left;" id="div_btn_regresar">
-                                            <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar3">Regresar</button>
+                                            <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_regresar3">Cancelar</button>
                                         </div>
                                         <div class="col-6" style="text-align:right;" hidden id="div_btn_siguiente">
                                             <button class="btn btn-secondary" disabled style="font-size:0.80em;" id="btn_siguiente1">Siguiente</button>
@@ -145,22 +157,22 @@
                                 <br>
                                 <!-- <div id="hidden_centro_trabajo"></div> -->
                                     <div class="col-12">
-                                        <span style="font-size:0.65em;">3.- REGISTRA LOS DATOS DE LA SOLICITUD DE SERVICIO</span>
+                                        <span style="font-size:0.90em;">3.- REGISTRA LOS DATOS DE LA SOLICITUD DE SERVICIO</span>
                                     </div>
                                     
 
-                                    <!-- <br> -->
-                                    <!-- <br> -->
+                                    <br>
+                                    <br>
                                     <div class="col-4">
-                                        <label style="font-size:0.75em;">NOMBRE DEL SOLICITANTE</label>
+                                        <label style="font-size:0.90em;">NOMBRE DEL SOLICITANTE</label>
                                         <input type="text" maxlength="100" class="form-control" id="vNombre_Solicitante" value="{{ session('vNombreCorreo') }}">
                                     </div>
                                     <div class="col-4">
-                                        <label style="font-size:0.75em;">TELEFONO DEL SOLICITANTE</label>
+                                        <label style="font-size:0.90em;">TELÉFONO DEL SOLICITANTE</label>
                                         <input type="text" maxlength="10" class="form-control" id="vTelefono_Solicitante">
                                     </div>
                                     <div class="col-4">
-                                        <label style="font-size:0.75em;">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
+                                        <label style="font-size:0.90em;">CORREO INSTITUCIONAL DEL SOLICITANTE</label>
                                         <input type="text" class="form-control" disabled id="vCorreo_Solicitante" value="{{ session('vCorreoVerifica') }}">
                                     </div>
                                 </div>
@@ -168,13 +180,13 @@
                                     <div class="col-4">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="check_vNombre_Solicitante">
-                                            <label style="font-size:0.75em;" class="form-check-label">
+                                            <label style="font-size:0.90em;" class="form-check-label">
                                                 Active la casilla en caso que el solicitante corresponda al Director del C.T.
                                             </label>
                                         </div>                                    
                                     </div>
                                     <div class="col-4">
-                                        <label style="font-size:0.75em;" >
+                                        <label style="font-size:0.90em;" >
                                             Favor de ingresar teléfono celular. Nos pondremos en contacto a este número.
                                         </label>
                                     </div>
@@ -183,9 +195,19 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-12">
-                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL REPORTE</label>
+                                        <label style="font-size:0.90em;">DESCRIPCIÓN DEL REPORTE</label>
                                         <textarea class="form-control" maxlength="450" id="vDescripcion_Reporte" rows="3"></textarea>
 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="check_seguimiento">
+                                            <label style="font-size:0.90em;" class="form-check-label">
+                                            Deseo recibir notificaciones sobre el seguimiento de mi solicitud en la dirección de correo que he proporcionado.
+                                            </label>
+                                        </div>                                    
                                     </div>
                                 </div>
                                 <br>
@@ -198,7 +220,7 @@
                                 <br>
                                 <div class="row">
                                     <div class="col-6">
-                                        <span style="font-size:0.65em;">4.- DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</span>
+                                        <span style="font-size:0.90em;">4.- DESCRIBA LOS DETALLES DE SERVICIO POR CADA EQUIPO SOLICITADO</span>
 
                                     </div>
                                     <div id="hidden_centro_trabajo3" class="col-3" style="text-align: right;"></div>
@@ -217,7 +239,7 @@
                                         <button class="btn btn-secondary" style="font-size:0.80em;" id="btn_agregar_servicio">+</button>
                                     </div>
                                     <div class="col-5">
-                                        <label style="font-size:0.75em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
+                                        <label style="font-size:0.90em;">DESCRIPCIÓN DEL PROBLEMA O SOPORTE A REALIZAR</label>
                                         <textarea class="form-control" id="vDescripcion_Problema" ></textarea>
                                     </div>
                                     <!-- </div> -->
@@ -278,7 +300,9 @@
 @endsection
 
 @section('page-scripts')
-
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script>
     var contador_total = 0;
     var posicion_arreglo_servicios = 0;
@@ -297,10 +321,51 @@
 
     var vCentro_Trabajo = '';
 
+    var vNombre_check = '';
+    var vSeguimiento_check = false;
+
     // console.log(arreglo_serv);
 
     $('#encabezado_layout').append('Registro de solicitud de servicio');
 
+    $("#tags").keyup(function(e){
+        var txt1 = $(this).val();
+        // txt.toUpperCase();
+        var txt2 = txt1.toUpperCase();
+        if (e.which >= 46 && e.which <= 90 || e.which >= 96 && e.which <= 105 ){
+            console.log('entro');
+            if (txt2.length > 0) {
+                $.ajax({
+                url: '{{route("pruebaJC2")}}',
+                type: 'GET',
+                data: {
+                    txt : txt2
+                }
+                }).always(function(r) {
+                    array2=[];
+                    console.log(r.arreglo);
+
+                    for (let i = 0; i < r.arreglo.length; i++) {
+                        array2.push(r.arreglo[i]['clavenombremun']);
+                    }
+                    // console.log(array2);
+                    $( "#tags" ).autocomplete({
+                        // maxShowItems: 5,
+                        // minLength: 2,
+                        source: array2,
+                    
+                    });
+                    $( "#tags" ).autocomplete("widget").addClass("fixedHeight");
+                    $('#btn_consultar').prop('disabled', false);
+                    $('#div_btn_siguiente').prop('hidden', false);
+                    // $( "#tags" ).autocomplete("widget").show();
+                });
+            }
+            else{
+                $('#btn_consultar').prop('disabled', true);
+            }
+        }
+    });
 
     $("#vCentro_Trabajo").keyup(function(){
         if($('#vCentro_Trabajo').val().length > 0){
@@ -333,7 +398,8 @@
         $("#hidden_centro_trabajo").html('');
         $("#hidden_centro_trabajo2").html('');
         $("#hidden_centro_trabajo3").html('');
-        vCentro_Trabajo = $('#vCentro_Trabajo').val();
+        // vCentro_Trabajo = $('#vCentro_Trabajo').val();
+        vCentro_Trabajo = $('#tags').val();
         // if (vCentro_Trabajo == ''){
         //     Swal.fire({
         //         position: 'bottom-right',
@@ -382,7 +448,7 @@
                     html2='';
                     html+= '<div class="row">';
                         html+= '<div class="col">';
-                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
+                            html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+r.data[0]['clavecct']+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                             html+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
                             html+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -394,7 +460,7 @@
                     html+= '</div>';
                     html2+= '<div class="row">';
                         html2+= '<div class="col">';
-                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+vCentro_Trabajo+'</span></b>';
+                            html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: '+r.data[0]['clavecct']+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                             html2+= '<b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: '+r.data[0]['nombrect']+'</span></b>';
                             html2+= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -406,7 +472,7 @@
                     html2+= '</div>';
                     // html = '<b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
                     // html2 = '<b><span id="span_centro_trabajo2" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
-                    html3 = '<b><span id="span_centro_trabajo3" style="font-size:0.75em;">CENTRO DE TRABAJO : '+vCentro_Trabajo+'</span></b>';
+                    html3 = '<b><span id="span_centro_trabajo3" style="font-size:0.75em;">CENTRO DE TRABAJO : '+r.data[0]['nombrect']+'</span></b>';
                     $("#hidden_centro_trabajo").append(html);
                     $("#hidden_centro_trabajo2").append(html2);
                     $("#hidden_centro_trabajo3").append(html3);
@@ -427,7 +493,7 @@
 
     if($("#btn_siguiente1").is(":disabled")){
         $('#btn_siguiente1').click(function(){
-            
+            vNombre_check = $('#vNombre_Solicitante').val();
             $("#tab2").attr('class', 'nav-link colorTabPrincipal');
             $("#tab2").tab('show');
             $("#tab1").attr('class', 'nav-link colorTabSecondary');
@@ -437,14 +503,25 @@
     $('#check_vNombre_Solicitante').click(function(){
         if ($('#check_vNombre_Solicitante').is(':checked')) {
             director_nombre = $('#vDirector').val();
+            
             $('#vNombre_Solicitante').val(director_nombre);
             $('#vNombre_Solicitante').prop('disabled', true);
         }
         else{
-            $('#vNombre_Solicitante').val('');
+            $('#vNombre_Solicitante').val(vNombre_check);
             $('#vNombre_Solicitante').prop('disabled', false);
         }
     });
+
+    $('#check_seguimiento').click(function(){
+        if ($('#check_seguimiento').is(':checked')) {
+            vSeguimiento_check = true;
+        }
+        else{
+            vSeguimiento_check = false;
+        }
+    });
+    
 
     $('#btn_regresar1').click(function(){
         $("#tab1").attr('class', 'nav-link colorTabPrincipal');
@@ -714,7 +791,7 @@
 
     }
 
-    $('#btn_registrar2').click(function(){//28ADG0180W
+    $('#btn_registrar2').click(function(){
 
         // var vCentro_Trabajo = $('#vCentro_Trabajo').val();
         // var vNombre = $('#vNombre').val();
@@ -759,7 +836,7 @@
                 arreglo_centrotrabajo: arreglo_centrotrabajo, vNombre_Solicitante: vNombre_Solicitante, vTelefono_Solicitante: vTelefono_Solicitante,
                 vCorreo_Solicitante : vCorreo_Solicitante, vDescripcion_Reporte : vDescripcion_Reporte, vBandera_director : vBandera_director
                 });
-
+                var seguimiento = true;
                 // console.log(arreglo_inf);
                 Swal.fire({
                     html: '<p style="font-size:1rem !important;">¿Está seguro de registrar la solicitud?</p>',
@@ -776,7 +853,6 @@
                     allowOutsideClick: false
                     }).then((result) => {
                     if (result.isConfirmed) {
-
                         Swal.fire({
                             // position: 'bottom-right',
                             // icon: 'warning',
@@ -800,12 +876,12 @@
                         $.ajax({
                             url: '{{route("formulario_registro")}}',
                             type: 'GET',
-                            data: {'arreglo_inf' : arreglo_inf}
+                            data: {'arreglo_inf' : arreglo_inf, 'seguimiento' : vSeguimiento_check}
                             }).always(function(r) {
                                 console.log(r);
                                 Swal.fire({
                                     // title: 'Registrado',
-                                    html:'<p style="font-size:1rem !important;">Se ha registrado con exito la solicitud con el folio: <strong>'+r.data+'</strong>.</p>'+
+                                    html:'<p style="font-size:1rem !important;">Se ha registrado con éxito la solicitud con el folio: <strong>'+r.data+'</strong>.</p>'+
                                             '<p style="font-size:1rem !important;">Nos pondremos en contacto al teléfono proporcionado para seguimiento.</p>',
                                     // text: 'Se ha Registrado con Exito la Solicitud #5884',
                                     customClass: 'msj_solicitud',
@@ -821,6 +897,7 @@
                                 }
                             })
                         });
+                        
                     }
 
 

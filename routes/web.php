@@ -61,6 +61,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         //info Centro Trabajo
         Route::get('/consCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getCCT')->name('consCCT');
+        Route::get('/consclaveCCT','App\Http\Controllers\OrdenesController@getclaveCCT')->name('consclaveCCT');
         // Route::get('/consOrdenesCCT/{claveCCT}','App\Http\Controllers\OrdenesController@getOrdenesCCT')->name('consOrdenesCCT');
 
         //Actualizar Estatus Orden
@@ -68,11 +69,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/updEstatusI','App\Http\Controllers\OrdenesController@updIniciar')->name('updEstatusI'); 
 
         Route::get('download-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadPDF')->name('download-pdf');
+        Route::get('download-pdf-ima/{id}', 'App\Http\Controllers\OrdenesController@downloadPDFima')->name('download-pdf-ima');
+        Route::get('download-cierre-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadCierrePDF')->name('download-cierre-pdf');
 
         //Cerrar Orden
         Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
         Route::post('/cerrarOrden', 'App\Http\Controllers\OrdenesController@updCerrar')->name('cerrarOrden');
         Route::get('/verArchivoCierre/{id}', 'App\Http\Controllers\OrdenesController@getArchivoCierre')->name('verArchivoCierre');
+        Route::get('/verImagenesCierre/{id}', 'App\Http\Controllers\OrdenesController@getArchivosCierreOrden')->name('verImagenesCierre');
 
         Route::get('/cargarTecAux/{id}', 'App\Http\Controllers\OrdenesController@cargarTecnicosAux')->name('cargarTecAux');
 
@@ -83,6 +87,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/actualizarEquipo', 'App\Http\Controllers\OrdenesController@updEquipo')->name('actualizarEquipo'); //31/07/2023
         Route::get('/verArchivoEquipo/{id}', 'App\Http\Controllers\OrdenesController@getArchivoEquipo')->name('verArchivoEquipo');
         Route::post('/cerrarEquipo', 'App\Http\Controllers\OrdenesController@updCerrarEquipo')->name('cerrarEquipo'); //20/08/2023
+        ///PENDIENTEE 
+        Route::get('/verImagenesCierreE/{id}', 'App\Http\Controllers\OrdenesController@getArchivoEquipo')->name('verImagenesCierreE');
 
         //Tecnicos
         Route::post('/asignarTecnico','App\Http\Controllers\OrdenesController@insTecnico')->name('asignarTecnico');
@@ -90,11 +96,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/actualizarTecnicos','App\Http\Controllers\OrdenesController@updTecnicos')->name('actualizarTecnicos'); 
         //Correo
         Route::post('/enviarCorreo', 'App\Http\Controllers\OrdenesController@sendCorreo')->name('enviarCorreo');
-
-    }); 
+        //ValidaAcceso validaAcceso
+        Route::post('/validaAcceso', 'App\Http\Controllers\OrdenesController@getValidaAcceso')->name('validaAcceso');
+        Route::post('/actualizaAcceso', 'App\Http\Controllers\OrdenesController@updAcceso')->name('actualizaAcceso');
+        //verEquiosCerrados en cerrarOrden 
+        Route::get('/equipoAtendido/{id}', 'App\Http\Controllers\OrdenesController@getEquiposCerrados')->name('equipoAtendido');
+        
+        //-----RUTAS MATERIALES 
+        Route::get('/index_materiales/{id}', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
+        // Route::get('/index_materiales', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
+        Route::get('/agregar_materiales', 'App\Http\Controllers\OrdenesController@agregar_materiales')->name('agregar_materiales');
+        Route::get('/cat_materiales', 'App\Http\Controllers\OrdenesController@cat_materiales')->name('cat_materiales');
+    });  
 
     Route::group(['prefix' => 'solicitudes'], function(){
+        Route::get('/index', 'App\Http\Controllers\SolicitudesController@index2')->name('index_solicitud')->middleware('permission:204-ver-registros-solicitudes');
+        Route::get('/showSolicitudes', 'App\Http\Controllers\SolicitudesController@showSolicitudes')->name('showSolicitudes')->middleware('permission:204-ver-registros-solicitudes');
+        
         Route::get('/solicitudes_registros', 'App\Http\Controllers\SolicitudesController@index')->name('solicitudes_registros')->middleware('permission:204-ver-registros-solicitudes');
+        Route::get('/actualiza_acesso', 'App\Http\Controllers\SolicitudesController@actualiza_acesso')->name('actualiza_acesso');
         Route::get('/prueba', 'App\Http\Controllers\SolicitudesController@prueba')->name('prueba');
         Route::get('/prueba2', 'App\Http\Controllers\SolicitudesController@prueba2')->name('prueba2');
         Route::get('/buscar_folio', 'App\Http\Controllers\SolicitudesController@buscar_folio')->name('buscar_folio');
@@ -103,7 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/selects_equipo_servicio', 'App\Http\Controllers\SolicitudesController@selects_equipo_servicio')->name('selects_equipo_servicio');
         Route::get('/select_servicio', 'App\Http\Controllers\SolicitudesController@select_servicio')->name('select_servicio');
         Route::get('/select_tarea', 'App\Http\Controllers\SolicitudesController@select_tarea')->name('select_tarea');
-        Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
+        // Route::get('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
+        Route::post('/actualizar_solicitud', 'App\Http\Controllers\SolicitudesController@actualizar_solicitud')->name('actualizar_solicitud');
         Route::get('/select_rechaza_solicitud', 'App\Http\Controllers\SolicitudesController@select_rechaza_solicitud')->name('select_rechaza_solicitud');
         Route::get('/downloadPdf_solicitud/{id}', 'App\Http\Controllers\SolicitudesController@downloadPdf_solicitud')->name('downloadPdf_solicitud');
         // Route::get('/crearOrdenVentanilla', 'App\Http\Controllers\VentanillaController@create')->name('crearOrdenVentanilla');

@@ -12,11 +12,13 @@ class MailSend extends Mailable
     use Queueable, SerializesModels;
 
     public $details;
+    public $pfolio_config;
 
-    public function __construct($details)
+    public function __construct($details,$pfolio_config)
     {
-        // dd($details);
+        // dd($pfolio_config);
         $this->details = $details;
+        $this->pfolio_config = $pfolio_config;
     }
 
     /**
@@ -26,6 +28,7 @@ class MailSend extends Mailable
      */
     public function build()
     {
-        return $this->subject('Registro exitoso de solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend');
+        return $this->subject('Registro exitoso de solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend')->attach(public_path('pdfSolicitud/').'Solicitud_'.$this->pfolio_config.'.pdf');
+        //return $this->subject('Registro exitoso de solicitud - Sistema C.A.S. - C.E.T.E.')->view('mailsend');
     }
 }

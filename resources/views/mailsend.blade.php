@@ -7,7 +7,7 @@
     <title> Registro exitoso de solicitud - Sistema C.A.S. - C.E.T.E.</title>
 </head>
 <body>
-<img src="{{ $message->embed((asset('images/img/ventanilla/headercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+<img src="{{ $message->embed((asset('images/correo/headercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
 <div style="padding-left:3%; padding-right:3%">
     <h2>{{ $details ['tittle'] }}</h2>
     <hr color="#ab0033!important;">
@@ -19,10 +19,10 @@
     <center><b><p>{{ $details ['body4'] }}<br><br>{{ $details ['body5'] }}<br></p></b></center>
     <br>
     De igual manera, puedes consultar el seguimiento de tu solicitud de servicio a través del sitio:
-    <a href="http://cascete.test:8080/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>
+    <a href="http://devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE.</ins></a>
 </div>
     <br>
-<img src="{{ $message->embed((asset('images/img/ventanilla/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+<img src="{{ $message->embed((asset('images/correo/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
 
 </body>
 </html>

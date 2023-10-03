@@ -157,7 +157,7 @@
   {{-- http://localhost/cas/images/logo/logoTam2022.png {{ asset('images/logo/logoTam2022.png') }}--}}
 <header>
       <div style="width: 30%; height: 50px; float: left;">
-        <img src="{{ asset('images/logo/logo_cete_3.png') }}" alt="" style="width: 300px; height: 45px; margin-top: 10px;">
+      <img src="{{ asset('images/logo/logo_cete_3.png') }}" alt="" style="width: 300px; height: 45px; margin-top: 10px;">
       </div>
       <div style="margin-left: 10%; height: 50px; text-align: right; font-size: 12px;"> 
         <p><b>CENTRO ESTATAL DE TECNOLOGÍA EDUCATIVA</b><br>
@@ -170,27 +170,27 @@
 <div class="showcase">
 <body>
     <div> 
-      <table class="sinbordetable">
-        <tr class="sinbordetable">
-          <td class="sinbordetable3">
-          <span><b>SOLICITUD DE SERVICIOS - VENTANILLA ÚNICA</b></span>
-          </td>
-        </tr>
-      </table>
     <table class="sinbordetable">
       <tr class="sinbordetable">
-        <td class="sinbordetable"><span>Folio Solicitud: <b>{{ $fn_solicitud->folio }}</span> 
-        @if($fn_inf_orden != null)
-        <td class="sinbordetable3"><span>Estatus: <b>{{ $fn_inf_orden->estatus }}</b></span>
-        @else
-        <td class="sinbordetable2"><span>Estatus: <b>{{ $fn_solicitud->estatus }}</b></span>
-        @endif
-        @if($fn_inf_orden != null)
-        <td class="sinbordetable4"><span>Folio Orden: <b>{{ $fn_inf_orden->folio }}</b></span>
-        @endif
+        <td class="sinbordetable3">
+        <span><b>SOLICITUD DE SERVICIOS - VENTANILLA ÚNICA</b></span>
+        </td>
       </tr>
-      
     </table>
+    <table class="sinbordetable">
+                <tr class="sinbordetable">
+                  <td class="sinbordetable"><span>Folio Solicitud: <b>{{ $fn_solicitud->folio }}</span> 
+                  @if($fn_inf_orden != null)
+                  <td class="sinbordetable3"><span>Estatus: <b>{{ $fn_inf_orden->estatus }}</b></span>
+                  @else
+                  <td class="sinbordetable2"><span>Estatus: <b>{{ $fn_solicitud->estatus }}</b></span>
+                  @endif
+                  @if($fn_inf_orden != null)
+                  <td class="sinbordetable4"><span>Folio Orden: <b>{{ $fn_inf_orden->folio }}</b></span>
+                  @endif
+                </tr>
+                
+              </table>
         <table> <!--//////////////////////////////////////////////////////////////////////-->
           <tr>
             <th>DATOS DEL CENTRO DE TRABAJO</th>
