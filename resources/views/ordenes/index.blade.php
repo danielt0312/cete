@@ -685,7 +685,7 @@
 
           <div class="row">
               <div class="col-4" style="text-align:center;  background-color:#ab0033;">
-                  <span style="color:white;">Equipos Atendidos</span>
+                  <span style="color:white;">Equipos/Servicios Atendidos</span>
               </div>
               <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
               </div>
@@ -1024,6 +1024,132 @@
 </div>
 <!-- FIN MODAL EDITAR TECNICOS-->
 
+<div class="modal fade" id="verDetEquipoAtendidoModal" data-bs-backdrop="static" role="dialog"> 
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- <div class="modal-header"> 
+      </div>  -->
+      <div class="modal-body"> 
+        <div class="row">
+          <div class="col-12" >
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+              <span style="color:white;">Evidencia del equipo/servicio</span>
+          </div>
+          <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" >
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label>Equipo/Servicio:</label>
+            <label id="lblEquipoM" class="SinNegrita"></label>
+          </div>
+          <div class="col-4">
+            <label>Estatus:</label>
+            <label id="lblEstatusM" class="SinNegrita"></label>
+          </div>
+          <div class="col-4">
+            <label>Ubicación:</label>
+            <label id="lblUbicacionM" class="SinNegrita"></label>
+          </div>
+        </div>
+        <div class="row" id="divDetalleEquipoM">
+          <div class="col-4">
+            <label>Etiqueta:</label>
+            <label id="lblEtiquetaM" class="SinNegrita">
+            </label>
+          </div>
+          <div class="col-4">
+            <label>Detalle:</label>
+            <label id="lblDetalleM" class="SinNegrita">
+            </label>
+          </div>
+          <div class="col-4">
+            <!-- <label>Ubicación:</label>
+            <label id="lblUbicacionM" class="SinNegrita">
+            </label> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label>Descripción del problema:</label>
+            <label id="lblDescProblemaM" class="SinNegrita"></label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <label>Listado de Áreas de Servicio/Tareas:</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" id="divListTareasServEquipoM">
+            <!-- <table>
+              <thead>
+                <th><label class="SinNegrita">Área de Servicio</label></th>
+                <th><label class="SinNegrita">Tarea</label></th>
+              </thead>
+              <tbody>
+                
+                <tr>
+                    <td>
+                        <label class="SinNegrita"></label>
+                    </td>
+                    <td>
+                        <label class="SinNegrita"></label>
+                    </td>
+                </tr>
+              </tbody>
+            </table> -->
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12" >
+                <label>Diagnóstico:</label>
+                <label id="lblDiagnosticoM" class="SinNegrita"></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12" >
+                <label>Solución:</label>
+                <label id="lblSolucionM" class="SinNegrita"></label>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-12" >
+            <br>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-12" id="divEvidenciaEquipo">
+                
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-12" >
+            <br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" style="text-align:right;" >
+              <button type="button" class="btn colorBtnCancelar" data-bs-dismiss="modal" id="btnCancelarCierre">Cancelar</button>
+            </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+      </div> -->
+    </div>
+  </div>
+</div>
+
 @endsection 
 
 @section('page-scripts') 
@@ -1075,7 +1201,7 @@
     var fecha_inicio= $('#txtFechaInicio').val();
     var fecha_fin= $('#txtFechaFin').val();
     var clavecct= $('#txtCCT').val();
-    console.log(fecha_inicio);
+    // console.log(fecha_inicio);
     $.ajax({
       url: '{{route("showOrdenes")}}',
       data:{ 
@@ -1112,7 +1238,7 @@
       $('#tablaPrueba2').DataTable().clear().destroy();
       // tabla.ajax.reload();
     }
-    console.log(data[0]);
+    // console.log(data[0]);
     tabla=$('#tablaPrueba2').DataTable({
         // processing:true,
         // responsive:true,
@@ -1192,6 +1318,7 @@
               var totalEquipos = data.totalequipos;
               var totalEquiposCerrados = data.totalequiposcerrados; 
               var seguimiento=data.seguimiento;
+              var contAsesoServ=data.contaseserv;
 
                 if(data.desc_estatus_orden=='Cancelada' ){
                   estatuss+= '<div class="dropdown btn-group dropstart">'+
@@ -1255,11 +1382,16 @@
                          '</div>';
                    return estatuss;
                   }else if(data.desc_estatus_orden=='Atendida'){
-                   
                    estatuss+= '<div class="dropdown btn-group dropstart">'+
                          '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
-                         '<ul class="dropdown-menu" aria-labelledby="opciones1">'+
-                         '@can("188-opt-imprimir-registro")<li>'+
+                         '<ul class="dropdown-menu" aria-labelledby="opciones1">';
+                  //  if(contAsesoServ > 0){ 
+                  //   estatuss+= '@can("188-opt-imprimir-registro")<li>'+
+                  //        '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Agregar Materiales</a>'+
+                  //        '</li>@endcan';
+                  //  }  
+                  
+                   estatuss+='@can("188-opt-imprimir-registro")<li>'+
                         //  '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                          '<a onclick="imprimirPDFOrdenGuardado('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
                          '</li>@endcan'+
@@ -1372,7 +1504,7 @@
     var column;
     $('#selColumna').on('changed.bs.select', function (e) {
       tabla.columns([0, 1, 2, 3, 4, 5, 6] ).visible( true );
-        var options = $('#selColumna option:selected');
+        var options = $('#selColumna option:selected'); 
         var arraycheck = [];
         var arraycheck2 = [];
         // tabla.columns( [0, 1, 2] ).visible( true );     
@@ -1411,20 +1543,13 @@
   }
 
   function updEstatusOrden(vidSolicServ, folio, folioSol, correo, nombrecct, solicitante, desc_estatus, totalEquipos, seguimiento){
-      
-    // $(window).on('beforeunload', function (){
-    //   //this will work only for Chrome
-    //   fnUpdAcceso(idSolicServ, false);
-    // });
-    // var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false)'), 300000);
-    // // clearInterval(refreshIntervalId);
-    // setTimeout(() => clearInterval(refreshIntervalId), 300000);
-    fnValidaRecarga(idSolicServ);
 
-    fnValidaAcceso(idSolicServ).then((data) => { 
+    fnValidaRecarga(vidSolicServ); 
+
+    fnValidaAcceso(vidSolicServ).then((data) => { 
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){ 
-        fnUpdAcceso(idSolicServ, true);
+        fnUpdAcceso(vidSolicServ, true, 1);
 
         if(totalEquipos != 0){
           Swal.fire({
@@ -1458,7 +1583,7 @@
                     success: function(data) {
                       if(data[0]['insiniciasolicitud']==false){
                         msjeAlertaPrincipal('','<span>Se ha iniciado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
-                        fnUpdAcceso(vidSolicServ, false);
+                        fnUpdAcceso(vidSolicServ, false, 1);
                         load();
                       }else{
                         msjeAlertaPrincipal('','No se pudo iniciar la orden','error')
@@ -1467,13 +1592,13 @@
                 });
               }else{
                 // console.log('no iniciar');
-                fnUpdAcceso(vidSolicServ, false);
+                fnUpdAcceso(vidSolicServ, false, 1);
                 //window.location.href = '{{ route("listadoOrdenes") }}';
               }
           });
         }else{
           msjeAlertaPrincipal('','Favor de agregar equipos a la orden de servicio','info');
-          fnUpdAcceso(vidSolicServ, false);
+          fnUpdAcceso(vidSolicServ, false, 1);
         }
       }else{
         msjeAlertaPrincipal('', '<span>La orden esta siendo utilizada por otro usuario. <br> Favor de verificar.</span>', 'warning');
@@ -1590,11 +1715,12 @@
   function cancelarOrden(idSolicServ,idEstatusOrden, folio, folioSol, correo, nombrecct, solicitante, desc_estatus){
     // var validaAcces=fnValidaAcceso(idSolicServ);
     // if (validaAcces=='false'){
+    fnValidaRecarga(idSolicServ);
 
     fnValidaAcceso(idSolicServ).then((data) => { 
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){ 
-        fnUpdAcceso(idSolicServ, true);
+        fnUpdAcceso(idSolicServ, true, 1);
         $("#hdIdSolicServ").val("");
         $("#selMotivoCancela").val('');
         $("#txtComentarios").val('');
@@ -1680,11 +1806,11 @@
                     if(data[0]['inscierrasolicitud']==0){
                       msjeAlertaPrincipal('','<span>Se ha finalizado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
                       $("#cerrarOrdenModal").modal("hide");
-                      fnUpdAcceso(idSolicServ, false);
+                      fnUpdAcceso(vidSolicServ, false, 1); 
                       load();
                     }else{
                       msjeAlertaPrincipal('','No se cerró la orden','error')
-                      // fnUpdAcceso(idSolicServ, false);
+                      // fnUpdAcceso(idSolicServ, false, 1);
                     }
                   }
               });
@@ -1745,11 +1871,11 @@
                   success: function(data) {
                     if(data[0]['inscancelasolicitud']==false){
                       msjeAlertaPrincipal('','<span>Se ha cancelado con éxito la orden de servicio con el folio: <strong>'+hdFolio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
-                      fnUpdAcceso(idSolicServ, false);
+                      fnUpdAcceso(idSolicServ, false, 1);
                       load();
                       $("#cancelOrdenModal").modal("hide");
                     }else{
-                      fnUpdAcceso(idSolicServ, false);
+                      fnUpdAcceso(idSolicServ, false, 1);
                       msjeAlertaPrincipal('','No se cancelo','error')
                     }
                     $("#cancelOrdenModal").modal("hide");
@@ -1779,7 +1905,7 @@
     fnValidaAcceso(idOrden).then((data) => {
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){
-        fnUpdAcceso(idOrden, true); 
+        fnUpdAcceso(idOrden, true, 1);
 
         if(totalEquipos != 0){
           $("#idSolModTec").val('');
@@ -1826,7 +1952,7 @@
 
         }else{
           msjeAlertaPrincipal('','Favor de agregar equipos a la orden de servicio','info');
-          fnUpdAcceso(idOrden, false);
+          fnUpdAcceso(idOrden, false, 1);
         }
 
       }else{
@@ -1838,7 +1964,7 @@
     
     // if (validaAcces==false){
     //   console.log('entro--2'); 
-    //   fnUpdAcceso(idOrden, true);
+    //   fnUpdAcceso(idOrden, true, 1);
 
     //   if(totalEquipos != 0){
     //     $("#idSolModTec").val('');
@@ -1885,7 +2011,7 @@
 
     //   }else{
     //     msjeAlertaPrincipal('','Favor de agregar equipos a la orden de servicio','info');
-    //     fnUpdAcceso(idOrden, false);
+    //     fnUpdAcceso(idOrden, false, 1);
     //   }
 
     // }else{
@@ -1940,7 +2066,7 @@
     var correo=$("#correoModTec").val();
     var vselTecnicoEncargado=$("#selTecnicoEncargado").val();
     var seguimiento=$("#seguimientoModTec").val();
-    var idSolicServ=$("#idSlModTec").val();
+    var idSolicServ=$("#idSolModTec").val();
 
     var formTecnicos = $('#formTecnicos')[0];
     var data2 = new FormData(formTecnicos)
@@ -1973,13 +2099,14 @@
             contentType: false ,  // tell jQuery not to set contentType
             success: function(data) {
               // console.log('regreso tecnicos de asignar');
+              console.log(data[0]['fninstecnicos']);
               if(data[0]['fninstecnicos']==1){
                 msjeAlertaPrincipal('','<span>Se han asignado correctamente los Técnicos de Soporte a la orden de servicio con el folio: <strong>'+folio+'</strong>. Se ha notificado al usuario mediante el correo electrónico proporcionado.</span>','success')
-                fnUpdAcceso(idSolicServ, false);
+                fnUpdAcceso(idSolicServ, false, 1);
                 load();
                 $("#asignarTecnicosModal").modal("hide");
               }else{
-                fnUpdAcceso(idSolicServ, false);
+                fnUpdAcceso(idSolicServ, false, 1);
                 msjeAlertaPrincipal('','Técnicos no se asignaron','error')
                 $("#asignarTecnicosModal").modal("hide");
               }
@@ -2054,12 +2181,15 @@
     }
   }
 
-  function fnEditar(idOrden){
+  function fnEditar(idOrden){ 
+    // fnValidaRecarga(idOrden); 
+
     fnValidaAcceso(idOrden).then((data) => {
 
-        // console.info('Response:', data)
+         console.info('Response:', data);
       if(data.getvalidaaccesoorden==false){
-        fnUpdAcceso(idOrden, true); 
+        var hh=fnUpdAcceso(idOrden, true, 1);
+        // console.log(hh);
         let urlEditar = '{{ route("editarOrden", ":id") }}';
         urlEditar = urlEditar.replace(':id', idOrden);
 
@@ -2072,21 +2202,22 @@
   }
 
   function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante, desc_estatus, totalEquipos, totalEquiposCerrados,bandVer){
+    fnValidaRecarga(idOrden); 
     // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
     fnValidaAcceso(idOrden).then((data) => { 
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){ 
-        fnUpdAcceso(idOrden, true);
+        fnUpdAcceso(idOrden, true, 1);
       // if (totalEquipos > 0){  //// quiere decir que si tiene equipos
         if (totalEquipos > 0 && totalEquipos == totalEquiposCerrados){  // 
           $(".bandVer").hide();
 
           if(bandVer==0){
             $(".bandVer").show();
-            fnUpdAcceso(idOrden, true);
+            fnUpdAcceso(idOrden, true, 1);
           }else{
             $(".bandVer").hide();
-            fnUpdAcceso(idOrden, false);
+            fnUpdAcceso(idOrden, false, 1);
           }
 
           $("#hdIdOrdenCierra").val("");
@@ -2123,7 +2254,7 @@
             type: 'GET',
             dataType: 'json', // added data type
             success: function(data) {
-              console.log(data);
+              // console.log(data);
               //Datos Centro de Trabajo-------------------------------------------------------------------------
               $("#lblNombreCTT").text(data[0].nombrect);
               $("#lblClaveCTT").text(data[0].clave_ct);
@@ -2137,7 +2268,7 @@
               //Datos Reporte-------------------------------------------------------------------------
               $("#lblTipoOrden").text(data[0].desc_tipo_orden);
               $("#lblAreaAtiende").text(data[0].area_atiende);
-              console.log(data[0].area_atiende);
+              // console.log(data[0].area_atiende);
               $("#lblSolicitante").text(data[0].solicitante);
               $("#lblSolicitanteTel").text(data[0].telef_solicitante);
               $("#lblSolicitanteCorr").text(data[0].correo_solic);
@@ -2168,12 +2299,13 @@
                 $("#lblTecAux").html('');
                 $("#lblTecEnc").html('');
               }
-
+              var htmlSel='';
+              htmlSel+='<table style="border:none; width:100%;">';
               //Datos Equipos-------------------------------------------------------------------------
               if(data[0].jequipos != null){
                 var vequip = JSON.parse(data[0].jequipos);
                 console.log(vequip);  ////////regresa json CACHAR JSON QUE REGRESA FUNCION
-                var htmlSel='';
+                // var htmlSel='';
                 // var vtecniA='';
                 // var vtecniE='';
                 var vubicacion ='';
@@ -2230,12 +2362,36 @@
                   var vNumSeriee='S/D'; 
 
                   // console.log(vequip[i].id_equipo_tarea);
-                  htmlSel+='<table style="border:1px solid; width:100%;">';
-                  htmlSel+='<tr style="border:1px solid; background-color:#54565a;">';
-                  htmlSel+='<td><label style="color:#FFFFFF !important;">Tipo de Equipo:</label><label style="color:#FFFFFF !important;" class="SinNegrita" id="lblEquipo">'+vequip[i].tipo_equipo+'</label></td>';
-                  htmlSel+='<td><label style="color:#FFFFFF !important;">Etiqueta:</label><label style="color:#FFFFFF !important;" class="SinNegrita" id="lblEquipo">'+vetiqueta+'</label></td>';
-                  htmlSel+='<td colspan="2"><label style="color:#FFFFFF !important;">Detalle del Equipo:</label><label style="color:#FFFFFF !important;" class="SinNegrita" id="lblMarca">'+vMarcaa+', '+vModeloo+', '+vNumSeriee+'</label></td>';
-                  htmlSel+='<td style="text-align:right;">';
+                  // htmlSel+='<table style="border:none; width:100%;">';
+                  // htmlSel+='<tr style="border:1px solid; background-color:#54565a;">';
+                  htmlSel+='<tr>';
+                  htmlSel+='<td><label>#</label></td>';
+                  htmlSel+='<td><label>Equipo/Servicio</label></td>';
+                  htmlSel+='<td><label>Estatus</label></td>';
+
+                  if(vequip[i].tipo_equipo!='Servicio / Asesoría'){
+                    htmlSel+='<td><label>Etiqueta</label></td>';
+                    htmlSel+='<td><label>Detalle</label></td>';
+                  }
+                 
+                  htmlSel+='<td class="text-center" colspan="2"><label>Evidencia</label></td>';
+                  htmlSel+='</tr>';
+                  htmlSel+='<tr>';
+                  htmlSel+='<td><label>'+i+'</label></td>'; //style="color:#FFFFFF !important;"
+                  htmlSel+='<td><label class="SinNegrita" id="lblEquipo">'+vequip[i].tipo_equipo+'</label></td>';
+                  htmlSel+='<td><label class="SinNegrita" id="lblEsta">Atendido</label></td>';
+                  if(vequip[i].tipo_equipo!='Servicio / Asesoría'){
+                    htmlSel+='<td><label>Etiqueta:</label><label class="SinNegrita" id="lblEquipo">'+vetiqueta+'</label></td>';
+                    htmlSel+='<td colspan="2"><label>Detalle:</label><label class="SinNegrita" id="lblMarca">'+vMarcaa+', '+vModeloo+', '+vNumSeriee+'</label></td>';
+                  }
+                  htmlSel+='<td style="text-align:center;">';
+
+                  var videquipserv= vequip[i].id; 
+                  let urlDet = '{{ route("equipoAtendido", ":videquipserv") }}';
+                  urlDet = urlDet.replace(':videquipserv', videquipserv);
+                  
+                  // htmlSel+='<a href="'+urlDet+'" target="_blank"><i class="fas fa-file-pdf" style="color:white;"></i>&nbsp;&nbsp;</a>';
+                  htmlSel+='<a href="" onclick="fnVerDetalleEquipoCerrado('+videquipserv+')"><i class="fas fa-eye" ></i>&nbsp;&nbsp;</a>';
                   if(bandVer==1){
                     if(vequip[i].nombre_archivo != null && vequip[i].nombre_archivo != ''){
                       var nombre= vequip[i].nombre_archivo; 
@@ -2243,7 +2399,7 @@
                       // let urlArchivo = '{{ asset("cierreEquipo/:nomVar") }}'; //////31/08/2023  //LOCAL
                       urlArchivo = urlArchivo.replace(':nomVar', nombre); 
 
-                      htmlSel+='<a href="'+urlArchivo+'" target="_blank"><i class="fas fa-file-pdf" style="color:white;"></i>&nbsp;&nbsp;</a>';
+                      htmlSel+='<a href="'+urlArchivo+'" target="_blank"><i class="fas fa-file-pdf"></i>&nbsp;&nbsp;</a>';
                     }
                   }
                   
@@ -2252,31 +2408,31 @@
                   // htmlSel+='<td><label>Modelo:</label><label class="SinNegrita" id="lblModelo">'+vModeloo+'</label></td>';
                   // htmlSel+='<td><label>Número de Serie:</label><label class="SinNegrita" id="lblSerie">'+vNumSeriee+'</label></td>';
                   htmlSel+='</tr>';
-                  htmlSel+='<tr>';
-                  htmlSel+='<td colspan="4">';
-                  htmlSel+='<label>Ubicación del equipo:</label><label class="SinNegrita" id="lblUbic">'+vubicacion+'</label><br>';
-                  htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+vequip[i].desc_problema+'</label><br>';
-                  htmlSel+='<label>Listado de Servicios/Tareas:</label><br>';
+                  // htmlSel+='<tr>';
+                  // htmlSel+='<td colspan="4">'; 
+                  // htmlSel+='<label>Ubicación:</label><label class="SinNegrita" id="lblUbic">'+vubicacion+'</label><br>';
+                  // htmlSel+='<label>Descripción del problema:</label><label class="SinNegrita" id="lblDescProblema">'+vequip[i].desc_problema+'</label><br>';
+                  // htmlSel+='<label>Listado de Áreas de Servicio/Tareas:</label><br>';
                   
-                  htmlSel+='<table>'+
-                    '<thead>'+
-                      '<th><label class="SinNegrita">Servicio</label></th>'+
-                      '<th><label class="SinNegrita">Tarea</label></th>'+
-                    '</thead>'+
-                    '<tbody>';
-                    for (var j = 0; j < vtareas.length; j++) {
-                      htmlSel+='<tr>';
-                      htmlSel+='<td><label class="SinNegrita">'+vtareas[j].servicio+'</label></td>';
-                      htmlSel+='<td><label class="SinNegrita">'+vtareas[j].tarea+'</label></td>'; 
-                      htmlSel+='</td>';
-                    } 
-                    htmlSel+='</tbody>'+
-                  '</table>';
+                  // htmlSel+='<table>'+
+                  //   '<thead>'+
+                  //     '<th><label class="SinNegrita">Área de Servicio</label></th>'+
+                  //     '<th><label class="SinNegrita">Tarea</label></th>'+
+                  //   '</thead>'+
+                  //   '<tbody>';
+                  //   for (var j = 0; j < vtareas.length; j++) {
+                  //     htmlSel+='<tr>';
+                  //     htmlSel+='<td><label class="SinNegrita">'+vtareas[j].servicio+'</label></td>';
+                  //     htmlSel+='<td><label class="SinNegrita">'+vtareas[j].tarea+'</label></td>'; 
+                  //     htmlSel+='</td>';
+                  //   } 
+                  //   htmlSel+='</tbody>'+
+                  // '</table>';
 
-                  htmlSel+='<label>Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag">'+vdiagnostico+'</label><br>';
-                  htmlSel+='<label>Solución:</label><label class="SinNegrita" id="lblSolucionDiag">'+vsolucion+'</label><br>';
-                  htmlSel+='</td>';
-                  htmlSel+='</tr>';
+                  // htmlSel+='<label>Diagnóstico:</label><label class="SinNegrita" id="lblSolucionDiag">'+vdiagnostico+'</label><br>';
+                  // htmlSel+='<label>Solución:</label><label class="SinNegrita" id="lblSolucionDiag">'+vsolucion+'</label><br>';
+                  // htmlSel+='</td>';
+                  // htmlSel+='</tr>';
                   htmlSel+='</table>';
                   htmlSel+='<br>';
                   
@@ -2309,17 +2465,19 @@
                   $("#divImgCierreOrden").html('');
                   $(".bandVer2").hide();
                 }
+              }else{
+                $(".bandVer2").hide();
               }
 
             }
           });
         }else if(totalEquipos==0){
+          fnUpdAcceso(idOrden, false, 1);
           msjeAlertaPrincipal('','Favor de agregar equipos a la orden de servicio','info');
-          fnUpdAcceso(idOrden, false);
           // $("#cerrarOrdenModal").modal("hide");
         }else{
+          fnUpdAcceso(idOrden, false, 1);
           msjeAlertaSecundario('','No puede finalizar la orden porque hay equipos sin finalizar','error');
-          fnUpdAcceso(idOrden, false);
           // $("#cerrarOrdenModal").modal("hide");
         }
 
@@ -2327,7 +2485,7 @@
         msjeAlertaPrincipal('', '<span>La orden esta siendo utilizada por otro usuario. <br> Favor de verificar.</span>', 'warning');
       }
     });
-  }
+  } 
 
   function fnCancelarModTecnicos(){
     tecnicosAuxiliaresArray=[];
@@ -2337,7 +2495,7 @@
     $("#selTecnicosAuxiliares").prop('disabled', true);
 
     var idSolServ = $("#idSolModTec").val();
-    fnUpdAcceso(idSolServ, false);
+    fnUpdAcceso(idSolServ, false, 1);
 
     $("#idSolModTec").val('');
     $("#tbTecnicos").html('');
@@ -2351,12 +2509,12 @@
     $("#selTecnicosAuxiliaresE").prop('disabled', true);
 
     var idSolServ = $("#idSolModTecE").val();
-    fnUpdAcceso(idSolServ, false);
+    fnUpdAcceso(idSolServ, false, 1);
 
     $("#idSolModTecE").val('');
     $("#tbTecnicosE").html('');
   }
-  //////////////////Editar Tecnicos
+  //////////////////Editar Tecnicos 
   function editTecnicos(idOrden, folio, folioSol, correo,nombrecct,solicitante,desc_estatus, totalEquipos){
     fnConsTecnicos(idOrden); 
 
@@ -2700,6 +2858,102 @@
     return result
   }
 
+  function fnVerDetalleEquipoCerrado(idEquipo){
+
+    // console.log(id);
+    let urlEditar = '{{ route("equipoAtendido", ":id") }}';
+    urlEditar = urlEditar.replace(':id', idEquipo);
+    
+    $.ajax({
+        url: urlEditar,
+        type: 'GET',
+        dataType: 'json', 
+        success: function(data) {
+          // console.log(data);  
+          var etiquetaM='';
+          var ubicacionM='';
+
+          $("#lblEquipoM").text(data.tipo_equipo);
+          $("#lblEstatusM").text('Atendido');
+
+          if(data.etiqueta==null || data.etiqueta==''){
+            etiquetaM='S/D';
+          }else{
+            etiquetaM=data.etiqueta;
+          }
+
+          if(data.ubicacion==null || data.ubicacion==''){
+            ubicacionM='S/D';
+          }else{
+            ubicacionM=data.ubicacion;
+          }
+
+          if(data.id_tipo_equipo==1){ //Servicio / Asesoría
+            $("#divDetalleEquipoM").hide();
+          }else{
+            $("#divDetalleEquipoM").show();
+          }
+
+          $("#lblEtiquetaM").text(etiquetaM);
+          $("#lblDetalleM").text('S/D');
+          $("#lblUbicacionM").text(ubicacionM); 
+          $("#lblDescProblemaM").text(data.desc_problema);
+          $("#lblDiagnosticoM").text(data.diagnostico);
+          $("#lblSolucionM").text(data.solucion);
+
+          if(data.jtareas != null){
+            var jtareasE = JSON.parse(data.jtareas);
+            var htmlTareas='';
+
+            htmlTareas+='<table>';
+                htmlTareas+='<thead>';
+                htmlTareas+='<th><label class="SinNegrita">Área de Servicio</label></th>';
+                htmlTareas+='<th><label class="SinNegrita">Tarea</label></th>';
+                htmlTareas+='</thead>';
+                htmlTareas+='<tbody>';
+            var auxdd='';
+            $.each(jtareasE, function(j, val){
+              if (!jQuery.isEmptyObject(jtareasE[j])) {
+
+                htmlTareas+='<tr>';
+                if(auxdd==jtareasE[j].servicio){ 
+                  htmlTareas+='<td>&nbsp;</td>';
+                }else{
+                  auxdd=jtareasE[j].servicio;
+                  htmlTareas+='<td><label class="SinNegrita">'+jtareasE[j].servicio+'&nbsp;</label></td>';
+                }
+                htmlTareas+='<td>';
+                htmlTareas+='<label class="SinNegrita">'+jtareasE[j].tarea+'</label>';
+                htmlTareas+='</td>';
+                htmlTareas+='</tr>';
+              }
+            });
+
+            htmlTareas+='</tbody>';
+            htmlTareas+='</table>';
+            $('#divListTareasServEquipoM').html(htmlTareas);
+          }
+          var htmlEviden='';
+          var urlArchivo='';
+          var nomArch='';
+          nomArch=data.nombre_archivo;
+
+          if(nomArch==null || nomArch==''){
+            htmlEviden='';
+          }else{ 
+            let urlArchivo = '{{ asset("public/cierreEquipo/:nomVarE") }}';
+            // let urlArchivo = '{{ asset("cierreEquipo/:nomVarE") }}'; //////31/08/2023  //LOCAL
+            urlArchivo = urlArchivo.replace(':nomVarE', nomArch); 
+            htmlEviden+='<img src="'+urlArchivo+'" style="width:100%; heigth:100%;"/>';
+          }
+          $('#divEvidenciaEquipo').html(htmlEviden);
+
+          $('#verDetEquipoAtendidoModal').modal('show');
+        }
+    });
+  
+  }
+
   // function fnValidaAcceso(idSolicServ){
   //   // var acceso=0;
   //   var acceso='';
@@ -2716,7 +2970,7 @@
   //         }else{
   //           console.log('true'); 
   //           acceso=true;
-  //         }
+  //         }UpdAcceso
   //         // acceso = data.getvalidaaccesoorden;
   //       }
   //   });
@@ -2724,10 +2978,8 @@
   //   return acceso;    
   // }
 
-  function fnUpdAcceso(idSolicServ, valida){ 
-
+  function fnUpdAcceso(idSolicServ, valida, band){ 
     // var acceso=false;
-
     $.ajax({ 
       url: '{{ route("actualizaAcceso") }}',
         data:{idSolicServ : idSolicServ, valida : valida},
@@ -2735,21 +2987,24 @@
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         dataType: 'json', 
         success: function(data) {
-          return  data.updAccesoOrden;
+          if(band==0){
+            // return  data.updAccesoOrden;
+            window.location.href  = '{{ route("listadoOrdenes") }}';
+          }
         }
     });
   }
 
   function fnValidaRecarga(idSolicServ){
-
+    bandListado=0; ///0 es que va a listadoOrdenes
     $(window).on('beforeunload', function (){
       //this will work only for Chrome
-      fnUpdAcceso(idSolicServ, false);
+      fnUpdAcceso(idSolicServ, false, bandListado);  
     });
-    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false)'), 50000); // 
+    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 300000); // 
     // clearInterval(refreshIntervalId);
-    console.log(refreshIntervalId);
-    setTimeout(() => clearInterval(refreshIntervalId), 50000); //300000
+    // console.log(refreshIntervalId);
+    setTimeout(() => clearInterval(refreshIntervalId), 300000); //300000
   } 
 
   $(document).ready(function () {
@@ -2976,40 +3231,46 @@
     // });
     /////////////////Fin Editar Tecnicos
 
-    $("#btnCancelTec").click(function() {  
+    // $("#btnCancelTec").click(function() {  
       
-      var idSolServ = $("#idSolModTec").val();
-      console.log(idSolServ);
-      console.log('--4');
-      fnUpdAcceso(idSolServ, false);
-    });  
+    //   var idSolServ = $("#idSolModTec").val();
+    //   console.log(idSolServ);
+    //   console.log('--4');
+    //   fnUpdAcceso(idSolServ, false, 1);
+    // });  
 
     $("#btnCancelTec").click(function() {  
       
       var idSolServ = $("#idSolModTec").val();
-      console.log(idSolServ);
-      console.log('--4');
-      fnUpdAcceso(idSolServ, false);
+      fnUpdAcceso(idSolServ, false, 1);
     }); 
     
     $("#btnCancelTecE").click(function() {  
       
-      var idSolServ = $("#idSolModTec").val();
-      console.log(idSolServ);
-      console.log('--4');
-      fnUpdAcceso(idSolServ, false);
+      var idSolServ = $("#idSolModTecE").val();
+      fnUpdAcceso(idSolServ, false, 1);
     }); 
 
     $("#btnCancelarCancelacion").click(function() { 
       var idSolServ = $("#hdIdSolicServ").val();
-      fnUpdAcceso(idSolServ, false);
+      fnUpdAcceso(idSolServ, false, 1);
     }); 
 
     $("#btnCancelarCierre").click(function() { 
       var idSolServ = $("#hdIdOrdenCierra").val();
-      fnUpdAcceso(idSolServ, false);
+      fnUpdAcceso(idSolServ, false, 1);
     });  
+
   });
+
+  function fnMateriales(idSolicServ){
+
+    let urlEditar = '{{ route("index_materiales", ":id") }}';
+    urlEditar = urlEditar.replace(':id', idSolicServ);
+    
+    window.location.href  = urlEditar; 
+
+  }
 
  </script>
 

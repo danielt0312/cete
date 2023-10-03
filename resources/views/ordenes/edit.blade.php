@@ -546,8 +546,24 @@
                                         <div class="col-12 lineaHr"></div>
                                         
                                         <br>
-                                        <br>
 
+                                        <!-- <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
+                                            <button type="button" class="btn btn-secondary" id="btnCancelarS3">Salir</button> 
+                                        </div> 
+                                        
+                                        <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <button type="button" class="btn btn-secondary" id="btnAnterior3" >Regresar</button>
+                                            @can('185-edit-actualizar-orden')
+                                            <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="msjeAlertConfirm()"> Actualizar</button>
+                                            @endcan
+                                        </div>  -->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
                                             <button type="button" class="btn btn-secondary" id="btnCancelarS3">Salir</button> 
                                         </div> 
@@ -557,7 +573,7 @@
                                             @can('185-edit-actualizar-orden')
                                             <button type="button" class="btn colorBtnPrincipal" id="btnActualizarO" onclick="msjeAlertConfirm()"> Actualizar</button>
                                             @endcan
-                                        </div> 
+                                        </div>
                                     </div>
                                 </div> <!--Fin tab Equipos-->
                             </div>
@@ -1080,6 +1096,9 @@
     //         };
 
     $(document).ready(function () {
+        var hdsol=$("#txtIdSolic").val();
+        console.log(hdsol);  
+        // fnValidaRecarga(hdsol); 
 
         $('.selectpicker').attr('disabled',true); //JC
         $('.selectpicker').selectpicker('refresh');  //JC
@@ -1322,7 +1341,7 @@
             } else {  
                 //  $(".divEtiqueta").show();
                 $("#txtEtiquetaServicio").prop('disabled', false);
-                 $("#checkVer").show();
+                $("#checkVer").show();
             }  
 
             $("#txtEtiquetaServicio").val('');
@@ -1428,6 +1447,8 @@
             // $("#selTarea").prop('disabled',true); ///////28_08_2023
             $('.selectpicker').attr('disabled',true); //JC
             $('.selectpicker').selectpicker('refresh');  //JC
+
+            $("#txtEtiquetaServicio").prop('disabled', false);
             // $("#divRowListadoTareas").hide();
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
@@ -1862,17 +1883,20 @@
 
         $('#btnCancelarS1').click( function() {
             var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
+            fnUpdAcceso(idSolServ, false, 1);
+            window.location.href  = '{{ route("listadoOrdenes") }}';
         });
 
         $('#btnCancelarS2').click( function() {
             var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
+            fnUpdAcceso(idSolServ, false, 1);
+            window.location.href  = '{{ route("listadoOrdenes") }}';
         });
 
         $('#btnCancelarS3').click( function() {
             var idSolServ = $("#txtIdSolic").val();
-            fnUpdAcceso(idSolServ, false);
+            fnUpdAcceso(idSolServ, false, 1);
+            window.location.href  = '{{ route("listadoOrdenes") }}';
         });
     });
 
@@ -2281,7 +2305,7 @@
 
                 fnGuardar();
             }else{
-                //fnUpdAcceso(idSolicServ, false);
+                //fnUpdAcceso(idSolicServ, false, 1);
             }
         });
     }
@@ -2585,19 +2609,19 @@
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(data) {
 
-                    var vequip = JSON.parse(data[0].updsolicservicio);
-                    console.log(vequip+'-------------');
-                    console.log(data[0]['updsolicservicio']+'-------------');
+                    var vresult = JSON.parse(data[0].updsolicservicio);
+                    // console.log(vequip.exito+'-------------');
+                    // console.log(data[0]['updsolicservicio']+'-------------');
                     if(data[0]['updsolicservicio']!=''){  
-                        if(data[0]['updsolicservicio'].exito==1){ 
-                            fnUpdAcceso(idSolicServ, false);
+                        if(vresult.exito==0){  //0 = a que se edito correctamente
+                            fnUpdAcceso(idSolicServ, false, 1);
                             msjeAlerta2('','<span>Se ha editado con éxito la orden de servicio con el folio: <strong>'+folio+'</strong></span>','success',idSolicServ)
-                        }else{
-                            fnUpdAcceso(idSolicServ, false);
+                        }else{ //1= a que no se puede actualizar porque ya tiene estatus de asignada
+                            fnUpdAcceso(idSolicServ, false, 1);
                             msjeAlerta2('', 'No se puede actualizar porque ya ha sido Asignada','error')
                         }
                     }else{ 
-                        fnUpdAcceso(idSolicServ, false);
+                        fnUpdAcceso(idSolicServ, false, 1);
                         msjeAlerta('', 'No se pudo realizar el registro de la orden de servicio','error')
                     }
                     
@@ -3342,16 +3366,14 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType: 'json', 
             success: function(data) {
-            acceso = data.getvalidaaccesoorden;
+                acceso = data.getvalidaaccesoorden; 
             }
         });
 
         return acceso;
     }
 
-    function fnUpdAcceso(idSolicServ, valida){ 
-        var acceso=false;
-
+    function fnUpdAcceso(idSolicServ, valida, band){ 
         $.ajax({ 
         url: '{{ route("actualizaAcceso") }}',
             data:{idSolicServ : idSolicServ, valida : valida},
@@ -3359,12 +3381,27 @@
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             dataType: 'json', 
             success: function(data) {
-            acceso = data.updAccesoOrden;
+                if(band==0){
+                    // return  data.updAccesoOrden;
+                    window.location.href  = '{{ route("listadoOrdenes") }}';
+                }else{
+                    console.log('ss');
+                }
             }
         });
-
-        return acceso;
     }
+
+    function fnValidaRecarga(idSolicServ){
+        bandListado=0; ///0 es que va a listadoOrdenes
+        $(window).on('beforeunload', function (){
+        //this will work only for Chrome
+            fnUpdAcceso(idSolicServ, false, bandListado);  
+        });
+        var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 300000); // 
+        // clearInterval(refreshIntervalId);
+        console.log(refreshIntervalId); 
+        setTimeout(() => clearInterval(refreshIntervalId), 300000); //300000
+    } 
 
 </script>
 @endsection

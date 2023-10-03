@@ -1175,6 +1175,7 @@
             // $("#selTarea").prop('disabled',true); ///////28_08_2023
             $('.selectpicker').attr('disabled',true); //JC
             $('.selectpicker').selectpicker('refresh');  //JC
+            $("#txtEtiquetaServicio").prop('disabled', false);
             console.log(bandCheck+'---6');
             // if(bandCheck==0){
             //     arrTareas=[];
