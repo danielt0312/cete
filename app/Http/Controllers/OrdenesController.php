@@ -314,7 +314,7 @@ class OrdenesController extends Controller
                 $msje_asunto='No es posible atender su solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
                 $msje_correo='Lamentablemente no podemos proceder con su solicitud de servicio con el folio ';
                 $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-                <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
                 $band_ventanilla='1';
                 $folio2=$folio_solic;
             }else{
@@ -372,7 +372,7 @@ class OrdenesController extends Controller
                     $msje_asunto='Se ha iniciado la solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
                     $msje_correo='Se ha iniciado la solicitud de servicio con el folio: ';
                     $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-                    <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                    <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
                     $band_ventanilla='1';
                     $folio2=$folio_solic;
                 }else{
@@ -428,17 +428,25 @@ class OrdenesController extends Controller
         $path = asset('images/logo/logo_cete_3.png');
         //  return $path;
         $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );   
+        // file_get_contents($path, false, stream_context_create($arrContextOptions));
+
+        $data = file_get_contents($path, false, stream_context_create($arrContextOptions));
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
         // $path_footer = base_path('public/images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
         // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
         $path_footer = asset('images/logo/ceteNI.png');
         $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
-        $data_footer = file_get_contents($path_footer);
+        $data_footer = file_get_contents($path_footer,false, stream_context_create($arrContextOptions));
         $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
 
-        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png', false, stream_context_create($arrContextOptions))).'">';
         $fecha = date('Y-m-d');
 
     //   view()->share('servicios::ordenes_servicio/downloadOrden',$ordenServiciosObject, $equipos, $tecnicos_aux);
@@ -518,7 +526,7 @@ class OrdenesController extends Controller
                 $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
                 $msje_correo='Se ha finalizado la solicitud de servicio con el folio: ';
                 $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-                <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
                 $band_ventanilla='1'; 
                 $folio2=$folio_solic;
             }else{
@@ -622,7 +630,7 @@ class OrdenesController extends Controller
                     $msje_asunto='Programación de cita para solicitud de servicio - Sistema C.A.S. - C.E.T.E.';
                     $msje_correo='La solicitud de servicio con el folio: ';
                     $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-                    <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                    <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
                     $band_ventanilla='1';
                     $folio2 = $folio_solic;
                 }else{
@@ -720,7 +728,7 @@ class OrdenesController extends Controller
              'body1' => 'Se ha generado una orden de servicio con el folio:  ',
             'body2' => ' para atender su solicitud, la cual se encuentra',
             'body3' => ' para ser atendida por un técnico de soporte.',
-            'body4' => 'Conserve este folio para continuar con el seguimiento de su orden a través de nuestras redes. Nos pondremos en contacto al teléfono proporcionado.',
+            'body4' => 'Conserve este folio para continuar con el seguimiento de su orden. Nos pondremos en contacto al teléfono proporcionado.',
 
             'firma1' => 'Atentamente.',
             'firma2' => 'Centro Estatal de Tecnología Educativa',
@@ -921,8 +929,7 @@ class OrdenesController extends Controller
     }
 
     /////Materiales
-    public function index_materiales($idSolicServ){
-        // dd($idSolicServ);
+    public function index_materiales($id2){ //AIDA
         $vid_usuario=Auth()->user()->id;
         $getUsername =  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
@@ -934,7 +941,7 @@ class OrdenesController extends Controller
         $query = DB::connection('pgsql')->select("select ss.id as id_servicio, cst.id as id_servicio_tarea, ed.id as id_equipo_detalle, ess.desc_problema , ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  from cas_cete.solic_servicios ss , cas_cete.equipos_serv_solic ess ,
             cas_cete.equipos_detalle ed , cas_cete.cat_equipos_tareas cet , cas_cete.cat_tipos_equipo cte ,
             cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct 
-            where ss.id = ".$idSolicServ."
+            where ss.id = ".$id2."
             and ss.id = ess.id_solic_serv 
             and ess.id = ed.id_equipos_serv 
             and ed.id_equipo_tarea  = cet.id 
@@ -943,9 +950,11 @@ class OrdenesController extends Controller
             and cst.id_servicio = cs.id 
             and cst.id_tarea = ct.id ");
         
+        $id=$id2; //AIDA
         // $getUsername=$getUsername[0]->nameuser;
         // dd ($query);
         return view('ordenes.materiales', compact(
+            'id',  
             'getUsername',
             'query'
         ) );
@@ -961,7 +970,6 @@ class OrdenesController extends Controller
             "exito" => true,
             "select_productos" => $cat_productos
         );
-
     }
 
     public function agregar_materiales(Request $request){
@@ -969,6 +977,5 @@ class OrdenesController extends Controller
         return array(
             "exito" => true
         );
-
     }
 }

@@ -48,6 +48,7 @@
                     </div>
                     <br>
                     <div class="row">
+                        <input type="hidden" id="hdIdSolicServ" value="{{ $id }}"><!--AIDA-->
                         <div class="col-12 table-wrapper" id="divTablaEquipos">
                             <table class="table-responsive" id="tablaEquipos" width="100%">
                                 <thead class="text-align:center;">
@@ -60,7 +61,6 @@
                                 </tr></thead>
                                 <tbody id="tbEquipos">
                                     @foreach($query as $query2)
-                                        <!-- <input type="text" id="hdIdSolic" value="{{ $query2->id }}"> -->
                                         <tr id="">
                                             <td style="text-align:center;" class="text-s text-secondary mb-0">{{$query2->cantidad}}</td>
                                             <td class="text-s text-secondary mb-0">{{$query2->tipo_equipo}}</td>
@@ -318,7 +318,8 @@
                 });
 
                 $("#btnGuardar").click(function(){
-                    var idSolic= $("#hdIdSolic").val();
+                    $idSolServ=$("#hdIdSolicServ").val();//<!--AIDA-->
+
                     if (arreglo_productos=='') {
                         Swal.fire({
                             // title: 'Aprobar Solicitud',
@@ -368,10 +369,10 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                     // alert('Se redireccciona al index');
-                                        let url = '{{ route("index_materiales", ":id") }}';
-                                        url = url.replace(':id', idSolic);
-                                        // window.location.href = '{{route("index_materiales")}}';
-                                        window.location.href = url;
+                                        let url = '{{ route("index_materiales", ":id") }}';//<!--AIDA-->
+                                        url = url.replace(':id', $idSolServ); 
+
+                                        window.location = url;
                                     }
                                 })
                         });

@@ -6,9 +6,9 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>Sistema C.A.S. - C.E.T.E</title>
 </head>
-<body>
+<body>  
+<img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/headercas.png" class="img-fluid rounded-start" style="width: 100%;">
 
-<img src="{{ $message->embed((asset('images/correo/headercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
 <div style="padding-left:3%; padding-right:3%; text-align: justify">
     <h2>{{ $details ['tittle'] }}</h2>
     <hr color="#ab0033!important;">
@@ -38,14 +38,17 @@
 
     @if ($details ['band_ventanilla']=='1')
         <p>De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
-        <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
+        <!-- <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p> -->
+        <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
     @else
     <p>De igual manera, puede consultar el seguimiento de su orden de servicio a través del sitio:
-        <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
+        <!-- <a href="devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p> -->
+        <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a></p>
     @endif
 </div>
     <br>
-<img src="{{ $message->embed((asset('images/correo/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+
+<img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/foothercas.png" class="img-fluid rounded-start" style="width: 100%;">
 
 </body>
 </html>

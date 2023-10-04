@@ -102,9 +102,8 @@ Route::group(['middleware' => 'auth'], function () {
         //verEquiosCerrados en cerrarOrden 
         Route::get('/equipoAtendido/{id}', 'App\Http\Controllers\OrdenesController@getEquiposCerrados')->name('equipoAtendido');
         
-        //-----RUTAS MATERIALES 
+        //-----RUTAS MATERIALES   
         Route::get('/index_materiales/{id}', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
-        // Route::get('/index_materiales', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
         Route::get('/agregar_materiales', 'App\Http\Controllers\OrdenesController@agregar_materiales')->name('agregar_materiales');
         Route::get('/cat_materiales', 'App\Http\Controllers\OrdenesController@cat_materiales')->name('cat_materiales');
     }); 
