@@ -290,8 +290,8 @@
                                                 <textarea class="form-control" id="txtDescripcionReporte" name="txtDescripcionReporte" rows="3">{{ $ordenServiciosDetalle->descrip_reporte }}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-12 justify-content-md-start">
-                                            <div class="form-check"> 
+                                        <div class="col-9 justify-content-md-start">
+                                            <div class="form-check activeCasilla"> 
                                                 @if (isset($ordenServiciosDetalle->seguimiento) && $ordenServiciosDetalle->seguimiento==true)
                                                     <input class="form-check-input" type="checkbox" checked="true" value="" id="checkSeguimiento">
                                                 @else
@@ -300,16 +300,21 @@
                                                 <label style="font-weight: normal;" for="checkSeguimiento">
                                                 ¿Desea recibir notificaciones del seguimiento de su orden al correo proporcionado?
                                                 </label>
-                                                <br> 
-                                                <br> 
                                             </div>
                                         </div>
 
+                                        <div class="col-3"> 
+                                        </div>
+
                                         <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-start">
+                                            <br> 
+                                            <br> 
                                             <button type="button" class="btn btn-secondary" id="btnCancelarS2">Salir</button> 
                                         </div>
 
                                         <div class="col-6 d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <br> 
+                                            <br> 
                                             <button type="button" class="btn btn-secondary" id="btnAnterior2" >Regresar</button>
                                             <button type="button" class="btn colorBtnPrincipal" id="btnSiguiente2" >Siguiente</button>
                                         </div> 

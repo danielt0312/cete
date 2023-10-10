@@ -287,33 +287,35 @@
             </td>
           </tr>
         </table>
-        @if ($ordenServiciosObject->cerrados==1)
-        <table> <!--//////////////////////////////////////////////////////////////////////-->
-          <tr>
-            <th>EVIDENCIAS DE LA ORDEN</th>
-          </tr>
-          <tr>
-            <td class="">
-              <table class="sinbordetable3" >
-                <tr class="sinbordetable3">
-                  @if(isset($ordenServiciosObject->jarchivos_cierre) && $ordenServiciosObject->jarchivos_cierre !=null)
-                    @foreach(json_decode($ordenServiciosObject->jarchivos_cierre) as $val )
-                      <td class="sinbordetable3">
-                        <!-- <br> -->
-                        <div>
-                          <!-- <img  src="{{asset('cierreOrden/'.$val->nombre_archivo)}}" style="width:300px; heigth:auto;" >  -->
-                          <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/$val->nombre_archivo'))) }}" style="width:300px; heigth:auto;">
-                        </div>
-                        <!-- <br> -->
-                      </td> 
-                    @endforeach
-                  @endif
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-        <br><br><br>
+        @if(isset($ordenServiciosObject->jarchivos_cierre) && $ordenServiciosObject->jarchivos_cierre !=null)
+          @if ($ordenServiciosObject->cerrados==1)
+          <table> <!--//////////////////////////////////////////////////////////////////////-->
+            <tr>
+              <th>EVIDENCIAS DE LA ORDEN</th>
+            </tr>
+            <tr>
+              <td class="">
+                <table class="sinbordetable3" >
+                  <tr class="sinbordetable3">
+                    @if(isset($ordenServiciosObject->jarchivos_cierre) && $ordenServiciosObject->jarchivos_cierre !=null)
+                      @foreach(json_decode($ordenServiciosObject->jarchivos_cierre) as $val )
+                        <td class="sinbordetable3">
+                          <!-- <br> -->
+                          <div>
+                            <!-- <img  src="{{asset('cierreOrden/'.$val->nombre_archivo)}}" style="width:300px; heigth:auto;" >  -->
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/.$val->nombre_archivo'))) }}" style="width:100px; heigth:100px;">
+                          </div>
+                          <!-- <br> --> 
+                        </td> 
+                      @endforeach
+                    @endif
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <br><br><br>
+          @endif
         @endif
         <table> <!--//////////////////////////////////////////////////////////////////////-->
           @if ($ordenServiciosObject->jequipos!=null && $ordenServiciosObject->jequipos !='')
@@ -404,8 +406,9 @@
                       </td>
                       <td class="sinbordetable4" style="width:20%;">
                         @if(isset($val->nombre_archivo) && $val->nombre_archivo != '')
-                          <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreEquipo/$val->nombre_archivo'))) }}" style="width:80px; heigth:80px;">
-                          <!-- <img src="{{asset('cierreEquipo/'.$val->nombre_archivo)}}" style="width:80px; heigth:80px;" > -->
+                          @if(file_exists('public/cierreEquipo/'.$val->nombre_archivo)) 
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreEquipo/'.$val->nombre_archivo))) }}" style="width:80px; heigth:80px;"  >
+                          @endif
                         @endif
                       </td>
                     </tr>
@@ -414,7 +417,9 @@
               </tr>
             @endforeach
           @endif
-          <!-- <tr>
+          @if ($ordenServiciosObject->estatus==5 || $ordenServiciosObject->estatus==6)
+          <!--estatus 5 en espera, 6 asignada-->
+          <tr>
             <td>
               <table style="text-align:center;">
                 <tr class="firmas2">
@@ -431,10 +436,10 @@
                 </tfoot>
               </table>
             </td>
-          </tr> -->
+          </tr>
+          @endif
         </table>
     </div>
-    <br>
     <br><br>
     <div class="left" style="width: 100%; height: 100px; " ><br><br>
         <table>

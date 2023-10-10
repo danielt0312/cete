@@ -203,4 +203,13 @@
   .navbar-user{
     width:17em !important;
   }
+
+  .activeCasilla{
+    background-color: #8392ab75 !important;
+    border-radius: 10px;
+    height: 90%;
+    padding-left: 40px;
+    /* padding-top: 10px;; */
+    padding-right: 140px;
+  }
 </style>

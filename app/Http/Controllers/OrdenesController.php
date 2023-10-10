@@ -929,19 +929,15 @@ class OrdenesController extends Controller
     }
 
     /////Materiales
-    public function index_materiales($id2){ //AIDA
+    public function index_materiales($id){
         $vid_usuario=Auth()->user()->id;
         $getUsername =  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
-        $cat_productos = DB::connection('pgsql')->select("select * from cas_cete.cat_producto_servicio cps , cas_cete.cat_producto cp, cas_cete.cat_medida cm , cas_cete.cat_tipo_producto ctp 
-        where cps.id_producto = cp.id and cp.id_tipo_medida = cm.id and cp.id_tipo_producto = ctp.id and cps.id_servicio_tarea = 48 ");
-        // $cat_productos = DB::connection('pgsql')->select("select * from cas_cete.cat_producto cp");
-        // $cat_productos = DB::connection('pgsql')->select("select * from cas_cete.cat_producto cp");
 
         $query = DB::connection('pgsql')->select("select ss.id as id_servicio, cst.id as id_servicio_tarea, ed.id as id_equipo_detalle, ess.desc_problema , ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  from cas_cete.solic_servicios ss , cas_cete.equipos_serv_solic ess ,
             cas_cete.equipos_detalle ed , cas_cete.cat_equipos_tareas cet , cas_cete.cat_tipos_equipo cte ,
             cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct 
-            where ss.id = ".$id2."
+            where ss.id = ".$id."
             and ss.id = ess.id_solic_serv 
             and ess.id = ed.id_equipos_serv 
             and ed.id_equipo_tarea  = cet.id 
@@ -949,33 +945,37 @@ class OrdenesController extends Controller
             and cet.id_serv_tarea = cst.id 
             and cst.id_servicio = cs.id 
             and cst.id_tarea = ct.id ");
-        
-        $id=$id2; //AIDA
-        // $getUsername=$getUsername[0]->nameuser;
-        // dd ($query);
+
         return view('ordenes.materiales', compact(
-            'id',  
             'getUsername',
             'query'
         ) );
         // return view('ordenes.materiales');
     }
 
-    public function cat_materiales(Request $request){
-        // dd($request);
-        $cat_productos = DB::connection('pgsql')->select("select * from cas_cete.cat_producto_servicio cps , cas_cete.cat_producto cp, cas_cete.cat_medida cm , cas_cete.cat_tipo_producto ctp 
-        where cps.id_producto = cp.id and cp.id_tipo_medida = cm.id and cp.id_tipo_producto = ctp.id and cps.id_servicio_tarea = ".$request->id_servicio_tarea." ");
-        // dd($cat_productos);
+    public function select_materiales(Request $request){
+        $select_agrupado2 = DB::connection('pgsql')->select
+            ("select cp.nombre from cas_cete.cat_producto_servicio cps  , cas_cete.cat_producto cp
+                where cps.id_producto = cp.id 
+                and cps.id_servicio_tarea = ".$request->id_servicio_tarea."
+                group by cp.nombre");
+        // dd($select_agrupado2);
         return array(
             "exito" => true,
-            "select_productos" => $cat_productos
-        );
+            "select_agrupado2" => $select_agrupado2
+        ); 
     }
 
-    public function agregar_materiales(Request $request){
+    public function cat_materiales2(Request $request){
         // dd($request);
+        $cat_productos2 = DB::connection('pgsql')->select("select * from cas_cete.cat_producto_servicio cps , cas_cete.cat_producto cp, cas_cete.cat_medida cm , cas_cete.cat_tipo_producto ctp 
+        where cps.id_producto = cp.id and cp.id_tipo_medida = cm.id and
+        cp.id_tipo_producto = ctp.id and cps.id_servicio_tarea = ".$request->id_servicio_tarea." and nombre like '%".$request->nombre."%'");
+        // dd($cat_productos2);
         return array(
-            "exito" => true
+            "exito" => true,
+            "select_productos2" => $cat_productos2
         );
+
     }
 }

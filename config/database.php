@@ -124,7 +124,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => '172.21.88.224',
             'port' => '5432',
-            'database' => 'sistemas_cete_test',
+            'database' => 'sistemas_cete_test', 
             'username' => 'dev_jcarlos_it',
             'password' => 'g38.ismx/&m5',
             'charset' => 'utf8',

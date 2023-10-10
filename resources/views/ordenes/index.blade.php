@@ -1385,11 +1385,11 @@
                    estatuss+= '<div class="dropdown btn-group dropstart">'+
                          '<button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" ><i class="fa fa-ellipsis-v text-xs"></i></button>'+
                          '<ul class="dropdown-menu" aria-labelledby="opciones1">';
-                  //  if(contAsesoServ > 0){ 
-                  //   estatuss+= '@can("272-opt-get-materiales")<li>'+ 
-                  //        '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-plus"></i> Agregar Materiales</a>'+
-                  //        '</li>@endcan';
-                  //  }  
+                   if(contAsesoServ > 0){ 
+                    estatuss+= '@can("272-opt-get-materiales")<li>'+ 
+                         '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-plus"></i> Agregar Materiales</a>'+
+                         '</li>@endcan';
+                   }  
                   
                    estatuss+='@can("188-opt-imprimir-registro")<li>'+ 
                         //  '<a onclick="imprimirPDFOrden('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-download"></i> Imprimir Solicitud</a>'+
@@ -1420,12 +1420,12 @@
                                 '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
                                 '</li>@endcan';
                             }
-
-                            // if(contAsesoServ > 0){ 
-                            //   estatuss+= '@can("272-opt-get-materiales")<li>'+ 
-                            //       '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-plus"></i> Agregar Materiales</a>'+
-                            //       '</li>@endcan';
-                            // }  
+ 
+                            if(contAsesoServ > 0){  
+                              estatuss+= '@can("272-opt-get-materiales")<li>'+ 
+                                  '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-plus"></i> Agregar Materiales</a>'+
+                                  '</li>@endcan';
+                            }  
                           }else{
                             estatuss+='@can("170-opt-edit-registro")<li>'+
                                 '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+

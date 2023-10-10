@@ -268,14 +268,17 @@
                                                 <textarea class="form-control" id="txtDescripcionReporte" name="txtDescripcionReporte" rows="3"></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-12 justify-content-md-start">
-                                            <div class="form-check">
+                                        <div class="col-9 justify-content-md-start">
+                                            <div class="form-check activeCasilla">
                                                 <input class="form-check-input" type="checkbox" value="" id="checkSeguimiento" name="checkSeguimiento">
                                                 <label style="font-weight: normal;" for="checkSeguimiento">
                                                 ¿Desea recibir notificaciones del seguimiento de su orden al correo proporcionado?
                                                 </label>
                                             </div>
                                         </div>
+
+                                        <div class="col-3"> 
+                                        </div> 
 
                                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                                             <button type="button" class="btn btn-secondary" id="btnAnterior2" >Regresar</button>
