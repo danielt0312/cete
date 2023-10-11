@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MailSendO;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class OrdenesController extends Controller
 {
@@ -928,13 +929,96 @@ class OrdenesController extends Controller
         return response()->json($equiposCerrados);
     }
 
+    public function fnGeneraPDF_app($id)
+    {
+        $ordenServicios = DB::connection('pgsql')->select("select * from cas_cete.app_detalle_cierre_orden(".$id.")");
+        //  print_r($ordenServicios);
+        $ordenServiciosObject=$ordenServicios[0]; 
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $pdf = new Dompdf($options);
+
+        view()->share('ordenes/downloadCierreOrden',$ordenServiciosObject);
+        $pdf = PDF::loadView('ordenes/downloadCierreOrden', ['ordenServiciosObject' => $ordenServiciosObject])->setPaper('a4', 'landscape');
+
+        $rutaa="cierreOrden/".$id.".pdf";
+        $rutaaGuardado=public_path($rutaa);
+
+        if(file_exists( $rutaa )){
+            return 0;
+        }else{
+            $pdfnom = $id.".pdf";
+            Storage::disk('sftp')->put("cierreOrden/".$pdfnom, $pdf -> output());
+            
+                //  print_r("cierraPDF");
+            $no = DB::connection('pgsql')->select("select * from cas_cete.app_ins_cierre_detalle(".$id.", 'OP', '".$pdfnom."')");
+            $this -> updCorreo_app($id, $rutaaGuardado, $pdfnom);
+            
+                //  print_r("PDF");
+            return 1;
+        }
+    }
+    
+    public function updCorreo_app($id, $rutaa, $pdfnom){
+        $exito = DB::connection('pgsql')->select("select * from cas_cete.app_detalle_correo(".$id.")");
+       // print_r($exito);    
+           if($exito != null || $exito != ''){
+            // print_r($exito[0]->folio);
+            // print_r($exito[0]->folio_solic);
+            // print_r($exito[0]->correo);
+            $folio = $exito[0]->folio;
+            $folio_solic = $exito[0]->folio_solic;
+            $correo = $exito[0]->correo;
+            $nombrecct = $exito[0]->nombrecct;
+            $solicitante = $exito[0]->solicitante;
+            if($folio_solic != null ){ // si viene desde solicitud
+                $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha finalizado la solicitud de servicio con el folio: ';
+                $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                <a href="sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla  nica CETE</ins></a>';
+                $band_ventanilla='1'; 
+                $folio2=$folio_solic;
+            }else{
+                $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                $msje_correo='Se ha finalizado la orden de servicio con el folio: '; 
+                $msje_ventanilla='';
+                $band_ventanilla='0';
+                $folio2=$folio;
+            }
+            $details = [
+                'asunto' => $msje_asunto,
+                'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                'folio' => $folio2.' ',
+                'estatus' => '',
+                'body1' => $msje_correo,
+                'body2' => 'por parte de nuestros técnicos de soporte especializados.',
+                'body3' => 'Agradecemos su confianza en nuestros servicios. Quedamos a sus órdenes para cualquier duda o aclaración sobre el diagnóstico y solución de su(s) equipos.',
+                'body4' => '',
+                'firma1' => 'Atentamente.',
+                'firma2' => 'Centro Estatal de Tecnolog a Educativa',
+                'band_ventanilla' => $band_ventanilla,
+                'ventanilla' => $msje_ventanilla,
+                'fecha_hora_asignacion' =>''
+            ];
+
+            Mail::to("$correo")->send(new MailSendO($details,$rutaa)); 
+
+            return response()->json($exito);
+        }else{
+        }
+    }
+
     /////Materiales
     public function index_materiales($id){
         $vid_usuario=Auth()->user()->id;
         $getUsername =  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
 
-        $query = DB::connection('pgsql')->select("select ss.id as id_servicio, cst.id as id_servicio_tarea, ed.id as id_equipo_detalle, ess.desc_problema , ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  from cas_cete.solic_servicios ss , cas_cete.equipos_serv_solic ess ,
+        $query = DB::connection('pgsql')->select("select ss.id as id_servicio, cst.id as id_servicio_tarea, ed.id as id_equipo_detalle, ess.desc_problema ,
+            ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  , ct.id as id_tarea
+            from cas_cete.solic_servicios ss , cas_cete.equipos_serv_solic ess ,
             cas_cete.equipos_detalle ed , cas_cete.cat_equipos_tareas cet , cas_cete.cat_tipos_equipo cte ,
             cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct 
             where ss.id = ".$id."
@@ -946,9 +1030,27 @@ class OrdenesController extends Controller
             and cst.id_servicio = cs.id 
             and cst.id_tarea = ct.id ");
 
+        $datos = DB::connection('pgsql')->select("select ss.id as id_solicitud, ss.solicitante , ccdt.clavecct , ccdt.nombrect , ccdt.id_municipio ,
+            cn.nivel , cm.municipio , rc.folio , ce2.estatus , sst.fecha 
+            from cas_cete.solic_servicios ss , insumos.cat_centros_de_trabajo ccdt , insumos.cat_subniveles cs ,
+            insumos.cat_niveles cn , insumos.cat_municipios cm , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
+            cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 
+            where ss.id_cct = ccdt.id 
+            and ccdt.id_subnivel  = cs.id 
+            and cs.id_nivel = cn.id 
+            and ccdt.id_municipio = cm.id 
+            and ss.id = rc.id_solic_serv 
+            and rc.id = sst.id_reg_captacion 
+            and sst.id_capta_estatus = ce.id 
+            and ce.id_estatus = ce2.id 
+            and ss.id = ".$id."
+            order by sst.fecha desc
+            limit 1");
+
         return view('ordenes.materiales', compact(
             'getUsername',
-            'query'
+            'query',
+            'datos'
         ) );
         // return view('ordenes.materiales');
     }
@@ -978,4 +1080,52 @@ class OrdenesController extends Controller
         );
 
     }
+
+    public function guardar_materiales(Request $request){
+        // dd($request);
+        if ($request->arreglo_eliminar_producto != '' || $request->arreglo_eliminar_producto != null) {
+            // dd('entro');
+            foreach ($request['arreglo_eliminar_producto'] as $key => $value) {
+                if ($value['bandera'] == 1) {
+                    $fn_editar_material = DB::select("select * from fn_editar_material(".$value['id_producto_detalle'].")");
+                }
+                
+            }
+        }    
+        
+        foreach ($request['arreglo_productos_guardar2'] as $key => $value) {
+            if ($value['update'] == 0) {
+                $fn_insert_material = DB::select("select * from fn_insert_material(".$request->id_equipo_detalle.", ".$value['id_producto'].", ".$value['cantidad'].")");
+            }
+        }
+
+        return array(
+            "exito" => true
+
+        );
+        
+    }
+
+    public function detalle_material(Request $request){
+        $detalle_material = DB::connection('pgsql')->select("select cst.id as id_servicio_tarea, cs.id as id_servicio, ct.id as id_tarea,
+        cp.id as id_producto, cp.nombre , cp.descripcion , cp.especificacion , cm.medida , ctp.tipo , pd.cantidad , pd.id as id_producto_detalle , pd.activo
+        from cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct ,
+        cas_cete.cat_producto_servicio cps , cas_cete.cat_producto cp , cas_cete.cat_medida cm , cas_cete.cat_tipo_producto ctp ,
+        cas_cete.producto_detalle pd 
+        where cst.id_servicio = cs.id 
+        and cst.id_tarea = ct.id 
+        and cst.id = cps.id_servicio_tarea 
+        and cps.id_producto = cp.id 
+        and cp.id_tipo_medida = cm.id 
+        and cp.id_tipo_producto = ctp.id 
+        and cp.id = pd.id_producto 
+        and pd.id_equipo_detalle = ".$request->id_equipo_detalle."");
+
+        return array(
+            "exito" => true,
+            "detalle_material" => $detalle_material
+        );
+        // dd($detalle_material);
+    }
+
 }

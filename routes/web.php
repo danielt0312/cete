@@ -71,6 +71,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('download-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadPDF')->name('download-pdf');
         Route::get('download-pdf-ima/{id}', 'App\Http\Controllers\OrdenesController@downloadPDFima')->name('download-pdf-ima');
         Route::get('download-cierre-pdf/{id}', 'App\Http\Controllers\OrdenesController@downloadCierrePDF')->name('download-cierre-pdf');
+        Route::get('generaPDF/{id}', 'App\Http\Controllers\OrdenesController@fnGeneraPDF_app')->name('generaPDF');
 
         //Cerrar Orden
         Route::get('/verDetalleOrden/{id}', 'App\Http\Controllers\OrdenesController@detalleOrden')->name('verDetalleOrden');
@@ -104,8 +105,10 @@ Route::group(['middleware' => 'auth'], function () {
         
         //-----RUTAS MATERIALES   
         Route::get('/index_materiales/{id}', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
-        Route::get('/agregar_materiales', 'App\Http\Controllers\OrdenesController@agregar_materiales')->name('agregar_materiales');
-        Route::get('/cat_materiales', 'App\Http\Controllers\OrdenesController@cat_materiales')->name('cat_materiales');
+        Route::get('/cat_materiales2', 'App\Http\Controllers\OrdenesController@cat_materiales2')->name('cat_materiales2');
+        Route::get('/select_materiales', 'App\Http\Controllers\OrdenesController@select_materiales')->name('select_materiales');
+        Route::post('/guardar_materiales', 'App\Http\Controllers\OrdenesController@guardar_materiales')->name('guardar_materiales');
+        Route::get('/detalle_material', 'App\Http\Controllers\OrdenesController@detalle_material')->name('detalle_material');
     }); 
 
     Route::group(['prefix' => 'solicitudes'], function(){

@@ -1,5 +1,6 @@
 @extends('layouts.contentIncludes')
 @section('title','CAS CETE')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <style>
 .table-wrapper {
     width: 100%;
@@ -37,8 +38,35 @@
             <div class="card">
                 
                 
-
+                <input type="text" id="id_solicitud_input" hidden value="{{ $query[0]->id_servicio}}">
                 <div class="card-body">
+                    @foreach($datos as $datos2)
+                        <div class="row">
+                            <div class="col-12">
+                                <label style="color:#ab0033 !important">FOLIO DE ORDEN:</label>
+                                <label style="color:#ab0033 !important">{{$datos2->folio}}</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label style="color:#ab0033 !important">ESTATUS:</label>
+                                <label style="color:#ab0033 !important">{{$datos2->estatus}}</label>
+                            
+                            <div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                            
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: {{$datos2->clavecct}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: {{$datos2->nombrect}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL DEL C.T.&nbsp;: {{$datos2->nivel}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO DEL C.T.&nbsp;: {{$datos2->municipio}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            
+                            <div>
+                        </div>
+                    @endforeach
+                    <br>
                     <div class="row">
                         <div class="col-5" style="text-align:center;  background-color:#ab0033;">
                             <span style="color:white;">Descripción de servicio(s) o asesoria(s) agregados</span>
@@ -46,9 +74,8 @@
                         <div class="col-7" style="text-align:center; border-bottom:3px solid #ab0033;">
                         </div>
                     </div>
-                    <br>
+                   <br>
                     <div class="row">
-                        <input type="hidden" id="hdIdSolicServ" value="{{ $id }}"><!--AIDA-->
                         <div class="col-12 table-wrapper" id="divTablaEquipos">
                             <table class="table-responsive" id="tablaEquipos" width="100%">
                                 <thead class="text-align:center;">
@@ -61,28 +88,30 @@
                                 </tr></thead>
                                 <tbody id="tbEquipos">
                                     @foreach($query as $query2)
-                                        <tr id="">
-                                            <td style="text-align:center;" class="text-s text-secondary mb-0">{{$query2->cantidad}}</td>
-                                            <td class="text-s text-secondary mb-0">{{$query2->tipo_equipo}}</td>
-                                            <td class="text-s text-secondary mb-0">{{$query2->desc_problema}}</td>
-                                            <td class="text-s text-secondary mb-0">{{$query2->servicio}}</td>
-                                            <td class="text-s text-secondary mb-0">{{$query2->tarea}}</td>
-                                            <td style="text-align:center;">
-                                                <div class="dropdown btn-group dro pstart">
-                                                    <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
-                                                        <i class="fa fa-ellipsis-v text-xs"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li>
-                                                            <a onclick="fnAgregarMaterial({{$query2->id_servicio_tarea}})" class="dropdown-item"> 
-                                                            <i class="fas fa-edit"></i>
-                                                                Agregar Material
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        @if( $query2->id_tarea == 22 || $query2->id_tarea == 23 || $query2->id_tarea == 37)
+                                            <tr id="">
+                                                <td style="text-align:center;" class="text-s text-secondary mb-0">{{$query2->cantidad}}</td>
+                                                <td class="text-s text-secondary mb-0">{{$query2->tipo_equipo}}</td>
+                                                <td class="text-s text-secondary mb-0">{{$query2->desc_problema}}</td>
+                                                <td class="text-s text-secondary mb-0">{{$query2->servicio}}</td>
+                                                <td class="text-s text-secondary mb-0">{{$query2->tarea}}</td>
+                                                <td style="text-align:center;">
+                                                    <div class="dropdown btn-group dro pstart">
+                                                        <button class="btn btn-link text-secondary mb-0" data-bs-toggle="dropdown" id="opciones" aria-haspopup="true" aria-expanded="false" >
+                                                            <i class="fa fa-ellipsis-v text-xs"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu">
+                                                            <li>
+                                                                <a onclick="fnAgregarMaterial({{$query2->id_servicio_tarea}},{{$query2->id_equipo_detalle}})" class="dropdown-item"> 
+                                                                <i class="fas fa-edit"></i>
+                                                                    Agregar Material
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     @endforeach
                                         
                             </table>
@@ -95,7 +124,7 @@
                         <br>
                         <div class="col-12 lineaHr"></div><br><br>
                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button type="button" class="btn btn-secondary" id="btnRegresar">Regresar</button>
+                            <button type="button" class="btn btn-secondary" href='{{route("listadoOrdenes")}}' id="btnRegresar">Regresar</button>
                             <button type="button" class="btn btn-secondary" id="btnRegresar">Imprimir</button>
                             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnActualizar"> Actualizar</button> -->
                         </div> 
@@ -112,6 +141,33 @@
                 <div class="modal-header">
                 </div>
                 <div class="modal-body" id="modal_body">
+                    @foreach($datos as $datos2)
+                        <div class="row">
+                            <div class="col-12">
+                                <label style="color:#ab0033 !important">FOLIO DE ORDEN:</label>
+                                <label style="color:#ab0033 !important">{{$datos2->folio}}</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label style="color:#ab0033 !important">ESTATUS:</label>
+                                <label style="color:#ab0033 !important">{{$datos2->estatus}}</label>
+                            
+                            <div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-12">
+                            
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">CENTRO DE TRABAJO&nbsp;: {{$datos2->clavecct}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">NOMBRE DEL C.T.&nbsp;: {{$datos2->nombrect}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">NIVEL DEL C.T.&nbsp;: {{$datos2->nivel}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <b><span id="span_centro_trabajo" style="font-size:0.75em;">MUNICIPIO DEL C.T.&nbsp;: {{$datos2->municipio}}</span></b>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            
+                            <div>
+                        </div> -->
+                    @endforeach
+                    <br>
                     <div class="row">
                         <div class="col-4" style="text-align:center;  background-color:#ab0033;">
                             <label style="color:white;">Agregar Material o Refaccion</label>
@@ -119,49 +175,54 @@
                         <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
                     </div>
                     <br>
-                    <div class="row">
-                        <div id="modal_solicitud_inf"></div>
-                    </div>
-                    <br>
-                    <!-- <div class="row">
-                        <div class="col-7">
-                            <label for="">Producto</label><br>
-                            <select class="form-select" title="SELECCIONAR TAREA" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" aria-label="Default select example" id="id_proucto">
-                                <option value="0">Seleccionar Producto</option>
-                                <option value="1">unidad termomagnetica square D un polo 10 amperes</option>
-                                <option value="2">unidad termomagnetica square D tres polos 20 amperes</option>
-                                <option value="3">poliflex poliflex color naranja de 1/2"</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label for="">Tipo de Medida</label><br>
-                            <input disabled class="form-control" type="text" id="id_medida" value="Metro">
-                        </div>
-                        <div class="col-1">
-                            <label for="">Cantidad</label><br>
-                            <input class="form-control" type="number" value="1" id="cantidad">
-                        </div>
-                        <div class="col-1">
-                            <br>
-                            <button type="button"  class="btn colorBtnPrincipal" id="btnAgregarProducto"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>
-                        </div>
-                        
-                    </div> -->
+                    <div class="row" id="div_select"></div>
                   
                     
                     <br>
+
                     <div class="row">
-                        <div class="col-12 table-wrapper" id="divTablaProductos">
+                        <div class="col-12 table-wrapper" id="divTablaProductos2">
                         
                             <table class="table">
                                 <thead>
-                                    <th>PRODUCTO</th>
-                                    <th>ESPECIFICACION</th>
-                                    <th>MEDIDA</th>
-                                    <th>CANTIDAD</th>
-                                    <th>ACCIONES</th>
+                                    <th>#</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">DESCRIPCION</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">ESPECIFICACION</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">MEDIDA</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">TIPO</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">CANTIDAD</th>
                                 </thead>
-                                <tbody id="tbProductos">
+                                <tbody id="tbProductos2">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <!-- <button class="btn btn-secondary float-right" style="font-size:0.80em;" id="btn_regresar1">Regresar</button> -->
+                        <button  class="ms-3 btn btn-primary float-right" style="font-size:0.80em;"  id="btn_agregar_material">Agregar Material</button>
+                    </div>
+                    <br>
+                    <div class="row" id="divEncabezadoTabla">
+                        <div class="col-4" style="text-align:center;  background-color:#ab0033;">
+                            <label style="color:white;">Tabla de materiales agregados</label>
+                        </div>
+                        <div class="col-8" style="text-align:center; border-bottom:3px solid #ab0033;"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 table-wrapper" id="divTablaProductos3">
+                        
+                            <table class="table">
+                                <thead>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">Producto</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">DESCRIPCION</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">ESPECIFICACION</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">MEDIDA</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">TIPO</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">CANTIDAD</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder">ACCION</th>
+                                </thead>
+                                <tbody id="tbProductos3">
 
                                 </tbody>
                             </table>
@@ -212,172 +273,282 @@
     
     <script>
         var arreglo_productos = [];
+        var arreglo_productos2 = [];
+        var arreglo_productos_guardar = [];
+        var arreglo_productos_guardar2 = [];
+
+        var arreglo_productos3 = [];
+        var arreglo_eliminar_producto = [];
+        var bandera_material = 0;
+        var bandera_guardar = 0;
+        
         $(function () {
             $('#exampleModal').modal({backdrop: 'static', keyboard: false})
             // $('#divTablaProductos').hide();
         });
 
-        function fnAgregarMaterial(id){
+        function fnAgregarMaterial(id,id_equipo_detalle){
+            
+            
+            
+            var contador_1 = 0;
+            var id_equipo_detalle = id_equipo_detalle;
             // id="58"
             $('#divTablaProductos').hide();
+            $('#divEncabezadoTabla').hide();
+            
             $('#id_proucto').prop('disabled',true);
             
-            $.ajax({
-            url: '{{route("cat_materiales")}}',
-            type: 'GET',
-            data: {'id_servicio_tarea' : id}
-            }).always(function(r) {
-                console.log(r);
-                html0='';
-        
-                html0+='<div class="row">';
-                    html0+='<div class="col-7">';
-                    html0+='<label for="">Producto</label><br>';
-                    html0+='<select class="form-select" title="SELECCIONAR TAREA" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" aria-label="Default select example" id="id_proucto">';
-                    html0+='<option value="0">Seleccionar Producto</option>';
-                    for (let i = 0; i < r.select_productos.length; i++) {
-                        // const element = r.select_productos[i];
-                        html0+='<option value='+r.select_productos[i]['id_producto']+'><br>'+r.select_productos[i]['nombre']+' - '+r.select_productos[i]['descripcion']+'</option>';
-                    }
-                    html0+='</select>';
-                    html0+='</div>';
-                    html0+='<div class="col-3">';
-                    html0+='<label for="">Tipo de Medida</label><br>';
-                    html0+='<input disabled class="form-control" type="text" id="id_medida" value="">';
-                    html0+='</div>';
-                    html0+='<div class="col-1">';
-                    html0+='<label for="">Cantidad</label><br>';
-                    html0+='<input class="form-control" type="number" value="1" id="cantidad">';
-                    html0+='</div>';
-                    html0+='<div class="col-1">';
-                    html0+='<br>';
-                    html0+='<button type="button"  class="btn colorBtnPrincipal" id="btnAgregarProducto"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/></svg></button>';
-                    html0+='</div>';
-                html0+='</div>';
-                html0+='<div class="row">'
-                    html0+='<div class="col-12">';
-                        html0+='<label for="">Especificación</label><br>';
-                        html0+='<span id="etiqueta_especificacion" for=""></span><br>';
-                    html0+='</div>';
-                html0+='</div>';
 
-                $('#modal_solicitud_inf').html(html0);
-                $('#id_proucto').prop('disabled',false);
-                $('#id_proucto').change(function(){
-                    // console.log($('#id_proucto').val());
-                    var valor_select = $('#id_proucto').val();
-                    for (let i = 0; i < r.select_productos.length; i++) {
-                        if (r.select_productos[i]['id_producto'] == valor_select) {
-                            console.log(r.select_productos[i]['medida']);
-                            $('#id_medida').val(r.select_productos[i]['medida']);
-                            $('#etiqueta_especificacion').append(r.select_productos[i]['especificacion']);
-                            
+            $('#divTablaProductos2').hide();
+            $('#divTablaProductos3').hide();
+            
+            $('#btn_agregar_material').hide();
+
+            $.ajax({
+                url: '{{route("detalle_material")}}',
+                type: 'GET',
+                data: {'id_equipo_detalle' : id_equipo_detalle}
+                }).always(function(r) {
+                    var contador3 = 0;
+                    console.log(r);
+                    for (let i = 0; i < r.detalle_material.length; i++) {
+                        if (r.detalle_material[i]['activo'] == true) {
+                            arreglo_productos_guardar.push({contador:contador3, id_producto:r.detalle_material[i]['id_producto'], nombre:r.detalle_material[i]['nombre'],
+                                id_servicio_tarea:r.detalle_material[i]['id_servicio_tarea'], descripcion:r.detalle_material[i]['descripcion'],
+                                especificacion:r.detalle_material[i]['especificacion'], medida:r.detalle_material[i]['medida'], tipo:r.detalle_material[i]['tipo'],
+                                bandera :1, contador: contador3, cantidad : r.detalle_material[i]['cantidad'], update:1, id_producto_detalle : r.detalle_material[i]['id_producto_detalle']});
+                            contador3 = contador3 + 1;
                         }
                         
                     }
-                });
-                var contador = 0;
-            
-                $('#divTablaProductos').hide();
-                html1='';
-                $('#tbProductos').html(html1);
+                    // arreglo_productos3.push(r.detalle_material);
+                    console.log(arreglo_productos3);
+                    drawRowMaterial2_1();
+                    // $('#divTablaProductos2').show();
+            });
+
+            $.ajax({
+                url: '{{route("select_materiales")}}',
+                type: 'GET',
+                data: {'id_servicio_tarea' : id}
+            }).always(function(r) {
+                // console.log(r);
                 
-                $('#btnAgregarProducto').click(function(){
-                    // console.log(arreglo_productos);
-                    if ($('#id_proucto').val()==0) {
-                        // alert('no');
-                        Swal.fire({
-                            // title: 'Aprobar Solicitud',
-                            // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                            html: '<p>Favor de Seleccionar un Producto</p>',
-                            customClass: 'msj_solicitud',
-                            icon: 'warning',
-                            confirmButtonColor: '#b50915',
-                            confirmButtonText: 'Aceptar',
-                            width: 310,
-                            allowOutsideClick: false
-                        })
-                    }
-                    else{
-                        console.log('entro');
-                        var id_producto = $('#id_proucto').val();
-                        var id_cantidad = $('#cantidad').val();
-                        var text_producto = $( "#id_proucto option:selected" ).text();
-                        var text_cantidad = $('#cantidad').val();
-                        var text_medida = $('#id_medida').val();
-                        var text_especificacion = $('#etiqueta_especificacion').text();
+                var contador = 0;
+                var html0 = '';
+                // html0+='';
+                html0+='<div class="col-7">';
+                    html0+='<label for="">Productos</label><br>';
+                    html0+='<select class="form-select" title="SELECCIONAR TAREA" data-selected-text-format="count" data-count-selected-text="{0} Tarea(s) Seleccionada(s)" aria-label="Default select example" id="id_producto2">';
+                        html0+='<option value="0">Seleccionar Productos</option>';
+                        for (let i = 0; i < r.select_agrupado2.length; i++) {
+                            // console.log(r.select_agrupado2[i]['nombre']);
+                            html0+='<option value='+r.select_agrupado2[i]['nombre']+'>'+r.select_agrupado2[i]['nombre']+'</option>';
+                            
+                        }
+                    html0+='</select>';
+                html0+='</div>';
 
-                        arreglo_productos.push({contador:contador, id_detalel_equipo:id, id_producto:id_producto, text_producto:text_producto,
-                            id_cantidad:id_cantidad, text_cantidad:text_cantidad, text_medida:text_medida, text_especificacion:text_especificacion});
+                $("#div_select").html(html0);
 
-                        contador = contador + 1;
-                        drawRowMaterial();
-                        $('#divTablaProductos').show();
-                    }
-                    
+
+                $('#id_producto2').change(function(){
+                    // console.log('entro el change');
+                    bandera_material = 0;
+                    bandera_guardar = 0;
+                    $('#btn_agregar_material').prop('disabled',true);
+                    // console.log($("#id_producto2 option:selected").text());
+                    var nombre = $("#id_producto2 option:selected").text();
+                    $.ajax({
+                        url: '{{route("cat_materiales2")}}',
+                        type: 'GET',
+                        data: {'nombre' : nombre, 'id_servicio_tarea' : id}
+                    }).always(function(r) {
+                        
+                        // console.log(r);
+                        
+                        var contador2 = 0;
+                        arreglo_productos2 = [];
+                        
+                        for (let i = 0; i < r.select_productos2.length; i++) {
+                            // console.log(r.select_productos2[i]['descripcion']);
+                            arreglo_productos2.push({contador:contador_1, id_producto:r.select_productos2[i]['id_producto'], nombre:r.select_productos2[i]['nombre'],
+                                id_servicio_tarea:r.select_productos2[i]['id_servicio_tarea'], descripcion:r.select_productos2[i]['descripcion'],
+                                especificacion:r.select_productos2[i]['especificacion'], medida:r.select_productos2[i]['medida'], tipo:r.select_productos2[i]['tipo']});
+                                
+                                contador_1 = contador_1 + 1;
+                        }
+                        // console.log(arreglo_productos2);
+                        
+                        drawRowMaterial2();
+                        $('#divTablaProductos2').show();
+                        $('#btn_agregar_material').show();
+                        
+                        
+                        for (let i = 0; i < arreglo_productos2.length; i++) {
+                            // console.log('entro el arreglo_productos2');
+                            arreglo_productos_guardar.push({id_producto:arreglo_productos2[i]['id_producto'],
+                                id_servicio_tarea:arreglo_productos2[i]['id_servicio_tarea'], descripcion:arreglo_productos2[i]['descripcion'],
+                                especificacion:arreglo_productos2[i]['especificacion'], medida:arreglo_productos2[i]['medida'],
+                                tipo:arreglo_productos2[i]['tipo'], nombre:arreglo_productos2[i]['nombre'],bandera :0, cantidad:1, contador:arreglo_productos2[i]['contador'],
+                                update:0, id_producto_detalle :0});
+                              
+                            
+                            $('#check_'+i).click(function(){
+                                // console.log('entro el change');
+                                if ($('#check_'+i).is(':checked')) {
+                                    
+                                    // arreglo_productos_guardar[i]['bandera'] = 1;
+                                    // arreglo_productos_guardar[i]['cantidad'] = $('#cantidad_'+i+'').val();
+                                    console.log(arreglo_productos2[i]['id_producto']);
+                                    // console.log('entro');
+                                    console.log(arreglo_productos_guardar);
+
+                                    for (let i2 = 0; i2 < arreglo_productos_guardar.length; i2++) {
+                                        // console.log(arreglo_productos_guardar[i2]['id_producto']);
+                                        if (arreglo_productos2[i]['id_producto']+'_'+arreglo_productos2[i]['contador'] ==
+                                            arreglo_productos_guardar[i2]['id_producto']+'_'+arreglo_productos_guardar[i2]['contador']) {
+                                                arreglo_productos_guardar[i2]['bandera'] = 1;
+                                        }
+                                        // if (arreglo_productos2[i]['id_producto'] == arreglo_productos_guardar[i2]['id_producto']) {
+                                        //     arreglo_productos_guardar[i2]['bandera'] = 1;
+                                        // }
+                                        
+                                    }
+                                    $('#btn_agregar_material').prop('disabled',false);
+                                }
+                                else{
+
+                                    for (let i3 = 0; i3 < arreglo_productos_guardar.length; i3++) {
+                                        // console.log(arreglo_productos_guardar[i3]['id_producto']);
+                                        if (arreglo_productos2[i]['id_producto']+'_'+arreglo_productos2[i]['contador'] ==
+                                            arreglo_productos_guardar[i3]['id_producto']+'_'+arreglo_productos_guardar[i3]['contador']) {
+                                                arreglo_productos_guardar[i3]['bandera'] = 0;
+                                        }
+                                        // if (arreglo_productos2[i]['id_producto'] == arreglo_productos_guardar[i3]['id_producto']) {
+                                        //     arreglo_productos_guardar[i3]['bandera'] = 0;
+                                        // }
+                                        
+                                    }
+                                    $('#btn_agregar_material').prop('disabled',true);
+                                }
+                            });
+                        }
+
+                        
+
+
+                    });
+
                 });
+
+                // $(document).ready(function () {
+                $('#btn_agregar_material').click(function(){
+                    // console.log('entro la respuesta');
+                    // console.log(bandera_material);
+                    $('#btn_agregar_material').prop('disabled',true);
+                    if (bandera_material == 0) {
+                        bandera_material = 1;
+                        // console.log(arreglo_productos_guardar);
+                        console.log('btn_agregar_material');
+                        console.log(bandera_material);
+
+                        for (let i = 0; i < arreglo_productos2.length; i++) {
+                            for (let i2 = 0; i2 < arreglo_productos_guardar.length; i2++) {
+                                // const element = array[i2];
+                                if (arreglo_productos2[i]['id_producto']+'_'+arreglo_productos2[i]['contador'] ==
+                                    arreglo_productos_guardar[i2]['id_producto']+'_'+arreglo_productos_guardar[i2]['contador']) {
+                                    // console.log('entro contador');
+                                    // console.log($('#cantidad_'+i+'').val());
+                                    arreglo_productos_guardar[i2]['cantidad'] = $('#cantidad_'+i+'').val();
+                                    // console.log('cantidad_'+i);
+                                }
+                                
+                                // console.log(i+' '+$('#cantidad_'+i+'').val());
+                            }
+                        }
+                        
+                        // console.log(arreglo_productos_guardar);
+
+                        drawRowMaterial3();
+                        $('#divEncabezadoTabla').show();
+                        $('#divTablaProductos3').show();
+                        // arreglo_productos_guardar = [];
+                        $("#id_producto2").val("0").attr("selected",true);
+                        $('#divTablaProductos2').hide();
+                        $('#btn_agregar_material').hide();
+                        $("#tbProductos2").empty();
+                        // bandera_material = 1;
+                        // }
+                        // console.log(arreglo_productos_guardar);
+                    }
+                
+                
+                });
+                // });
+                
 
                 $("#btnGuardar").click(function(){
-                    $idSolServ=$("#hdIdSolicServ").val();//<!--AIDA-->
+                    // var bandera_ruta_guardar = 0;
+                    
+                        bandera_guardar = 1;
+                    
+                        // console.log(arreglo_productos_guardar);
+                        for (let i = 0; i < arreglo_productos_guardar.length; i++) {
+                            if (arreglo_productos_guardar[i]['bandera'] == 1) {
+                                arreglo_productos_guardar2.push(
+                                    {id_producto:arreglo_productos_guardar[i]['id_producto'],
+                                    id_servicio_tarea:arreglo_productos_guardar[i]['id_servicio_tarea'], descripcion:arreglo_productos_guardar[i]['descripcion'],
+                                    especificacion:arreglo_productos_guardar[i]['especificacion'], medida:arreglo_productos_guardar[i]['medida'],
+                                    tipo:arreglo_productos_guardar[i]['tipo'], nombre:arreglo_productos_guardar[i]['nombre'],
+                                    cantidad:arreglo_productos_guardar[i]['cantidad'], update:arreglo_productos_guardar[i]['update'], id_producto_detalle : arreglo_productos_guardar[i]['id_producto_detalle']}
+                                );
+                            }
+                        }
 
-                    if (arreglo_productos=='') {
-                        Swal.fire({
-                            // title: 'Aprobar Solicitud',
-                            // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                            html: '<p>Favor de Agregar un Producto antes de guardar</p>',
-                            customClass: 'msj_solicitud',
-                            icon: 'warning',
-                            confirmButtonColor: '#b50915',
-                            confirmButtonText: 'Aceptar',
-                            width: 310,
-                            allowOutsideClick: false
-                        })
-                    }
-                    else{
-                        Swal.fire({
-                            // position: 'bottom-right',
-                            // icon: 'warning',
-                            width: 300,
-                            html: '<div class="fa-3x" >'+
-                                        // '<div class="fa-3x">'+
-                                    '<span class="input-group" style="display:flex; justify-content:center; padding-left: 0%; padding-top: 15%; font-size: 5rem;" ><i class="fas fa-spin"><i class="fa fa-spinner" aria-hidden="true"></i></i></span>'+
-                                    '<p></p>'+
-                                    '<p>Espere por favor</p>'+
-                                        
-                                    '</div>',
-                                    // '</div>',
-                            allowOutsideClick: false,
-                            showConfirmButton: false,
-                            customClass: 'msj_aviso'
-                            // timer: 2000
-                        })
-                        $.ajax({
-                            url: '{{route("agregar_materiales")}}',
-                            type: 'GET',
-                            data: {'arreglo_productos' : arreglo_productos}
+                        for (let i = 0; i < arreglo_productos_guardar2.length; i++) {
+                            for (let i2 = 0; i2 < arreglo_eliminar_producto.length; i2++) {
+                                if (arreglo_productos_guardar2[i]['id_producto_detalle'] == arreglo_eliminar_producto[i2]['id_producto_detalle']) {
+                                    arreglo_eliminar_producto[i2]['bandera'] = 0;
+                                }
+                            }
+                            
+                        }
+                        console.log(arreglo_productos_guardar2);
+                        console.log(arreglo_eliminar_producto);
+                        // if (bandera_ruta_guardar == 0) {
+                            $('#btnGuardar').prop('disabled',true);
+                        if (bandera_guardar == 0) {
+                            $.ajax({
+                            url: '{{route("guardar_materiales")}}',
+                            type: 'POST',
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            data: {'arreglo_productos_guardar2' : arreglo_productos_guardar2,
+                                 'id_equipo_detalle' : id_equipo_detalle, 'arreglo_eliminar_producto' : arreglo_eliminar_producto}
                             }).always(function(r) {
-                                Swal.fire({
-                                    // title: 'Aprobar Solicitud',
-                                    // text: 'Se ha Registrado con Exito la Solicitud #5884',
-                                    html: '<p>Se guardaron correctamente los materiales</p>',
-                                    customClass: 'msj_solicitud',
-                                    icon: 'success',
-                                    confirmButtonColor: '#b50915',
-                                    confirmButtonText: 'Aceptar',
-                                    width: 310,
-                                    allowOutsideClick: false
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                    // alert('Se redireccciona al index');
-                                        let url = '{{ route("index_materiales", ":id") }}';//<!--AIDA-->
-                                        url = url.replace(':id', $idSolServ); 
+                                console.log(r);
+                                var id_solicitud = $('#id_solicitud_input').val();
+                                let urlEditar = '{{ route("index_materiales", ":id") }}';
+                                urlEditar = urlEditar.replace(':id', id_solicitud);
+                                // window.location.href = urlEditar;
+                            }); 
+                        }
+                        // }
+                        // bandera_ruta_guardar = 1;
+                        
 
-                                        window.location = url;
-                                    }
-                                })
-                        });
-                        console.log(arreglo_productos);
-                    }
+
+                        
+                        
+                    
+                    // console.log('entro a guardar');
+                    // console.log(arreglo_productos_guardar2);
+                    // console.log('entro a guardar');
+                    
+
+                    
+
                 });
 
             });
@@ -391,60 +562,183 @@
             $('#exampleModal').modal('show');
         }
 
-        function drawRowMaterial(){
+        
+
+        function drawRowMaterial2(){
             html1='';
-            console.log(arreglo_productos);
-            $.each(arreglo_productos, function(j, val){
-                if (!jQuery.isEmptyObject(arreglo_productos[j])) {
+            // console.log(arreglo_productos2);
+            $.each(arreglo_productos2, function(j, val){
+                if (!jQuery.isEmptyObject(arreglo_productos2[j])) {
                 
-                    html1+='<tr id="tr_'+j+'" style="text-align:left;">';
-                        html1+='<td style="white-space: pre-line; word-break: break-word;">';
-                            html1+=arreglo_productos[j]['text_producto'];
+                    html1+='<tr id="tr_'+j+'" >';
+                        html1+='<td style="white-space: pre-line; word-break: break-word; text-align:center;"><div class="form-check"><input  class="form-check-input" type="checkbox" value="" id="check_'+j+'"></div></td>';
+                        html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                            html1+=arreglo_productos2[j]['descripcion'];
                         html1+='</td>';
-                        html1+='<td style="white-space: pre-line; word-break: break-word;">';
-                            html1+=arreglo_productos[j]['text_especificacion'];
+                        html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                            html1+=arreglo_productos2[j]['especificacion'];
                         html1+='</td>';
-                        html1+='<td>';
-                            html1+=arreglo_productos[j]['text_medida'];
+                        html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                            html1+=arreglo_productos2[j]['medida'];
                         html1+='</td>';
-                        html1+='<td>';
-                            html1+=arreglo_productos[j]['text_cantidad'];
+                        html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                            html1+=arreglo_productos2[j]['tipo'];
                         html1+='</td>';
-                        html1+='<td><button type="button" id="btn_eliminar" onclick="removeMaterial('+j+')" class="btnEliminar" ><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
+                        html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                            html1+='<input class="form-control" style="width:40%;" type="number" value="1" id="cantidad_'+j+'">';
+                        html1+='</td>';
+                        // html1+='<td><button type="button" id="btn_eliminar" onclick="removeMaterial('+j+')" class="btnEliminar" ><i class="fa fa-trash" aria-hidden="true"></i></button></td>';
                     html1+='</tr>';
                     
                 }
             });
 
-            $("#tbProductos").empty();
-            $('#tbProductos').html(html1);
+            $("#tbProductos2").empty();
+            $('#tbProductos2').html(html1);
         }
 
-        function removeMaterial(item){
-            if(arreglo_productos.includes(item) ==false){ 
-                if ( item !== -1 ) {
-                    arreglo_productos.splice( item, 1 );
-                    console.log(arreglo_productos);
-                    $("#tr"+item).remove();
-                    drawRowMaterial();
-                    if (arreglo_productos == '') {
-                        $('#divTablaProductos').hide();
+        function drawRowMaterial2_1(){
+            html1='';
+            contador_tabla = 0;
+            var id_producto_contador = '';
+            // console.log('drawRowMaterial3');
+            // console.log(arreglo_productos_guardar);
+
+            $.each(arreglo_productos_guardar, function(j, val){
+                if (!jQuery.isEmptyObject(arreglo_productos_guardar[j])) {
+                    if (arreglo_productos_guardar[j]['bandera'] == 1) {
+                        id_producto_contador = arreglo_productos_guardar[j]['id_producto']+'_'+arreglo_productos_guardar[j]['contador'];
+                        // console.log(id_producto_contador+'entro 35');
+                        html1+='<tr id="tr_'+j+'" >';
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['nombre'];
+                            html1+='</td>';    
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['descripcion'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:left;">';
+                                html1+=arreglo_productos_guardar[j]['especificacion'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['medida'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['tipo'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['cantidad'];
+                            html1+='</td>';
+                            html1+="<td><button type='button' id='btn_eliminar' onclick='removeMaterial2(\""+id_producto_contador+"\");' class='btnEliminar' ><i class='fa fa-trash' aria-hidden='true'></i></button></td>";
+                        html1+='</tr>';
+                        contador_tabla = contador_tabla + 1;
                     }
-                    
-                }   else{
-                    $("#tbProductos").empty();
-                    arreglo_productos = [];
-                    
                 }
+            });
+
+            if (contador_tabla == 0) {
+                $('#divTablaProductos3').hide();
+                $('#divEncabezadoTabla').hide();
             }
+            else{
+                $('#divTablaProductos3').show();
+                $('#divEncabezadoTabla').show();
+                $("#tbProductos3").empty();
+                $('#tbProductos3').html(html1);
+            }
+            
+        }
+
+        function drawRowMaterial3(){
+            html1='';
+            contador_tabla = 0;
+            var id_producto_contador = '';
+            // console.log('drawRowMaterial3');
+            // console.log(arreglo_productos_guardar);
+
+            $.each(arreglo_productos_guardar, function(j, val){
+                if (!jQuery.isEmptyObject(arreglo_productos_guardar[j])) {
+                    if (arreglo_productos_guardar[j]['bandera'] == 1) {
+                        id_producto_contador = arreglo_productos_guardar[j]['id_producto']+'_'+arreglo_productos_guardar[j]['contador'];
+                        // console.log(id_producto_contador+'entro 35');
+                        html1+='<tr id="tr_'+j+'" >';
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['nombre'];
+                            html1+='</td>';    
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['descripcion'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="white-space: pre-line; word-break: break-word; text-align:left;">';
+                                html1+=arreglo_productos_guardar[j]['especificacion'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['medida'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['tipo'];
+                            html1+='</td>';
+                            html1+='<td class="text-xs text-secondary mb-0" style="text-align:center;">';
+                                html1+=arreglo_productos_guardar[j]['cantidad'];
+                            html1+='</td>';
+                            html1+="<td><button type='button' id='btn_eliminar' onclick='removeMaterial2(\""+id_producto_contador+"\");' class='btnEliminar' ><i class='fa fa-trash' aria-hidden='true'></i></button></td>";
+                        html1+='</tr>';
+                        contador_tabla = contador_tabla + 1;
+                    }
+                }
+            });
+
+            if (contador_tabla == 0) {
+                $('#divTablaProductos3').hide();
+                $('#divEncabezadoTabla').hide();
+            }
+            else{
+                $('#divTablaProductos3').show();
+                $('#divEncabezadoTabla').show();
+                $("#tbProductos3").empty();
+                $('#tbProductos3').html(html1);
+            }
+            
+        }
+
+        function removeMaterial2(item){
+            // console.log('entro');
+            // console.log(item+'entro 356');
+            for (let i = 0; i < arreglo_productos_guardar.length; i++) {
+                // console.log(item);
+                // console.log('-');
+                // console.log(arreglo_productos_guardar[i]['id_producto'],arreglo_productos_guardar[i]['contador']);
+                if (arreglo_productos_guardar[i]['id_producto']+'_'+arreglo_productos_guardar[i]['contador'] == item) {
+                    console.log('entro2');
+                    arreglo_productos_guardar[i]['bandera'] = 0;
+                }
+                if (arreglo_productos_guardar[i]['id_producto_detalle'] != 0) {
+                    arreglo_eliminar_producto.push({id_producto_detalle : arreglo_productos_guardar[i]['id_producto_detalle'], bandera : 1});
+                }
+                // console.log(i+' '+$('#cantidad_'+i+'').val());
+            }
+            console.log(arreglo_productos_guardar);
+            drawRowMaterial3();
+
         }
 
         $('#btn_cerrar').click(function(){
-            $("#tbProductos").empty();
+            html0='';
+            $("#div_select").html(html0);
+            $("#tbProductos2 tr").empty();
+            $("#tbProductos3 tr").empty();
+            
+            // $("#tbProductos3").empty();
+            $("#divEncabezadoTabla").hide();
             arreglo_productos = [];
-            $('#id_proucto').prop('selectedIndex',0);
-            $('#etiqueta_especificacion').empty();
-            $('#id_medida').val('');
+            arreglo_productos2 = [];
+            arreglo_productos_guardar = [];
+            arreglo_productos_guardar2 = [];
+            $('#id_producto2').prop('selectedIndex',0);
+            // $('#etiqueta_especificacion').empty();
+            // $('#id_medida').val('');
         })
+
+        $('#btnRegresar').click(function(){
+            window.location.href = '{{route("listadoOrdenes")}}';
+        });
     </script>
 @endsection

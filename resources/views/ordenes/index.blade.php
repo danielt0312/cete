@@ -1129,7 +1129,7 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-12" id="divEvidenciaEquipo">
+            <div class="col-12" id="divEvidenciaEquipo" style="text-align:center;">
                 
             </div>
         </div>
@@ -2215,7 +2215,7 @@
 
   function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante, desc_estatus, totalEquipos, totalEquiposCerrados,bandVer){
     fnValidaRecarga(idOrden); 
-    // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
+    // // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
     fnValidaAcceso(idOrden).then((data) => { 
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){ 
@@ -2407,7 +2407,7 @@
                   urlDet = urlDet.replace(':videquipserv', videquipserv);
                   
                   // htmlSel+='<a href="'+urlDet+'" target="_blank"><i class="fas fa-file-pdf" style="color:white;"></i>&nbsp;&nbsp;</a>';
-                  htmlSel+='<a href="" onclick="fnVerDetalleEquipoCerrado('+videquipserv+')"><i class="fas fa-eye" ></i>&nbsp;&nbsp;</a>';
+                  htmlSel+='<a onclick="fnVerDetalleEquipoCerrado('+videquipserv+')"><i class="fas fa-eye" ></i>&nbsp;&nbsp;</a>';
                   // if(bandVer==1){
                   //   if(vequip[i].nombre_archivo != null && vequip[i].nombre_archivo != ''){
                   //     var nombre= vequip[i].nombre_archivo; 
@@ -2873,7 +2873,7 @@
     return result
   }
 
-  function fnVerDetalleEquipoCerrado(idEquipo){
+  function fnVerDetalleEquipoCerrado(idEquipo){ 
 
     // console.log(id);
     let urlEditar = '{{ route("equipoAtendido", ":id") }}';
@@ -2959,7 +2959,7 @@
             let urlArchivo = '{{ asset("public/cierreEquipo/:nomVarE") }}';
             // let urlArchivo = '{{ asset("cierreEquipo/:nomVarE") }}'; //////31/08/2023  //LOCAL
             urlArchivo = urlArchivo.replace(':nomVarE', nomArch); 
-            htmlEviden+='<img src="'+urlArchivo+'" style="width:100%; heigth:100%;"/>';
+            htmlEviden+='<img src="'+urlArchivo+'" style="width:250px; heigth:250px;"/>';
           }
           $('#divEvidenciaEquipo').html(htmlEviden);
 
@@ -2992,10 +2992,10 @@
       //this will work only for Chrome
       fnUpdAcceso(idSolicServ, false, bandListado);  
     });
-    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 300000); // 
-    // clearInterval(refreshIntervalId);
+    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 2000000); // 
+    // clearInterval(refreshIntervalId); 
     // console.log(refreshIntervalId);
-    setTimeout(() => clearInterval(refreshIntervalId), 300000); //300000
+    setTimeout(() => clearInterval(refreshIntervalId), 2000000); //300000
   } 
 
   function fnMateriales(idSolicServ){
