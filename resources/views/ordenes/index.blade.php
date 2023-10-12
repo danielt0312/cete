@@ -1655,15 +1655,20 @@
           var html='';
           $.each(data, function(j, val){
             if (!jQuery.isEmptyObject(data[j])) {
-
               var nombre= data[j].nombre_archivo;
-              let urlArchivo = '{{ asset("public/cierreOrden/:id") }}'; //////31/08/2023 
-               urlArchivo = urlArchivo.replace(':id', nombre);
-
-              // html+='<a href="'+urlArchivo+'" target="_blank"><img id="archivo_'+j+'" src="'+urlArchivo+'" /></a>';
-              // $("#divArchivosCierre").html(html);
-              // $(location).attr('href',urlArchivo);
-              window.open(urlArchivo, '_blank');
+              console.log(data[j].nombre_archivo);
+              console.log('nombre:'+nombre);
+              if(nombre != null && nombre != ''){
+                let urlArchivo = '{{ asset("public/cierreOrden/:id") }}'; //////31/08/2023 
+                urlArchivo = urlArchivo.replace(':id', nombre);
+                // html+='<a href="'+urlArchivo+'" target="_blank"><img id="archivo_'+j+'" src="'+urlArchivo+'" /></a>';
+                // $("#divArchivosCierre").html(html);
+                // $(location).attr('href',urlArchivo);
+                window.open(urlArchivo, '_blank');
+              }else{
+                msjeAlertaSecundario('','No existe el archivo de cierre de la orden','error');
+              }
+              
             }
           });
       

@@ -298,13 +298,12 @@
                 <table class="sinbordetable3" >
                   <tr class="sinbordetable3">
                     @if(isset($ordenServiciosObject->jarchivos_cierre) && $ordenServiciosObject->jarchivos_cierre !=null)
-                      @foreach(json_decode($ordenServiciosObject->jarchivos_cierre) as $val )
+                      @foreach(json_decode($ordenServiciosObject->jarchivos_cierre) as $val ) 
                         <td class="sinbordetable3">
                           <!-- <br> -->
                           <div>
-                            <!-- <img  src="{{asset('cierreOrden/'.$val->nombre_archivo)}}" style="width:300px; heigth:auto;" >  -->
-                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/.$val->nombre_archivo'))) }}" style="width:100px; heigth:100px;">
-                          </div>
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/'.$val->nombre_archivo))) }}" style="width:100px; heigth:100px;">
+                            </div>
                           <!-- <br> --> 
                         </td> 
                       @endforeach

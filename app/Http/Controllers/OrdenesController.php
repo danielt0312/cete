@@ -931,6 +931,7 @@ class OrdenesController extends Controller
 
     public function fnGeneraPDF_app($id)
     {
+        // $id=$request->id;
         $ordenServicios = DB::connection('pgsql')->select("select * from cas_cete.app_detalle_cierre_orden(".$id.")");
         //  print_r($ordenServicios);
         $ordenServiciosObject=$ordenServicios[0]; 

@@ -171,6 +171,8 @@ Route::group(['prefix' => 'app_cas'], function(){
     });
 });
 
+Route::get('generaPDF/{id}', 'App\Http\Controllers\OrdenesController@fnGeneraPDF_app')->name('generaPDF');
+
     // Route::get('/logout', 'App\Http\Controllers\InicioController@logout');
 // });     
 
