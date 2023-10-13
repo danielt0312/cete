@@ -3402,10 +3402,10 @@
         //this will work only for Chrome
             fnUpdAcceso(idSolicServ, false, bandListado);  
         });
-        var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 300000); // 
-        // clearInterval(refreshIntervalId);
+        var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 2000000); // 
+        // clearInterval(refreshIntervalId); 
         console.log(refreshIntervalId); 
-        setTimeout(() => clearInterval(refreshIntervalId), 300000); //300000
+        setTimeout(() => clearInterval(refreshIntervalId), 2000000); //300000
     } 
 
 </script>
