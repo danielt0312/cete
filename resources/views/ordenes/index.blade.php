@@ -754,8 +754,8 @@
             <div class="col-6">
               <div class="form-group">
                 <!-- <label for="archivoCierre">Agregar orden de servicio impresa en formato .PDF con la firma y sello de las autoridades solicitantes, así como firmal del Técnico encargado de la orden.</label> -->
-                <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre"> -->
-                <input class="form-control" type="file" multiple id="archivoCierre" name="archivoCierre[]" accept="pdf"/>
+                <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre" accept="pdf"/>  -->
+                <input class="form-control" type="file" multiple id="archivoCierre2" name="archivoCierre2[]" accept="jpg"/>
               </div>
             </div>
           </div>
@@ -1024,6 +1024,7 @@
 </div>
 <!-- FIN MODAL EDITAR TECNICOS-->
 
+<!-- MODAL VER DETALLE EQUIPO CERRADO (INFO E IMAGEN SI TIENE) -->
 <div class="modal fade" id="verDetEquipoAtendidoModal" data-bs-backdrop="static" role="dialog"> 
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -1149,6 +1150,7 @@
     </div>
   </div>
 </div>
+<!-- MODAL VER DETALLE EQUIPO CERRADO (INFO E IMAGEN SI TIENE) -->
 
 @endsection 
 
@@ -1764,7 +1766,7 @@
  
   function fnCierreOrden(){
     var vidSolicServ = $("#hdIdOrdenCierra").val();
-    var archivoEvidencia = $("#archivoCierre").val();
+    // var archivoEvidencia = $("#archivoCierre").val();
     var folio = $("#hdFolioCierra").val();
 
     var formCierre = $('#formCierre')[0];
@@ -1772,14 +1774,29 @@
 
     // console.log(archivoEvidencia);
 
-    if(archivoEvidencia=='' || archivoEvidencia==null){
-      msjeAlertaSecundario('','Debe seleccionar el archivo de cierre de la orden','error');
-    }else{
-      var extension=archivoEvidencia.substr(-3);
-      // console.log(extension);
-      if(extension!='pdf' && extension!='PDF' ){
-        msjeAlertaSecundario('','Debe seleccionar un archivo tipo pdf','error');
-      }else{
+    /////////////
+    var files    =   $('#archivoCierre2')[0].files;
+    var lengFiles=files.length;
+
+    for(var i=0; i<lengFiles; i++){
+        var fname = files[i].name.toLowerCase();
+        var re = /(\.jpg)$/i;
+        if(!re.exec(fname))
+        {
+          msjeAlertaSecundario('','Debe seleccionar un archivo tipo jpg','error');
+          return false;
+        }
+    }
+    ////////////////
+    if(lengFiles > 1){
+    // if(archivoEvidencia=='' || archivoEvidencia==null){
+    //   msjeAlertaSecundario('','Debe seleccionar el archivo de cierre de la orden','error');
+    // }else{
+    //   var extension=archivoEvidencia.substr(-3);
+    //   // console.log(extension);
+    //   if(extension!='pdf' && extension!='PDF' ){
+    //     msjeAlertaSecundario('','Debe seleccionar un archivo tipo pdf','error');
+    //   }else{
 
         Swal.fire({
             title: '',
@@ -1831,8 +1848,11 @@
             }
         });
 
-      }
+      // }
       
+    }else{
+      msjeAlertaSecundario('','Debe seleccionar al menos un arhivo tipo jpg','error');
+      return false;
     }
   }
 
@@ -3004,27 +3024,27 @@
   } 
 
   function fnMateriales(idSolicServ){
-    fnValidaRecarga(idSolicServ); 
-    // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
-    fnValidaAcceso(idSolicServ).then((data) => { 
+    // fnValidaRecarga(idSolicServ); 
+    // // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
+    // fnValidaAcceso(idSolicServ).then((data) => { 
 
-      if(data.getvalidaaccesoorden==false){ 
-        fnUpdAcceso(idSolicServ, true, 1);
+    //   if(data.getvalidaaccesoorden==false){ 
+    //     fnUpdAcceso(idSolicServ, true, 1);
 
         let urlMat = '{{ route("index_materiales", ":id") }}';
         urlMat = urlMat.replace(':id', idSolicServ);
 
         window.location.href = urlMat;  
         // window.open(urlMat); 
-      }else{ 
-        msjeAlertaPrincipal('', '<span>La orden esta siendo utilizada por otro usuario. <br> Favor de verificar.</span>', 'warning');
-      }
-    });
+    //   }else{ 
+    //     msjeAlertaPrincipal('', '<span>La orden esta siendo utilizada por otro usuario. <br> Favor de verificar.</span>', 'warning');
+    //   }
+    // });
   }
 
   $(document).ready(function () {
     load();
-
+  
     $('.selectpicker').attr('disabled',false); //JC
     $('.selectpicker').selectpicker('refresh');  //JC
 
@@ -3275,6 +3295,29 @@
       var idSolServ = $("#hdIdOrdenCierra").val();
       fnUpdAcceso(idSolServ, false, 1);
     });  
+
+    $("#archivoCierre2").on("change", function() {
+        var files    =   $('#archivoCierre2')[0].files;
+        var lengFiles=files.length;
+        // console.log(lengFiles);
+        if (lengFiles < 0 || lengFiles > 3){
+          msjeAlertaSecundario('','Debe seleccionar de 1 a 3 archivos jpg','error');
+          $('#archivoCierre2').val("");
+          // console.log('entro');
+          return false;
+        }else{
+          for(var i=0; i < lengFiles; i++){
+              var fname = files[i].name.toLowerCase();
+              var re = /(\.jpg)$/i;
+              if(!re.exec(fname))
+              { 
+                msjeAlertaSecundario('','Debe seleccionar archivo(s) tipo jpg','error');
+                $('#archivoCierre2').val("");
+                return false;
+              }
+          }
+        }
+    });
 
   });
 

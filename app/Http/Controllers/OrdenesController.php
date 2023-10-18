@@ -480,9 +480,8 @@ class OrdenesController extends Controller
         return response()->json($tenicosAuxD);
     }
 
-    public function updCerrar(Request $request){
+    /*public function updCerrar(Request $request){
         // dd($request, $_FILES["archivoCierre"]);
-        //    dd($request);
         
         $vusuario=Auth()->user()->id;
 
@@ -560,6 +559,133 @@ class OrdenesController extends Controller
             Mail::to("$correo")->send(new MailSendO($details,$ruta)); 
 
             return response()->json($exito);
+        }else{
+
+        }
+        
+    }*/
+
+    public function updCerrar(Request $request){
+        // dd($request, $_FILES["archivoCierre2"]);
+        //    dd($request);
+        
+        $vusuario=Auth()->user()->id;
+
+        $vidSolicServ=$request->hdIdOrdenCierra;
+
+        // $file2 = $_FILES["archivoCierre"];
+        
+        // if($request->hasfile('archivoCierre')){ 
+
+        //     $file=$request->file("archivoCierre");
+        //     // dd($file[0]);
+        //     // $ext=substr($file[0]->getClientOriginalName(), -3);
+        //     $ext=substr($file->getClientOriginalName(), -3);
+            
+        //     if($ext === "pdf" ){
+        //         // $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
+        //         $nombre = 'A_'. $vidSolicServ.'.'.$ext; 
+                
+        //         $ruta = public_path("cierreOrden/".$nombre);
+                
+        //         // copy($file[0], $ruta);
+        //         copy($file, $ruta);
+        //     }
+    
+        // }else{
+        //     dd('no entro');
+        // }
+
+        //--------SUBIR MULTIPLES IMAGENES JPG O PNG
+        $misImagenes = $request->file('archivoCierre2'); 
+        // dd($misImagenes);
+        $con=1; 
+        foreach($misImagenes as $qimg => $elimg){
+
+            $nombreImage = $elimg->getClientOriginalName();
+            $ext=substr($nombreImage, -3);
+
+            if($ext === "jpg"){
+                // $nombre = uniqid() .'_'. $vidSolicServ.'.'.$ext;
+                $nombreFinal = $con.'.'. $vidSolicServ.'.'.$ext; 
+                
+                $ruta = public_path("cierreOrden/".$nombreFinal);
+                
+                 copy($elimg, $ruta);  
+
+                if (file_exists($ruta)){  
+                     $exitod = DB::connection('pgsql')->select("select * from cas_cete.app_ins_cierre_detalle(".$vidSolicServ.",'O','".$nombreFinal."')");
+                } 
+            }
+            $con=$con+1; 
+            // dd('hola');
+             
+        }
+        // downloadCierrePdf($vidSolicServ);
+        // $this->fnGeneraPDF_app($vidSolicServ);
+        //--------
+        // $ruta_archivo=$ruta;
+        // $nombre_archivo=$nombre;
+        $ruta_archivo='';
+        $nombre_archivo='';
+        
+        // $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$request->idSolicServ.",".$vusuario.",'".$ruta."')");
+        $exito = DB::connection('pgsql')->select("select * from cas_cete.inscierrasolicitud(".$vidSolicServ.",".$vusuario.",'".$nombre_archivo."','".$ruta_archivo."','".$request->txtObservacionesC."')");
+                
+        //  return response()->json($exito);
+        if($exito != null || $exito != ''){
+            
+            $respuesta= $this->fnGeneraPDF_app($vidSolicServ); 
+            if($respuesta==1){
+
+                $nombrePDF = $vidSolicServ.'.pdf'; 
+                $rutaPDF = public_path("cierreOrden/".$nombrePDF);
+
+                $folio = $request->hdFolioCierra;
+                $folio_solic = $request->hdFolioSolCierra;
+                $correo = $request->correoCierre;
+                $nombrecct = $request->nombrecctCierre;
+                $solicitante = $request->solicitanteCierre; 
+
+                if($folio_solic != null ){ // si viene desde solicitud
+                    $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                    $msje_correo='Se ha finalizado la solicitud de servicio con el folio: ';
+                    $msje_ventanilla='De igual manera, puede consultar el seguimiento de su solicitud de servicio a través del sitio:
+                    <a href="https://sistemaset.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE</ins></a>';
+                    $band_ventanilla='1'; 
+                    $folio2=$folio_solic;
+                }else{
+                    $msje_asunto='Finalización de orden de servicio - Sistema C.A.S. - C.E.T.E.';
+                    $msje_correo='Se ha finalizado la orden de servicio con el folio: '; 
+                    $msje_ventanilla='';
+                    $band_ventanilla='0';
+                    $folio2=$folio;
+                }
+                $details = [
+                    'asunto' => $msje_asunto,
+                    'tittle' => 'Estimado usuario: '. $solicitante . ' - '. $nombrecct,
+                    'folio' => $folio2.' ',
+                    'estatus' => '',
+                    
+                    'body1' => $msje_correo,
+                    
+                    'body2' => 'por parte de nuestros técnicos de soporte especializados.',
+                    
+                    'body3' => 'Agradecemos su confianza en nuestros servicios. Quedamos a sus órdenes para cualquier duda o aclaración sobre el diagnóstico y solución de su(s) equipos.',
+                    'body4' => '',
+
+                    'firma1' => 'Atentamente.',
+                    'firma2' => 'Centro Estatal de Tecnología Educativa',
+                    'band_ventanilla' => $band_ventanilla,
+                    'ventanilla' => $msje_ventanilla,
+                    'fecha_hora_asignacion' =>''
+                ];
+
+                Mail::to("$correo")->send(new MailSendO($details,$rutaPDF)); 
+                return response()->json($exito);
+            }else{
+                return 'ya existe';
+            }
         }else{
 
         }
@@ -1011,14 +1137,14 @@ class OrdenesController extends Controller
         }
     }
 
-    /////Materiales
+ /////Materiales
     public function index_materiales($id){
         $vid_usuario=Auth()->user()->id;
         $getUsername =  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
 
 
         $query = DB::connection('pgsql')->select("select ss.id as id_servicio, cst.id as id_servicio_tarea, ed.id as id_equipo_detalle, ess.desc_problema ,
-            ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  , ct.id as id_tarea
+            ess.cantidad  , cte.tipo_equipo , cs.servicio , ct.tarea  , ct.id as id_tarea , ss.actividad_realizada , ss.nota_tecnica
             from cas_cete.solic_servicios ss , cas_cete.equipos_serv_solic ess ,
             cas_cete.equipos_detalle ed , cas_cete.cat_equipos_tareas cet , cas_cete.cat_tipos_equipo cte ,
             cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct 
@@ -1032,7 +1158,7 @@ class OrdenesController extends Controller
             and cst.id_tarea = ct.id ");
 
         $datos = DB::connection('pgsql')->select("select ss.id as id_solicitud, ss.solicitante , ccdt.clavecct , ccdt.nombrect , ccdt.id_municipio ,
-            cn.nivel , cm.municipio , rc.folio , ce2.estatus , sst.fecha 
+            cn.nivel , cm.municipio , rc.folio , ce2.estatus , sst.fecha , ce2.id as id_esatus
             from cas_cete.solic_servicios ss , insumos.cat_centros_de_trabajo ccdt , insumos.cat_subniveles cs ,
             insumos.cat_niveles cn , insumos.cat_municipios cm , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
             cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 
@@ -1127,6 +1253,335 @@ class OrdenesController extends Controller
             "detalle_material" => $detalle_material
         );
         // dd($detalle_material);
+    }
+
+    public function imprimir_material($id_equipo_detalle){
+        // dd($id_equipo_detalle);
+        $detalle_material = DB::connection('pgsql')->select("select ss.id as id_servicio, ce2.id as id_estatus 
+            from cas_cete.solic_servicios ss , cas_cete.registro_captacion rc ,
+            cas_cete.solic_serv_track sst , cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess ,
+            cas_cete.equipos_detalle ed 
+            where ss.id = rc.id_solic_serv 
+            and rc.id = sst.id_reg_captacion 
+            and sst.id_capta_estatus = ce.id 
+            and ce.id_estatus = ce2.id 
+            and ss.id = ess.id_solic_serv 
+            and ess.id = ed.id_equipos_serv 
+            and ed.id = ".$id_equipo_detalle."
+            order by sst.fecha desc
+            limit 1");
+        // dd($detalle_material);
+        //8341194720
+
+        $detalle_material2 = DB::connection('pgsql')->select("
+            select 
+                ss.solicitante , ss.fecha_captacion , ss.telef_solicitante , ss.correo_solic , ss.descrip_reporte , rc.folio ,
+                ce2.estatus , cp.nombre , cp.descripcion ,pd.cantidad , cp.especificacion , cm.medida , ctp.tipo ,cs.servicio , ct.tarea ,
+                ccdt.clavecct , ccdt.nombrect , ccdt.domicilio , cm2.municipio , cn.nivel , ct2.desc_turno, ccdt.director, cps.id_servicio_tarea ,
+                (select rc2.folio from cas_cete.registro_captacion rc2 ,
+                cas_cete.solic_serv_track sst2, cas_cete.captacion_estatus ce2, cas_cete.cat_estatus ce22
+            where  rc2.id = sst2.id_reg_captacion
+            and rc2.id_solic_serv = ".$detalle_material[0]->id_servicio."
+            and sst2.id_capta_estatus  = ce2.id 
+            and ce2.id_estatus = ce22.id 
+            and rc2.id_modo_capta  = 1
+            order by sst2.fecha asc 
+            LIMIT 1) as primer_folio
+            from 
+                cas_cete.solic_servicios ss , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
+                cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess , cas_cete.equipos_detalle ed ,
+                cas_cete.producto_detalle pd , cas_cete.cat_producto cp , cas_cete.cat_tipo_producto ctp , cas_cete.cat_medida cm  , cas_cete.cat_producto_servicio cps ,
+                cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct, insumos.cat_centros_de_trabajo ccdt , insumos.cat_municipios cm2 ,
+                insumos.cat_niveles cn , insumos.cat_turnos ct2 
+            where 
+                ss.id = rc.id_solic_serv 
+                and rc.id = sst.id_reg_captacion 
+                and sst.id_capta_estatus = ce.id 
+                and ce.id_estatus = ce2.id 
+                and ss.id = ess.id_solic_serv 
+                and ess.id = ed.id_equipos_serv 
+                and ed.id = pd.id_equipo_detalle 
+                and pd.id_producto = cp.id 
+                and cp.id_tipo_producto = ctp.id 
+                and cp.id_tipo_medida = cm.id 
+                and cp.id = cps.id_producto 
+                and cps.id_servicio_tarea = cst.id 
+                and cst.id_servicio = cs.id 
+                and cst.id_tarea = ct.id 
+                and ss.id_cct = ccdt.id 
+                and ccdt.id_municipio = cm2.id 
+                and ccdt.id_subnivel = cn.id 
+                and ccdt.id_turno = ct2.id 
+                and ss.id = ".$detalle_material[0]->id_servicio."
+                and ce2.id = ".$detalle_material[0]->id_estatus."
+                and pd.id_equipo_detalle =".$id_equipo_detalle."");
+
+
+                $detalle_material3 = DB::connection('pgsql')->select("select 
+                cps.id_servicio_tarea  , cs.servicio , ct.tarea 
+            from 
+                cas_cete.solic_servicios ss , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
+                cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess , cas_cete.equipos_detalle ed ,
+                cas_cete.producto_detalle pd , cas_cete.cat_producto cp , cas_cete.cat_tipo_producto ctp , cas_cete.cat_medida cm  , cas_cete.cat_producto_servicio cps ,
+                cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct, insumos.cat_centros_de_trabajo ccdt , insumos.cat_municipios cm2 ,
+                insumos.cat_niveles cn , insumos.cat_turnos ct2 
+            where 
+                ss.id = rc.id_solic_serv 
+                and rc.id = sst.id_reg_captacion 
+                and sst.id_capta_estatus = ce.id 
+                and ce.id_estatus = ce2.id 
+                and ss.id = ess.id_solic_serv 
+                and ess.id = ed.id_equipos_serv 
+                and ed.id = pd.id_equipo_detalle 
+                and pd.id_producto = cp.id 
+                and cp.id_tipo_producto = ctp.id 
+                and cp.id_tipo_medida = cm.id 
+                and cp.id = cps.id_producto 
+                and cps.id_servicio_tarea = cst.id 
+                and cst.id_servicio = cs.id 
+                and cst.id_tarea = ct.id 
+                and ss.id_cct = ccdt.id 
+                and ccdt.id_municipio = cm2.id 
+                and ccdt.id_subnivel = cn.id 
+                and ccdt.id_turno = ct2.id 
+                and ss.id = ".$detalle_material[0]->id_servicio."
+                and ce2.id = ".$detalle_material[0]->id_estatus."
+                and pd.id_equipo_detalle =".$id_equipo_detalle."
+                group by cps.id_servicio_tarea, cs.servicio , ct.tarea ");
+
+            // dd($detalle_material3);
+        // $id_solicitud = $request->id;
+
+        
+
+        // $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud(".$detalle_material[0]->id_servicio.")");
+        // $fn_inf_orden = DB::select("select * from cas_cete.fn_inf_orden(".$detalle_material[0]->id_servicio.")");
+        
+        // dd($fn_solicitud);
+        // dd($ordenServicios[0]);
+        // $fn_solicitud=$fn_solicitud[0];
+        // if ($fn_inf_orden != null) {
+        //     $fn_inf_orden=$fn_inf_orden[0];
+        // }
+        // dd($fn_inf_orden);
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $pdf = new Dompdf($options);
+
+        $path = asset('images/logo/logoTam2022.png');
+        // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
+        // $path = asset('images/logo/logoTam2022.png');
+        //  return $path;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $data = file_get_contents($path);
+        $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
+        $path_footer = asset('images/logo/ceteNI.png');
+        // $path_footer = asset('images/logo/logoTam2022.png');
+        // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
+        // $path_footer = asset('images/logo/ceteNI.png');
+        $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
+        // $data_footer = file_get_contents($path_footer);
+        $data_footer = file_get_contents($path_footer, false, stream_context_create($arrContextOptions));
+        $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
+
+        // $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png', false, stream_context_create($arrContextOptions))).'">';
+        $fecha = date('Y-m-d');
+
+        //   view()->share('servicios::ordenes_servicio/downloadOrden',$Datos_solicitudObject, $equipos, $tecnicos_aux);
+        //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['Datos_solicitudObject' => $Datos_solicitudObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
+        
+        view()->share('ordenes/pdfMaterial',$detalle_material2, $detalle_material3);
+        // view()->share('ordenes/pdfMaterial',$fn_solicitud ,$detalle_material2);
+        $pdf = PDF::loadView('ordenes/pdfMaterial',['detalle_material2' => $detalle_material2], ['detalle_material3' => $detalle_material3])->setPaper('a4', 'portrait');
+        // $pdf = PDF::loadView('ordenes/pdfMaterial', ['fn_solicitud' => $fn_solicitud], ['detalle_material2' => $detalle_material2])->setPaper('a4', 'landscape');
+        // dd('hola');
+        //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf'); // para que vaya a la url a descargar directo el pdf
+        return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
+    }
+    public function imprimir_material2($id_servicio){
+        // dd($id_servicio);
+        $detalle_material = DB::connection('pgsql')->select("select ss.id as id_servicio, ce2.id as id_estatus , ss.actividad_realizada , ss.nota_tecnica 
+            from cas_cete.solic_servicios ss , cas_cete.registro_captacion rc ,
+            cas_cete.solic_serv_track sst , cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess ,
+            cas_cete.equipos_detalle ed 
+            where ss.id = rc.id_solic_serv 
+            and rc.id = sst.id_reg_captacion 
+            and sst.id_capta_estatus = ce.id 
+            and ce.id_estatus = ce2.id 
+            and ss.id = ess.id_solic_serv 
+            and ess.id = ed.id_equipos_serv 
+            and ss.id = ".$id_servicio."
+            order by sst.fecha desc
+            limit 1");
+        // dd($detalle_material);
+        //8341194720
+
+        $detalle_material2 = DB::connection('pgsql')->select("
+            select 
+                ss.solicitante , ss.fecha_captacion , ss.telef_solicitante , ss.correo_solic , ss.descrip_reporte , rc.folio ,
+                ce2.estatus , cp.nombre , cp.descripcion ,pd.cantidad , cp.especificacion , cm.medida , ctp.tipo ,cs.servicio , ct.tarea ,
+                ccdt.clavecct , ccdt.nombrect , ccdt.domicilio , cm2.municipio , cn.nivel , ct2.desc_turno, ccdt.director, cps.id_servicio_tarea ,
+                (select rc2.folio from cas_cete.registro_captacion rc2 ,
+                cas_cete.solic_serv_track sst2, cas_cete.captacion_estatus ce2, cas_cete.cat_estatus ce22
+            where  rc2.id = sst2.id_reg_captacion
+            and rc2.id_solic_serv = ".$detalle_material[0]->id_servicio."
+            and sst2.id_capta_estatus  = ce2.id 
+            and ce2.id_estatus = ce22.id 
+            and rc2.id_modo_capta  = 1
+            order by sst2.fecha asc 
+            LIMIT 1) as primer_folio
+            from 
+                cas_cete.solic_servicios ss , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
+                cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess , cas_cete.equipos_detalle ed ,
+                cas_cete.producto_detalle pd , cas_cete.cat_producto cp , cas_cete.cat_tipo_producto ctp , cas_cete.cat_medida cm  , cas_cete.cat_producto_servicio cps ,
+                cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct, insumos.cat_centros_de_trabajo ccdt , insumos.cat_municipios cm2 ,
+                insumos.cat_niveles cn , insumos.cat_turnos ct2 
+            where 
+                ss.id = rc.id_solic_serv 
+                and rc.id = sst.id_reg_captacion 
+                and sst.id_capta_estatus = ce.id 
+                and ce.id_estatus = ce2.id 
+                and ss.id = ess.id_solic_serv 
+                and ess.id = ed.id_equipos_serv 
+                and ed.id = pd.id_equipo_detalle 
+                and pd.id_producto = cp.id 
+                and cp.id_tipo_producto = ctp.id 
+                and cp.id_tipo_medida = cm.id 
+                and cp.id = cps.id_producto 
+                and cps.id_servicio_tarea = cst.id 
+                and cst.id_servicio = cs.id 
+                and cst.id_tarea = ct.id 
+                and ss.id_cct = ccdt.id 
+                and ccdt.id_municipio = cm2.id 
+                and ccdt.id_subnivel = cn.id 
+                and ccdt.id_turno = ct2.id 
+                and ss.id = ".$detalle_material[0]->id_servicio."
+                and ce2.id = ".$detalle_material[0]->id_estatus."");
+
+
+                $detalle_material3 = DB::connection('pgsql')->select("select 
+                cps.id_servicio_tarea  , cs.servicio , ct.tarea 
+            from 
+                cas_cete.solic_servicios ss , cas_cete.registro_captacion rc , cas_cete.solic_serv_track sst ,
+                cas_cete.captacion_estatus ce , cas_cete.cat_estatus ce2 , cas_cete.equipos_serv_solic ess , cas_cete.equipos_detalle ed ,
+                cas_cete.producto_detalle pd , cas_cete.cat_producto cp , cas_cete.cat_tipo_producto ctp , cas_cete.cat_medida cm  , cas_cete.cat_producto_servicio cps ,
+                cas_cete.cat_servicios_tareas cst , cas_cete.cat_servicios cs , cas_cete.cat_tareas ct, insumos.cat_centros_de_trabajo ccdt , insumos.cat_municipios cm2 ,
+                insumos.cat_niveles cn , insumos.cat_turnos ct2 
+            where 
+                ss.id = rc.id_solic_serv 
+                and rc.id = sst.id_reg_captacion 
+                and sst.id_capta_estatus = ce.id 
+                and ce.id_estatus = ce2.id 
+                and ss.id = ess.id_solic_serv 
+                and ess.id = ed.id_equipos_serv 
+                and ed.id = pd.id_equipo_detalle 
+                and pd.id_producto = cp.id 
+                and cp.id_tipo_producto = ctp.id 
+                and cp.id_tipo_medida = cm.id 
+                and cp.id = cps.id_producto 
+                and cps.id_servicio_tarea = cst.id 
+                and cst.id_servicio = cs.id 
+                and cst.id_tarea = ct.id 
+                and ss.id_cct = ccdt.id 
+                and ccdt.id_municipio = cm2.id 
+                and ccdt.id_subnivel = cn.id 
+                and ccdt.id_turno = ct2.id 
+                and ss.id = ".$detalle_material[0]->id_servicio."
+                and ce2.id = ".$detalle_material[0]->id_estatus."
+                group by cps.id_servicio_tarea, cs.servicio , ct.tarea ");
+
+            // dd($detalle_material3);
+        // $id_solicitud = $request->id;
+
+        
+
+        // $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud(".$detalle_material[0]->id_servicio.")");
+        // $fn_inf_orden = DB::select("select * from cas_cete.fn_inf_orden(".$detalle_material[0]->id_servicio.")");
+        
+        // dd($fn_solicitud);
+        // dd($ordenServicios[0]);
+        // $fn_solicitud=$fn_solicitud[0];
+        // if ($fn_inf_orden != null) {
+        //     $fn_inf_orden=$fn_inf_orden[0];
+        // }
+        // dd($fn_inf_orden);
+        $options = new Options();
+        $options->set('isRemoteEnabled', TRUE);
+        $options->set('isHtml5ParserEnabled', TRUE);
+        $pdf = new Dompdf($options);
+
+        $path = asset('images/logo/logoTam2022.png');
+        // $path = 'http://cascete.io/public/images/logo/logoTam2022.png';
+        // $path = asset('images/logo/logoTam2022.png');
+        //  return $path;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );
+        $data = file_get_contents($path);
+        $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
+        $path_footer = asset('images/logo/ceteNI.png');
+        // $path_footer = asset('images/logo/logoTam2022.png');
+        // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
+        // $path_footer = asset('images/logo/ceteNI.png');
+        $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
+        // $data_footer = file_get_contents($path_footer);
+        $data_footer = file_get_contents($path_footer, false, stream_context_create($arrContextOptions));
+        $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
+
+        // $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png', false, stream_context_create($arrContextOptions))).'">';
+        $fecha = date('Y-m-d');
+
+        //   view()->share('servicios::ordenes_servicio/downloadOrden',$Datos_solicitudObject, $equipos, $tecnicos_aux);
+        //   $pdf = PDF::loadView('servicios::ordenes_servicio/downloadOrden', ['Datos_solicitudObject' => $Datos_solicitudObject, 'equipos' => $equipos, 'img' => $html, 'pic' => $pic, 'pic_footer' => $pic_footer, 'tecnicos_aux' => $tecnicos_aux]);
+        
+        view()->share('ordenes/pdfMaterial',$detalle_material2, $detalle_material3, $detalle_material3);
+        // view()->share('ordenes/pdfMaterial',$fn_solicitud ,$detalle_material2);
+        $pdf = PDF::loadView('ordenes/pdfMaterial',array('detalle_material2' => $detalle_material2, 'detalle_material3' => $detalle_material3, 'detalle_material' => $detalle_material))->setPaper('a4', 'portrait');
+        // $pdf = PDF::loadView('ordenes/pdfMaterial',['detalle_material2' => $detalle_material2], ['detalle_material3' => $detalle_material3])->setPaper('a4', 'portrait');
+        // $pdf = PDF::loadView('ordenes/pdfMaterial', ['fn_solicitud' => $fn_solicitud], ['detalle_material2' => $detalle_material2])->setPaper('a4', 'landscape');
+        // dd('hola');
+        //   return $pdf->download('OrdenDeServicio-'.$id.'-'.$fecha.'.pdf'); // para que vaya a la url a descargar directo el pdf
+        return $pdf->stream(); /// para abrir una nueva pestaña y que se muestre el pdf
+    }
+
+    public function revisar_detalle(Request $request){
+        // dd($request);
+        $revisar_detalle = DB::connection('pgsql')->select("select * from cas_cete.producto_detalle pd 
+            where pd.id_equipo_detalle = ".$request->id_equipo_detalle."");
+            // dd($revisar_detalle);
+            if ($revisar_detalle == null || $revisar_detalle =='') {
+                return array(
+                    "exito" => false
+                );
+            }
+            else{
+                return array(
+                    "exito" => true
+                );
+            }
+            
+    }
+    public function editar_actividad(Request $request){
+        // dd($request);
+            $update_actividad_nota =  DB::connection('pgsql')->select("
+            select * from cas_cete.fn_editar_actividad_nota(".$request->id_servicio.", '".$request->actividad_realizada."','".$request->nota_tecnica."')");
+
+            return array(
+                "exito" => true
+            );
     }
 
 }

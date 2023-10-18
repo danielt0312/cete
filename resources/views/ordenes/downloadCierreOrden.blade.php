@@ -302,7 +302,7 @@
                         <td class="sinbordetable3">
                           <!-- <br> -->
                           <div>
-                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/'.$val->nombre_archivo))) }}" style="width:100px; heigth:100px;">
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreOrden/'.$val->nombre_archivo))) }}" style="width:280px; heigth:280px;">
                             </div>
                           <!-- <br> --> 
                         </td> 
@@ -405,8 +405,8 @@
                       </td>
                       <td class="sinbordetable4" style="width:20%;">
                         @if(isset($val->nombre_archivo) && $val->nombre_archivo != '')
-                          @if(file_exists('public/cierreEquipo/'.$val->nombre_archivo)) 
-                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreEquipo/'.$val->nombre_archivo))) }}" style="width:80px; heigth:80px;"  >
+                          @if(file_exists('public/cierreEquipo/'.$val->nombre_archivo))
+                            <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/cierreEquipo/'.$val->nombre_archivo))) }}" style="width:70px; heigth:70px;"  >
                           @endif
                         @endif
                       </td>
