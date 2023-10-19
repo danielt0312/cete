@@ -754,8 +754,8 @@
             <div class="col-6">
               <div class="form-group">
                 <!-- <label for="archivoCierre">Agregar orden de servicio impresa en formato .PDF con la firma y sello de las autoridades solicitantes, así como firmal del Técnico encargado de la orden.</label> -->
-                <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre" accept="pdf"/>  -->
-                <input class="form-control" type="file" multiple id="archivoCierre2" name="archivoCierre2[]" accept="jpg"/>
+                <!-- <input class="form-control" type="file" id="archivoCierre" name="archivoCierre"> -->
+                <input class="form-control" type="file" multiple id="archivoCierre" name="archivoCierre[]" accept="pdf"/>
               </div>
             </div>
           </div>
@@ -1024,7 +1024,6 @@
 </div>
 <!-- FIN MODAL EDITAR TECNICOS-->
 
-<!-- MODAL VER DETALLE EQUIPO CERRADO (INFO E IMAGEN SI TIENE) -->
 <div class="modal fade" id="verDetEquipoAtendidoModal" data-bs-backdrop="static" role="dialog"> 
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -1130,7 +1129,7 @@
           </div>
         </div>
         <div class="row">
-            <div class="col-12" id="divEvidenciaEquipo" style="text-align:center;">
+            <div class="col-12" id="divEvidenciaEquipo">
                 
             </div>
         </div>
@@ -1150,7 +1149,6 @@
     </div>
   </div>
 </div>
-<!-- MODAL VER DETALLE EQUIPO CERRADO (INFO E IMAGEN SI TIENE) -->
 
 @endsection 
 
@@ -1422,8 +1420,8 @@
                                 '<a onclick="fnEditar('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-edit"></i> Editar Orden</a>'+
                                 '</li>@endcan';
                             }
- 
-                            if(contAsesoServ > 0){  
+
+                            if(contAsesoServ > 0){ 
                               estatuss+= '@can("272-opt-get-materiales")<li>'+ 
                                   '<a onclick="fnMateriales('+data.id_orden+')" class="dropdown-item" > <i class="fas fa-plus"></i> Agregar Materiales</a>'+
                                   '</li>@endcan';
@@ -1657,20 +1655,15 @@
           var html='';
           $.each(data, function(j, val){
             if (!jQuery.isEmptyObject(data[j])) {
+
               var nombre= data[j].nombre_archivo;
-              console.log(data[j].nombre_archivo);
-              console.log('nombre:'+nombre);
-              if(nombre != null && nombre != ''){
-                let urlArchivo = '{{ asset("public/cierreOrden/:id") }}'; //////31/08/2023 
-                urlArchivo = urlArchivo.replace(':id', nombre);
-                // html+='<a href="'+urlArchivo+'" target="_blank"><img id="archivo_'+j+'" src="'+urlArchivo+'" /></a>';
-                // $("#divArchivosCierre").html(html);
-                // $(location).attr('href',urlArchivo);
-                window.open(urlArchivo, '_blank');
-              }else{
-                msjeAlertaSecundario('','No existe el archivo de cierre de la orden','error');
-              }
-              
+              let urlArchivo = '{{ asset("public/cierreOrden/:id") }}'; //////31/08/2023 
+               urlArchivo = urlArchivo.replace(':id', nombre);
+
+              // html+='<a href="'+urlArchivo+'" target="_blank"><img id="archivo_'+j+'" src="'+urlArchivo+'" /></a>';
+              // $("#divArchivosCierre").html(html);
+              // $(location).attr('href',urlArchivo);
+              window.open(urlArchivo, '_blank');
             }
           });
       
@@ -1766,7 +1759,7 @@
  
   function fnCierreOrden(){
     var vidSolicServ = $("#hdIdOrdenCierra").val();
-    // var archivoEvidencia = $("#archivoCierre").val();
+    var archivoEvidencia = $("#archivoCierre").val();
     var folio = $("#hdFolioCierra").val();
 
     var formCierre = $('#formCierre')[0];
@@ -1774,29 +1767,14 @@
 
     // console.log(archivoEvidencia);
 
-    /////////////
-    var files    =   $('#archivoCierre2')[0].files;
-    var lengFiles=files.length;
-
-    for(var i=0; i<lengFiles; i++){
-        var fname = files[i].name.toLowerCase();
-        var re = /(\.jpg)$/i;
-        if(!re.exec(fname))
-        {
-          msjeAlertaSecundario('','Debe seleccionar un archivo tipo jpg','error');
-          return false;
-        }
-    }
-    ////////////////
-    if(lengFiles > 1){
-    // if(archivoEvidencia=='' || archivoEvidencia==null){
-    //   msjeAlertaSecundario('','Debe seleccionar el archivo de cierre de la orden','error');
-    // }else{
-    //   var extension=archivoEvidencia.substr(-3);
-    //   // console.log(extension);
-    //   if(extension!='pdf' && extension!='PDF' ){
-    //     msjeAlertaSecundario('','Debe seleccionar un archivo tipo pdf','error');
-    //   }else{
+    if(archivoEvidencia=='' || archivoEvidencia==null){
+      msjeAlertaSecundario('','Debe seleccionar el archivo de cierre de la orden','error');
+    }else{
+      var extension=archivoEvidencia.substr(-3);
+      // console.log(extension);
+      if(extension!='pdf' && extension!='PDF' ){
+        msjeAlertaSecundario('','Debe seleccionar un archivo tipo pdf','error');
+      }else{
 
         Swal.fire({
             title: '',
@@ -1848,11 +1826,8 @@
             }
         });
 
-      // }
+      }
       
-    }else{
-      msjeAlertaSecundario('','Debe seleccionar al menos un arhivo tipo jpg','error');
-      return false;
     }
   }
 
@@ -2240,7 +2215,7 @@
 
   function fnCerrarOrden(idOrden,idEstatusOrden, folio, folioSol, correo,nombrecct,solicitante, desc_estatus, totalEquipos, totalEquiposCerrados,bandVer){
     fnValidaRecarga(idOrden); 
-    // // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
+    // bandVer  0== Cerrar    ///bandVer  1== Ver Detalle
     fnValidaAcceso(idOrden).then((data) => { 
       // console.info('Response:', data)
       if(data.getvalidaaccesoorden==false){ 
@@ -2432,7 +2407,7 @@
                   urlDet = urlDet.replace(':videquipserv', videquipserv);
                   
                   // htmlSel+='<a href="'+urlDet+'" target="_blank"><i class="fas fa-file-pdf" style="color:white;"></i>&nbsp;&nbsp;</a>';
-                  htmlSel+='<a onclick="fnVerDetalleEquipoCerrado('+videquipserv+')"><i class="fas fa-eye" ></i>&nbsp;&nbsp;</a>';
+                  htmlSel+='<a href="" onclick="fnVerDetalleEquipoCerrado('+videquipserv+')"><i class="fas fa-eye" ></i>&nbsp;&nbsp;</a>';
                   // if(bandVer==1){
                   //   if(vequip[i].nombre_archivo != null && vequip[i].nombre_archivo != ''){
                   //     var nombre= vequip[i].nombre_archivo; 
@@ -2898,7 +2873,7 @@
     return result
   }
 
-  function fnVerDetalleEquipoCerrado(idEquipo){ 
+  function fnVerDetalleEquipoCerrado(idEquipo){
 
     // console.log(id);
     let urlEditar = '{{ route("equipoAtendido", ":id") }}';
@@ -2984,7 +2959,7 @@
             let urlArchivo = '{{ asset("public/cierreEquipo/:nomVarE") }}';
             // let urlArchivo = '{{ asset("cierreEquipo/:nomVarE") }}'; //////31/08/2023  //LOCAL
             urlArchivo = urlArchivo.replace(':nomVarE', nomArch); 
-            htmlEviden+='<img src="'+urlArchivo+'" style="width:250px; heigth:250px;"/>';
+            htmlEviden+='<img src="'+urlArchivo+'" style="width:100%; heigth:100%;"/>';
           }
           $('#divEvidenciaEquipo').html(htmlEviden);
 
@@ -3017,10 +2992,10 @@
       //this will work only for Chrome
       fnUpdAcceso(idSolicServ, false, bandListado);  
     });
-    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 2000000); // 
-    // clearInterval(refreshIntervalId); 
+    var refreshIntervalId  = setInterval(('fnUpdAcceso('+idSolicServ+',false,'+bandListado+')'), 300000); // 
+    // clearInterval(refreshIntervalId);
     // console.log(refreshIntervalId);
-    setTimeout(() => clearInterval(refreshIntervalId), 2000000); //300000
+    setTimeout(() => clearInterval(refreshIntervalId), 300000); //300000
   } 
 
   function fnMateriales(idSolicServ){
@@ -3044,7 +3019,7 @@
 
   $(document).ready(function () {
     load();
-  
+
     $('.selectpicker').attr('disabled',false); //JC
     $('.selectpicker').selectpicker('refresh');  //JC
 
@@ -3295,29 +3270,6 @@
       var idSolServ = $("#hdIdOrdenCierra").val();
       fnUpdAcceso(idSolServ, false, 1);
     });  
-
-    $("#archivoCierre2").on("change", function() {
-        var files    =   $('#archivoCierre2')[0].files;
-        var lengFiles=files.length;
-        // console.log(lengFiles);
-        if (lengFiles < 0 || lengFiles > 3){
-          msjeAlertaSecundario('','Debe seleccionar de 1 a 3 archivos jpg','error');
-          $('#archivoCierre2').val("");
-          // console.log('entro');
-          return false;
-        }else{
-          for(var i=0; i < lengFiles; i++){
-              var fname = files[i].name.toLowerCase();
-              var re = /(\.jpg)$/i;
-              if(!re.exec(fname))
-              { 
-                msjeAlertaSecundario('','Debe seleccionar archivo(s) tipo jpg','error');
-                $('#archivoCierre2').val("");
-                return false;
-              }
-          }
-        }
-    });
 
   });
 
