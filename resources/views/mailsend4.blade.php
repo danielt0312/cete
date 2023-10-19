@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<img src="{{ $message->embed((asset('images/correo/headercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+<img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/headercas.png" class="img-fluid rounded-start" style="width: 100%;">
 <div style="padding-left:3%; padding-right:3%">
     <h2>{{ $details ['tittle'] }}</h2>
     <hr color="#ab0033!important;">
@@ -24,7 +24,7 @@
     <a href="http://devcete.tamaulipas.gob.mx/cas/ventanilla/consulta" style="color: #ab0033;"><ins>Ventanilla Única CETE.</ins></a>
 </div>
     <br>
-<img src="{{ $message->embed((asset('images/correo/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+    <img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/foothercas.png" class="img-fluid rounded-start" style="width: 100%;">
 
 </body>
 </html>

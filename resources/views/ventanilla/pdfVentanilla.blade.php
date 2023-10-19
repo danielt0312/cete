@@ -157,7 +157,7 @@
   {{-- http://localhost/cas/images/logo/logoTam2022.png {{ asset('images/logo/logoTam2022.png') }}--}}
 <header>
       <div style="width: 30%; height: 50px; float: left;">
-      <img src="{{ asset('images/logo/logo_cete_3.png') }}" alt="" style="width: 300px; height: 45px; margin-top: 10px;">
+      <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/images/logo/logo_cete_3.png'))) }}" alt="" style="width: 300px; height: 45px; margin-top: 10px;">
       </div>
       <div style="margin-left: 10%; height: 50px; text-align: right; font-size: 12px;"> 
         <p><b>CENTRO ESTATAL DE TECNOLOGÍA EDUCATIVA</b><br>
@@ -341,7 +341,7 @@
               <table class="tableFoot">
                   <tr>
                     <td class="tableFoot text-right" style="width: 10%;">
-                      <img style="width: 90px; height: 90px;" src="{{ asset('images/QR_ventanilla.png') }}" alt="">
+                    <img style="width: 90px; height: 90px;" src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('/images/QR_ventanilla.png'))) }}" alt="">
                     </td>
                     <td class="tableFoot text-right" style="width: 23%; text-align: right; font-size: 12px; margin-top: 4px;">
                       <span class="invoice-title"><small>Calzada Gral. Luis Caballero S/N, Antiguo Edificio Escuela Normal Rural de Tamatán,</small><br></span>

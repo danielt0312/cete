@@ -200,12 +200,13 @@
 
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row">
-                                    <div class="col-9">
+                                    <div class="col-8" style="background-color:#ab0033; border-radius: 82px 82px 82px 82px;">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="check_seguimiento">
-                                            <label style="font-size:0.90em;" class="form-check-label">
-                                            Deseo recibir notificaciones sobre el seguimiento de mi solicitud en la dirección de correo que he proporcionado.
+                                            <label style="font-size:0.90em; color:white;" class="form-check-label">
+                                                Active casilla si desea recibir notificaciones sobre el seguimiento de su solicitud en la dirección de correo proporcionado.
                                             </label>
                                         </div>                                    
                                     </div>

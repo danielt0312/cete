@@ -9,7 +9,7 @@
 <body>
 <!-- <img src="data:image/png;base64,{{base64_encode( asset('images/img/ventanilla/headercas.png') )}}" alt=""> -->
 
-<img src="{{ $message->embed((asset('images/correo/headercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+<img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/headercas.png" class="img-fluid rounded-start" style="width: 100%;">
 <div style="padding-left:3%; padding-right:3%">
     <h2>{{ $details ['tittle'] }}</h2>
     <hr color="#ab0033!important;">
@@ -22,7 +22,7 @@
     <center><b><p>{{ $details ['body4'] }}<br><br>{{ $details ['body5'] }}<br></p></b></center>
 </div>
     <br>
-<img src="{{ $message->embed((asset('images/correo/foothercas.png'))) }}" class="img-fluid rounded-start" style="width: 100%;">
+    <img src="https://sistemaset.tamaulipas.gob.mx/cas/public/images/correo/foothercas.png" class="img-fluid rounded-start" style="width: 100%;">
 
     <!-- <img src="{{ asset('images/img/ventanilla/foothercas.png') }}" class="img-fluid rounded-start" style="width: 100%;"> -->
 </body>
