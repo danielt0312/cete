@@ -852,7 +852,7 @@
                 }
             }).then((result) => {
                 console.log($('#swal-input3').val());
-                if (result.isConfirmed) {
+                if (result.isConfirmed) { 
                     actividad_realizada = $('#swal-input3').val();
                     nota_tecnica = $('#swal-input4').val();
                     console.log(actividad_realizada);
