@@ -482,6 +482,7 @@ class OrdenesController extends Controller
 
     /*public function updCerrar(Request $request){
         // dd($request, $_FILES["archivoCierre"]);
+        //    dd($request);
         
         $vusuario=Auth()->user()->id;
 
@@ -1137,7 +1138,7 @@ class OrdenesController extends Controller
         }
     }
 
- /////Materiales
+/////Materiales
     public function index_materiales($id){
         $vid_usuario=Auth()->user()->id;
         $getUsername =  DB::connection('pgsql')->select("select * from cas_cete.getUsername(".$vid_usuario.")");
@@ -1352,18 +1353,6 @@ class OrdenesController extends Controller
             // dd($detalle_material3);
         // $id_solicitud = $request->id;
 
-        
-
-        // $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud(".$detalle_material[0]->id_servicio.")");
-        // $fn_inf_orden = DB::select("select * from cas_cete.fn_inf_orden(".$detalle_material[0]->id_servicio.")");
-        
-        // dd($fn_solicitud);
-        // dd($ordenServicios[0]);
-        // $fn_solicitud=$fn_solicitud[0];
-        // if ($fn_inf_orden != null) {
-        //     $fn_inf_orden=$fn_inf_orden[0];
-        // }
-        // dd($fn_inf_orden);
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
         $options->set('isHtml5ParserEnabled', TRUE);
@@ -1380,7 +1369,7 @@ class OrdenesController extends Controller
                 "verify_peer_name"=>false,
             ),
         );
-        $data = file_get_contents($path);
+        $data = file_get_contents($path, false, stream_context_create($arrContextOptions));
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
         $path_footer = asset('images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
@@ -1503,15 +1492,7 @@ class OrdenesController extends Controller
 
         
 
-        // $fn_solicitud =  DB::select("select * from cas_cete.fn_solicitud(".$detalle_material[0]->id_servicio.")");
-        // $fn_inf_orden = DB::select("select * from cas_cete.fn_inf_orden(".$detalle_material[0]->id_servicio.")");
         
-        // dd($fn_solicitud);
-        // dd($ordenServicios[0]);
-        // $fn_solicitud=$fn_solicitud[0];
-        // if ($fn_inf_orden != null) {
-        //     $fn_inf_orden=$fn_inf_orden[0];
-        // }
         // dd($fn_inf_orden);
         $options = new Options();
         $options->set('isRemoteEnabled', TRUE);
@@ -1529,7 +1510,7 @@ class OrdenesController extends Controller
                 "verify_peer_name"=>false,
             ),
         );
-        $data = file_get_contents($path);
+        $data = file_get_contents($path, false, stream_context_create($arrContextOptions));
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
         $path_footer = asset('images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
