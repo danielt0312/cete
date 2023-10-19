@@ -410,7 +410,7 @@ table td {
                           </div>
                         </div>
                       </div>
-                    <div class="col-12 table-wrapper" id="divTablaEquipos">
+                    <div class="col-12 table-wrapper" id="divTablaEquipos" style="height: 500px;">
                     
                       <table class="table">
                           <thead>
@@ -1426,9 +1426,9 @@ $(function () {
           // window.location.href = '{{route("index_solicitud")}}';
         });
       });
-      var refreshIntervalId  = setInterval(('fnupdateAcceso('+id+','+bandera_acceso3+')'), 300000);
+      var refreshIntervalId  = setInterval(('fnupdateAcceso('+id+','+bandera_acceso3+')'), 2000000);
       // clearInterval(refreshIntervalId);
-      setTimeout(() => clearInterval(refreshIntervalId), 300000)
+      setTimeout(() => clearInterval(refreshIntervalId), 2000000)
       var bandera_acceso2 = 0; 
       $.ajax({
         url: '{{route("actualiza_acesso")}}',
@@ -1647,7 +1647,7 @@ $(function () {
 
                 htmlselect1+='<label for="selTipoEquipo">TIPO DE EQUIPO/SERVICIO</label>';
                 htmlselect1+='<select class="form-select" aria-label="Default select example" id="selTipoEquipo" name="selTipoEquipo" >';
-                  htmlselect1+='<option selected value="0">SELECCIONAR EQUIPO</option>';
+                  htmlselect1+='<option selected value="0">SELECCIONAR EQUIPO/SERVICIO</option>';
                   for (var i = 0; i < arreglo_tipo_equipo.length; i++) {
                       htmlselect1+='<option value="'+arreglo_tipo_equipo[i]['id']+'">'+arreglo_tipo_equipo[i]['tipo_equipo']+'</option>';
                   }

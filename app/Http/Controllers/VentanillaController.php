@@ -366,17 +366,26 @@ class VentanillaController extends Controller
         // $path = asset('images/logo/logoTam2022.png');
         //  return $path;
         $type = pathinfo($path, PATHINFO_EXTENSION);
-        $data = file_get_contents($path);
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );  
+        // $data = file_get_contents($path);
+        $data = file_get_contents($path, false, stream_context_create($arrContextOptions));
         $pic = 'data:image/'.$type.';base64,'.base64_encode($data);
         $path_footer = asset('images/logo/ceteNI.png');
         // $path_footer = asset('images/logo/logoTam2022.png');
         // $path_footer = 'http://cascete.io/public/images/logo/ceteNI.png';
         // $path_footer = asset('images/logo/ceteNI.png');
         $type_footer = pathinfo($path_footer, PATHINFO_EXTENSION);
-        $data_footer = file_get_contents($path_footer);
+        // $data_footer = file_get_contents($path_footer);
+        $data_footer = file_get_contents($path_footer, false, stream_context_create($arrContextOptions));
         $pic_footer = 'data:image/'.$type_footer.';base64,'.base64_encode($data_footer);
 
-        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        // $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png')).'">';
+        $html = '<img src="data:image;base64,'.base64_encode(@file_get_contents('logoTam2022.png', false, stream_context_create($arrContextOptions))).'">';
         $fecha = date('Y-m-d');
 
         //   view()->share('servicios::ordenes_servicio/downloadOrden',$Datos_solicitudObject, $equipos, $tecnicos_aux);

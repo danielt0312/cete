@@ -22,7 +22,7 @@
 .table-wrapper table thead th,
 .table-wrapper table tbody td {
   /* border: 1px solid #000; */
-  background-color: #FFF;
+  /* background-color: #FFF; */
 }
 
 </style>
@@ -39,6 +39,8 @@
                 
                 
                 <input type="text" id="id_solicitud_input" hidden value="{{ $query[0]->id_servicio}}">
+                <input type="text" id="id_solicitud_actividad_input" hidden value="{{ $query[0]->actividad_realizada}}">
+                <input type="text" id="id_solicitud_nota_input" hidden value="{{ $query[0]->nota_tecnica}}">
                 <div class="card-body">
                     @foreach($datos as $datos2)
                         <div class="row">
@@ -78,18 +80,20 @@
                     <div class="row">
                         <div class="col-12 table-wrapper" id="divTablaEquipos">
                             <table class="table-responsive" id="tablaEquipos" width="100%">
-                                <thead class="text-align:center;">
-                                    <tr><th class="text-uppercase text-secondary text-xxs font-weight-bolder">CANTIDAD</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">EQUIPO/SERVICIO</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">DESCRIPCIÓN</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">SERVICIO</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">TAREA</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder">AGREGAR MATERIAL</th>
-                                </tr></thead>
-                                <tbody id="tbEquipos">
+                                <thead class="text-align:center;" style="background-color: white;">
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">CANTIDAD</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">EQUIPO/SERVICIO</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">DESCRIPCIÓN</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">SERVICIO</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">TAREA</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder">AGREGAR MATERIAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbEquipos" >
                                     @foreach($query as $query2)
                                         @if( $query2->id_tarea == 22 || $query2->id_tarea == 23 || $query2->id_tarea == 37)
-                                            <tr id="">
+                                            <tr>
                                                 <td style="text-align:center;" class="text-s text-secondary mb-0">{{$query2->cantidad}}</td>
                                                 <td class="text-s text-secondary mb-0">{{$query2->tipo_equipo}}</td>
                                                 <td class="text-s text-secondary mb-0">{{$query2->desc_problema}}</td>
@@ -105,6 +109,12 @@
                                                                 <a onclick="fnAgregarMaterial({{$query2->id_servicio_tarea}},{{$query2->id_equipo_detalle}})" class="dropdown-item"> 
                                                                 <i class="fas fa-edit"></i>
                                                                     Agregar Material
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a onclick="fnImprimirMaterial({{$query2->id_servicio}},{{$query2->id_equipo_detalle}})" class="dropdown-item"> 
+                                                                <i class="fas fa-download"></i>
+                                                                    Imprimir Material
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -125,7 +135,7 @@
                         <div class="col-12 lineaHr"></div><br><br>
                         <div class="col-12 d-grid gap-2 d-md-flex justify-content-md-end">
                             <button type="button" class="btn btn-secondary" href='{{route("listadoOrdenes")}}' id="btnRegresar">Regresar</button>
-                            <button type="button" class="btn btn-secondary" id="btnRegresar">Imprimir</button>
+                            <button type="button" class="btn btn-secondary" id="btnImprimir">Imprimir</button>
                             <!-- <button type="button" class="btn colorBtnPrincipal" id="btnActualizar"> Actualizar</button> -->
                         </div> 
                     </div>
@@ -152,6 +162,7 @@
                             
                             <div>
                         </div>
+                        <input hidden id="input_estatus" value="{{$datos2->id_esatus}}" type="number">
                         <!-- <div class="row">
                             <div class="col-12">
                             
@@ -277,15 +288,32 @@
         var arreglo_productos_guardar = [];
         var arreglo_productos_guardar2 = [];
 
-        var arreglo_productos3 = [];
+        // var arreglo_productos3 = [];
         var arreglo_eliminar_producto = [];
         var bandera_material = 0;
         var bandera_guardar = 0;
+        var id_global_producto = 0;
         
         $(function () {
             $('#exampleModal').modal({backdrop: 'static', keyboard: false})
-            // $('#divTablaProductos').hide();
+            // $("#tablaEquipos tbody tr").css("background-color", "#E8E8E6");
+            // $('#tablaEquipos tbody').on('click', 'tr', function () {
+            //     console.log($(this));
+            //     // console.log(table.row( this ).data());
+            //     $("#tbEquipos tbody tr").css("background-color", "#FFFFFF");
+            //     $(this).css("background-color", "#E8E8E6");
+            // });
+            
         });
+        $('#tablaEquipos tbody').on('click', 'tr', function () {
+                // console.log($(this));
+                // console.log(table.row( this ).data());
+                // $("#tbEquipos tbody tr").css("background-color", "#FFFFFF");
+                var trs = $("#tablaEquipos").find("tbody>tr");
+                trs.css("background-color", "#FFFFFF");
+                $(this).css("background-color", "#E8E8E6");
+            });
+        
 
         function fnAgregarMaterial(id,id_equipo_detalle){
             
@@ -293,7 +321,9 @@
             
             var contador_1 = 0;
             var id_equipo_detalle = id_equipo_detalle;
+            id_global_producto = id_equipo_detalle;
             // id="58"
+            console.log(id_equipo_detalle);
             $('#divTablaProductos').hide();
             $('#divEncabezadoTabla').hide();
             
@@ -323,7 +353,7 @@
                         
                     }
                     // arreglo_productos3.push(r.detalle_material);
-                    console.log(arreglo_productos3);
+                    // console.log(arreglo_productos3);
                     drawRowMaterial2_1();
                     // $('#divTablaProductos2').show();
             });
@@ -492,7 +522,7 @@
                 $("#btnGuardar").click(function(){
                     // var bandera_ruta_guardar = 0;
                     
-                        bandera_guardar = 1;
+                        
                     
                         // console.log(arreglo_productos_guardar);
                         for (let i = 0; i < arreglo_productos_guardar.length; i++) {
@@ -519,19 +549,22 @@
                         console.log(arreglo_eliminar_producto);
                         // if (bandera_ruta_guardar == 0) {
                             $('#btnGuardar').prop('disabled',true);
+                            $('#btn_cerrar').prop('disabled',true);
                         if (bandera_guardar == 0) {
+                            console.log(id_global_producto);
+                            bandera_guardar = 1;
                             $.ajax({
                             url: '{{route("guardar_materiales")}}',
                             type: 'POST',
                             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                             data: {'arreglo_productos_guardar2' : arreglo_productos_guardar2,
-                                 'id_equipo_detalle' : id_equipo_detalle, 'arreglo_eliminar_producto' : arreglo_eliminar_producto}
+                                 'id_equipo_detalle' : id_global_producto, 'arreglo_eliminar_producto' : arreglo_eliminar_producto}
                             }).always(function(r) {
                                 console.log(r);
                                 var id_solicitud = $('#id_solicitud_input').val();
                                 let urlEditar = '{{ route("index_materiales", ":id") }}';
                                 urlEditar = urlEditar.replace(':id', id_solicitud);
-                                // window.location.href = urlEditar;
+                                window.location.href = urlEditar;
                             }); 
                         }
                         // }
@@ -561,8 +594,6 @@
            
             $('#exampleModal').modal('show');
         }
-
-        
 
         function drawRowMaterial2(){
             html1='';
@@ -739,6 +770,122 @@
 
         $('#btnRegresar').click(function(){
             window.location.href = '{{route("listadoOrdenes")}}';
+        });
+        
+        function fnImprimirMaterial(id,id_equipo_detalle){
+            $.ajax({
+                url: '{{route("revisar_detalle")}}',
+                type: 'GET',
+                data: {'id_equipo_detalle' : id_equipo_detalle}
+                }).always(function(r) {
+                    console.log(r);
+                    if (r.exito==true) {
+                        let urlEditar = '{{ route("imprimir_material", ":id_equipo_detalle") }}';
+                        urlEditar = urlEditar.replace(':id_equipo_detalle', id_equipo_detalle);
+
+                        // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+                        var win = window.open(urlEditar, '_blank');
+                    }
+                    else{
+                        Swal.fire({
+                            position: 'bottom-right',
+                            icon: 'warning',
+                            title: 'No tiene Material/Refaccion que imprimir.',
+                            showConfirmButton: false,
+                            customClass: 'msj_aviso',
+                            timer: 2000
+                        })
+                    }
+            });
+
+            
+        }
+
+        $('#btnImprimir').click(function(){
+            id_servicio = $('#id_solicitud_input').val();
+            solicitud_actividad = $('#id_solicitud_actividad_input').val();
+            solicitud_nota = $('#id_solicitud_nota_input').val();
+            actividad_realizada = '';
+            nota_tecnica = '';
+            Swal.fire({
+                position: 'bottom-right',
+                icon: 'warning',
+                position: 'center',
+                // title: 'No tiene Material/Refaccion que imprimir.',
+                showConfirmButton: true,
+                customClass: 'msj_aviso',
+                showCancelButton: true,
+                html:
+                  'Escribe las Actividades Realizadas: '+
+                    '<textarea maxlength="450" maxlength="450" id="swal-input3" style="width:80%"  class="swal2-textarea">'+solicitud_actividad+'</textarea>'+
+                    '<br><br>'+
+                    'Escribe la Nota Técnica: '+
+                    '<textarea maxlength="450" maxlength="450" id="swal-input4" style="width:80%"  class="swal2-textarea">'+solicitud_nota+'</textarea>',
+                // '</div>',
+                confirmButtonColor: '#b50915',
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Aceptar',
+                width: 800,
+                allowOutsideClick: false,
+                preConfirm: () => {
+                    if ($('#swal-input3').val().length<4) {
+                        Swal.showValidationMessage(
+                            'La actividad debe tener al menos 4 caracteres...'
+                        )
+                    }
+                    else if ($('#swal-input3').val().length>450) {
+                        Swal.showValidationMessage(
+                            'La actividad no puede tener mas de 450 caracteres...'
+                        )
+                    }
+                    if ($('#swal-input4').val().length<4) {
+                        Swal.showValidationMessage(
+                            'La nota técnica debe tener al menos 4 caracteres...'
+                        )
+                    }
+                    else if ($('#swal-input4').val().length>450) {
+                        Swal.showValidationMessage(
+                            'La nota técnica no puede tener mas de 450 caracteres...'
+                        )
+                    }
+                }
+            }).then((result) => {
+                console.log($('#swal-input3').val());
+                if (result.isConfirmed) {
+                    actividad_realizada = $('#swal-input3').val();
+                    nota_tecnica = $('#swal-input4').val();
+                    console.log(actividad_realizada);
+                    console.log(nota_tecnica);
+                    $.ajax({
+                        url: '{{route("editar_actividad")}}',
+                        type: 'GET',
+                        data: {'id_servicio' : id_servicio, 'actividad_realizada' : actividad_realizada, 'nota_tecnica' : nota_tecnica}
+                        }).always(function(r) {
+                            console.log(r);
+                            
+                            let urlEditar = '{{ route("imprimir_material2", ":id_servicio") }}';
+                            urlEditar = urlEditar.replace(':id_servicio', id_servicio);
+
+                            // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+                            var win = window.open(urlEditar, '_blank');
+                            // var id_solicitud = $('#id_solicitud_input').val();
+                            console.log('llego aca');
+                            let urlEditar2 = '{{ route("index_materiales", ":id") }}';
+                            urlEditar2 = urlEditar2.replace(':id', id_servicio);
+                            window.location.href = urlEditar2;
+                            
+                    });
+                }
+            });
+            
+            // console.log($('#id_solicitud_input').val());
+            // id_servicio = $('#id_solicitud_input').val();
+            // let urlEditar = '{{ route("imprimir_material2", ":id_servicio") }}';
+            // urlEditar = urlEditar.replace(':id_servicio', id_servicio);
+
+            // // var win = window.open("{{ asset('images/documentoConstruccion.jpg') }}", '_blank');
+            // var win = window.open(urlEditar, '_blank');
         });
     </script>
 @endsection

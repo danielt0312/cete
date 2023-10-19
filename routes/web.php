@@ -103,12 +103,21 @@ Route::group(['middleware' => 'auth'], function () {
         //verEquiosCerrados en cerrarOrden 
         Route::get('/equipoAtendido/{id}', 'App\Http\Controllers\OrdenesController@getEquiposCerrados')->name('equipoAtendido');
         
-        //-----RUTAS MATERIALES   
+        //-----RUTAS MATERIALES 
+        // Route::get('/index_materiales/{id}', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
         Route::get('/index_materiales/{id}', 'App\Http\Controllers\OrdenesController@index_materiales')->name('index_materiales');
         Route::get('/cat_materiales2', 'App\Http\Controllers\OrdenesController@cat_materiales2')->name('cat_materiales2');
         Route::get('/select_materiales', 'App\Http\Controllers\OrdenesController@select_materiales')->name('select_materiales');
         Route::post('/guardar_materiales', 'App\Http\Controllers\OrdenesController@guardar_materiales')->name('guardar_materiales');
         Route::get('/detalle_material', 'App\Http\Controllers\OrdenesController@detalle_material')->name('detalle_material');
+        // Route::get('/imprimir_material', 'App\Http\Controllers\OrdenesController@imprimir_material')->name('imprimir_material');
+        Route::get('/imprimir_material/{id_equipo_detalle}', 'App\Http\Controllers\OrdenesController@imprimir_material')->name('imprimir_material');
+        Route::get('/imprimir_material2/{id_servicio}', 'App\Http\Controllers\OrdenesController@imprimir_material2')->name('imprimir_material2');
+        Route::get('/revisar_detalle', 'App\Http\Controllers\OrdenesController@revisar_detalle')->name('revisar_detalle');
+        Route::get('/editar_actividad', 'App\Http\Controllers\OrdenesController@editar_actividad')->name('editar_actividad');
+        
+        
+
     }); 
 
     Route::group(['prefix' => 'solicitudes'], function(){
