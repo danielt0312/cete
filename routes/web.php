@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\DB;
         Route::get('/index', 'App\Http\Controllers\ProyectosController@index')->name('index_proyectos');
         Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectosController@show')->name('grabar');
         Route::get('/documentos/{id}', 'App\Http\Controllers\DocumentosController@index')->name('grabar');
+        Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\CicloVidaController@index')->name('ciclo-vida');
     });
 
     Route::group(['prefix' => 'solicitudes'], function(){
