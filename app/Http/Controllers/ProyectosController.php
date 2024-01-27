@@ -19,11 +19,11 @@ class ProyectosController extends Controller
                 'opciones' =>
                     '<a class="btn btn-primary" href="/proyectos/grabar/'.$sistema->id.'"><i class="fas fa-pencil-alt"></i></a>
                     '.'&nbsp;<a class="btn btn-secundario" href="/proyectos/documentos/'.$sistema->id.'"><i class="fas fa-plus"></i></a>
-                    '.'&nbsp;<a class="btn btn-secondary" href="#"><i class="fas fa-eye"></i></a>',
+                    '.'&nbsp;<a class="btn btn-secondary" href="/proyectos/ciclo-vida/'.$sistema->id.'"><i class="fas fa-eye"></i></a>',
                 'nombre' => $sistema->nombre,
                 'descripcion' => $sistema->descripcion,
                 'responsable' => $sistema->responsable,
-                'url' => $sistema->url,
+                'url' => '<a href="#">'.$sistema->url.'</a>',
                 'ubicacion' => $sistema->ubicacion,
                 'procesos' => $sistema->procesos,
                 'informacion' => $sistema->informacion,
