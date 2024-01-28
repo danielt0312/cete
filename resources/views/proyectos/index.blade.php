@@ -23,21 +23,7 @@
     </div>
 @endsection
 
-{{-- Acoplamiento a la tabla --}}
-<style>
-    .descripcion, .observaciones {
-        white-space: normal !important;
-        word-wrap: break-word;
-    }
-</style>
-
 @section('page-scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet">
-
     <script>
         $(document).ready(function () {
             var data = @json($proyectos['data']);

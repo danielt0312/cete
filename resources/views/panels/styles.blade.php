@@ -22,6 +22,10 @@
 <link href="{{ asset('css/leaflet.css') }}" rel="stylesheet" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
    crossorigin=""/>
 
+{{-- dataTables : Ciclo de vida de sistemas de información --}}
+<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
+
+
 <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
    crossorigin=""/> -->
@@ -203,4 +207,11 @@
   .navbar-user{
     width:17em !important;
   }
+
+  {{-- dataTables : Ciclo de vida de sistemas de información --}}
+  {{-- Acoplamiento de columnas a la tabla #proyectos --}}
+   .descripcion, .observaciones {
+       white-space: normal !important;
+       word-wrap: break-word;
+   }
 </style>
