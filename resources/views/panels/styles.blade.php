@@ -23,7 +23,8 @@
    crossorigin=""/>
 
 {{-- dataTables : Ciclo de vida de sistemas de información --}}
-<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
+{{--<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet /">--}}
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
 
 
 <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -214,4 +215,9 @@
        white-space: normal !important;
        word-wrap: break-word;
    }
+  .url_dominio {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }
 </style>
