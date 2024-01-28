@@ -14,7 +14,7 @@
         </div>
         <div class="container-fluid row">
             <div class="col-md-12">
-                <table id="proyectos" class="table table-bordered" style="width:100%">
+                <table id="proyectos" class="table table-bordered shadow" style="width:100%">
                     <thead class="gem-tabla">
                     </thead>
                 </table>
@@ -23,6 +23,13 @@
     </div>
 @endsection
 
+{{-- Acoplamiento a la tabla --}}
+<style>
+    .descripcion, .observaciones {
+        white-space: normal !important;
+        word-wrap: break-word;
+    }
+</style>
 
 @section('page-scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -37,7 +44,7 @@
 
             $('#proyectos').DataTable({
                 'columnDefs' : [
-                    {orderable : false, targets: [1,3,4,5,6,7,8]}
+                    {orderable : false, targets: [1,3,4,5,6,7,8,9,10,11,12,13]}
                 ],
                 scrollX: true,
                 order: [0, 'asc'],
@@ -70,7 +77,7 @@
                     {data: 'id', title: 'ID'},
                     {data: 'opciones', title: 'Opciones'},
                     {data: 'nombre', title: 'Nombre'},
-                    {data: 'descripcion', title: 'Descripición'},
+                    {data: 'descripcion', title: 'Descripición', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
                     {data: 'url', title: 'URL / Dominio'},
                     {data: 'ubicacion', title: 'Ubicación'},
@@ -80,17 +87,9 @@
                     {data: 'periodos', title: 'Periodos'},
                     {data: 'codigo_fuente', title: 'Código fuente'},
                     {data: 'documentacion', title: 'Documentación disponible'},
-                    {data: 'observaciones', title: 'Observaciones'},
+                    {data: 'observaciones', title: 'Observaciones', className: 'observaciones'},
                 ],
             });
-        });
-    </script>
-
-    <script>
-        $(document).on("click", ".datoselim", function () {
-            var valorid = $(this).data('id');
-            alert(valorid);
-            $(".modal-body #idregistro").val(valorid);
         });
     </script>
 @endsection

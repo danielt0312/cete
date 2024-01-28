@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InicioController;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
+//use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
 
 /*
