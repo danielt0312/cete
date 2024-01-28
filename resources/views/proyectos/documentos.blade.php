@@ -21,7 +21,7 @@
             </div>
             <div class="row mt-4 text-center">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+                    <input type="file" class="custom-file-input" id="guardarArchivo" required>
                 </div>
             </div>
 

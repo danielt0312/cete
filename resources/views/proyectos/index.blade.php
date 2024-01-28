@@ -14,8 +14,8 @@
         </div>
         <div class="container-fluid row">
             <div class="col-md-12">
-                <table id="proyectos" class="table table-bordered shadow" style="width:100%">
-                    <thead class="gem-tabla">
+                <table id="proyectos" class="dataTable table table-bordered shadow" style="width:100%">
+                    <thead>
                     </thead>
                 </table>
             </div>
@@ -29,10 +29,10 @@
             var data = @json($proyectos['data']);
 
             $('#proyectos').DataTable({
-                'columnDefs' : [
+                scrollX: true,
+                columnDefs : [
                     {orderable : false, targets: [1,3,4,5,6,7,8,9,10,11,12,13]}
                 ],
-                scrollX: true,
                 order: [0, 'asc'],
                 language: {
                     sProcessing:     "Procesando...",
@@ -65,7 +65,7 @@
                     {data: 'nombre', title: 'Nombre'},
                     {data: 'descripcion', title: 'Descripición', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
-                    {data: 'url', title: 'URL / Dominio'},
+                    {data: 'url', title: 'URL / Dominio', className: 'url_dominio'},
                     {data: 'ubicacion', title: 'Ubicación'},
                     {data: 'procesos', title: 'Procesos'},
                     {data: 'informacion', title: 'Información'},

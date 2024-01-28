@@ -9,34 +9,24 @@
         </div>
         <div class="mt-7"/>
         <div class="container-fluid row">
-            <div class="col-md-12">
-                <table id="proyectos" class="table shadow" style="width:100%">
-                    <thead class="gem-tabla">
-                    </thead>
-                </table>
-            </div>
+            <table id="etapas" class="table shadow dataTable" style="width:100%">
+                <thead class="">
+                </thead>
+            </table>
         </div>
     </div>
 @endsection
 
-
 @section('page-scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet">
-
     <script>
         $(document).ready(function () {
             {{--var data = @json($proyectos['data']);--}}
                 var data;
 
-            $('#proyectos').DataTable({
-                'columnDefs' : [
+            $('#etapas').DataTable({
+                columnDefs : [
                     {orderable : false, targets: [1]}
                 ],
-                // scrollX: true,
                 order: [3, 'asc'],
                 language: {
                     sProcessing:     "Procesando...",
