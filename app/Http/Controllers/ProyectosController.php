@@ -47,4 +47,37 @@ class ProyectosController extends Controller
 
         return(view('proyectos.grabar', ['data' => ($query == null ? null : $query->attributesToArray()), 'responsables' => $responsables]));
     }
+
+    public function crearEtapas() {
+        // Datos que deseas escribir en el archivo CSV
+
+
+        $datos = array(
+            array('id', 'nombre', 'descripcion'),
+            array(1, 'Sistema A', 'Descripción A'),
+            array(2, 'Sistema B', 'Descripción B'),
+            // Agrega más filas según sea necesario
+        );
+
+// Nombre del archivo CSV
+        $nombreArchivo = '.csv';
+
+// Ruta donde se guardará el archivo (asegúrate de tener permisos de escritura)
+        $rutaArchivo = '/storage/documents/' . $nombreArchivo;
+
+// Abre el archivo en modo escritura
+        if ($archivo = fopen($rutaArchivo, 'w')) {
+            // Escribe cada fila en el archivo CSV
+            foreach ($datos as $fila) {
+                fputcsv($archivo, $fila);
+            }
+
+            // Cierra el archivo
+            fclose($archivo);
+
+            echo "Archivo CSV creado correctamente en: $rutaArchivo";
+        } else {
+            echo "Error al abrir el archivo CSV para escritura.";
+        }
+    }
 }
