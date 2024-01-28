@@ -194,6 +194,12 @@
   <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
   <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
 
+{{-- dataTables : Ciclo de vida de sistemas de información --}}
+  <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+
+{{--  <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
+
   @yield('page-scripts')
 
 @auth()
