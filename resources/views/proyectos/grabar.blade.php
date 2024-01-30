@@ -38,7 +38,7 @@
             <div class="row mt-2">
                 <label for="url" class="col-sm-3 col-form-label">URL / Dominio:</label>
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" id="url" value="{{$data == null ? '': $data['url']}}"
+                    <input type="text" class="form-control" id="url" value="{{$data == null ? '': $data['url_dominio']}}"
                            @if($data == null) required @else readonly @endif>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                 <label for="observaciones" class="col-form-label">Observaciones:</label>
                 <div class="col-sm-12">
                     <textarea class="form-control" id="observaciones" rows="3"
-                              @if($data == null) required @else readonly @endif>{{$data == null ? '': $data['observaciones']}}
+                              @if($data != null) readonly @endif>{{$data == null ? '': $data['observaciones']}}
                     </textarea>
                 </div>
             </div>
@@ -152,28 +152,5 @@
         $("body").on("click", "#DeleteRow", function () {
             $(this).parents("#row").remove();
         })
-    </script>
-
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict'
-
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-            var forms = document.querySelectorAll('.needs-validation')
-
-            // Loop over them and prevent submission
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
-
-                        form.classList.add('was-validated')
-                    }, false)
-                })
-        })()
     </script>
 @endsection

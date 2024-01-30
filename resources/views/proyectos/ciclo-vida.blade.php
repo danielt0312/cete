@@ -21,7 +21,7 @@
     <script>
         $(document).ready(function () {
             {{--var data = @json($proyectos['data']);--}}
-                var data;
+            var data;
 
             $('#etapas').DataTable({
                 columnDefs : [
