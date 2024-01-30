@@ -49,7 +49,7 @@ return [
             'host' => '127.0.0.1',
             'port' =>'3306',
             // 'database' => 'cascete',
-            'database' => 'cete',
+            'database' => 'gestion_proyectos_db',
             'username' => 'root',
             'password' => '',
             // 'database' => env('DB_DATABASE', 'forge'),

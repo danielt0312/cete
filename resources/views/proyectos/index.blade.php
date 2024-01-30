@@ -14,7 +14,7 @@
         </div>
         <div class="container-fluid row">
             <div class="col-md-12">
-                <table id="proyectos" class="dataTable table table-bordered shadow" style="width:100%">
+                <table id="proyectos" class="table dataTable shadow" style="width:100%">
                     <thead>
                     </thead>
                 </table>
@@ -29,9 +29,9 @@
             var data = @json($proyectos['data']);
 
             $('#proyectos').DataTable({
-                scrollX: true,
+                // scrollX: true,
                 columnDefs : [
-                    {orderable : false, targets: [1,3,4,5,6,7,8,9,10,11,12,13]}
+                    {orderable : false, targets: [2,3,4,5]}
                 ],
                 order: [0, 'asc'],
                 language: {
@@ -61,19 +61,11 @@
                 data: data,
                 columns: [
                     {data: 'id', title: 'ID'},
-                    {data: 'opciones', title: 'Opciones'},
                     {data: 'nombre', title: 'Nombre'},
                     {data: 'descripcion', title: 'Descripición', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
-                    {data: 'url', title: 'URL / Dominio', className: 'url_dominio'},
-                    {data: 'ubicacion', title: 'Ubicación'},
-                    {data: 'procesos', title: 'Procesos'},
-                    {data: 'informacion', title: 'Información'},
-                    {data: 'disponibilidad', title: 'Disponibilidad'},
-                    {data: 'periodos', title: 'Periodos'},
-                    {data: 'codigo_fuente', title: 'Código fuente'},
                     {data: 'documentacion', title: 'Documentación disponible'},
-                    {data: 'observaciones', title: 'Observaciones', className: 'observaciones'},
+                    {data: 'opciones', title: 'Opciones'},
                 ],
             });
         });
