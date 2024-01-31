@@ -46,6 +46,7 @@ use Illuminate\Support\Facades\DB;
     Route::group(['prefix' => 'etapas'], function () {
         Route::get('/index', 'App\Http\Controllers\EtapasController@index')->name('index_etapas');
         Route::get('/grabar/{id}', 'App\Http\Controllers\EtapasController@show')->name('agregar_etapa');
+        Route::get('/eliminar/{id}', 'App\Http\Controllers\EtapasController@delete')->name('eliminar_etapa');
         Route::post('/guardar', 'App\Http\Controllers\EtapasController@store')->name('grabar_etapa');
     });
 
