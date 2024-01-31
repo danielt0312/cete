@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatEtapa;
 use App\Models\Proyecto;
 use Illuminate\Support\Facades\DB;
 
@@ -10,15 +11,11 @@ class ProyectoController extends Controller
     public function index()
     {
         $sistemas = array();
-        $sistemas['data'] = (new Proyecto())::all();
+        $sistemas['data'] = Proyecto::all();
 
         foreach ($sistemas['data'] as $indice => $sistema){
             $sistemas['data'][$indice] = array(
                 'id' => $sistema->id,
-                /*'opciones' =>
-                    '<a class="btn btn-primary" href="/proyectos/grabar/'.$sistema->id.'"><i class="fas fa-pencil-alt"></i></a>
-                    '.'&nbsp;<a class="btn btn-secundario" href="/proyectos/documentos/'.$sistema->id.'"><i class="fas fa-plus"></i></a>
-                    '.'&nbsp;<a class="btn btn-secondary" href="/proyectos/ciclo-vida/'.$sistema->id.'"><i class="fas fa-eye"></i></a>',*/
                 'nombre' => $sistema->nombre,
                 'descripcion' => $sistema->descripcion,
                 'responsable' => $sistema->responsable,
@@ -32,9 +29,9 @@ class ProyectoController extends Controller
                             </svg>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Editar</a></li>
-                            <li><a class="dropdown-item" href="#">Agregar Documentos</a></li>
-                            <li><a class="dropdown-item" href="#">Ver etapas</a></li>
+                            <li><a class="dropdown-item" href="/proyectos/grabar/'.$sistema->id.'">Editar</a></li>
+                            <li><a class="dropdown-item" href="/proyectos/documentos/'.$sistema->id.'">Agregar Documentos</a></li>
+                            <li><a class="dropdown-item" href="/proyectos/ciclo-vida/'.$sistema->id.'">Ver etapas</a></li>
                         </ul>
                     </div>
                 ',
@@ -43,15 +40,16 @@ class ProyectoController extends Controller
         return(view('proyectos.index', ['proyectos' => $sistemas]));
     }
 
+
+
     public function show($id)
     {
-        $query = (new Proyecto())::find($id);
-        $responsables = [
-            'id' => '0',
-            'nombre' => 'database'
-        ];
+        $query = Proyecto::find($id);
+        $etapas = CatEtapa::all();
 
-        return(view('proyectos.grabar', ['data' => ($query == null ? null : $query->attributesToArray()), 'responsables' => $responsables]));
+        return(view('proyectos.grabar', [
+            'data' => $query == null ? null : $query->attributesToArray(),
+        ]));
     }
 
 
