@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CatEtapa;
+use App\Models\Documentacion;
 use App\Models\Proyecto;
 use Illuminate\Support\Facades\DB;
 
@@ -40,15 +41,49 @@ class ProyectoController extends Controller
         return(view('proyectos.index', ['proyectos' => $sistemas]));
     }
 
-
-
-    public function show($id)
+    public function show($id = 0)
     {
-        $query = Proyecto::find($id);
+        $data = $this->obtenerSistema($id);
         $etapas = CatEtapa::all();
+        $documentacion = $this->documentacionDisponible($id);
 
         return(view('proyectos.grabar', [
-            'data' => $query == null ? null : $query->attributesToArray(),
+            'data' => $data,
+            'etapas' => $etapas,
+            'documentacion' => $documentacion,
         ]));
+    }
+
+    public function documentacionDisponible($id)
+    {
+        $documentacion = Documentacion::find($id);
+        if($documentacion == null)
+            $documentacion = array(
+                'nombre' => '',
+                'directorio' => '',
+            );
+        return $documentacion;
+    }
+
+    public function obtenerSistema($id)
+    {
+        $data = Proyecto::find($id);
+        if($data == null)
+            $data = array(
+                'id' => '',
+                'nombre' => '',
+                'descripcion' => '',
+                'url_dominio' => '',
+                'url_proyecto' => '',
+                'url_codigo_fuente' => '',
+                'responsable' => '',
+                'area' => '',
+                'informacion_contenida' => '',
+                'disponibilidad' => '',
+                'periodo_inicio' => '',
+                'periodo_final' => '',
+                'observaciones' => '',
+            );
+        return $data;
     }
 }

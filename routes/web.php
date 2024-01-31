@@ -34,9 +34,7 @@ use Illuminate\Support\Facades\DB;
 
     Route::group(['prefix' => 'proyectos'], function() {
         Route::get('/index', 'App\Http\Controllers\ProyectoController@index')->name('index_proyectos');
-        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('grabar_');
-        Route::get('/documentos/{id}', 'App\Http\Controllers\DocumentosController@index')->name('grabar');
-        Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\CicloVidaController@index')->name('ciclo-vida');
+        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('grabar_propyectos');
     });
 
     Route::group(['prefix' => 'solicitudes'], function(){
