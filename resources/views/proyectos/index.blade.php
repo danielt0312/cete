@@ -29,7 +29,6 @@
             var data = @json($proyectos['data']);
 
             $('#proyectos').DataTable({
-                // scrollX: true,
                 columnDefs : [
                     {orderable : false, targets: [2,3,4,5]}
                 ],

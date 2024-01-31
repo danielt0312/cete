@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('documentaciones', function (Blueprint $table) {
             $table->id();
             $table->integer('id_proyecto');
-            $table->integer('id_cat_documentos');
+            $table->string('nombre');
             $table->string('directorio')->nullable();
             $table->timestamps();
         });

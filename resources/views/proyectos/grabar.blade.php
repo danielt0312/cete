@@ -12,45 +12,51 @@
             <div class="row">
                 <label for="nombre" class="col-sm-3 col-form-label">Nombre del proyecto:</label>
                 <div class="col-sm-12">
-                    <input type="text" class="form-control col-sm-12" id="nombre" value="{{$data == null ? '': $data['nombre']}}"
-                           @if($data == null) required @else readonly @endif>
+                    <input type="text" class="form-control col-sm-12" id="nombre" value="{{$data == null ? '': $data['nombre']}}" required>
                 </div>
             </div>
             <div class="row mt-2">
                 <label for="descripcion" class="col-form-label">Descripción:</label>
                 <div class="col-sm-12">
-                    <textarea class="form-control" id="descripcion" rows="3"
-                              @if($data == null) required @else readonly @endif>{{$data == null ? '': $data['descripcion']}}
+                    <textarea class="form-control" id="descripcion" rows="3" required>
+                        {{$data == null ? '': $data['descripcion']}}
                     </textarea>
                 </div>
             </div>
             <div class="row mt-2">
-                <label for="responsable" class="col-form-label">Responsable de Proyecto:</label>
-                <div class="input-group">
-                    <select class="form-select" id="responsable" aria-label="ResponsableProyecto"
-                            @if($data != null) disabled @endif>
-                        <option selected>{{$data == null ? 'Escoja...' : $data['responsable']}}</option>
-                        <option value="1">Lic. Manuel de la Cruz</option>
-                        <option value="2">Lic. Alfonso Rodríguez</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <label for="url" class="col-sm-3 col-form-label">URL / Dominio:</label>
+                <label for="responsable" class="col-form-label">Responsable del proyecto:</label>
                 <div class="col-sm-12">
-                    <input type="text" class="form-control" id="url" value="{{$data == null ? '': $data['url_dominio']}}"
-                           @if($data == null) required @else readonly @endif>
+                    <input type="text" class="form-control col-sm-12" id="responsable" value="{{$data == null ? '': $data['nombre']}}" required>
                 </div>
             </div>
             <div class="row mt-2">
-                <label for="ubicacion" class="col-form-label">Ubicación:</label>
-                <div class="input-group">
-                    <select class="form-select" id="ubicacion" aria-label="ubicacion"
-                            @if($data != null) disabled @endif>
-                        <option selected>{{$data == null ? 'Escoja...' : $data['ubicacion']}}</option>
-                        <option value="1">Cd. Victoria</option>
-                        <option value="2">Jaumave</option>
-                    </select>
+                <label for="dominio" class="col-sm-3 col-form-label">Dominio:</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="dominio" placeholder="www.tamaulipas.gob.mx" value="{{$data == null ? '' : $data['url_dominio']}}" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label for="url_proyecto" class="col-sm-3 col-form-label">URL de Proyecto:</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="url_proyecto" placeholder="www.tamaulipas.gob.mx/project" value="{{$data == null ? '' : $data['url_dominio']}}" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label for="url_codigo_fuente" class="col-sm-3 col-form-label">URL de código fuente:</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="url_proyecto" placeholder="github.com/user/repository.git" value="{{$data == null ? '' : $data['url_dominio']}}" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label for="area" class="col-form-label">Área:</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="area" placeholder="Recursos Humanos" value="{{$data == null ? '' : $data['area']}}" required>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <label for="informacion" class="col-sm-3 col-form-label">Tipo de información contenida:</label>
+                <div class="col-sm-12">
+                    <input type="text" class="form-control" id="informacion" value="{{$data == null ? '': $data['informacion']}}" required>
                 </div>
             </div>
             <div class="row mt-2">
@@ -70,13 +76,6 @@
                     <button id="rowAdder" type="button" class="btn btn-dark">
                         <i class="fas fa-plus"></i>
                     </button>
-                </div>
-            </div>
-            <div class="row">
-                <label for="informacion" class="col-sm-3 col-form-label">Tipo de información contenida:</label>
-                <div class="col-sm-12">
-                    <input type="text" class="form-control" id="informacion" value="{{$data == null ? '': $data['informacion']}}"
-                           @if($data == null) required @else readonly @endif>
                 </div>
             </div>
             <div class="row mt-2">
