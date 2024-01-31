@@ -10,7 +10,7 @@
         <div class="mt-7"/>
         <div class="g-2 d-grid d-md-flex justify-content-around">
             <h3>Lista de Etapas</h3>
-            <a class="btn btn-secundario btn-agregar"><i class="fas fa-plus-square">&nbsp;</i> Agregar</a>
+            <a class="btn btn-secundario btn-agregar" href="{{ route('agregar_etapa', ['id' => 0]) }}"><i class="fas fa-plus-square">&nbsp;</i> Agregar</a>
         </div>
         <div class="container-fluid row">
             <div class="col-md-12">
@@ -18,29 +18,6 @@
                     <thead>
                     </thead>
                 </table>
-
-                <form id="guardarEtapa" class="mt-2" style="display: none">
-                    <div class="">
-                        <label for="nombre" class="col-sm-3 col-form-label">Nombre del proyecto:</label>
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control col-sm-12" id="nombre" value="" required>
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <label for="descripcion" class="col-form-label">Descripción:</label>
-                        <div class="col-sm-12">
-                    <textarea class="form-control" id="descripcion" rows="3" required>
-
-                    </textarea>
-                        </div>
-                    </div>
-
-                    <div class="mt-4">
-                        <div>
-                            <button class="btn btn-primary col-sm-12" type="submit">Guardar</button>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -52,7 +29,7 @@
             var data = @json($etapas);
             $('#etapas').DataTable({
                 columnDefs : [
-                    {orderable : false, targets: []}
+                    {orderable : false, targets: [3]}
                 ],
                 order: [0, 'asc'],
                 language: {
@@ -86,15 +63,6 @@
                     {data: 'descripcion', title: 'Descripición', className: 'descripcion'},
                     {data: 'editar', title: 'Opción'},
                 ],
-            });
-
-            $('.btn-agregar').on('click', function (e) {
-                e.preventDefault();
-                $('#guardarEtapa').toggle()
-            });
-
-            $('.btn-editar').on('click', function(e) {
-
             });
         });
     </script>

@@ -51,9 +51,4 @@ class ProyectoController extends Controller
             'data' => $query == null ? null : $query->attributesToArray(),
         ]));
     }
-
-
-    public function crearEtapas() {
-
-    }
 }
