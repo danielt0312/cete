@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\DB;
 
     Route::group(['prefix' => 'proyectos'], function() {
         Route::get('/index', 'App\Http\Controllers\ProyectoController@index')->name('index_proyectos');
-        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('grabar');
+        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('grabar_');
         Route::get('/documentos/{id}', 'App\Http\Controllers\DocumentosController@index')->name('grabar');
         Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\CicloVidaController@index')->name('ciclo-vida');
     });
@@ -43,5 +43,10 @@ use Illuminate\Support\Facades\DB;
         Route::get('/index', 'App\Http\Controllers\SolicitudesController@index2')->name('index_solicitud');
     });
 
-    Route::get('/etapas', 'App\Http\Controllers\EtapasController@index')->name('etapas');
+    Route::group(['prefix' => 'etapas'], function () {
+        Route::get('/index', 'App\Http\Controllers\EtapasController@index')->name('index_etapas');
+        Route::get('/grabar/{id}', 'App\Http\Controllers\EtapasController@show')->name('agregar_etapa');
+        Route::post('/guardar', 'App\Http\Controllers\EtapasController@store')->name('grabar_etapa');
+    });
+
 // });

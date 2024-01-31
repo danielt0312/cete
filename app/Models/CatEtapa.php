@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class CatEtapa extends Model
 {
-    
+    public $timestamps = false;
 }
