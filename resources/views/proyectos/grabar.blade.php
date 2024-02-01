@@ -80,41 +80,18 @@
                 <div id="listaProcesos" class="">
                     @foreach($etapas as $etapa)
                         <div class="card @if($etapa['id'] != 1) mt-3 @endif card-body">
-                            <div class="row row-cols-2">
-                                <div class="col">
-                                    <label class="col-form-label col-form-label-sm card-title">{{$etapa['nombre']}}</label>
-                                    <div id="{{$etapa['id']}}-row" >
-                                        <div class="input-group">
-                                            <div class="col-sm-11">
-                                                <input type="text" class="form-control form-control-sm" required>
-                                            </div>
-                                            <div class="col-sm-1" style="padding-left: 10px;">
-                                                <button class="btn btn-danger btn-xs form-control-sm" id="{{$etapa['id']}}-deleteRow" type="button" >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="{{$etapa['id']}}-newInput"></div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="col-form-label col-form-label-sm">{{$etapa['nombre']}}</label>
                                 </div>
-                                <div class="col">
-                                    <label class="col-form-label col-form-label-sm card-title">Lista de desarrolladores</label>
-                                    <div id="{{$etapa['id']}}-des-row">
-                                        <div class="input-group">
-                                            <div class="col-sm-11">
-                                                <input type="text" class="form-control form-control-sm" required>
-                                            </div>
-                                            <div class="col-sm-1" style="padding-left: 10px;">
-                                                <button class="btn btn-danger btn-xs form-control-sm" id="{{$etapa['id']}}-deleteRow" type="button" >
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="{{$etapa['id']}}-newInput"></div>
+                                <div class="col-6">
+                                    <label class="col-form-label col-form-label-sm">Lista de desarroladores</label>
                                 </div>
                             </div>
-                            <div class="text-center">
+
+                            <div id="{{$etapa['id']}}-newInput"></div>
+
+                            <div class="col-11 text-center">
                                 <button id="{{$etapa['id']}}-rowAdder" type="button" class="btn btn-dark btn-xs">
                                     <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar proceso
                                 </button>
@@ -124,7 +101,7 @@
                 </div>
             </div>
             <div class="row mt-2 col-sm-12">
-                <label for="documentacion" class="col-form-label">Documentación disponible</label>
+                <label for="documentacion" class="col-form-label">Documentación</label>
                 <div class="">
                     <ul>
                         @if($data['id'] != '')
@@ -132,7 +109,7 @@
                                 <li><a href="#" class="link-primary">{{$documento}}</a></li>
                             @endforeach
                         @else
-                            <label class="col-form-label col-form-label-sm">Sin documentación</label>
+                           <label class="col-form-label col-form-label-sm">Sin documentación</label>
                         @endif
                     </ul>
                 </div>
@@ -170,33 +147,49 @@
             </div>
         </form>
     </div>
-    <p id="pato"></p>
 @endsection
 
 @section('page-scripts')
     <script type="text/javascript">
         var etapas = @json($etapas);
+        var contador = 0;
         etapas.forEach(function (etapas) {
+            identificador = `${etapas.id}-${contador++}`;
             $(`#${etapas.id}-rowAdder`).click(function () {
                 addNewRow_proceso =
-                    `<div id="${etapas.id}-row">` +
-                    '   <div class="input-group">' +
-                    '       <div class="col-sm-11">' +
-                    '           <input type="text" class="form-control form-control-sm" required>' +
-                    '       </div>' +
-                    '       <div class="col-sm-1" style="padding-left: 10px;">' +
-                    `           <button class="btn btn-danger btn-xs form-control-sm" id="${etapas.id}-deleteRow" type="button">` +
-                    '               <i class="fas fa-trash"></i>' +
-                    '           </button>' +
-                    '       </div>' +
-                    '   </div>' +
-                    `</div>`;
+                    `<div class="row" id="${identificador}-row">`+
+                        '<div class="col-5">'+
+                            `<div>` +
+                                '<div class="input-group">'+
+                                    '<div class="col-sm-12">'+
+                                        '<input type="text" class="form-control form-control-sm" required>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-1">'+
+                            '<div class="col-sm-1" style="padding-left: 10px;">'+
+                                `<button class="btn btn-danger btn-xs form-control-sm" id="${identificador}-deleteRow" type="button">` +
+                                    '<i class="fas fa-trash"></i>'+
+                                '</button>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="col-6">'+
+                            `<div id="${identificador}-des-row">` +
+                                '<div class="input-group">'+
+                                    '<div class="col-sm-12">'+
+                                        '<input type="text" class="form-control form-control-sm" required>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>';
 
                 $(`#${etapas.id}-newInput`).append(addNewRow_proceso);
             });
 
-            $("body").on("click", `#${etapas.id}-deleteRow`, function () {
-                $(this).parents(`#${etapas.id}`).remove();
+            $("body").on("click", `#${identificador}-deleteRow`, function () {
+                $(this).parents(`#${identificador}-row`).remove();
             });
         });
     </script>
