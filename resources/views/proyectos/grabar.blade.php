@@ -115,18 +115,6 @@
                 </div>
                 <div class="row">
                     <div class="agregar">
-                        <div id="documento-row" style="margin-left: 20px">
-                            <div class="input-group">
-                                <div class="col-sm-11">
-                                    <input name="documento-input" id="documento-input" type="text" class="form-control form-control-sm" required>
-                                </div>
-                                <div class="col-sm-1" style="padding-left: 10px;">
-                                    <button class="btn btn-danger btn-xs form-control-sm" id="documento-DeleteRow" type="button" >
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                         <div id="documento-newinput"></div>
                         <button id="documento-rowAdder" type="button" class="btn btn-dark btn-xs">
                             <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar nueva documentación
@@ -142,7 +130,7 @@
             </div>
             <div class="row mt-4">
                 <div class="text-center">
-                    <button class="btn btn-primary" type="submit">{{$data == null ? 'Guardar' : 'Actualizar'}}</button>
+                    <button class="btn btn-primary" type="submit">@if($data['id'] != '') Actualizar @else Guardar @endif</button>
                 </div>
             </div>
         </form>
@@ -151,57 +139,89 @@
 
 @section('page-scripts')
     <script type="text/javascript">
-        var etapas = @json($etapas);
-        var contador = 0;
-        etapas.forEach(function (etapas) {
-            identificador = `${etapas.id}-${contador++}`;
-            $(`#${etapas.id}-rowAdder`).click(function () {
-                addNewRow_proceso =
-                    `<div class="row" id="${identificador}-row">`+
-                        '<div class="col-5">'+
-                            `<div>` +
-                                '<div class="input-group">'+
-                                    '<div class="col-sm-12">'+
-                                        '<input type="text" class="form-control form-control-sm" required>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-1">'+
-                            '<div class="col-sm-1" style="padding-left: 10px;">'+
-                                `<button class="btn btn-danger btn-xs form-control-sm" id="${identificador}-deleteRow" type="button">` +
-                                    '<i class="fas fa-trash"></i>'+
-                                '</button>'+
-                            '</div>'+
-                        '</div>'+
-                        '<div class="col-6">'+
-                            `<div id="${identificador}-des-row">` +
-                                '<div class="input-group">'+
-                                    '<div class="col-sm-12">'+
-                                        '<input type="text" class="form-control form-control-sm" required>'+
-                                    '</div>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
+        function agregarProcedimiento(elementos) {
+            elementos.forEach(function (elemento) {
+                var contador = 0;
 
-                $(`#${etapas.id}-newInput`).append(addNewRow_proceso);
-            });
+                $(`#${elemento.id}-rowAdder`).click(function () {
+                    var identificador = `${elemento.id}-${contador++}`;
+                    var addNewRow =
+                        `<div class="row" id="${identificador}-row">` +
+                        '<div class="col-5">' +
+                        `<div>` +
+                        '<div class="input-group">' +
+                        '<div class="col-sm-12">' +
+                        '<input type="text" class="form-control form-control-sm" required>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-1">' +
+                        '<div class="col-sm-1" style="padding-left: 10px;">' +
+                        `<button class="btn btn-danger btn-xs form-control-sm" id="${identificador}-deleteRow" type="button">` +
+                        '<i class="fas fa-trash"></i>' +
+                        '</button>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="col-6">' +
+                        `<div id="${identificador}-des-row">` +
+                        '<div class="input-group">' +
+                        '<div class="col-sm-12">' +
+                        '<input type="text" class="form-control form-control-sm" required>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
 
-            $("body").on("click", `#${identificador}-deleteRow`, function () {
-                $(this).parents(`#${identificador}-row`).remove();
+                    $(`#${elemento.id}-newInput`).append(addNewRow);
+
+                    $("body").on("click", `#${identificador}-deleteRow`, function () {
+                        $(this).parents(`#${identificador}-row`).remove();
+                    });
+                });
             });
-        });
+        }
+
+        agregarProcedimiento(@json($etapas));
     </script>
 
-
     <script type="text/javascript">
+        /*function agregarDocumento(elementos) {
+            elementos.forEach(function (elemento) {
+                var contador = 0;
+
+                $(`#${elemento.id}-rowAdder`).click(function () {
+                    var identificador = `${elemento.id}-${contador++}`;
+                    addNewRow =
+                        `<div id="${identificador}-row" style="margin-left: 20px">` +
+                        '<div class="input-group">' +
+                        '<div class="col-sm-11">' +
+                        '<input type="text" class="form-control" required>' +
+                        '</div>' +
+                        `<button class="btn btn-danger" id="${identificador}-deleteRow" type="button" style="margin-left: -5px">` +
+                        '<i class="fas fa-trash"></i>' +
+                        '</button>' +
+                        '</div>' +
+                        '</div>';
+
+                    $(`#${elemento.id}-newInput`).append(addNewRow);
+
+                    $("body").on("click", `#${identificador}-deleteRow`, function () {
+                        $(this).parents(`#${identificador}-row`).remove();
+                    });
+                });
+            });
+        }
+
+        agregarDocumento(@json($documentacion));*/
+
         $("#documento-rowAdder").click(function () {
             documento_newRowAdd =
                 '<div id="documento-row" style="margin-left: 20px">'+
                     '<div class="input-group">'+
                         '<div class="col-sm-11">'+
-                            '<input type="text" name="documento-input" id="documento-input" class="form-control" required>'+
+                            '<input type="text" class="form-control" required>'+
                         '</div>'+
                         '<button class="btn btn-danger" id="documento-DeleteRow" type="button" style="margin-left: -5px">'+
                             '<i class="fas fa-trash"></i>'+
