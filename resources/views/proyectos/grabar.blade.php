@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-2 col-sm-12">
+                <div class="row col-sm-12 mt-2">
                     <label for="descripcion" class="col-form-label">Descripción</label>
                     <div>
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{$data['descripcion']}}</textarea>
@@ -64,19 +64,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-2 col-sm-12">
+                <div class="row col-sm-12 mt-2">
                     <label for="informacion" class="col-form-label">Tipo de información contenida</label>
                     <div>
                         <input type="text" class="form-control" name="informacion" id="informacion" value="{{$data['informacion_contenida']}}" required>
                     </div>
                 </div>
-                <div class="row mt-2 col-sm-12">
+                <div class="row col-sm-12 mt-2">
                     <label for="disponibilidad" class="col-form-label">Disponibilidad requerida</label>
                     <div class="">
                         <input type="text" class="form-control" name="disponibilidad" id="disponibilidad" value="{{$data['disponibilidad']}}" required>
                     </div>
                 </div>
-                <div class="row mt-2 col-sm-12">
+                <div class="row col-sm-12 mt-2">
                     <label for="procesosSoportados" class="col-form-label">Procesos soportados</label>
                     <div id="listaProcesos" class="">
                         @foreach($etapas as $etapa)
@@ -139,14 +139,21 @@
     @endsection
 
     @section('page-scripts')
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Agrega el siguiente enlace a la librería jQuery Tokeninput -->
+       {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tokeninput/1.6.0/jquery.tokeninput.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tokeninput/1.6.0/jquery.tokeninput.min.js"></script>--}}
+
+
         <script type="text/javascript">
             var guardar_id_procesos = {};
+            var desarrolladores = @json($desarrolladores);
+
             function agregarProcedimiento(elementos) {
                 elementos.forEach(function (elemento) {
                     guardar_id_procesos[elemento.id] = [];
-
                     var contador = 0;
-
                     $(`#${elemento.id}-rowAdder`).click(function () {
                         var identificador = `${elemento.id}-${++contador}`;
                         var addNewRow =
@@ -178,8 +185,20 @@
                             '</div>' +
                             '</div>';
 
-                        $(`#${elemento.id}-newInput`).append(addNewRow);
+                        console.log(desarrolladores);
+                        /*$(function() {
+                            $(`#${identificador}-input-desarrollador`).tokenInput(desarrolladores, {
+                                theme: 'facebook', // Puedes cambiar el tema según tus preferencias
+                                preventDuplicates: true,
+                                tokenLimit: 1, // Limita a un único tag (puedes ajustar según tus necesidades)
+                                hintText: 'Escribe el nombre del responsable',
+                                searchingText: 'Buscando...',
+                                noResultsText: 'No hay resultados',
+                            });
+                        });*/
 
+                        $(function(){ $(`#${identificador}-input-desarrollador`).autocomplete({ source: desarrolladores }) });
+                        $(`#${elemento.id}-newInput`).append(addNewRow);
                         $("body").on("click", `#${identificador}-deleteRow`, function () {
                             $(this).parents(`#${identificador}-row`).remove();
                             // Siguiendo el patron X-Y:
@@ -192,7 +211,9 @@
             }
 
             agregarProcedimiento(@json($etapas));
+        </script>
 
+        <script type="text/javascript">
             $('#btnEnviar').on('click', function () {
                 for(var clave in guardar_id_procesos){
                     guardar_id_procesos[clave].forEach(function (elemento) {
@@ -239,8 +260,6 @@
             })
         </script>
 
-
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
