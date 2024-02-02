@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CatEtapa;
 use App\Models\Documentacion;
 use App\Models\Proyecto;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProyectoController extends Controller
@@ -52,6 +53,16 @@ class ProyectoController extends Controller
             'etapas' => $etapas,
             'documentacion' => $documentacion,
         ]));
+    }
+
+    public function store()
+    {
+        $this->grabar(request());
+    }
+
+    public function grabar(Request $request)
+    {
+        dump($request);
     }
 
     public function documentacionDisponible($id)
