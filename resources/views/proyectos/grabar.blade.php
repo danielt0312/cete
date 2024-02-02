@@ -92,10 +92,12 @@
 
                                 <div id="{{$etapa['id']}}-newInput"></div>
 
-                                <div class="col-11 text-center">
-                                    <button id="{{$etapa['id']}}-rowAdder" type="button" class="btn btn-dark btn-xs">
-                                        <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar proceso
-                                    </button>
+                                <div class="row">
+                                    <div class="col-11 text-center mt-2">
+                                        <button id="{{$etapa['id']}}-rowAdder" type="button" class="btn btn-dark btn-xs">
+                                            <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar proceso
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -141,102 +143,101 @@
     @section('page-scripts')
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <!-- Agrega el siguiente enlace a la librería jQuery Tokeninput -->
-       {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tokeninput/1.6.0/jquery.tokeninput.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tokeninput/1.6.0/jquery.tokeninput.min.js"></script>--}}
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha512-lUZZrGg8oiRBygP81yUZ4XkAbmeJn7u7HW5nq7npQ+ZXTRvj3ErL6y1XXDq6fujbiJlu6gHsgNUZLKE6eSDm8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha512-YWDtZYKUekuPMIzojX205b/D7yCj/ZM82P4hkqc9ZctHtQjvq3ei11EvAmqxQoyrIFBd9Uhfn/X6nJ1Nnp+F7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <script type="text/javascript">
-            var guardar_id_procesos = {};
             var desarrolladores = @json($desarrolladores);
 
-            function agregarProcedimiento(elementos) {
-                elementos.forEach(function (elemento) {
-                    guardar_id_procesos[elemento.id] = [];
-                    var contador = 0;
-                    $(`#${elemento.id}-rowAdder`).click(function () {
-                        var identificador = `${elemento.id}-${++contador}`;
-                        var addNewRow =
-                            `<div class="row" id="${identificador}-row">` +
-                            '<div class="col-5">' +
-                            `<div>` +
-                            '<div class="input-group">' +
-                            '<div class="col-sm-12">' +
-                            `<input type="text" id="${identificador}-input-proceso" class="form-control form-control-sm" required>` +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="col-1">' +
-                            '<div class="col-sm-1" style="padding-left: 10px;">' +
-                            `<button class="btn btn-danger btn-xs form-control-sm" id="${identificador}-deleteRow" type="button">` +
-                            '<i class="fas fa-trash"></i>' +
-                            '</button>' +
-                            '</div>' +
-                            '</div>' +
-                            '<div class="col-6">' +
-                            `<div id="${identificador}-des-row">` +
-                            '<div class="input-group">' +
-                            '<div class="col-sm-12">' +
-                            `<input type="text" id="${identificador}-input-desarrollador" class="form-control form-control-sm" required>` +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
+            $(document).ready(function () {
+                var guardar_id_procesos = {};
 
-                        console.log(desarrolladores);
-                        /*$(function() {
-                            $(`#${identificador}-input-desarrollador`).tokenInput(desarrolladores, {
-                                theme: 'facebook', // Puedes cambiar el tema según tus preferencias
-                                preventDuplicates: true,
-                                tokenLimit: 1, // Limita a un único tag (puedes ajustar según tus necesidades)
-                                hintText: 'Escribe el nombre del responsable',
-                                searchingText: 'Buscando...',
-                                noResultsText: 'No hay resultados',
+                function agregarProcedimiento(elementos) {
+                    elementos.forEach(function (elemento) {
+                        guardar_id_procesos[elemento.id] = [];
+                        var contador = 0;
+                        var identificadorBase = `${elemento.id}`;
+
+                        $(`#${identificadorBase}-rowAdder`).click(function () {
+                            var identificador = `${identificadorBase}-${++contador}`;
+
+                            var addNewRow =
+                                `<div class="row align-items-center" id="${identificador}-row">` +
+                                '<div class="col-5">' +
+                                `<div>` +
+                                '<div class="input-group">' +
+                                '<div class="col-sm-12">' +
+                                `<input type="text" id="${identificador}-input-proceso" class="form-control form-control-sm" required>` +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-1" style="padding-left: 25px; padding-top: 15px;">' +
+                                '<div class="col-sm-1">' +
+                                `<button class="btn btn-danger btn-xs form-control-sm" id="${identificador}-deleteRow" type="button">` +
+                                '<i class="fas fa-trash"></i>' +
+                                '</button>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-6">' +
+                                `<div id="${identificador}-des-row">` +
+                                '<div class="input-group">' +
+                                '<div class="col-sm-12">' +
+                                `<input type="text" id="${identificador}-input-desarrollador" class="form-control form-control-sm" required>` +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            $(`#${identificadorBase}-newInput`).append(addNewRow);
+
+                            var inputDesarrollador = $(`#${identificador}-input-desarrollador`);
+                            inputDesarrollador.tokenfield({
+                                autocomplete: {
+                                    source: desarrolladores,
+                                    delay: 100
+                                },
+                                showAutocompleteOnFocus: true
                             });
-                        });*/
 
-                        $(function(){ $(`#${identificador}-input-desarrollador`).autocomplete({ source: desarrolladores }) });
-                        $(`#${elemento.id}-newInput`).append(addNewRow);
-                        $("body").on("click", `#${identificador}-deleteRow`, function () {
-                            $(this).parents(`#${identificador}-row`).remove();
-                            // Siguiendo el patron X-Y:
-                            var ids = identificador.split("-");
-                            guardar_id_procesos[elemento.id].splice(guardar_id_procesos[elemento.id].indexOf(parseInt(ids[1])), 1);
+                            $("body").on("click", `#${identificador}-deleteRow`, function () {
+                                $(this).parents(`#${identificador}-row`).remove();
+                                var ids = identificador.split("-");
+                                guardar_id_procesos[elemento.id].splice(guardar_id_procesos[elemento.id].indexOf(parseInt(ids[1])), 1);
+                            });
+
+                            guardar_id_procesos[elemento.id].push(contador);
                         });
-                        guardar_id_procesos[elemento.id].push(contador);
-                    });
-                });
-            }
-
-            agregarProcedimiento(@json($etapas));
-        </script>
-
-        <script type="text/javascript">
-            $('#btnEnviar').on('click', function () {
-                for(var clave in guardar_id_procesos){
-                    guardar_id_procesos[clave].forEach(function (elemento) {
-                        var procesoInputSelector = `${clave}-${elemento}-input-proceso`;
-                        var desarrolladorInputSelector = `${clave}-${elemento}-input-desarrollador`;
-
-                        var procesoValue = document.getElementById(procesoInputSelector).value;
-                        var desarrolladorValue = document.getElementById(desarrolladorInputSelector).value;
-
-                        $('<input>').attr({
-                            type: 'hidden',
-                            name: `procesos[${clave}][${elemento}][proceso]`,
-                            value: procesoValue
-                        }).appendTo('#formProyecto');
-
-                        $('<input>').attr({
-                            type: 'hidden',
-                            name: `procesos[${clave}][${elemento}][desarrollador]`,
-                            value: desarrolladorValue
-                        }).appendTo('#formProyecto');
                     });
                 }
-            })
+
+                agregarProcedimiento(@json($etapas));
+
+                $('#btnEnviar').on('click', function () {
+                    for(var clave in guardar_id_procesos){
+                        guardar_id_procesos[clave].forEach(function (elemento) {
+                            var procesoInputSelector = `${clave}-${elemento}-input-proceso`;
+                            var desarrolladorInputSelector = `${clave}-${elemento}-input-desarrollador`;
+
+                            var procesoValue = document.getElementById(procesoInputSelector).value;
+                            var desarrolladorValue = document.getElementById(desarrolladorInputSelector).value;
+
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: `procesos[${clave}][${elemento}][proceso]`,
+                                value: procesoValue
+                            }).appendTo('#formProyecto');
+
+                            $('<input>').attr({
+                                type: 'hidden',
+                                name: `procesos[${clave}][${elemento}][desarrollador]`,
+                                value: desarrolladorValue
+                            }).appendTo('#formProyecto');
+                        });
+                    }
+                });
+            });
         </script>
 
         <script type="text/javascript">
