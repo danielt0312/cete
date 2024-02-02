@@ -14,13 +14,13 @@
                     <div class="col">
                         <label for="nombre" class="col-form-label">Nombre del proyecto</label>
                         <div>
-                            <input type="text" class="form-control" name="nombre" id="nombre" value="{{$data['nombre']}}" placeholder="InfoGestor" required>
+                            <input type="text" class="form-control" name="nombre" id="nombre" value="{{$data['nombre']}}" placeholder="Sistema de..."  required>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="periodos" class="col-form-label">Periodos críticos</label>
+                        <label for="datefilter" class="col-form-label">Periodos críticos</label>
                         <div>
-                            <input type="text" class="form-control" name="datefilter" id="periodos" value="" placeholder="07/01/2023 - 03/02/2023" />
+                            <input type="text" class="form-control" name="datefilter" id="datefilter" value="" placeholder="07/01/2023 - 03/02/2023" />
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <label for="area" class="col-form-label">Área:</label>
+                        <label for="area" class="col-form-label">Área</label>
                         <div>
                             <input type="text" class="form-control" name="area" id="area" placeholder="Recursos Humanos" value="{{$data['area']}}" required>
                         </div>
@@ -137,6 +137,8 @@
                     </div>
                 </div>
             </form>
+
+
         </div>
     @endsection
 
@@ -250,13 +252,13 @@
 
                             $('<input>').attr({
                                 type: 'hidden',
-                                name: `procesos[${clave}][${elemento}][proceso]`,
+                                name: `etapas[${clave}][${elemento}][nombre]`,
                                 value: procesoValue
                             }).appendTo('#formProyecto');
 
                             $('<input>').attr({
                                 type: 'hidden',
-                                name: `procesos[${clave}][${elemento}][desarrollador]`,
+                                name: `etapas[${clave}][${elemento}][desarrollador]`,
                                 value: desarrolladorValue
                             }).appendTo('#formProyecto');
                         });

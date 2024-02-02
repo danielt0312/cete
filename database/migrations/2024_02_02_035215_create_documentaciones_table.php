@@ -12,7 +12,6 @@ return new class extends Migration {
             $table->integer('id_proyecto');
             $table->string('nombre');
             $table->string('directorio')->nullable();
-            $table->timestamps();
         });
     }
 

@@ -39,9 +39,9 @@ class EtapasController extends Controller
         if ($etapa) {
             $etapa->delete();
 
-            return redirect()->route('index_etapas')->with('success', 'Registro eliminado correctamente');
+            return redirect()->route('index_etapas')->with('success');
         } else {
-            return redirect()->route('index_etapas')->with('error', 'Registro no encontrado');
+            return redirect()->route('index_etapas')->with('error');
         }
     }
 

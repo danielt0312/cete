@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Documentacion extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'documentaciones';
 }

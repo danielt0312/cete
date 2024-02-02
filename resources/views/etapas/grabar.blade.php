@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="mt-7"/>
-        <form action="{{ route('grabar_etapa', ['id' => $data['id']]) }}" id="guardarEtapa" class="row mt-2" method="POST">
+        <form action="{{ route('grabar_etapa', ['id' => $data['id']]) }}" class="row mt-2" method="POST">
             @csrf
             <div class="row">
                 <label for="nombre" class="col-sm-3 col-form-label">Nombre de la etapa:</label>
