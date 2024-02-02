@@ -61,9 +61,9 @@
                 columns: [
                     {data: 'id', title: 'ID'},
                     {data: 'nombre', title: 'Nombre'},
-                    {data: 'descripcion', title: 'Descripición', className: 'descripcion'},
+                    {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
-                    {data: 'documentacion', title: 'Documentación disponible'},
+                    {data: 'documentacion', title: 'Documentación disponible', className: 'documentacion'},
                     {data: 'opciones', title: 'Opciones'},
                 ],
             });

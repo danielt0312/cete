@@ -8,23 +8,23 @@
             </div>
         </div>
         <div class="mt-7"/>
-        <form class="row needs-validation">
+        <form class="row needs-validation" enctype="multipart/form-data" method="POST" action="{{ route('subir-archivo')}}">
+            @csrf
             <div class="row mt-2">
-{{--                <label for="ubicacion" class="col-form-label">Ubicación:</label>--}}
+                <label for="documento" class="col-form-label">Seleccione un documento</label>
                 <div class="input-group">
-                    <select class="form-select" id="ubicacion" aria-label="ubicacion" required>
-                        <option selected></option>
-                        <option value="1">Cd. Victoria</option>
-                        <option value="2">Jaumave</option>
+                    <select class="form-select" id="documento" aria-label="documento" required>
+                        @foreach($documentos as $doc)
+                            <option value="{{$doc['id']}}">{{$doc['nombre']}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
             <div class="row mt-4 text-center">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="guardarArchivo" required>
+                    <input type="file" class="custom-file-input" name="guardarArchivo" id="guardarArchivo"  accept="application/pdf" required>
                 </div>
             </div>
-
             <div class="row mt-4">
                 <div>
                     <button class="btn btn-primary col-sm-12" type="submit">Guardar</button>

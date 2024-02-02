@@ -9,19 +9,20 @@
         </div>
         <div class="mt-7"/>
         <div class="container-fluid row">
-            <table id="etapas" class="table shadow dataTable" style="width:100%">
-                <thead class="">
-                </thead>
-            </table>
+            <div class="col-md-12">
+                <table id="etapas" class="table dataTable shadow" style="width:100%">
+                    <thead>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('page-scripts')
     <script>
+        var data = @json($datos);
         $(document).ready(function () {
-            {{--var data = @json($proyectos['data']);--}}
-            var data;
 
             $('#etapas').DataTable({
                 columnDefs : [
@@ -54,10 +55,10 @@
                 },
                 data: data,
                 columns: [
-                    {data: '', title: '#'},
-                    {data: '', title: 'Etapa'},
-                    {data: '', title: 'Opción'},
-                    {data: '', title: 'Fecha'},
+                    {data: 'id', title: '#'},
+                    {data: 'nombres', title: 'Etapa'},
+                    {data: 'opcion', title: 'Opción'},
+                    {data: 'fecha_subida_doc', title: 'Fecha'},
                 ],
             });
         });

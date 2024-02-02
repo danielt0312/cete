@@ -26,7 +26,7 @@ class ProyectoController extends Controller
                 'nombre' => $sistema->nombre,
                 'descripcion' => $sistema->descripcion,
                 'responsable' => $sistema->responsable,
-                'documentacion' => '$sistema->documentacion',
+                'documentacion' => 'No disponible',
                 'observaciones' => $sistema->observaciones,
                 'opciones' => '
                     <div class="dropdown">
@@ -67,6 +67,53 @@ class ProyectoController extends Controller
         return($this->grabar(request()));
     }
 
+    public function cicloVida($id = 0)
+    {
+        $etapas = Etapa::get()->where('id_proyecto', '=', $id)->toArray();
+        foreach ($etapas as $indice => $value){
+            $etapas[$indice]['nombres'] = CatEtapa::get()->where('id', '=', $value['id_cat_etapa'])->toArray()[$indice]['nombre'];
+            $etapas[$indice]['opcion'] = '<a href="#" class="btn btn-primary">Ver Documento</a>';
+        }
+
+        return view('proyectos.ciclo-vida', ['datos' => $etapas]);
+    }
+
+    public function agregarDoc($id = 0)
+    {
+        $documentos = Etapa::get()->where('id_proyecto', '=', $id)->where('updated_at', "=",null)->toArray();
+        foreach ($documentos as $indice => $value){
+            $documentos[$indice]['nombre'] = CatEtapa::get()->where('id', '=', $value['id_cat_etapa'])->toArray()[$indice]['nombre'];
+        }
+
+        return view('proyectos.documentos', ['documentos' => $documentos]);
+    }
+
+    public function subirArchivo(Request $request)
+    {
+        return dump($request);
+
+        $request->validate([
+            'documento_id' => 'required',
+            'guardarArchivo' => 'required|mimes:pdf|max:10240', // Ajusta el tamaño máximo según tus necesidades
+        ]);
+
+        $documentoId = $request->input('documento_id');
+        $archivo = $request->file('guardarArchivo');
+
+        // Verificar si el documento existe y el archivo es válido
+        if ($documentoId && $archivo->isValid()) {
+            $ruta = $archivo->storeAs('storage/app/documents/etapas', $documentoId.'.pdf', 'local');
+
+            // Puedes guardar la ruta en la base de datos o realizar otras acciones según tus necesidades
+            // Por ejemplo, si tienes un modelo Documento, podrías hacer algo como:
+            // Documento::find($documentoId)->update(['ruta_archivo' => $ruta]);
+
+            return redirect()->back()->with('success', 'Archivo almacenado con éxito.');
+        }
+
+        return redirect()->back()->with('error', 'Error al almacenar el archivo.');
+    }
+
     public function grabar(Request $request)
     {
         $request->validate([
@@ -100,6 +147,18 @@ class ProyectoController extends Controller
         $proyecto->periodo_final = $fecha_final;
         $proyecto->observaciones = $request->input('observaciones');
         $proyecto->save();
+
+        $rutaDirectorioPadre = "C:\\laragon\\www\\PlantillaCasCete\\storage\\app\\documents";
+
+        if (!is_dir($rutaDirectorioPadre)) {
+            mkdir($rutaDirectorioPadre, 0777, true);
+        }
+
+        $ruta = $rutaDirectorioPadre . "\\" . $proyecto->id;
+
+        if (!is_dir($ruta)) {
+            mkdir($ruta);
+        }
 
         if(($documentos = $request->input('documentos')) != null)
             foreach ($documentos as $nombre) {
@@ -176,6 +235,7 @@ class ProyectoController extends Controller
                 'periodo_final' => '',
                 'observaciones' => '',
             );
+
         return $data;
     }
 }
