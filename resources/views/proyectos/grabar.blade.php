@@ -117,7 +117,7 @@
                         </ul>
                     </div>
                     <div class="row">
-                        <div class="agregar">
+                        <div>
                             <div id="documento-newinput"></div>
                             <button id="documento-rowAdder" type="button" class="btn btn-dark btn-xs">
                                 <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar nueva documentación
@@ -141,17 +141,13 @@
     @endsection
 
     @section('page-scripts')
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha512-lUZZrGg8oiRBygP81yUZ4XkAbmeJn7u7HW5nq7npQ+ZXTRvj3ErL6y1XXDq6fujbiJlu6gHsgNUZLKE6eSDm8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha512-YWDtZYKUekuPMIzojX205b/D7yCj/ZM82P4hkqc9ZctHtQjvq3ei11EvAmqxQoyrIFBd9Uhfn/X6nJ1Nnp+F7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
         <script type="text/javascript">
             var desarrolladores = @json($desarrolladores);
 
             $(document).ready(function () {
                 var guardar_id_procesos = {};
 
+                // Añadir procedimiento de manera diinamica
                 function agregarProcedimiento(elementos) {
                     elementos.forEach(function (elemento) {
                         guardar_id_procesos[elemento.id] = [];
@@ -160,7 +156,6 @@
 
                         $(`#${identificadorBase}-rowAdder`).click(function () {
                             var identificador = `${identificadorBase}-${++contador}`;
-
                             var addNewRow =
                                 `<div class="row align-items-center" id="${identificador}-row">` +
                                 '<div class="col-5">' +
@@ -212,8 +207,38 @@
                     });
                 }
 
-                agregarProcedimiento(@json($etapas));
+                var contador_documento = 0;
+                var guardar_id_documentos = [];
+                function agregarDocumento() {
+                    $("#documento-rowAdder").click(function () {
+                        var id_doc = ++contador_documento;
+                        documento_newRowAdd =
+                            `<div id="documento-${id_doc}-row" style="margin-left: 20px">`+
+                            '<div class="input-group">'+
+                            '<div class="col-sm-11">'+
+                            `<input type="text" id="documento-${id_doc}-input" placeholder="Escriba el título del documento..." class="form-control" required>`+
+                            '  </div>'+
+                            `<button class="btn btn-danger" id="documento-${id_doc}-deleteRow" type="button" style="margin-left: -5px">`+
+                            '<i class="fas fa-trash"></i>'+
+                            '</button>'+
+                            '</div>'+
+                            '</div>';
 
+                        $('#documento-newinput').append(documento_newRowAdd);
+
+                        $("body").on("click", `#documento-${id_doc}-deleteRow`, function () {
+                            $(this).parents(`#documento-${id_doc}-row`).remove();
+                            guardar_id_documentos.splice(guardar_id_documentos.indexOf(id_doc), 1);
+                        });
+
+                        guardar_id_documentos.push(contador_documento);
+                    });
+                }
+
+                agregarProcedimiento(@json($etapas));
+                agregarDocumento();
+
+                // Consultar y Guardar datos dinamicos (Procesos y Documentaciones)
                 $('#btnEnviar').on('click', function () {
                     for(var clave in guardar_id_procesos){
                         guardar_id_procesos[clave].forEach(function (elemento) {
@@ -236,36 +261,20 @@
                             }).appendTo('#formProyecto');
                         });
                     }
+
+                    guardar_id_documentos.forEach(function (elemento){
+                        var documentoValue = document.getElementById(`documento-${elemento}-input`).value;
+
+                        $('<input>').attr({
+                            type: 'hidden',
+                            name: `documentos[${elemento}]`,
+                            value: documentoValue
+                        }).appendTo('#formProyecto');
+                    });
                 });
             });
-        </script>
 
-        <script type="text/javascript">
-            $("#documento-rowAdder").click(function () {
-                documento_newRowAdd =
-                    '<div id="documento-row" style="margin-left: 20px">'+
-                        '<div class="input-group">'+
-                            '<div class="col-sm-11">'+
-                                '<input type="text" class="form-control" required>'+
-                            '</div>'+
-                            '<button class="btn btn-danger" id="documento-DeleteRow" type="button" style="margin-left: -5px">'+
-                                '<i class="fas fa-trash"></i>'+
-                            '</button>'+
-                        '</div>'+
-                    '</div>';
-
-                $('#documento-newinput').append(documento_newRowAdd);
-            });
-            $("body").on("click", "#documento-DeleteRow", function () {
-                $(this).parents("#documento-row").remove();
-            })
-        </script>
-
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
-        <script type="text/javascript">
+            // Rango de fechas
             $(function() {
                 $('input[name="datefilter"]').daterangepicker({
                     autoUpdateInput: false,
