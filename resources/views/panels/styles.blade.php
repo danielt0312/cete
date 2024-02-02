@@ -217,7 +217,7 @@
        white-space: normal !important;
        word-wrap: break-word;
    }
-  .url_dominio {
+  .documentacion {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
