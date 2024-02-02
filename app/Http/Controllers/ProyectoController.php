@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatDesarrollador;
 use App\Models\CatEtapa;
 use App\Models\Documentacion;
 use App\Models\Proyecto;
@@ -47,11 +48,13 @@ class ProyectoController extends Controller
         $data = $this->obtenerSistema($id);
         $etapas = CatEtapa::all();
         $documentacion = $this->documentacionDisponible($id);
+        $desarrolladores = $this->desarrolladores();
 
         return(view('proyectos.grabar', [
             'data' => $data,
             'etapas' => $etapas,
             'documentacion' => $documentacion,
+            'desarrolladores' => $desarrolladores
         ]));
     }
 
@@ -63,6 +66,15 @@ class ProyectoController extends Controller
     public function grabar(Request $request)
     {
         dump($request);
+    }
+
+    public function desarrolladores() {
+        $desarrolladores = array();
+        foreach (CatDesarrollador::all() as $indice => $desarrollador){
+            $desarrolladores[$indice] = $desarrollador['nombre'].' '.$desarrollador['apellido_paterno'].' '.$desarrollador['apellido_materno'];
+        }
+
+        return $desarrolladores;
     }
 
     public function documentacionDisponible($id)
