@@ -24,7 +24,7 @@
 @endsection
 
 @section('page-scripts')
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             var data = @json($proyectos['data']);
 
