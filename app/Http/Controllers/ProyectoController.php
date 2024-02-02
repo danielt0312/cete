@@ -90,28 +90,32 @@ class ProyectoController extends Controller
 
     public function subirArchivo(Request $request)
     {
-        return dump($request);
+        return redirect()->route('index_proyectos')->with('sucess');
 
+        return dump($request);
+        // Validar el formulario si es necesario
         $request->validate([
-            'documento_id' => 'required',
-            'guardarArchivo' => 'required|mimes:pdf|max:10240', // Ajusta el tamaño máximo según tus necesidades
+            'documento' => 'required',
+            'guardarArchivo' => 'required|mimes:pdf|max:2048', // Ajusta las reglas según tus necesidades
         ]);
 
-        $documentoId = $request->input('documento_id');
+        // Obtener el documento seleccionado
+        $documento = $request->input('documento');
+
+        // Obtener el archivo cargado
         $archivo = $request->file('guardarArchivo');
 
-        // Verificar si el documento existe y el archivo es válido
-        if ($documentoId && $archivo->isValid()) {
-            $ruta = $archivo->storeAs('storage/app/documents/etapas', $documentoId.'.pdf', 'local');
+        // Definir la carpeta de destino
+        $carpetaDestino = 'ruta/a/tu/carpeta';
 
-            // Puedes guardar la ruta en la base de datos o realizar otras acciones según tus necesidades
-            // Por ejemplo, si tienes un modelo Documento, podrías hacer algo como:
-            // Documento::find($documentoId)->update(['ruta_archivo' => $ruta]);
+        // Mover el archivo a la carpeta de destino con un nombre único
+        $nombreArchivo = uniqid() . '_' . $archivo->getClientOriginalName();
+        $archivo->move($carpetaDestino, $nombreArchivo);
 
-            return redirect()->back()->with('success', 'Archivo almacenado con éxito.');
-        }
+        // Aquí puedes realizar otras acciones según tus necesidades, como almacenar la información en la base de datos, etc.
 
-        return redirect()->back()->with('error', 'Error al almacenar el archivo.');
+        // Redireccionar o devolver una respuesta, por ejemplo:
+        return redirect()->back()->with('success', 'Documento subido exitosamente');
     }
 
     public function grabar(Request $request)

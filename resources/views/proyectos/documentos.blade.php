@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="mt-7"/>
-        <form class="row needs-validation" enctype="multipart/form-data" method="POST" action="{{ route('subir-archivo')}}">
+        <form class="row needs-validation" id="form" enctype="multipart/form-data" method="POST" action="{{ route('subir-archivo')}}">
             @csrf
             <div class="row mt-2">
                 <label for="documento" class="col-form-label">Seleccione un documento</label>
@@ -27,7 +27,7 @@
             </div>
             <div class="row mt-4">
                 <div>
-                    <button class="btn btn-primary col-sm-12" type="submit">Guardar</button>
+                    <button class="btn btn-primary col-sm-12" id="btnGuardar" type="submit">Guardar</button>
                 </div>
             </div>
         </form>
