@@ -8,6 +8,9 @@
                 </div>
             </div>
             <div class="mt-7"/>
+            <div class="g-2 d-grid d-md-flex">
+                <a class="btn btn-secundario " href="{{ route('index_proyectos') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
+            </div>
             <form class="row" id="formProyecto" action="{{ route('grabar_proyecto') }}" method="POST">
                 @csrf
                 <div class="row row-cols-2">

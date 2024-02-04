@@ -8,6 +8,9 @@
             </div>
         </div>
         <div class="mt-7"/>
+        <div class="g-2 d-grid d-md-flex">
+            <a class="btn btn-secundario " href="{{ route('index_proyectos') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
+        </div>
         <form class="row needs-validation" id="form" enctype="multipart/form-data" method="POST" action="{{ route('subir-archivo')}}">
             @csrf
             <div class="row mt-2">

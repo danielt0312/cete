@@ -4,10 +4,13 @@
     <div class="container-fluid py-4 mt-3">
         <div class="row mt-4">
             <div class="d-flex justify-content-between ">
-                <h1 class="mb-2 colorTitle">Ciclo de vida</h1>
+                <h1 class="mb-2 colorTitle">Ciclo de vida {{($nombre_proyecto == null ? ': Etapas' : ': '.$nombre_proyecto)}}</h1>
             </div>
         </div>
         <div class="mt-7"/>
+        <div class="g-2 d-grid d-md-flex">
+            <a class="btn btn-secundario " href="{{ route('index_proyectos') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
+        </div>
         <div class="container-fluid row">
             <div class="col-md-12">
                 <table id="etapas" class="table dataTable shadow" style="width:100%">
@@ -21,14 +24,14 @@
 
 @section('page-scripts')
     <script>
-        var data = @json($datos);
+        var data = @json($documentacion);
         $(document).ready(function () {
 
             $('#etapas').DataTable({
                 columnDefs : [
-                    {orderable : false, targets: [1]}
+                    {orderable : false, targets: [2]}
                 ],
-                order: [3, 'asc'],
+                order: [3, 'desc'],
                 language: {
                     sProcessing:     "Procesando...",
                     sLengthMenu:     "Mostrar _MENU_ registros",
@@ -56,9 +59,9 @@
                 data: data,
                 columns: [
                     {data: 'id', title: '#'},
-                    {data: 'nombres', title: 'Etapa'},
+                    {data: 'nombre', title: 'Etapa'},
                     {data: 'opcion', title: 'Opción'},
-                    {data: 'fecha_subida_doc', title: 'Fecha'},
+                    {data: 'fecha_subida', title: 'Fecha de subida'},
                 ],
             });
         });
