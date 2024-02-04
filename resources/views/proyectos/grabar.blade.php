@@ -79,28 +79,32 @@
                 <div class="row col-sm-12 mt-2">
                     <label for="procesosSoportados" class="col-form-label">Procesos soportados</label>
                     <div id="listaProcesos" class="">
-                        @foreach($etapas as $etapa)
-                            <div class="card @if($etapa['id'] != 1) mt-3 @endif card-body">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label class="col-form-label col-form-label-sm">{{$etapa['nombre']}}</label>
+                        @if($etapas != null)
+                            @foreach($etapas as $etapa)
+                                <div class="card @if($etapa['id'] != 1) mt-3 @endif card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="col-form-label col-form-label-sm">{{$etapa['nombre']}}</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="col-form-label col-form-label-sm">Lista de desarrolladores</label>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="col-form-label col-form-label-sm">Lista de desarrolladores</label>
+
+                                    <div id="{{$etapa['id']}}-newInput"></div>
+
+                                    <div class="row">
+                                        <div class="col-11 text-center mt-2">
+                                            <button id="{{$etapa['id']}}-rowAdder" type="button" class="btn btn-dark btn-xs">
+                                                <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar proceso
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div id="{{$etapa['id']}}-newInput"></div>
-
-                                <div class="row">
-                                    <div class="col-11 text-center mt-2">
-                                        <button id="{{$etapa['id']}}-rowAdder" type="button" class="btn btn-dark btn-xs">
-                                            <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;Agregar proceso
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @else
+                            <label class="col-form-label col-form-label-sm">Sin etapas disponibles.</label>
+                        @endif
                     </div>
                 </div>
                 <div class="row mt-2 col-sm-12">
@@ -258,7 +262,7 @@
 
                             $('<input>').attr({
                                 type: 'hidden',
-                                name: `etapas[${clave}][${elemento}][desarrollador]`,
+                                name: `etapas[${clave}][${elemento}][desarrolladores]`,
                                 value: desarrolladorValue
                             }).appendTo('#formProyecto');
                         });
