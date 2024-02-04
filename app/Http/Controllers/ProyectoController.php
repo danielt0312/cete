@@ -11,7 +11,7 @@ use App\Models\Proceso;
 use App\Models\Proyecto;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProyectoController extends Controller
 {
@@ -52,7 +52,7 @@ class ProyectoController extends Controller
         $data = $this->obtenerSistema($id);
         $etapas = CatEtapa::all();
         $documentacion = $this->documentacionDisponible($id);
-        $desarrolladores = $this->desarrolladores();
+        $desarrolladores = $this->nombresDesarrolladores();
 
         return(view('proyectos.grabar', [
             'data' => $data,
@@ -80,42 +80,29 @@ class ProyectoController extends Controller
 
     public function agregarDoc($id = 0)
     {
-        $documentos = Etapa::get()->where('id_proyecto', '=', $id)->where('updated_at', "=",null)->toArray();
-        foreach ($documentos as $indice => $value){
-            $documentos[$indice]['nombre'] = CatEtapa::get()->where('id', '=', $value['id_cat_etapa'])->toArray()[$indice]['nombre'];
-        }
+        $documentacion = Documentacion::get()->where('id_proyecto', '=', $id)->where('fecha_subida', '=', null)->toArray();
 
-        return view('proyectos.documentos', ['documentos' => $documentos]);
+        return view('proyectos.documentos', ['documentacion' => $documentacion]);
     }
 
     public function subirArchivo(Request $request)
     {
-        return redirect()->route('index_proyectos')->with('sucess');
-
-        return dump($request);
-        // Validar el formulario si es necesario
         $request->validate([
-            'documento' => 'required',
-            'guardarArchivo' => 'required|mimes:pdf|max:2048', // Ajusta las reglas según tus necesidades
+            'idDocumento' => 'required',
         ]);
 
-        // Obtener el documento seleccionado
-        $documento = $request->input('documento');
+        if(($documentacion = Documentacion::find($request->input('idDocumento'))) != null) {
+            $archivo = $request->file('archivo');
+            $directorio = $archivo->store($this->crearDirectorios($documentacion['id_proyecto']));
+            $documentacion->directorio = $directorio;
 
-        // Obtener el archivo cargado
-        $archivo = $request->file('guardarArchivo');
+            date_default_timezone_set('America/Monterrey');
+            $fecha = now();
+            $documentacion->fecha_subida = $fecha->format('Y-m-d H:i:s');
+            $documentacion->save();
+        }
 
-        // Definir la carpeta de destino
-        $carpetaDestino = 'ruta/a/tu/carpeta';
-
-        // Mover el archivo a la carpeta de destino con un nombre único
-        $nombreArchivo = uniqid() . '_' . $archivo->getClientOriginalName();
-        $archivo->move($carpetaDestino, $nombreArchivo);
-
-        // Aquí puedes realizar otras acciones según tus necesidades, como almacenar la información en la base de datos, etc.
-
-        // Redireccionar o devolver una respuesta, por ejemplo:
-        return redirect()->back()->with('success', 'Documento subido exitosamente');
+        return redirect()->route('index_proyectos');
     }
 
     public function grabar(Request $request)
@@ -137,69 +124,74 @@ class ProyectoController extends Controller
         $fecha_inicio = DateTime::createFromFormat('d/m/Y', trim($fechas[0]));
         $fecha_final = DateTime::createFromFormat('d/m/Y', trim($fechas[1]));
 
-        $proyecto = new Proyecto();
-        $proyecto->nombre = $request->input('nombre');
-        $proyecto->descripcion = $request->input('descripcion');
-        $proyecto->url_dominio = $request->input('dominio');
-        $proyecto->url_proyecto = $request->input('url_proyecto');
-        $proyecto->url_codigo_fuente = $request->input('url_codigo_fuente');
-        $proyecto->responsable = $request->input('responsable');
-        $proyecto->area = $request->input('area');
-        $proyecto->informacion_contenida = $request->input('informacion');
-        $proyecto->disponibilidad = $request->input('disponibilidad');
-        $proyecto->periodo_inicio = $fecha_inicio;
-        $proyecto->periodo_final = $fecha_final;
-        $proyecto->observaciones = $request->input('observaciones');
-        $proyecto->save();
+        $nuevo_proyecto = new Proyecto();
+        $nuevo_proyecto->nombre = $request->input('nombre');
+        $nuevo_proyecto->descripcion = $request->input('descripcion');
+        $nuevo_proyecto->url_dominio = $request->input('dominio');
+        $nuevo_proyecto->url_proyecto = $request->input('url_proyecto');
+        $nuevo_proyecto->url_codigo_fuente = $request->input('url_codigo_fuente');
+        $nuevo_proyecto->responsable = $request->input('responsable');
+        $nuevo_proyecto->area = $request->input('area');
+        $nuevo_proyecto->informacion_contenida = $request->input('informacion');
+        $nuevo_proyecto->disponibilidad = $request->input('disponibilidad');
+        $nuevo_proyecto->periodo_inicio = $fecha_inicio;
+        $nuevo_proyecto->periodo_final = $fecha_final;
+        $nuevo_proyecto->observaciones = $request->input('observaciones');
+        $nuevo_proyecto->save();
 
-        $rutaDirectorioPadre = "C:\\laragon\\www\\PlantillaCasCete\\storage\\app\\documents";
+        $this->crearDirectorios($nuevo_proyecto->id);
 
-        if (!is_dir($rutaDirectorioPadre)) {
-            mkdir($rutaDirectorioPadre, 0777, true);
-        }
-
-        $ruta = $rutaDirectorioPadre . "\\" . $proyecto->id;
-
-        if (!is_dir($ruta)) {
-            mkdir($ruta);
-        }
-
+        // Creación de documentación por entrada
         if(($documentos = $request->input('documentos')) != null)
             foreach ($documentos as $nombre) {
-                $documentacion = new Documentacion();
-                $documentacion->id_proyecto = $proyecto->id;
-                $documentacion->nombre = $nombre;
-                $documentacion->save();
+                $nueva_documentacion = new Documentacion();
+                $nueva_documentacion->id_proyecto = $nuevo_proyecto->id;
+                $nueva_documentacion->nombre = $nombre;
+                $nueva_documentacion->save();
             }
 
-        if(($etapas = $request->input('etapas')) != null)
-            foreach ($etapas as $id_cat_etapa => $procesos) {
+        // Creación de documentación por defecto para el ciclo de vida del sistema informático
+        if(($cat_etapas = CatEtapa::get() ) != null)
+            foreach ($cat_etapas as $cat_etapa){
+                $nueva_documentacion = new Documentacion();
+                $nueva_documentacion->id_proyecto = $nuevo_proyecto->id;
+                $nueva_documentacion->nombre = $cat_etapa['nombre'];
+                $nueva_documentacion->save();
+
                 $nueva_etapa = new Etapa();
-                $nueva_etapa->id_proyecto = $proyecto->id;
-                $nueva_etapa->id_cat_etapa = $id_cat_etapa;
+                $nueva_etapa->id_proyecto = $nuevo_proyecto->id;
+                $nueva_etapa->id_cat_etapa = $cat_etapa['id'];
+                $nueva_etapa->id_doc = $nueva_documentacion->id;
                 $nueva_etapa->save();
 
-                foreach ($procesos as $proceso) {
-                    $nuevo_proceso = new Proceso();
-                    $nuevo_proceso->id_etapa = $nueva_etapa->id;
-                    $nuevo_proceso->nombre = $proceso['nombre'];
-                    $nuevo_proceso->save();
+                if(($etapas = $request->input('etapas')) != null)
+                    foreach ($etapas as $procesos)
+                        foreach ($procesos as $proceso) {
+                            $nuevo_proceso = new Proceso();
+                            $nuevo_proceso->id_etapa = $nueva_etapa->id;
+                            $nuevo_proceso->nombre = $proceso['nombre'] == null ? 'Nombre no disponible' : $proceso['nombre'];
+                            $nuevo_proceso->save();
 
-                    $nombres_desarrolladores = explode(', ', $proceso['desarrollador']);
-                    foreach ($nombres_desarrolladores as $nombre) {
-                        $id_desarrollador = CatDesarrollador::whereRaw("CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) = ?", [$nombre])->pluck('id');
-                        $nuevo_desarrollador = new Desarrollador();
-                        $nuevo_desarrollador->id_cat_desarrollador = $id_desarrollador[0];
-                        $nuevo_desarrollador->id_proceso = $nuevo_proceso->id;
-                        $nuevo_desarrollador->save();
-                    }
-                }
+                            // Precaución para proceso sin desarrollador(es)
+                            if ($proceso['desarrolladores'] != null) {
+                                $nombres_desarrolladores = explode(', ', $proceso['desarrolladores']);
+                                foreach ($nombres_desarrolladores as $nombres) {
+                                    $id_desarrollador = CatDesarrollador::whereRaw("CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) = ?", [$nombres])->pluck('id');
+                                    $nuevo_desarrollador = new Desarrollador();
+                                    $nuevo_desarrollador->id_cat_desarrollador = $id_desarrollador[0]; // Suponiendo que el nombre completo del empleado es único
+                                    $nuevo_desarrollador->id_proceso = $nuevo_proceso->id;
+                                    $nuevo_desarrollador->save();
+                                }
+                            }
+
+                        }
+
             }
 
         return redirect()->route('index_proyectos')->with('sucess');
     }
 
-    public function desarrolladores()
+    public function nombresDesarrolladores()
     {
         $desarrolladores = array();
         foreach (CatDesarrollador::all() as $indice => $desarrollador){
@@ -241,5 +233,20 @@ class ProyectoController extends Controller
             );
 
         return $data;
+    }
+
+    public function crearDirectorios($id = 0)
+    {
+        $directorio_documents = "documents";
+
+        if (!Storage::exists($directorio_documents))
+            Storage::makeDirectory($directorio_documents);
+
+        $directorio_proyecto = $directorio_documents."/".$id;
+
+        if (!Storage::exists($directorio_proyecto))
+            Storage::makeDirectory($directorio_proyecto);
+
+        return $directorio_proyecto;
     }
 }

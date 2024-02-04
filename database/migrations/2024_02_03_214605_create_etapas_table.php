@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('documentaciones', function (Blueprint $table) {
+        Schema::create('etapas', function (Blueprint $table) {
             $table->id();
             $table->integer('id_proyecto');
-            $table->string('nombre');
-            $table->string('directorio')->nullable();
+            $table->integer('id_cat_etapa');
+            $table->integer('id_doc');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('documentaciones');
+        Schema::dropIfExists('etapas');
     }
 };

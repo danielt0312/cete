@@ -64,7 +64,7 @@
                     {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
                     {data: 'documentacion', title: 'Documentación disponible', className: 'documentacion'},
-                    {data: 'opciones', title: 'Opciones'},
+                    {data: 'opciones', title: 'Opción'},
                 ],
             });
         });

@@ -7,18 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('etapas', function (Blueprint $table) {
+        Schema::create('documentaciones', function (Blueprint $table) {
             $table->id();
             $table->integer('id_proyecto');
-            $table->integer('id_cat_etapa');
-            $table->string('directorio')->nullable();
-            $table->date('fecha_subida_doc')->nullable();
-            $table->timestamps();
+            $table->string('nombre');
+            $table->string('directorio');
+            $table->dateTime('fecha_subida');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('etapas');
+        Schema::dropIfExists('documentaciones');
     }
 };

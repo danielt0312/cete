@@ -9,4 +9,8 @@ class Documentacion extends Model
     public $timestamps = false;
 
     protected $table = 'documentaciones';
+
+    protected $casts = [
+        'fecha_subida' => 'datetime',
+    ];
 }
