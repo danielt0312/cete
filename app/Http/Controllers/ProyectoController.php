@@ -22,7 +22,6 @@ class ProyectoController extends Controller
         $sistemas = array();
         $sistemas['data'] = Proyecto::all();
 
-
         foreach ($sistemas['data'] as $indice => $sistema){
             $sistemas['data'][$indice] = array(
                 'id' => $sistema->id,
@@ -72,17 +71,35 @@ class ProyectoController extends Controller
 
     public function cicloVida($id = 0)
     {
-        $etapas = Etapa::get()->where('id_proyecto', '=', $id)->toArray();
-        foreach ($etapas as $indice => $value){
-            $etapas[$indice]['nombres'] = CatEtapa::get()->where('id', '=', $value['id_cat_etapa'])->toArray()[$indice]['nombre'];
-            $etapas[$indice]['opcion'] = '<a href="#" class="btn btn-primary">Ver Documento</a>';
+        if($id == 0)
+            return $this->index();
+
+        $documentacion = Documentacion::select(['id_cat_etapa', 'nombre', 'directorio', 'fecha_subida'])
+            ->join('etapas', 'etapas.id_doc', '=', 'documentaciones.id')
+            ->where('etapas.id_proyecto', '=', $id)
+            ->get();
+
+        $documentacion_tmp = array();
+        if($documentacion->count() > 0) {
+            foreach ($documentacion as $indice => $documento) {
+                $documentacion_tmp[$indice]['id'] = $documento['id_cat_etapa'];
+                $documentacion_tmp[$indice]['nombre'] = $documento['nombre'];
+                $documentacion_tmp[$indice]['fecha_subida'] = ($documento['fecha_subida'] == null ? null : $documento['fecha_subida']->format('Y-m-d H:i:s'));
+                $documentacion_tmp[$indice]['opcion'] = '
+                    <a href="'.($documento['directorio'] == null ? '#' : asset("storage/{$documento['directorio']}")).'"
+                        target="_blank" class="btn '.($documento['directorio'] == null ? 'btn-secundary disabled' : ' btn-primary').'">Ver documento</a>';
+            }
         }
 
-        return view('proyectos.ciclo-vida', ['datos' => $etapas]);
+
+        return view('proyectos.ciclo-vida', ['documentacion' => $documentacion_tmp, 'nombre_proyecto' => Proyecto::find($id)->pluck('nombre')[0]]);
     }
 
     public function agregarDoc($id = 0)
     {
+        if($id == 0)
+            return $this->index();
+
         $documentacion = Documentacion::get()->where('id_proyecto', '=', $id)->where('fecha_subida', '=', null)->toArray();
 
         return view('proyectos.documentos', ['documentacion' => $documentacion]);
@@ -219,11 +236,11 @@ class ProyectoController extends Controller
             ->get();
 
         if($documentacion->count() > 0) {
-            $documentacion_tmp = '<ul>';
+            $documentacion_tmp = '<ul class="list-group">';
 
             foreach ($documentacion as $documento){
                 $documentacion_tmp .= '
-                    <li><a href="'.asset("storage/{$documento['directorio']}").'" target="_blank">'.$documento['nombre'] . '</a></li>
+                    <li><a class="" href="'.asset("storage/{$documento['directorio']}").'" target="_blank">'.$documento['nombre'] . '</a></li>
                 ';
             }
 
