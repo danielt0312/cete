@@ -17,20 +17,24 @@
                 <label for="idDocumento" class="col-form-label">Seleccione un documento</label>
                 <div class="input-group">
                     <select class="form-select" id="idDocumento" name="idDocumento" aria-label="idDocumento" required>
-                        @foreach($documentacion as $documento)
-                            <option value="{{$documento['id']}}">{{$documento['nombre']}}</option>
-                        @endforeach
+                        @if($documentacion == null)
+                            <option selected>Sin documentos disponibles para agregar.</option>
+                        @else
+                            @foreach($documentacion as $documento)
+                                <option value="{{$documento['id']}}">{{$documento['nombre']}}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
             <div class="row mt-4 text-center">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="archivo" id="archivo"  accept="application/pdf" required>
+                    <input type="file" class="custom-file-input" name="archivo" id="archivo"  accept="application/pdf" @if($documentacion == null) disabled @else required @endif>
                 </div>
             </div>
             <div class="row mt-4">
                 <div>
-                    <button class="btn btn-primary col-sm-12" id="btnGuardar" type="submit">Guardar</button>
+                    <button class="btn btn-primary col-sm-12 @if($documentacion == null) disabled @endif" id="btnGuardar" type="submit">Guardar</button>
                 </div>
             </div>
         </form>
