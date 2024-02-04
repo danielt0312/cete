@@ -12,6 +12,8 @@ use App\Models\Proyecto;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+
 
 class ProyectoController extends Controller
 {
@@ -20,13 +22,14 @@ class ProyectoController extends Controller
         $sistemas = array();
         $sistemas['data'] = Proyecto::all();
 
+
         foreach ($sistemas['data'] as $indice => $sistema){
             $sistemas['data'][$indice] = array(
                 'id' => $sistema->id,
                 'nombre' => $sistema->nombre,
                 'descripcion' => $sistema->descripcion,
                 'responsable' => $sistema->responsable,
-                'documentacion' => 'No disponible',
+                'documentacion' => $this->documentacionDisponible($sistema->id),
                 'observaciones' => $sistema->observaciones,
                 'opciones' => '
                     <div class="dropdown">
@@ -93,8 +96,10 @@ class ProyectoController extends Controller
 
         if(($documentacion = Documentacion::find($request->input('idDocumento'))) != null) {
             $archivo = $request->file('archivo');
-            $directorio = $archivo->store($this->crearDirectorios($documentacion['id_proyecto']));
-            $documentacion->directorio = $directorio;
+            $directorio = $archivo->store("public/documents/".$documentacion['id_proyecto']);
+
+            $directorioRelativo = str_replace('public/', '', $directorio);
+            $documentacion->directorio = $directorioRelativo;
 
             date_default_timezone_set('America/Monterrey');
             $fecha = now();
@@ -201,18 +206,34 @@ class ProyectoController extends Controller
         return $desarrolladores;
     }
 
-    public function documentacionDisponible($id)
+    public function documentacionDisponible($id = 0)
     {
-        $documentacion = Documentacion::find($id);
-        if($documentacion == null)
-            $documentacion = array(
-                'nombre' => '',
-                'directorio' => '',
-            );
-        return $documentacion;
+        if($id == 0)
+            return 'No disponible';
+
+        $documentacion = Documentacion::select(['documentaciones.nombre', 'documentaciones.directorio'])
+            ->leftJoin('etapas', 'documentaciones.id', '=', 'etapas.id_doc')
+            ->where('documentaciones.id_proyecto', $id)
+            ->whereNull('etapas.id_proyecto')
+            ->where('directorio', '!=', null)
+            ->get();
+
+        if($documentacion->count() > 0) {
+            $documentacion_tmp = '<ul>';
+
+            foreach ($documentacion as $documento){
+                $documentacion_tmp .= '
+                    <li><a href="'.asset("storage/{$documento['directorio']}").'" target="_blank">'.$documento['nombre'] . '</a></li>
+                ';
+            }
+
+            return $documentacion_tmp . '</ul>';
+        } else
+            return 'No disponible';
+
     }
 
-    public function obtenerSistema($id)
+    public function obtenerSistema($id = 0)
     {
         $data = Proyecto::find($id);
         if($data == null)
@@ -237,15 +258,15 @@ class ProyectoController extends Controller
 
     public function crearDirectorios($id = 0)
     {
-        $directorio_documents = "documents";
+        $directorio_documents = storage_path('app\public\documents');
 
-        if (!Storage::exists($directorio_documents))
-            Storage::makeDirectory($directorio_documents);
+        if (!File::exists($directorio_documents))
+            File::makeDirectory($directorio_documents, 0777, true, true);
 
-        $directorio_proyecto = $directorio_documents."/".$id;
+        $directorio_proyecto = $directorio_documents.'\\'.$id;
 
-        if (!Storage::exists($directorio_proyecto))
-            Storage::makeDirectory($directorio_proyecto);
+        if (!File::exists($directorio_proyecto))
+            File::makeDirectory($directorio_proyecto);
 
         return $directorio_proyecto;
     }
