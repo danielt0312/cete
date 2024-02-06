@@ -11,7 +11,7 @@
             <div class="g-2 d-grid d-md-flex">
                 <a class="btn btn-secundario " href="{{ route('index_proyectos') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
             </div>
-            <form class="row" id="formProyecto" action="{{ route('grabar_proyecto') }}" method="POST">
+            <form class="row" id="formProyecto" action="{{ route('grabar_proyecto', ['id' => $data['id']]) }}" method="POST">
                 @csrf
                 <div class="row row-cols-2">
                     <div class="col">
@@ -23,7 +23,7 @@
                     <div class="col">
                         <label for="datefilter" class="col-form-label">Periodos críticos</label>
                         <div>
-                            <input type="text" class="form-control" name="datefilter" id="datefilter" value="" placeholder="07/01/2023 - 03/02/2023" />
+                            <input type="text" class="form-control" name="datefilter" id="datefilter" value="{{$data['periodo_critico']}}" placeholder="07/10/2023 - 07/29/2023" />
                         </div>
                     </div>
                 </div>
@@ -113,15 +113,7 @@
                 <div class="row mt-2 col-sm-12">
                     <label for="documentacion" class="col-form-label">Documentación</label>
                     <div class="">
-                        <ul>
-                            @if($data['id'] != '')
-                                @foreach($documentacion as $documento)
-                                    <li><a href="#" class="link-primary">{{$documento}}</a></li>
-                                @endforeach
-                            @else
-                               <label class="col-form-label col-form-label-sm">Sin documentación</label>
-                            @endif
-                        </ul>
+
                     </div>
                     <div class="row">
                         <div>
@@ -140,7 +132,7 @@
                 </div>
                 <div class="row mt-4">
                     <div class="text-center">
-                        <button class="btn btn-primary" id="btnEnviar" type="submit">@if($data['id'] != '') Actualizar @else Guardar @endif</button>
+                        <button class="btn btn-primary" id="btnEnviar" type="submit">@if($data['id'] != 0) Actualizar @else Guardar @endif</button>
                     </div>
                 </div>
             </form>
@@ -296,7 +288,7 @@
                 });
 
                 $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+                    $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
                 });
 
                 $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {

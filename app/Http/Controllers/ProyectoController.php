@@ -11,7 +11,6 @@ use App\Models\Proceso;
 use App\Models\Proyecto;
 use DateTime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
 
@@ -52,7 +51,8 @@ class ProyectoController extends Controller
     public function show($id = 0)
     {
         $data = $this->obtenerSistema($id);
-        $etapas = CatEtapa::all();
+        $data['id'] = $id;
+        $etapas = $this->obtenerEtapas($id);
         $documentacion = $this->documentacionDisponible($id);
         $desarrolladores = $this->nombresDesarrolladores();
 
@@ -64,8 +64,11 @@ class ProyectoController extends Controller
         ]));
     }
 
-    public function store()
+    public function store($id)
     {
+        if(Proyecto::find(intval($id)) != null)
+            return($this->actualizar(request()));
+
         return($this->grabar(request()));
     }
 
@@ -84,7 +87,7 @@ class ProyectoController extends Controller
             foreach ($documentacion as $indice => $documento) {
                 $documentacion_tmp[$indice]['id'] = $documento['id_cat_etapa'];
                 $documentacion_tmp[$indice]['nombre'] = $documento['nombre'];
-                $documentacion_tmp[$indice]['fecha_subida'] = ($documento['fecha_subida'] == null ? null : $documento['fecha_subida']->format('Y-m-d H:i:s'));
+                $documentacion_tmp[$indice]['fecha_subida'] = ($documento['fecha_subida'] == null ? null : $documento['fecha_subida']->format('m-d-Y H:i:s'));
                 $documentacion_tmp[$indice]['opcion'] = '
                     <a href="'.($documento['directorio'] == null ? '#' : asset("storage/{$documento['directorio']}")).'"
                         target="_blank" class="btn '.($documento['directorio'] == null ? 'btn-secundary disabled' : ' btn-primary').'">Ver documento</a>';
@@ -143,8 +146,8 @@ class ProyectoController extends Controller
         ]);
 
         $fechas = explode('-', $request->input('datefilter'));
-        $fecha_inicio = DateTime::createFromFormat('d/m/Y', trim($fechas[0]));
-        $fecha_final = DateTime::createFromFormat('d/m/Y', trim($fechas[1]));
+        $fecha_inicio = DateTime::createFromFormat('m/d/Y', trim($fechas[0]));
+        $fecha_final = DateTime::createFromFormat('m/d/Y', trim($fechas[1]));
 
         $nuevo_proyecto = new Proyecto();
         $nuevo_proyecto->nombre = $request->input('nombre');
@@ -213,6 +216,84 @@ class ProyectoController extends Controller
         return redirect()->route('index_proyectos')->with('sucess');
     }
 
+    public function actualizar(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:100',
+            'descripcion' => 'required|string|max:300',
+            'dominio' => 'required|string|max:150',
+            'url_proyecto' => 'required|string|max:150',
+            'url_codigo_fuente' => 'required|string|max:150',
+            'responsable' => 'required|string|max:100',
+            'area' => 'required|string|max:100',
+            'informacion' => 'required|string|max:200',
+            'disponibilidad' => 'required|string|max:200',
+            'datefilter' => 'required|string|max:24',
+        ]);
+
+        $fechas = explode('-', $request->input('datefilter'));
+        $fecha_inicio = DateTime::createFromFormat('m/d/Y', trim($fechas[0]));
+        $fecha_final = DateTime::createFromFormat('m/d/Y', trim($fechas[1]));
+
+        $nuevo_proyecto = Proyecto::find($request['id']);
+        $nuevo_proyecto->nombre = $request->input('nombre');
+        $nuevo_proyecto->descripcion = $request->input('descripcion');
+        $nuevo_proyecto->url_dominio = $request->input('dominio');
+        $nuevo_proyecto->url_proyecto = $request->input('url_proyecto');
+        $nuevo_proyecto->url_codigo_fuente = $request->input('url_codigo_fuente');
+        $nuevo_proyecto->responsable = $request->input('responsable');
+        $nuevo_proyecto->area = $request->input('area');
+        $nuevo_proyecto->informacion_contenida = $request->input('informacion');
+        $nuevo_proyecto->disponibilidad = $request->input('disponibilidad');
+        $nuevo_proyecto->periodo_inicio = $fecha_inicio;
+        $nuevo_proyecto->periodo_final = $fecha_final;
+        $nuevo_proyecto->observaciones = $request->input('observaciones');
+        $nuevo_proyecto->save();
+
+        $this->crearDirectorios($nuevo_proyecto->id);
+
+        // Creación de documentación por entrada
+        if(($documentos = $request->input('documentos')) != null)
+            foreach ($documentos as $nombre) {
+                $nueva_documentacion = new Documentacion();
+                $nueva_documentacion->id_proyecto = $nuevo_proyecto->id;
+                $nueva_documentacion->nombre = $nombre;
+                $nueva_documentacion->save();
+            }
+
+
+        // Creación de documentación por defecto para el ciclo de vida del sistema informático
+        if(($etapas = $request->input('etapas')) != null)
+            foreach ($etapas as $index => $procesos)
+                dump($etapas);
+                dump($index);
+                dump($procesos);
+
+                return dump($request->input('etapas'));
+                /*foreach ($procesos as $proceso) {
+                    $nuevo_proceso = new Proceso();
+                    $nuevo_proceso->id_etapa = $index;
+                    $nuevo_proceso->nombre = $proceso['nombre'] == null ? 'Nombre no disponible' : $proceso['nombre'];
+                    $nuevo_proceso->save();
+
+                    // Precaución para proceso sin desarrollador(es)
+                    if ($proceso['desarrolladores'] != null) {
+                        $nombres_desarrolladores = explode(', ', $proceso['desarrolladores']);
+                        foreach ($nombres_desarrolladores as $nombres) {
+                            $id_desarrollador = CatDesarrollador::whereRaw("CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) = ?", [$nombres])->pluck('id');
+                            $nuevo_desarrollador = new Desarrollador();
+                            $nuevo_desarrollador->id_cat_desarrollador = $id_desarrollador[0]; // Suponiendo que el nombre completo del empleado es único
+                            $nuevo_desarrollador->id_proceso = $nuevo_proceso->id;
+                            $nuevo_desarrollador->save();
+                        }
+                    }
+
+                }*/
+
+
+        return redirect()->route('index_proyectos')->with('sucess');
+    }
+
     public function nombresDesarrolladores()
     {
         $desarrolladores = array();
@@ -225,12 +306,9 @@ class ProyectoController extends Controller
 
     public function documentacionDisponible($id = 0)
     {
-        if($id == 0)
-            return 'No disponible';
-
         $documentacion = Documentacion::select(['documentaciones.nombre', 'documentaciones.directorio'])
             ->leftJoin('etapas', 'documentaciones.id', '=', 'etapas.id_doc')
-            ->where('documentaciones.id_proyecto', $id)
+            ->where('documentaciones.id_proyecto', '=', $id)
             ->whereNull('etapas.id_proyecto')
             ->where('directorio', '!=', null)
             ->get();
@@ -247,7 +325,6 @@ class ProyectoController extends Controller
             return $documentacion_tmp . '</ul>';
         } else
             return 'No disponible';
-
     }
 
     public function obtenerSistema($id = 0)
@@ -265,12 +342,27 @@ class ProyectoController extends Controller
                 'area' => '',
                 'informacion_contenida' => '',
                 'disponibilidad' => '',
-                'periodo_inicio' => '',
-                'periodo_final' => '',
+                'periodo_critico' => '',
                 'observaciones' => '',
             );
+        else {
+            $data['periodo_critico'] = $data['periodo_inicio']->format('m/d/Y'). ' - '. $data['periodo_final']->format('m/d/Y');
+        }
 
         return $data;
+    }
+
+    public function obtenerEtapas($id)
+    {
+        $cat_etapas = CatEtapa::select(['cat_etapas.id', 'cat_etapas.nombre'])
+            ->join('etapas', 'etapas.id_cat_etapa', '=', 'cat_etapas.id')
+            ->where('etapas.id_proyecto', '=', $id)
+            ->get();
+
+        if($cat_etapas->count() == 0)
+            $cat_etapas = CatEtapa::get();
+
+        return $cat_etapas;
     }
 
     public function crearDirectorios($id = 0)
