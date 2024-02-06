@@ -37,9 +37,9 @@ class ProyectoController extends Controller
                             </svg>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="/proyectos/grabar/'.$sistema->id.'">Editar</a></li>
-                            <li><a class="dropdown-item" href="/proyectos/documentos/'.$sistema->id.'">Agregar Documentos</a></li>
-                            <li><a class="dropdown-item" href="/proyectos/ciclo-vida/'.$sistema->id.'">Ver etapas</a></li>
+                            <li><a class="dropdown-item" href="'.route('grabar_proyecto', ['id' => $sistema->id]).'">Editar</a></li>
+                            <li><a class="dropdown-item" href="'.route('agregar-documento', ['id' => $sistema->id]).'">Agregar Documentos</a></li>
+                            <li><a class="dropdown-item" href="'.route('ciclo_vida', ['id' => $sistema->id]).'">Ver etapas</a></li>
                         </ul>
                     </div>
                 ',
@@ -64,11 +64,8 @@ class ProyectoController extends Controller
         ]));
     }
 
-    public function store($id)
+    public function store()
     {
-        if(Proyecto::find(intval($id)) != null)
-            return($this->actualizar(request()));
-
         return($this->grabar(request()));
     }
 
@@ -87,7 +84,7 @@ class ProyectoController extends Controller
             foreach ($documentacion as $indice => $documento) {
                 $documentacion_tmp[$indice]['id'] = $documento['id_cat_etapa'];
                 $documentacion_tmp[$indice]['nombre'] = $documento['nombre'];
-                $documentacion_tmp[$indice]['fecha_subida'] = ($documento['fecha_subida'] == null ? null : $documento['fecha_subida']->format('m-d-Y H:i:s'));
+                $documentacion_tmp[$indice]['fecha_subida'] = ($documento['fecha_subida'] == null ? null : $documento['fecha_subida']->format('m/d/Y H:i:s'));
                 $documentacion_tmp[$indice]['opcion'] = '
                     <a href="'.($documento['directorio'] == null ? '#' : asset("storage/{$documento['directorio']}")).'"
                         target="_blank" class="btn '.($documento['directorio'] == null ? 'btn-secundary disabled' : ' btn-primary').'">Ver documento</a>';
@@ -149,7 +146,8 @@ class ProyectoController extends Controller
         $fecha_inicio = DateTime::createFromFormat('m/d/Y', trim($fechas[0]));
         $fecha_final = DateTime::createFromFormat('m/d/Y', trim($fechas[1]));
 
-        $nuevo_proyecto = new Proyecto();
+        $query = Proyecto::find($request['id']);
+        $nuevo_proyecto = $query == null ?  new Proyecto() : $query;
         $nuevo_proyecto->nombre = $request->input('nombre');
         $nuevo_proyecto->descripcion = $request->input('descripcion');
         $nuevo_proyecto->url_dominio = $request->input('dominio');
@@ -176,8 +174,8 @@ class ProyectoController extends Controller
             }
 
         // Creación de documentación por defecto para el ciclo de vida del sistema informático
-        if(($cat_etapas = CatEtapa::get() ) != null)
-            foreach ($cat_etapas as $cat_etapa){
+        if(($cat_etapas = CatEtapa::get() ) != null && $query == null)
+            foreach ($cat_etapas as $cat_etapa) {
                 $nueva_documentacion = new Documentacion();
                 $nueva_documentacion->id_proyecto = $nuevo_proyecto->id;
                 $nueva_documentacion->nombre = $cat_etapa['nombre'];
@@ -188,91 +186,14 @@ class ProyectoController extends Controller
                 $nueva_etapa->id_cat_etapa = $cat_etapa['id'];
                 $nueva_etapa->id_doc = $nueva_documentacion->id;
                 $nueva_etapa->save();
-
-                if(($etapas = $request->input('etapas')) != null)
-                    foreach ($etapas as $procesos)
-                        foreach ($procesos as $proceso) {
-                            $nuevo_proceso = new Proceso();
-                            $nuevo_proceso->id_etapa = $nueva_etapa->id;
-                            $nuevo_proceso->nombre = $proceso['nombre'] == null ? 'Nombre no disponible' : $proceso['nombre'];
-                            $nuevo_proceso->save();
-
-                            // Precaución para proceso sin desarrollador(es)
-                            if ($proceso['desarrolladores'] != null) {
-                                $nombres_desarrolladores = explode(', ', $proceso['desarrolladores']);
-                                foreach ($nombres_desarrolladores as $nombres) {
-                                    $id_desarrollador = CatDesarrollador::whereRaw("CONCAT(nombre, ' ', apellido_paterno, ' ', apellido_materno) = ?", [$nombres])->pluck('id');
-                                    $nuevo_desarrollador = new Desarrollador();
-                                    $nuevo_desarrollador->id_cat_desarrollador = $id_desarrollador[0]; // Suponiendo que el nombre completo del empleado es único
-                                    $nuevo_desarrollador->id_proceso = $nuevo_proceso->id;
-                                    $nuevo_desarrollador->save();
-                                }
-                            }
-
-                        }
-
             }
 
-        return redirect()->route('index_proyectos')->with('sucess');
-    }
-
-    public function actualizar(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:100',
-            'descripcion' => 'required|string|max:300',
-            'dominio' => 'required|string|max:150',
-            'url_proyecto' => 'required|string|max:150',
-            'url_codigo_fuente' => 'required|string|max:150',
-            'responsable' => 'required|string|max:100',
-            'area' => 'required|string|max:100',
-            'informacion' => 'required|string|max:200',
-            'disponibilidad' => 'required|string|max:200',
-            'datefilter' => 'required|string|max:24',
-        ]);
-
-        $fechas = explode('-', $request->input('datefilter'));
-        $fecha_inicio = DateTime::createFromFormat('m/d/Y', trim($fechas[0]));
-        $fecha_final = DateTime::createFromFormat('m/d/Y', trim($fechas[1]));
-
-        $nuevo_proyecto = Proyecto::find($request['id']);
-        $nuevo_proyecto->nombre = $request->input('nombre');
-        $nuevo_proyecto->descripcion = $request->input('descripcion');
-        $nuevo_proyecto->url_dominio = $request->input('dominio');
-        $nuevo_proyecto->url_proyecto = $request->input('url_proyecto');
-        $nuevo_proyecto->url_codigo_fuente = $request->input('url_codigo_fuente');
-        $nuevo_proyecto->responsable = $request->input('responsable');
-        $nuevo_proyecto->area = $request->input('area');
-        $nuevo_proyecto->informacion_contenida = $request->input('informacion');
-        $nuevo_proyecto->disponibilidad = $request->input('disponibilidad');
-        $nuevo_proyecto->periodo_inicio = $fecha_inicio;
-        $nuevo_proyecto->periodo_final = $fecha_final;
-        $nuevo_proyecto->observaciones = $request->input('observaciones');
-        $nuevo_proyecto->save();
-
-        $this->crearDirectorios($nuevo_proyecto->id);
-
-        // Creación de documentación por entrada
-        if(($documentos = $request->input('documentos')) != null)
-            foreach ($documentos as $nombre) {
-                $nueva_documentacion = new Documentacion();
-                $nueva_documentacion->id_proyecto = $nuevo_proyecto->id;
-                $nueva_documentacion->nombre = $nombre;
-                $nueva_documentacion->save();
-            }
-
-
-        // Creación de documentación por defecto para el ciclo de vida del sistema informático
         if(($etapas = $request->input('etapas')) != null)
-            foreach ($etapas as $index => $procesos)
-                dump($etapas);
-                dump($index);
-                dump($procesos);
-
-                return dump($request->input('etapas'));
-                /*foreach ($procesos as $proceso) {
+            foreach ($etapas as $indice => $procesos)
+                foreach ($procesos as $proceso) {
                     $nuevo_proceso = new Proceso();
-                    $nuevo_proceso->id_etapa = $index;
+                    $id_etapa = Etapa::where('id_proyecto', '=', $nuevo_proyecto->id)->where('id_cat_etapa', '=', $indice)->get()->pluck('id');
+                    $nuevo_proceso->id_etapa = $id_etapa[0];
                     $nuevo_proceso->nombre = $proceso['nombre'] == null ? 'Nombre no disponible' : $proceso['nombre'];
                     $nuevo_proceso->save();
 
@@ -288,7 +209,7 @@ class ProyectoController extends Controller
                         }
                     }
 
-                }*/
+                }
 
 
         return redirect()->route('index_proyectos')->with('sucess');

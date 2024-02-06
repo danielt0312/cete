@@ -11,7 +11,7 @@
             <div class="g-2 d-grid d-md-flex">
                 <a class="btn btn-secundario " href="{{ route('index_proyectos') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
             </div>
-            <form class="row" id="formProyecto" action="{{ route('grabar_proyecto', ['id' => $data['id']]) }}" method="POST">
+            <form class="row" id="formProyecto" action="{{ route('guardar_proyecto', ['id' => $data['id']]) }}" method="POST">
                 @csrf
                 <div class="row row-cols-2">
                     <div class="col">
