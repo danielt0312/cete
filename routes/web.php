@@ -34,10 +34,10 @@ use Illuminate\Support\Facades\DB;
 
     Route::group(['prefix' => 'proyectos'], function() {
         Route::get('/index', 'App\Http\Controllers\ProyectoController@index')->name('index_proyectos');
-        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('agregar_proyecto');
-        Route::post('/guardar/{id}', 'App\Http\Controllers\ProyectoController@store')->name('grabar_proyecto');
-        Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\ProyectoController@cicloVida')->name('ciclo-vida');
-        Route::get('/documentos/{id}', 'App\Http\Controllers\ProyectoController@agregarDoc')->name('agregar-doc');
+        Route::get('/grabar/{id}', 'App\Http\Controllers\ProyectoController@show')->name('grabar_proyecto');
+        Route::post('/guardar', 'App\Http\Controllers\ProyectoController@store')->name('guardar_proyecto');
+        Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\ProyectoController@cicloVida')->name('ciclo_vida');
+        Route::get('/documentos/{id}', 'App\Http\Controllers\ProyectoController@agregarDoc')->name('agregar-documento');
         Route::post('/guardar_doc', 'App\Http\Controllers\ProyectoController@subirArchivo')->name('subir-archivo');
     });
 
