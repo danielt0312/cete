@@ -27,7 +27,7 @@ class ProyectoController extends Controller
                 'nombre' => $sistema->nombre,
                 'descripcion' => $sistema->descripcion,
                 'responsable' => $sistema->responsable,
-                'documentacion' => $this->documentacionDisponible($sistema->id),
+                'documentacion' => $this->obtenerDocumentacion($sistema->id),
                 'observaciones' => $sistema->observaciones,
                 'opciones' => '
                     <div class="dropdown">
@@ -38,8 +38,9 @@ class ProyectoController extends Controller
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <li><a class="dropdown-item" href="'.route('grabar_proyecto', ['id' => $sistema->id]).'">Editar</a></li>
-                            <li><a class="dropdown-item" href="'.route('agregar-documento', ['id' => $sistema->id]).'">Agregar Documentos</a></li>
-                            <li><a class="dropdown-item" href="'.route('ciclo_vida', ['id' => $sistema->id]).'">Ver etapas</a></li>
+                            <li><a class="dropdown-item" href="'.route('agregar-documento', ['id' => $sistema->id]).'">Agregar documentos</a></li>
+                            <li><a class="dropdown-item" href="'.route('ciclo_vida', ['id' => $sistema->id]).'">Ciclo de Vida</a></li>
+                            <li><a class="dropdown-item" href="'.route('detalles', ['id' => $sistema->id]).'">Más detalles</a></li>
                         </ul>
                     </div>
                 ',
@@ -53,8 +54,8 @@ class ProyectoController extends Controller
         $data = $this->obtenerSistema($id);
         $data['id'] = $id;
         $etapas = $this->obtenerEtapas($id);
-        $documentacion = $this->documentacionDisponible($id);
-        $desarrolladores = $this->nombresDesarrolladores();
+        $documentacion = $this->obtenerDocumentacion($id);
+        $desarrolladores = $this->desarrolladoresDisponibles();
 
         return(view('proyectos.grabar', [
             'data' => $data,
@@ -67,6 +68,16 @@ class ProyectoController extends Controller
     public function store()
     {
         return($this->grabar(request()));
+    }
+
+    public function detalles($id = 0)
+    {
+        return view('proyectos.detalles', [
+            'proyecto' => $this->obtenerSistema($id),
+            'etapas' => $this->obtenerEtapas($id),
+            'procesos' => $this->obtenerProcesos($id),
+            'documentaciones' => $this->obtenerDocumentacion($id)
+        ]);
     }
 
     public function cicloVida($id = 0)
@@ -215,7 +226,7 @@ class ProyectoController extends Controller
         return redirect()->route('index_proyectos')->with('sucess');
     }
 
-    public function nombresDesarrolladores()
+    public function desarrolladoresDisponibles()
     {
         $desarrolladores = array();
         foreach (CatDesarrollador::all() as $indice => $desarrollador){
@@ -225,7 +236,7 @@ class ProyectoController extends Controller
         return $desarrolladores;
     }
 
-    public function documentacionDisponible($id = 0)
+    public function obtenerDocumentacion($id = 0)
     {
         $documentacion = Documentacion::select(['documentaciones.nombre', 'documentaciones.directorio'])
             ->leftJoin('etapas', 'documentaciones.id', '=', 'etapas.id_doc')
@@ -273,7 +284,7 @@ class ProyectoController extends Controller
         return $data;
     }
 
-    public function obtenerEtapas($id)
+    public function obtenerEtapas($id = 0)
     {
         $cat_etapas = CatEtapa::select(['cat_etapas.id', 'cat_etapas.nombre'])
             ->join('etapas', 'etapas.id_cat_etapa', '=', 'cat_etapas.id')
@@ -284,6 +295,37 @@ class ProyectoController extends Controller
             $cat_etapas = CatEtapa::get();
 
         return $cat_etapas;
+    }
+
+    public function obtenerProcesos($id = 0)
+    {
+        $procesos = array();
+        $etapas = Etapa::select(['etapas.id_cat_etapa', 'procesos.id', 'procesos.nombre'])
+            ->join('procesos', 'procesos.id_etapa', '=', 'etapas.id')
+            ->where('etapas.id_proyecto', '=', $id)
+            ->get();
+
+        foreach ($etapas->toArray() as $index => $etapa) {
+            $procesos[$etapa['id_cat_etapa']][$index] = $etapa;
+            $procesos[$etapa['id_cat_etapa']][$index]['desarrolladores'] = $this->obtenerDesarrolladores($etapa['id']);
+        }
+
+        return $procesos;
+    }
+
+    public function obtenerDesarrolladores($id_proceso)
+    {
+        $desarrolladores = array();
+        foreach (
+            Desarrollador::select(Desarrollador::raw('CONCAT(nombre, " ", apellido_paterno, " ", apellido_materno) AS nombre_completo'))
+                ->join('cat_desarrolladores', 'cat_desarrolladores.id', '=', 'desarrolladores.id_cat_desarrollador')
+                ->where('id_proceso', '=', $id_proceso)
+                ->get()
+            as $index => $desarrollador) {
+            $desarrolladores[$index] = $desarrollador['nombre_completo'];
+        }
+
+        return implode(', ', $desarrolladores);
     }
 
     public function crearDirectorios($id = 0)

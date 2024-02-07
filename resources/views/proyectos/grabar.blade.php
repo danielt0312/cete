@@ -37,7 +37,7 @@
                     <div class="col">
                         <label for="responsable" class="col-form-label">Responsable del proyecto</label>
                         <div>
-                            <input type="text" class="form-control" name="responsable" id="responsable" value="{{$data['nombre']}}" placeholder="Lic. José Luis" required>
+                            <input type="text" class="form-control" name="responsable" id="responsable" value="{{$data['responsable']}}" placeholder="Lic. José Luis" required>
                         </div>
                     </div>
                     <div class="col">
@@ -57,13 +57,13 @@
                     <div class="col">
                         <label for="url_proyecto" class="col-form-label">URL de Proyecto</label>
                         <div>
-                            <input type="text" class="form-control" name="url_proyecto" id="url_proyecto" placeholder="www.tamaulipas.gob.mx/project" value="{{$data == null ? '' : $data['url_dominio']}}" required>
+                            <input type="text" class="form-control" name="url_proyecto" id="url_proyecto" placeholder="www.tamaulipas.gob.mx/project" value="{{$data['url_proyecto']}}" required>
                         </div>
                     </div>
                     <div class="col">
                         <label for="url_codigo_fuente" class="col-form-label">URL de Código Fuente</label>
                         <div>
-                            <input type="text" class="form-control"  name="url_codigo_fuente" id="url_codigo_fuente" placeholder="github.com/user/repository.git" value="{{$data == null ? '' : $data['url_dominio']}}" required>
+                            <input type="text" class="form-control"  name="url_codigo_fuente" id="url_codigo_fuente" placeholder="github.com/user/repository.git" value="{{$data['url_codigo_fuente']}}" required>
                         </div>
                     </div>
                 </div>
@@ -87,10 +87,10 @@
                                 <div class="card @if($etapa['id'] != 1) mt-3 @endif card-body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <label class="col-form-label col-form-label-sm">{{$etapa['nombre']}}</label>
+                                            <label class="col-form-label col-form-label-sm text-primary">{{$etapa['nombre']}}</label>
                                         </div>
                                         <div class="col-6">
-                                            <label class="col-form-label col-form-label-sm">Lista de desarrolladores</label>
+                                            <label class="col-form-label col-form-label-sm text-secondary">Lista de desarrolladores</label>
                                         </div>
                                     </div>
 
