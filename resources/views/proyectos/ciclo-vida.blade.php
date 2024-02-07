@@ -60,7 +60,7 @@
                 columns: [
                     {data: 'id', title: '#'},
                     {data: 'nombre', title: 'Etapa'},
-                    {data: 'opcion', title: 'Opción'},
+                    {data: 'opcion', title: 'Acciones'},
                     {data: 'fecha_subida', title: 'Fecha de subida'},
                 ],
             });

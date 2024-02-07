@@ -73,7 +73,7 @@
                     {data: 'id', title: 'ID'},
                     {data: 'nombre', title: 'Nombre'},
                     {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
-                    {data: 'editar', title: 'Opción'},
+                    {data: 'editar', title: 'Acciones'},
                 ],
             });
         });

@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\DB;
         Route::get('/ciclo-vida/{id}', 'App\Http\Controllers\ProyectoController@cicloVida')->name('ciclo_vida');
         Route::get('/documentos/{id}', 'App\Http\Controllers\ProyectoController@agregarDoc')->name('agregar-documento');
         Route::post('/guardar_doc', 'App\Http\Controllers\ProyectoController@subirArchivo')->name('subir-archivo');
+        Route::get('/detalles/{id}', 'App\Http\Controllers\ProyectoController@detalles')->name('detalles');
     });
 
     Route::group(['prefix' => 'solicitudes'], function(){

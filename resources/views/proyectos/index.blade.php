@@ -9,7 +9,7 @@
         </div>
         <div class="mt-7"/>
         <div class="g-2 d-grid d-md-flex justify-content-around">
-            <h3>Lista de Proyectos</h3>
+            <h3 class="text-primary">Lista de Proyectos</h3>
             <a class="btn btn-secundario" href="{{ route('grabar_proyecto', ['id' => 0]) }}"><i class="fas fa-plus-square">&nbsp;</i>  Agregar</a>
         </div>
         <div class="container-fluid row">
@@ -64,7 +64,7 @@
                     {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
                     {data: 'responsable', title: 'Responsable'},
                     {data: 'documentacion', title: 'Documentación disponible', className: 'documentacion'},
-                    {data: 'opciones', title: 'Opción'},
+                    {data: 'opciones', title: 'Acciones'},
                 ],
             });
         });
