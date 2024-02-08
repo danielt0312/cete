@@ -15,140 +15,175 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Nombre de proyecto:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Nombre de proyecto</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['nombre']}}</h5>
+                        <h5 class="card-title text font-weight-bold">{{$proyecto['nombre']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Descripción:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Descripción</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text-secondary">{{$proyecto['descripcion']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['descripcion']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Dominio: </h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Dominio</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['url_dominio']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['url_dominio']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">URL Proyecto:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">URL de Proyecto</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['url_proyecto']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['url_proyecto']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">URL Codigo Fuente:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">URL de Código Fuente</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['url_codigo_fuente']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['url_codigo_fuente']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Responsable de proyecto:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Responsable de proyecto</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['responsable']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['responsable']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Área:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Área</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['area']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['area']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Información contenida:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Tipo de información contenida</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['informacion_contenida']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['informacion_contenida']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Disponibilidad</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Disponibilidad requerida</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['disponibilidad']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['disponibilidad']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Periodos críticos:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Periodos críticos</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['periodo_critico']}}</h5>
+                        <h5 class="card-title text font-weight-normal">{{$proyecto['periodo_critico']}}</h5>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <h5 class="card-title text-primary">Observaciones:</h5>
+                        <h5 class="card-title text-primary font-weight-bolder">Observaciones</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text">{{$proyecto['observaciones']}}</h5>
+                        <h5 class="card-title text font-italic font-weight-light">{{$proyecto['observaciones'] != '' ? $proyecto['observaciones']: 'No hay datos registrados para este elemento.'}}</h5>
                     </div>
                 </div>
+
                 <div class="card-action">
                     <div class="row">
                         <div class="col-4">
-                            <h5 class="card-title text-primary">Procesos soportados:</h5>
+                            <h5 class="card-title text-primary font-weight-bolder">Procesos soportados</h5>
                         </div>
                     </div>
                     @foreach($etapas->toArray() as $etapa)
-                        <div class="row">
-                            <div class="col-6">
-                                <h6 class="card-title text-secondary">{{$etapa['nombre']}}</h6>
+                        <div class="row row-cols-2">
+                            <div class="col">
+                                <h6 class="card-title font-weight-bold">{{$etapa['nombre']}}</h6>
                             </div>
-                            <div class="col-6">
-                                <h6 class="card-title text-secondary">Lista de desarrolladores</h6>
+                            <div class="col">
+                                <h6 class="card-title font-weight-bold">Lista de desarrolladores</h6>
                             </div>
                         </div>
+
+                        @php($nodata = true)
                         @foreach($procesos as $proceso)
                             @foreach($proceso as $valor)
                                 @if(array_key_exists($etapa['id'], $procesos))
                                     @if($valor['id_cat_etapa'] == $etapa['id'])
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <label class="card-title text">{{$valor['nombre']}}</label>
+                                        @php($nodata = false)
+                                        <div class="row row-cols-2">
+                                            <div class="col">
+                                                <label class="card-title text font-weight-normal">{{$valor['nombre']}}</label>
                                             </div>
-                                            <div class="col-6">
-                                                <label class="card-title text">{{$valor['desarrolladores']}}</label>
+                                            <div class="col">
+                                                <label class="card-title text font-weight-normal">{{$valor['desarrolladores']}}</label>
                                             </div>
                                         </div>
+                                    @else
                                     @endif
-                                {{--@else
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label class="card-title text">Sin datos disponibles.</label>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="card-title text">Sin datos disponibles.</label>
-                                        </div>
-                                    </div>--}}
                                 @endif
                             @endforeach
                         @endforeach
+
+                        @if($nodata)
+                            <div class="row">
+                                <div class="col text-center">
+                                    <label class="card-title text font-italic font-weight-light">No hay datos registrados para este elemento.</label>
+                                </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
                 <div class="card-action">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title text-primary">{{$documentaciones}}</h5>
-                            </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-primary font-weight-bolder">Documentación disponible</h5>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="card-title text">Nombre</label>
+                        </div>
+                        <div class="col-6">
+                            <label class="card-title text">Fecha de subida</label>
+                        </div>
+                    </div>
+                    <ul class="row row-cols-2">
+                        @foreach($documentaciones['disponible'] as $documentacion)
+                            <div class="col">
+                                <a href="{{asset("storage/{$documentacion['directorio']}")}}"> {{$documentacion['nombre']}}</a>
+                            </div>
+                            <div class="col">
+                                <label class="col font-weight-normal">{{$documentacion['fecha_subida']}}</label>
+                            </div>
+                        @endforeach
+                    </ul>
+
+                    @if(isset($documentaciones['no_disponible']))
+                        <div class="col">
+                            <h5 class="card-title text-primary font-weight-bolder">Documentación faltante</h5>
+                        </div>
+                        <ul class="row row-cols-1">
+                            @foreach($documentaciones['no_disponible'] as $documentacion)
+                                <div class="col">
+                                    <a> {{$documentacion['nombre']}}</a>
+                                </div>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
