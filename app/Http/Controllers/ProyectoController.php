@@ -72,11 +72,13 @@ class ProyectoController extends Controller
 
     public function detalles($id = 0)
     {
+        $this->obtenerTotalDocumentacion($id);
+
         return view('proyectos.detalles', [
-            'proyecto' => $this->obtenerSistema($id),
+            'proyecto' => $this->obtenerSistema($id)->toArray(),
             'etapas' => $this->obtenerEtapas($id),
             'procesos' => $this->obtenerProcesos($id),
-            'documentaciones' => $this->obtenerDocumentacion($id)
+            'documentaciones' => $this->obtenerTotalDocumentacion($id)
         ]);
     }
 
@@ -327,6 +329,26 @@ class ProyectoController extends Controller
 
         return implode(', ', $desarrolladores);
     }
+
+    public function obtenerTotalDocumentacion($id)
+    {
+        $total_documentacion = array();
+        $documentaciones = Documentacion::where('id_proyecto', '=', $id);
+        foreach ($documentaciones->get()->sortBy('fecha_subida') as $indice => $documentacion) {
+            $tmpDoc = $documentacion->getAttributes();
+            if($tmpDoc['fecha_subida'] == null) {
+                $total_documentacion['no_disponible'][$indice] = $tmpDoc;
+                continue;
+            }
+
+            $total_documentacion['disponible'][$indice] = $tmpDoc;
+            $fechaSubida = new DateTime($tmpDoc['fecha_subida']);
+            $total_documentacion['disponible'][$indice]['fecha_subida'] = $fechaSubida->format('m/d/Y H:i:s');
+        }
+
+        return $total_documentacion;
+    }
+
 
     public function crearDirectorios($id = 0)
     {

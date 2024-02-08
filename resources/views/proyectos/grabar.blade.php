@@ -15,7 +15,7 @@
                 @csrf
                 <div class="row row-cols-2">
                     <div class="col">
-                        <label for="nombre" class="col-form-label">Nombre del proyecto</label>
+                        <label for="nombre" class="col-form-label">Nombre de proyecto</label>
                         <div>
                             <input type="text" class="form-control" name="nombre" id="nombre" value="{{$data['nombre']}}" placeholder="Sistema de..."  required>
                         </div>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="row row-cols-2 mt-2">
                     <div class="col">
-                        <label for="responsable" class="col-form-label">Responsable del proyecto</label>
+                        <label for="responsable" class="col-form-label">Responsable de proyecto</label>
                         <div>
                             <input type="text" class="form-control" name="responsable" id="responsable" value="{{$data['responsable']}}" placeholder="Lic. José Luis" required>
                         </div>
