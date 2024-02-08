@@ -12,7 +12,7 @@
 <link href="{{ asset('css/cssTemplate/nucleo-icons.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/cssTemplate/nucleo-svg.css') }}" rel="stylesheet" />
 <!-- Font Awesome Icons -->
-<script src="{{ asset('js/kit.fontawesome_42d5adcbca.js') }}" crossorigin="anonymous"></script> 
+<script src="{{ asset('js/kit.fontawesome_42d5adcbca.js') }}" crossorigin="anonymous"></script>
 <!-- <link href="./assets/css/nucleo-svg.css" rel="stylesheet" /> -->
 <link href="{{ asset('css/cssTemplate/nucleo-svg.css') }}" rel="stylesheet" />
 <!-- CSS Files -->
@@ -21,6 +21,13 @@
 
 <link href="{{ asset('css/leaflet.css') }}" rel="stylesheet" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
    crossorigin=""/>
+
+{{-- dataTables : Ciclo de vida de sistemas de información --}}
+{{--<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet /">--}}
+    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css" integrity="sha512-YWDtZYKUekuPMIzojX205b/D7yCj/ZM82P4hkqc9ZctHtQjvq3ei11EvAmqxQoyrIFBd9Uhfn/X6nJ1Nnp+F7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -36,11 +43,11 @@
   .marginraigt{
     margin-right: 1em;
   }
-  
+
   .colorTitle{
     color:white;
   }
-  
+
   .SinNegrita{
     font-weight:normal;
   }
@@ -50,7 +57,7 @@
     color:#FFFFFF !important;
   }
 
-  .colorBtnPrincipal:hover{ 
+  .colorBtnPrincipal:hover{
     background-color: #ab0033 !important;
     color:#FFFFFF !important;
   }
@@ -60,21 +67,21 @@
     color:#FFFFFF !important;
   }
 
-  .colorBtnPrincipal:focus { outline: none; } 
+  .colorBtnPrincipal:focus { outline: none; }
 
-  .dt-button { /*Estilo boton excel de datatable*/ 
-    padding: 0;
-    border: none; 
-    color:#FFFFFF;
-  }
-
-  .dt-button:hover{ /*Estilo boton excel de datatable*/ 
+  .dt-button { /*Estilo boton excel de datatable*/
     padding: 0;
     border: none;
     color:#FFFFFF;
   }
 
-  .theadColor { /*Estilo boton excel de datatable*/ 
+  .dt-button:hover{ /*Estilo boton excel de datatable*/
+    padding: 0;
+    border: none;
+    color:#FFFFFF;
+  }
+
+  .theadColor { /*Estilo boton excel de datatable*/
     background-color: #ab0033 !important;
     color:#FFFFFF;
   }
@@ -120,8 +127,8 @@
     /* border: 1px solid; */
   }
 
-  .lineaHr{ 
-    border-top: 1px solid #8392ab !important; 
+  .lineaHr{
+    border-top: 1px solid #8392ab !important;
     opacity: 0.7 !important;
     height: 2px ;
     padding: 0;
@@ -143,12 +150,12 @@
     border:none;
   }
 
-  #map { 
+  #map {
     /* height: 400px; */
     width: 100%;
     height: 450px;
     box-shadow: 5px 5px 5px #888;
-  } 
+  }
 
   .replicar{
     background-color: #8392ab75 !important;
@@ -166,7 +173,7 @@
   .trCentrar{
     text-align:center;
   }
-  
+
   .theadCentrar{
     text-align:center;
   }
@@ -176,7 +183,7 @@
     color:#FFFFFF !important;
   }
 
-  .colorBtnCancelar:hover{ 
+  .colorBtnCancelar:hover{
     background-color: #ff0000 !important;
     color:#FFFFFF !important;
   }
@@ -186,7 +193,7 @@
     color:#FFFFFF !important;
   }
 
-  .colorBtnCancelar:focus { outline: none; } 
+  .colorBtnCancelar:focus { outline: none; }
 
   div.dataTables_wrapper div.dataTables_length select {
     width: 6em !important;
@@ -204,12 +211,10 @@
     width:17em !important;
   }
 
-  .activeCasilla{
-    background-color: #8392ab75 !important;
-    border-radius: 10px;
-    height: 90%;
-    padding-left: 40px;
-    /* padding-top: 10px;; */
-    padding-right: 140px;
+  {{-- dataTables : Ciclo de vida de sistemas de información --}}
+  {{-- Acoplamiento de columnas a la tabla #proyectos --}}
+  .descripcion, .documentacion {
+      white-space: normal !important;
+      word-wrap: break-word;;
   }
 </style>

@@ -2,13 +2,13 @@
 <html lang="en">
 @php setPermissionsTeamId(3); @endphp
 <head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> 
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   @include('panels.styles')
 </head>
 
 <body class="g-sidenav-show bg-gray-100">
-  
+
   <!-- <div class="min-height-300 bg-gris position-absolute w-100"></div> -->
     @include('panels.navbar')
   <!-- <div style="background-color: #4a4c51 !important;"  class="min-height-300 bg-primary position-absolute w-100"></div> -->
@@ -16,7 +16,7 @@
 
   <main class="main-content position-relative border-radius-lg ">
         @yield('content')
-       
+
   </main>
   <div class="fixed-plugin">
     <div class="card shadow-lg">
@@ -189,13 +189,23 @@
   <script async defer src="{{ asset('js/buttons.js') }}"></script>
   <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('js/argon-dashboard.min.js?v=2.0.4') }}"></script>
-  <script src="{{ asset('js/jquery1.7.1_jquery.min.js') }}" type="text/javascript"></script> 
-  <script src="{{ asset('js/scripts/components-modal.js') }}"></script> 
+  <script src="{{ asset('js/jquery1.7.1_jquery.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('js/scripts/components-modal.js') }}"></script>
   <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+
+{{-- dataTables : Ciclo de vida de sistemas de información --}}
+  <script src="{{ asset('js/jquery-3.5.1.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
   <script src="{{ asset('js/sweetalert2@11.js') }}"></script>
-  
-   @yield('page-scripts')
-  
+
+{{--  <link href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet">--}}
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js" integrity="sha512-lUZZrGg8oiRBygP81yUZ4XkAbmeJn7u7HW5nq7npQ+ZXTRvj3ErL6y1XXDq6fujbiJlu6gHsgNUZLKE6eSDm8w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+  @yield('page-scripts')
+
 @auth()
   <script>
     $(document).ready(function () {
