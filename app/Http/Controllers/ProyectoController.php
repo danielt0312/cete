@@ -29,6 +29,7 @@ class ProyectoController extends Controller
                 'responsable' => $sistema->responsable,
                 'documentacion' => $this->obtenerDocumentacion($sistema->id),
                 'observaciones' => $sistema->observaciones,
+                'periodo_critico' => $sistema->periodo_inicio->format('m/d/Y'). ' - '. $sistema->periodo_final->format('m/d/Y'),
                 'opciones' => '
                     <div class="dropdown">
                         <a class="btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,15 +54,11 @@ class ProyectoController extends Controller
     {
         $data = $this->obtenerSistema($id);
         $data['id'] = $id;
-        $etapas = $this->obtenerEtapas($id);
-        $documentacion = $this->obtenerDocumentacion($id);
-        $desarrolladores = $this->desarrolladoresDisponibles();
 
         return(view('proyectos.grabar', [
             'data' => $data,
-            'etapas' => $etapas,
-            'documentacion' => $documentacion,
-            'desarrolladores' => $desarrolladores
+            'etapas' => $this->obtenerEtapas($id),
+            'desarrolladores' => $this->desarrolladoresDisponibles(),
         ]));
     }
 
@@ -72,8 +69,6 @@ class ProyectoController extends Controller
 
     public function detalles($id = 0)
     {
-        $this->obtenerTotalDocumentacion($id);
-
         return view('proyectos.detalles', [
             'proyecto' => $this->obtenerSistema($id)->toArray(),
             'etapas' => $this->obtenerEtapas($id),
@@ -84,9 +79,6 @@ class ProyectoController extends Controller
 
     public function cicloVida($id = 0)
     {
-        if($id == 0)
-            return $this->index();
-
         $documentacion = Documentacion::select(['id_cat_etapa', 'nombre', 'directorio', 'fecha_subida'])
             ->join('etapas', 'etapas.id_doc', '=', 'documentaciones.id')
             ->where('etapas.id_proyecto', '=', $id)
@@ -110,9 +102,6 @@ class ProyectoController extends Controller
 
     public function agregarDoc($id = 0)
     {
-        if($id == 0)
-            return $this->index();
-
         $documentacion = Documentacion::get()->where('id_proyecto', '=', $id)->where('fecha_subida', '=', null)->toArray();
 
         return view('proyectos.documentos', ['documentacion' => $documentacion]);
@@ -225,7 +214,7 @@ class ProyectoController extends Controller
                 }
 
 
-        return redirect()->route('index_proyectos')->with('sucess');
+        return redirect()->route('index_proyectos');
     }
 
     public function desarrolladoresDisponibles()
@@ -279,9 +268,9 @@ class ProyectoController extends Controller
                 'periodo_critico' => '',
                 'observaciones' => '',
             );
-        else {
+        else
             $data['periodo_critico'] = $data['periodo_inicio']->format('m/d/Y'). ' - '. $data['periodo_final']->format('m/d/Y');
-        }
+
 
         return $data;
     }

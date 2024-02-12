@@ -98,7 +98,7 @@
                         <h5 class="card-title text-primary font-weight-bolder">Observaciones</h5>
                     </div>
                     <div class="col-8">
-                        <h5 class="card-title text font-italic font-weight-light">{{$proyecto['observaciones'] != '' ? $proyecto['observaciones']: 'No hay datos registrados para este elemento.'}}</h5>
+                        <h5 class="card-title text @if($proyecto['observaciones'] == '') font-italic font-weight-light @else text font-weight-normal @endif ">{{$proyecto['observaciones'] != '' ? $proyecto['observaciones']: 'No hay datos registrados para este elemento.'}}</h5>
                     </div>
                 </div>
 
@@ -148,29 +148,31 @@
                     @endforeach
                 </div>
                 <div class="card-action">
-                    <div class="row">
-                        <div class="col">
-                            <h5 class="card-title text-primary font-weight-bolder">Documentación disponible</h5>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <label class="card-title text">Nombre</label>
-                        </div>
-                        <div class="col-6">
-                            <label class="card-title text">Fecha de subida</label>
-                        </div>
-                    </div>
-                    <ul class="row row-cols-2">
-                        @foreach($documentaciones['disponible'] as $documentacion)
+                    @if(isset($documentaciones['disponible']))
+                        <div class="row">
                             <div class="col">
-                                <a href="{{asset("storage/{$documentacion['directorio']}")}}"> {{$documentacion['nombre']}}</a>
+                                <h5 class="card-title text-primary font-weight-bolder">Documentación disponible</h5>
                             </div>
-                            <div class="col">
-                                <label class="col font-weight-normal">{{$documentacion['fecha_subida']}}</label>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="card-title text">Nombre</label>
                             </div>
-                        @endforeach
-                    </ul>
+                            <div class="col-6">
+                                <label class="card-title text">Fecha de subida</label>
+                            </div>
+                        </div>
+                        <ul class="row row-cols-2">
+                            @foreach($documentaciones['disponible'] as $documentacion)
+                                <div class="col">
+                                    <a href="{{asset("storage/{$documentacion['directorio']}")}}" target="_blank"> {{$documentacion['nombre']}}</a>
+                                </div>
+                                <div class="col">
+                                    <label class="col font-weight-normal">{{$documentacion['fecha_subida']}}</label>
+                                </div>
+                            @endforeach
+                        </ul>
+                    @endif
 
                     @if(isset($documentaciones['no_disponible']))
                         <div class="col">

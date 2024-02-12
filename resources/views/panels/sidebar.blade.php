@@ -27,7 +27,7 @@
           <li class="nav-item" id="nav_index_proyectos">
             <a class="nav-link " href="{{ route('index_proyectos') }}">
               <div  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="ni ni-single-02 text-white text-sm opacity-10"></i>
+                <i class="ni ni-folder-17 text-white text-sm opacity-10"></i>
               </div>
               <span class="nav-link-text ms-1 text-white">Proyectos</span>
             </a>
@@ -36,7 +36,7 @@
           <li class="nav-item" id="nav_index_etapas">
             <a class="nav-link " href="{{ route('index_etapas') }}">
               <div  class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="ni ni-single-02 text-white text-sm opacity-10"></i>
+                <i class="ni ni-app text-white text-sm opacity-10"></i>
               </div>
               <span class="nav-link-text ms-1 text-white">Etapas</span>
             </a>

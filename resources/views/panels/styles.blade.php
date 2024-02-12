@@ -213,7 +213,7 @@
 
   {{-- dataTables : Ciclo de vida de sistemas de información --}}
   {{-- Acoplamiento de columnas a la tabla #proyectos --}}
-  .descripcion, .documentacion {
+  .acoplar {
       white-space: normal !important;
       word-wrap: break-word;;
   }

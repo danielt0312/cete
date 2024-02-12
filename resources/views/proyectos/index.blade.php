@@ -30,7 +30,7 @@
 
             $('#proyectos').DataTable({
                 columnDefs : [
-                    {orderable : false, targets: [2,3,4,5]}
+                    {orderable : false, targets: [2,3,5,6]}
                 ],
                 order: [0, 'asc'],
                 language: {
@@ -60,10 +60,11 @@
                 data: data,
                 columns: [
                     {data: 'id', title: 'ID'},
-                    {data: 'nombre', title: 'Nombre'},
-                    {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
-                    {data: 'responsable', title: 'Responsable'},
-                    {data: 'documentacion', title: 'Documentación disponible', className: 'documentacion'},
+                    {data: 'nombre', title: 'Nombre', className: 'acoplar'},
+                    {data: 'descripcion', title: 'Descripción', className: 'acoplar'},
+                    {data: 'responsable', title: 'Responsable', className: 'acoplar'},
+                    {data: 'periodo_critico', title: 'Periodos críticos', className: 'acoplar'},
+                    {data: 'documentacion', title: 'Documentación disponible', className: 'acoplar'},
                     {data: 'opciones', title: 'Acciones'},
                 ],
             });

@@ -42,15 +42,15 @@ use Illuminate\Support\Facades\DB;
         Route::get('/detalles/{id}', 'App\Http\Controllers\ProyectoController@detalles')->name('detalles');
     });
 
-    Route::group(['prefix' => 'solicitudes'], function(){
-        Route::get('/index', 'App\Http\Controllers\SolicitudesController@index2')->name('index_solicitud');
-    });
-
     Route::group(['prefix' => 'etapas'], function () {
         Route::get('/index', 'App\Http\Controllers\EtapasController@index')->name('index_etapas');
-        Route::get('/grabar/{id}', 'App\Http\Controllers\EtapasController@show')->name('agregar_etapa');
+        Route::get('/grabar/{id}', 'App\Http\Controllers\EtapasController@show')->name('grabar_etapa');
         Route::get('/eliminar/{id}', 'App\Http\Controllers\EtapasController@delete')->name('eliminar_etapa');
-        Route::post('/guardar', 'App\Http\Controllers\EtapasController@store')->name('grabar_etapa');
+        Route::post('/guardar', 'App\Http\Controllers\EtapasController@store')->name('guardar_etapa');
+    });
+
+    Route::group(['prefix' => 'solicitudes'], function(){
+        Route::get('/index', 'App\Http\Controllers\SolicitudesController@index2')->name('index_solicitud');
     });
 
 // });

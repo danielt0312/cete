@@ -20,7 +20,7 @@ class EtapasController extends Controller
                         </svg>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <li><a class="dropdown-item" href="'.route('agregar_etapa', ['id' => $attributes['id']]).'">Editar</a></li>
+                        <li><a class="dropdown-item" href="'.route('grabar_etapa', ['id' => $attributes['id']]).'">Editar</a></li>
                         <li><a class="dropdown-item" href="'.route('eliminar_etapa', ['id' => $attributes['id']]).'">Eliminar</a></li>
                     </ul>
                 </div>
@@ -36,13 +36,10 @@ class EtapasController extends Controller
     {
         $etapa = CatEtapa::find(request('id'));
 
-        if ($etapa) {
+        if ($etapa)
             $etapa->delete();
 
-            return redirect()->route('index_etapas')->with('success');
-        } else {
-            return redirect()->route('index_etapas')->with('error');
-        }
+        return redirect()->route('index_etapas');
     }
 
     public function store()

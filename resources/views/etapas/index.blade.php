@@ -10,7 +10,7 @@
         <div class="mt-7"/>
         <div class="g-2 d-grid d-md-flex justify-content-around">
             <h3>Lista de Etapas</h3>
-            <a class="btn btn-secundario btn-agregar" href="{{ route('agregar_etapa', ['id' => 0]) }}"><i class="fas fa-plus-square">&nbsp;</i> Agregar</a>
+            <a class="btn btn-secundario btn-agregar" href="{{ route('grabar_etapa', ['id' => 0]) }}"><i class="fas fa-plus-square">&nbsp;</i> Agregar</a>
         </div>
         <div class="container-fluid row">
             <div class="col-md-12">
@@ -20,18 +20,6 @@
                 </table>
             </div>
         </div>
-
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
     </div>
 @endsection
 
@@ -71,8 +59,8 @@
                 data: data,
                 columns: [
                     {data: 'id', title: 'ID'},
-                    {data: 'nombre', title: 'Nombre'},
-                    {data: 'descripcion', title: 'Descripción', className: 'descripcion'},
+                    {data: 'nombre', title: 'Nombre', className: 'acoplar'},
+                    {data: 'descripcion', title: 'Descripción', className: 'acoplar'},
                     {data: 'editar', title: 'Acciones'},
                 ],
             });

@@ -11,7 +11,7 @@
         <div class="g-2 d-grid d-md-flex">
             <a class="btn btn-secundario " href="{{ route('index_etapas') }}"><i class="fas fa-arrow-alt-circle-left">&nbsp;</i>  Regresar</a>
         </div>
-        <form action="{{ route('grabar_etapa', ['id' => $data['id']]) }}" class="row mt-2" method="POST">
+        <form action="{{ route('guardar_etapa', ['id' => $data['id']]) }}" class="row mt-2" method="POST">
             @csrf
             <div class="row">
                 <label for="nombre" class="col-sm-3 col-form-label">Nombre de la etapa:</label>
